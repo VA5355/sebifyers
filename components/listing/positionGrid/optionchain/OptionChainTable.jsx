@@ -1,0 +1,2798 @@
+// components/OptionChainTable.jsx
+import { useDispatch, useSelector   } from "react-redux";
+import  {  useReducer, useState,useEffect, useRef,useMemo, useContext , useCallback, createContext} from 'react';
+import { selectFilteredStrikes } from '@/redux/selectors/webSockSelector';
+import webSocketSlice, { setConnected }  from '@/redux/slices/webSocketSlice';
+//import { selectFilteredStrikes } from "../store/selectors";
+//import useWebSocketStream from "@/redux//hooks/useWebSocketStream";
+//import useWebSocketStreamSeq   from "@/redux//hooks/useWebSocketStreamSeq";
+import { useWebSocketStreamSeq } from "@/redux//hooks/useWebSocketStreamSeqSingle";
+ import { placeBuyOrder ,placeSellOrder  ,updateTickerStatusFromCache ,stopSensexTickerData } from "../placeBuyOrder.actions";
+ //import { showModal as showModalDialog } from '../../common/service/ModalService';
+import {StorageUtils} from "@/libs/cache";
+import {CommonConstants} from "@/utils/constants";
+import { motion, useMotionValue, useTransform , AnimatePresence} from "framer-motion";
+import {Lock, Unlock, ArrowRight, ArrowLeft, Check, X, Heading4 } from "lucide-react";
+import { Loader2  } from "lucide-react";
+import { Settings,  TrendingUp, Wallet, Coins } from 'lucide-react';
+import withSpinner from "./withSpinner";
+import { FYERSOPTIONCHAINWSSFEED } from '@/libs/client';
+import {SwipeCallPill , SwipePutPill} from "./SwipePills";
+import { useModal } from '@/providers/ModalProvider';
+import { showModal as modalShow, showError } from '../../../common/service/ModalService';
+import "./index.css";
+import "./sidewaysPriceSlider.css";
+import expirySymbols from "./OptionChainExpirySymbols";
+import { generated , generatedApril, generateSymbolsApril , getHighestId , baseSpot, extractExpiries , strikeMapper} from "./optionStikeGenerator";
+import expiryMonthSymbols from "./OptionChainMonthEndSymbols";
+import TickStore from "./tickStore";
+import SpotIndex  from "./spotIndex";
+import  { fetchNiftySpot , recalculateNiftOptionStrikes }  from "./spotFyersIndex";
+import { ChevronUp, ChevronDown, Calendar } from "lucide-react";
+ 
+import {  Wifi } from "lucide-react";
+
+ 
+// Fyers Custom Format Exipry Table Mapper 
+ const tableGlobalExipryMapper = new Map();
+             // this is also a configuration setting for converting yymmdd to fyers specific yyMdd format 
+            /* tableGlobalExipryMapper.set('251216','25D16')
+             tableGlobalExipryMapper.set('251223','25D23')
+             tableGlobalExipryMapper.set('251230','25DEC')
+             tableGlobalExipryMapper.set('260106','26J06')
+             tableGlobalExipryMapper.set('260113','26J13')
+              tableGlobalExipryMapper.set('2025-12-16','25D16')
+             tableGlobalExipryMapper.set('2025-12-23','25D23')
+             tableGlobalExipryMapper.set('2025-12-30','25D30') // convert to 25DEC while sending to netlify function 
+             tableGlobalExipryMapper.set('2026-01-06','26J06')
+             tableGlobalExipryMapper.set('2026-01-13','26J13')
+              tableGlobalExipryMapper.set('2026-01-20','26J20')
+             tableGlobalExipryMapper.set('2026-01-27','26J27')
+     
+              tableGlobalExipryMapper.set('25D16', '2025-12-16')
+             tableGlobalExipryMapper.set('25D23','2025-12-23')
+             tableGlobalExipryMapper.set('25D30','2025-12-30') // convert to 25DEC while sending to netlify function 
+             */
+             tableGlobalExipryMapper.set('26M10','2026-03-10')
+             tableGlobalExipryMapper.set('26M17', '2026-03-17')
+                tableGlobalExipryMapper.set('26M24','2026-03-24')
+             tableGlobalExipryMapper.set('26M31', '2026-03-31')
+              tableGlobalExipryMapper.set('26A07','2026-04-07')
+             tableGlobalExipryMapper.set('26A14', '2026-04-14')
+             tableGlobalExipryMapper.set('26A21','2026-04-21')
+             tableGlobalExipryMapper.set('26A28', '2026-04-28')
+                    tableGlobalExipryMapper.set('2026-03-10','26M10')
+             tableGlobalExipryMapper.set('2026-03-17','26M17' )
+                tableGlobalExipryMapper.set('2026-03-24','26M24')
+             tableGlobalExipryMapper.set('2026-03-31','26M31' )
+              tableGlobalExipryMapper.set('2026-04-07','26A07')
+             tableGlobalExipryMapper.set('2026-04-14','26A14' )
+             tableGlobalExipryMapper.set('2026-04-21','26A21')
+             tableGlobalExipryMapper.set('2026-04-28','26A28' )
+
+
+
+
+      
+// --- Mocking External Dependencies for Runnable Demo ---
+
+const lotSize = 65;
+
+// 1. Mock Redux and Actions
+const useDispatchDummy = () => (action) => console.log('Dispatching (Mock):', action.type || action);
+const useSelectorDummy = (selector) => selector({
+  webSocket: {
+    strikes: mockStrikes.filter(s => s.expiry === '2025-10-31') // Mock initial data
+  }
+});
+const webSocketSliceDummy = { actions: { setExpiry: (date) => ({ type: 'websocket/setExpiry', payload: date }) } };
+const selectFilteredStrikesDummy = (state) => {
+    // In a real app, this selector would filter strikes based on expiry
+    // Here, we just return mock data
+    return mockStrikes; 
+};
+const placeBuyOrderDummy = (qty, price, strike) => ({ type: 'action/placeBuy', payload: { qty, price, strike } });
+const placeSellOrderDummy = (qty, price, strike) => ({ type: 'action/placeSell', payload: { qty, price, strike } });
+
+// 2. Mock Storage/Constants
+const StorageUtilsDummy = {
+  _retrieve: (key) => ({ isValid: false, data: null }),
+  _save: (key, value) => console.log(`Mock Save to Cache: ${key}`),
+};
+const CommonConstantsDummy = {
+  remoteServerGeneralSellErrorBasic: 'MOCK_SELL_ERROR',
+  recentSellledOrder: 'MOCK_RECENT_ORDER',
+};
+// Define the default context value with a no-op function for the request.
+// This ensures that sendSubscriptionRequest is always a function,
+// preventing the "is not a function" error during initial component rendering.
+const defaultContextValue = {
+    isConnected: false,
+    sendSubscriptionRequest: () => {
+        console.warn('Attempted to send subscription request before WebSocket was fully initialized.');
+    },
+    openSubscriptionRequest: () => {
+        console.warn('Attempted to open socket before WebSocketContext and PRovider was fully initialized.');
+    },
+     rawWs: null,
+};
+// 1. Create the Context object
+const WebSocketContext = createContext(defaultContextValue);
+// 2. Custom hook to use the WebSocket features easily
+  const useWebSocket = () => {
+    const context = useContext(WebSocketContext);
+    if (!context) {
+        console.log("use Context ins the same file ")
+        // This check ensures the hook is only used inside the Provider
+        //throw new Error('useWebSocket must be used within a WebSocketProvider');
+    }
+    return context;
+};
+
+ // , []);
+
+
+// 3. The Provider Component which holds the connection logic
+ const WebSocketProvider = ({ children, url , wsInstance, dispatch,  openConnection , setIsConnectedButton}) => {
+     const [isConnected, setIsConnected] = useState(false);
+      const [isConnecting, setIsConnecting] = useState(false);
+       const [ optionsWebMap, setOptionsWebMap ]  = useState([]);
+       const [ strikeWebMap, setStrikeWebMap ]  = useState([]);
+       const connectTimeoutRef = useRef(null);
+      
+
+
+     const cancelConnection = () => {
+      console.log('[WS] Connection cancelled by user');
+
+      setIsConnecting(false);
+
+      // Clear timeout
+      if (connectTimeoutRef.current) {
+        clearTimeout(connectTimeoutRef.current);
+        connectTimeoutRef.current = null;
+      }
+
+      // Close socket if opening
+      if (wsInstance && wsInstance.readyState === WebSocket.CONNECTING) {
+        wsInstance.close();
+      }
+    };
+
+      // const ws = useRef(null);
+         // Function to set up the handlers on the external WebSocket instance
+ const setupEventHandlers =   useCallback((currentWs , url , dispatch,setIsConnected, setOptMap , setStrikeMap) => {
+        if (!currentWs) return;
+        // --- WebSocket Event Handlers ---
+        // onopen: The initial connection and first subscription request
+    //   const { optionsMap, strikeMap ,getOptionsMapFromResponse ,onOpen ,  onMessage,onError, onClose  } =  useWebSocketStreamSeq(url , dispatch);
+        currentWs.onopen = (event) => {
+            console.log('WebSocket connection opened.');
+            let initialRequest =   onOpen();
+            setIsConnected(true);
+            setIsConnecting(false); // ✅ HIDE MODAL
+             // ✅ clear timeout
+              if (connectTimeoutRef.current) {
+                clearTimeout(connectTimeoutRef.current);
+                connectTimeoutRef.current = null;
+              }
+              // Initial subscription request (like your original onOpen logic)
+           /* const initialRequest = {
+                method: 'addsymbol',
+                symbols: ['NIFTY 50', 'NIFTY25100724100CE', 'NIFTY25100724100PE'] // Initial list
+            };*/
+            currentWs.send(JSON.stringify(initialRequest));
+        };
+        currentWs.onmessage = (event) => {
+            // Your existing onMessage logic to dispatch trades goes here
+            // console.log('Received message:', event.data); 
+            onMessage(event , setOptMap, setStrikeMap);
+
+        };
+        currentWs.onclose = () => {
+            console.log('WebSocket connection closed.');
+            setIsConnected(false);
+             setIsConnecting(false);
+               if (connectTimeoutRef.current) {
+                clearTimeout(connectTimeoutRef.current);
+                connectTimeoutRef.current = null;
+              }
+        };
+         currentWs.onerror = (error) => {
+            console.error('WebSocket Error:', error);
+             setIsConnecting(false); // ❌ FAILED
+              if (connectTimeoutRef.current) {
+              clearTimeout(connectTimeoutRef.current);
+              connectTimeoutRef.current = null;
+            }
+        };
+    }, []); // setupEventHandlers is stable as it has no external dependencies
+     // Initial connection logic (runs once on mount)
+    useEffect(() => {
+        // Only connect if the URL is provided
+        if (!url) return;
+         //  ws.current = new WebSocket(url);
+         let optionsMap = new Map();
+            let strikeMapSymbol = new Map();    
+         let symbolsMap = new Map();
+         let symbolsStrikeWiseMap =[];
+           // if ( ws.current ) {
+            if ( wsInstance ) {
+               setupEventHandlers( wsInstance , url , dispatch , setIsConnected,setOptionsWebMap ,setStrikeWebMap );
+            
+            // Set initial connected state based on the instance state
+           // setIsConnected(ws.current.readyState === WebSocket.OPEN);
+            setIsConnected(wsInstance.readyState === WebSocket.OPEN);
+               setIsConnectedButton('button1');
+            setShouldDisplay(true)
+        } else {
+            // If the instance is null, we are disconnected
+            setIsConnected(false);
+            setIsConnectedButton('button2');
+             setShouldDisplay(false)
+        }
+       // Cleanup function for unmounting the component
+        return () => {
+          /* if (ws !== null && ws !== undefined && ws.current && ws.current.readyState === WebSocket.OPEN) {
+                ws.current.close();
+            } */
+        };
+    }, [wsInstance]);
+        // This is the implementation for the requested function:
+    // It maps the prop (openConnection) to the user-requested context function name (openSubscriptionRequest)
+    const openSubscriptionRequest = useCallback(() => {
+        if (typeof openConnection === 'function') {
+            console.log('[WS] Triggering external connection attempt...');
+             setIsConnecting(true);          // 🔥 SHOW MODAL
+                // 🔒 Safety timeout (8 seconds)
+            connectTimeoutRef.current = setTimeout(() => {
+              console.warn('[WS] Connection timeout');
+              setIsConnecting(false);
+            }, 8000);
+            openConnection();
+        } else {
+            console.error('openConnection function was not provided to WebSocketProvider as a prop.');
+        }
+    }, [openConnection]);
+
+ 
+    // Open the socket 
+  /*  const openSubscriptionRequest = () => {
+           // const { optionsMap, strikeMap   } =  useWebSocketStreamSeq("wss://localhost:8443/",dispatch);
+         // On successful connection, send the subscription request
+       
+
+
+             setStrikeWebMap(strikeMap);
+           setOptionsWebMap(optionsMap);
+            
+    }// ); 
+    */
+    // Function exposed via context to send new subscription requests
+    const sendSubscriptionRequest = useCallback((symbols) => {
+        //if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+        if (wsInstance && wsInstance.readyState === WebSocket.OPEN) {
+            const request = {
+                method: 'addsymbol',
+                symbols: symbols
+            };
+             wsInstance.send(JSON.stringify(request));
+           // ws.current.send(JSON.stringify(request));
+            console.log(`[WS] Sent new subscription request for ${symbols.length} symbols.`);
+        } else {
+            console.warn('[WS] Cannot send request: WebSocket is not open.');
+        }
+    }, [wsInstance]);
+
+    // The value that will be provided to consumers (components using useWebSocket)
+    const contextValue = {
+        isConnected: wsInstance && wsInstance.readyState === WebSocket.OPEN,
+        sendSubscriptionRequest,openSubscriptionRequest,
+         optionsWebMap, strikeWebMap  ,
+         rawWs: wsInstance 
+        // You can also expose the raw ws instance if needed, but it's often better to wrap it
+        // rawWs: ws.current
+    };
+     return (
+        <WebSocketContext.Provider value={contextValue}>
+            <AnimatePresence>
+                {isConnecting && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center"
+                  >
+                    <motion.div
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.9, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      className="
+                        bg-white rounded-xl px-6 py-5
+                        flex flex-col items-center gap-3
+                        shadow-xl w-[260px]
+                      "
+                    >
+                      <div className="relative">
+                        <Wifi className="w-8 h-8 text-brandgreen" />
+                        <Loader2 className="w-8 h-8 absolute inset-0 animate-spin text-brandgreen/70" />
+                      </div>
+
+                      <p className="text-sm font-semibold text-gray-700">
+                        Connecting…
+                      </p>
+
+                      <p className="text-xs text-gray-500 text-center">
+                        Establishing real-time market feed
+                      </p>
+                      <button
+                        onClick={cancelConnection}
+                        className="
+                          mt-3 w-full py-1.5 rounded-md
+                          text-sm font-medium
+                          bg-gray-100 text-gray-600
+                          hover:bg-gray-200 transition
+                        "
+                      >
+                        Cancel
+                      </button>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+
+            {children}
+        </WebSocketContext.Provider>
+    );
+}
+// Header Component (Updated with Connect Button)
+const Header = ( { setRecalculate , inputActiveBtn }) => {
+    const { isConnected ,openSubscriptionRequest } = useWebSocket();
+     // 'activeButton' can be 'button1', 'button2', or null/initial state
+  const [activeButton, setActiveButton] = useState(  inputActiveBtn  ); //  useState( btn =>  { inputActiveBtn ==='button1' ? 'button1' : 'button2' } );
+
+  const handleButtonClick = (buttonName) => {
+    setActiveButton(buttonName);
+  };
+
+    
+    useEffect ( () => {
+          // set Recalculate button 
+          console.log("we are connected through webscoker")
+           setRecalculate(sh =>  sh = (isConnected ===true));
+    }, [isConnected])
+    return (
+        <div className="bg-gray-800 text-white p-4 shadow-lg flex justify-between items-center">
+            <h1 className="text-xl font-bold">Option Chain Viewer</h1>
+            <div className="flex items-center space-x-3">
+                {activeButton === 'button1' ? ( <> 
+                <button id="buttonConnected"
+                    onClick={ () =>{  handleButtonClick('button2'); console.log("open clicked"); openSubscriptionRequest();   }}
+                    disabled={isConnected}
+                    className={`px-4 py-2 text-sm font-semibold rounded-lg transition duration-200 
+                        ${isConnected 
+                            ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
+                            : 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-md'
+                        }`}
+                >
+                    {isConnected ? 'Connected' : 'Connect WebSocket'}
+                </button>
+                </> ) : ( <>   <button id="buttonConnecting" 
+                         
+                             disabled={!isConnected}
+                   class="flex items-center gap-3 px-6 py-3 bg-grey-100 text-white rounded-lg opacity-80 "> 
+                   <div class="rounded-full w-5 h-5 border-3 border-t-transparent border border-yellow-300 text-yellow-800   animate-spin"> </div>
+                         Connecting ....
+                   </button> </>)}         
+
+
+                <span className={`px-3 py-1 text-sm rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}>
+                    Status: {isConnected ? 'Live' : 'Offline'}
+                </span>
+            </div>
+        </div>
+    );
+};
+// Recalcuate Component (Updated with Connect Button)
+const Recalculate = ({recalcLoading }) => {
+     /*    <button 
+                    onClick={ () =>{  console.log("Recalculate clicked"); openSubscriptionRequest();   }}
+                    disabled={shouldDisplay}
+                    className={`px-4 py-2 text-sm font-semibold rounded-lg transition duration-200 
+                        ${shouldDisplay 
+                            ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
+                            : 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-md'
+                        }`}
+                >
+                    {shouldDisplay ? 'At Spot' : 'Recalculate'}
+                </button>
+     */
+      const [ shouldDisplay , setShouldDisplay] = useState( shUp => { 
+           // get 
+            let butCon =   document.getElementById("buttonConnected");
+            if (butCon !== undefined && butCon !== null){
+                 let socketState =  butCon.getAttribute('value');
+                  if(socketState === 'Connected'){
+                    shUp = true;
+                    console.log(" recalculate will show  ")
+                      return true;
+                  }
+                  else {
+                     console.log(" recalculate hidden   ")
+                     shUp = false;
+                    return false;
+                  }
+
+            }
+            else {
+               console.log(" recalculate hidden Websocket button not found   ")
+              shUp = false;
+              return false;   // recalculateNiftOptionStrikes
+            }
+      });
+    
+    return (   <>  {shouldDisplay && <button 
+                                      onClick={ () =>{  console.log("recalculate clicked "); recalculateNiftySStrikes();   }}
+                                        disabled={recalcLoading && !shouldDisplay}
+                                      className="px-4 py-2 text-sm font-semibold rounded-lg transition duration-200 bg-cyan-600 hover:bg-cyan-700 text-white shadow-md"
+                                  >  
+                                    { recalcLoading ? (<span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full">At Spot </span> ): "Recalculate"}
+                                  </button>}
+                                  </>
+                )
+  
+};
+
+
+// 3. Mock WebSocket Hook (Crucial for passing Expiry Date)
+function useWebSocketStreamDummy(expiryDate) {
+    const [isConnected, setIsConnected] = useState(false);
+    
+    // Simulate connection logic based on expiry date change
+    useEffect(() => {
+        console.log(`[WebSocket Mock]: Attempting to connect/reconnect with Expiry Date: ${expiryDate}`);
+        setIsConnected(true);
+        // In a real app, this is where you'd send a subscription message to the WS server
+        
+        const timer = setTimeout(() => {
+            console.log(`[WebSocket Mock]: Connected for ${expiryDate}`);
+        }, 500);
+
+        // Cleanup: simulate closing the connection
+        return () => {
+            clearTimeout(timer);
+            setIsConnected(false);
+            console.log(`[WebSocket Mock]: Disconnected from stream for previous expiry.`);
+        };
+    }, [expiryDate]);
+
+    // This data would typically come from the Redux store updated by the WS feed
+    return {
+        isConnected,
+        // Using mockStrikes which are defined below
+        strikeData: mockStrikes.filter(s => s.expiry === expiryDate), 
+    };
+}
+
+
+// --- Mock Data ---
+const mockExpiryDates = [  //this is a configuration setting to be set every change in month for exipry data 
+    '2026-03-10', 
+    '2026-03-17', 
+    '2026-03-24', // Default selected
+    '2026-03-30', 
+    '2026-04-07',
+    '2026-04-14',
+    '2026-04-21',
+    '2026-04-28' 
+
+];
+
+
+
+const spot = "24,450.00"; // Current NIFTY/Index Spot Price
+
+// Example structure for a strike row
+const mockStrikes = [ // this alsos is a configuration setting for change in every month 
+   { expiry: '2026-03-10', strike: "25900", call: { ltp: "247.65", bid: "247.10", ask: "247.70" }, put: { ltp: "205.30", bid: "205.10", ask: "205.40" } },
+    { expiry: '2026-03-17', strike: "26000", call: { ltp: "200.50", bid: "200.10", ask: "200.70" }, put: { ltp: "225.15", bid: "225.00", ask: "225.20" }, isATM: true },
+    { expiry: '2026-03-24', strike: "26100", call: { ltp: "155.10", bid: "155.00", ask: "155.20" }, put: { ltp: "250.75", bid: "250.60", ask: "250.80" } },
+    { expiry: '2026-03-30', strike: "26200", call: { ltp: "300.00", bid: "299.80", ask: "300.20" }, put: { ltp: "280.00", bid: "279.90", ask: "280.10" }, isATM: true },
+];
+
+
+// --- NEW Expiry Filter Component ---
+function ExpiryFilter({ selectedExpiry, onExpiryChange, expiryOptions , dispatch , resetStrikeMap}) {
+
+    const { isConnected ,sendSubscriptionRequest } = useWebSocket();
+    // Active expiry dates updatedfrom the mockexpiryDates array below configurable 
+   const [activeExpiryDates, setActiveExpiryDates] = useState([]);
+    useEffect(() => {
+      try {
+        // Normalize "today" to date-only (no time)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const filtered = mockExpiryDates.filter((dateStr) => {
+          if (!dateStr || typeof dateStr !== "string") return false;
+
+          const expiryDate = new Date(dateStr);
+          if (isNaN(expiryDate.getTime())) return false;
+
+          expiryDate.setHours(0, 0, 0, 0);
+
+          return expiryDate >= today;
+        });
+
+        setActiveExpiryDates(filtered);
+      } catch (err) {
+        console.error("Error while filtering expiry dates:", err);
+        setActiveExpiryDates([]);
+      }
+    }, []); 
+   const generateSymbolsForExpiry = (exr) =>{ // NotE the artilery needs NITFY-50 symbol for mock trades , while true-data needs NIFTY 50
+
+          let  symbols = [ /* 'NIFTY 50' */ 'NIFTY-50', 'NIFTY26M1024700CE', 'NIFTY26M1024700PE' , 'NIFTY26M1024800CE', 'NIFTY26M1024800PE', 
+                    'NIFTY26M1724700PE' , 'NIFTY26M1724700CE','NIFTY26M1724800CE' , 'NIFTY26M1724800PE',
+                'NIFTY26M2424700CE' , 'NIFTY26M2424700PE','NIFTY26M2424800CE' , 'NIFTY26M2424800PE' ,
+                'NIFTY26A0724700CE' , 'NIFTY26A0724700PE','NIFTY26A0724800CE' , 'NIFTY26A0724800PE'];
+         const expiries = extractExpiries(symbols);
+         // get Spot from the Spot or the StorageUtils saved earlier in cache 
+         let indexNiftySpot = baseSpot;
+
+          let recentSPOT  =  StorageUtils._retrieve(CommonConstants.niftySPOTINDEX)
+             if (recentSPOT.isValid && recentSPOT.data !== null &&  recentSPOT.data !== undefined) {
+                 /*
+                    let spot = m.last;
+                  let pts = m.variation; 
+                  let percent =  m.percentChange; 
+                   */
+                    let niftySPOT = recentSPOT.data['spot'];
+                if (niftySPOT&& niftySPOT !== null && niftySPOT !== undefined) {
+                    console.log("Nifty Spot from Cache  ");
+                    console.log("Cache spot  "+niftySPOT);
+                      indexNiftySpot = niftySPOT;
+                  }
+              }
+              else {
+                let recentTickerToken =  StorageUtils._retrieve(CommonConstants.recentTickerToken )
+                  if (recentTickerToken  !== null &&  recentTickerToken !== undefined) {
+                 // MAKE    again hit to stock nse india and fyers python to get Nifty SPORT 
+                     //  indexNiftySpot =  fetchNiftySpot(recentTickerToken);
+                          (async () => {
+                            try { 
+                                let ttk  = recentTickerToken.data
+                              const nifty = await fetchNiftySpot(ttk);
+                                console.log("📈 NIFTY SPOT from  artilery feed =", nifty);
+                              indexNiftySpot =    nifty;
+                            } catch (err) {
+                                console.error(err.message);
+                            }
+                          })();
+                
+                  }
+
+              }   
+               if (indexNiftySpot ===undefined  ){   
+                    if (spot !==undefined) {
+                        console.log("Nifty Spot hard coded   ");
+                              console.log("Current spot  "+spot);
+                                indexNiftySpot = spot;
+                    }
+                    else { 
+                        
+                  }
+             }
+          let strikes = strikeMapper(indexNiftySpot, expiries);
+
+
+  
+          if (strikes !== undefined && strikes.length > symbols.length ){ 
+                  console.log("Nifty strike Cacluated more strikes for Option Chain  ");
+                     console.log(" Earlier Option Chain strikes   "+ symbols.length);
+                console.log(" New  Option Chain strikes   "+ strikes.length);
+                console.log(" New   strikes   "+ JSON.stringify(  strikes));
+                symbols = strikes;
+
+          }
+            const formatted = symbols.map(date => date.replace(/-/g, "").slice(2));
+            console.log(formatted);
+          /* to send symbols like this 
+             symbols: [
+    'NIFTY-50',          'NIFTY2512235600CE',
+    'NIFTY2512235600PE', 'NIFTY2512235700CE',
+    'NIFTY2512235700PE', 'NIFTY2512235800PE',
+    'NIFTY2512235800CE', 'NIFTY2512235900CE',
+    'NIFTY2512235900PE', 'NIFTY2512235600CE',
+    'NIFTY2512235600PE', 'NIFTY2512235700CE',
+    'NIFTY2512235700PE', 'NIFTY2512235800CE',
+    'NIFTY2512235800PE', 'NIFTY2512235900CE',
+    'NIFTY2512235900PE'
+  ]
+          
+          */
+          if(exr !==undefined && exr !==null){
+              console.log("Active Expiry Dates "+JSON.stringify(activeExpiryDates))
+            // CHECK seleceted date is active or not 
+             let isActive =   activeExpiryDates.findIndex ( actDate => actDate === exr );
+              console.log("Expiry Searched for  "+JSON.stringify(exr))   
+		 console.log(" in  tableGlobalExipryMapper  "+JSON.stringify(tableGlobalExipryMapper))  
+            const fyersExpiry = tableGlobalExipryMapper.get(exr);
+            let fitSymbols = [];
+               console.log("selected expiry  : "+JSON.stringify(exr)) ; 
+                console.log("active  expiry  : "+ (isActive > -1 ? "yes present" : "not active ")+ " from "+JSON.stringify(activeExpiryDates)) ;  
+              console.log("generated fyers expirt  : "+JSON.stringify(fyersExpiry)) ;  
+             if (!fyersExpiry) return [];
+               fitSymbols =   symbols.filter(s => s === "NIFTY-50" || s.indexOf(fyersExpiry) > -1 );
+               
+             console.log("generated fitSymbols 1st check  : "+JSON.stringify(fitSymbols)) ;  
+              //fitSymbols =   expirySymbols.filter(s => s.symbol === "NIFTY-50" ||  s.symbol.indexOf(fyersExpiry)>-1).map(ap => ap.symbol);
+               
+              let startId = getHighestId(expirySymbols) + 1;
+             let generatedArpilNew = expirySymbols.concat(
+                          [...generateSymbolsApril(expirySymbols, startId)]
+                        );
+              console.log("generatedArpilNew strikes  " + JSON.stringify(generatedArpilNew));
+              console.log("old length", expirySymbols.length);
+              console.log("new generated", [...generateSymbolsApril(expirySymbols, startId)].length);
+                console.log("merged length", generatedArpilNew.length);
+              fitSymbols =   generatedArpilNew.filter(s => s.symbol === "NIFTY-50" ||  s.symbol.indexOf(fyersExpiry)>-1).map(ap => ap.symbol);
+             console.log("generated fitSymbols 2nd check  : "+JSON.stringify(fitSymbols)) ;  
+
+
+            if( isActive >-1  && fitSymbols.length > 0 ){
+       
+                        let shrExpr = exr.replace(/-/g,"").slice(2);
+              console.log("generated short date : "+shrExpr)
+              const newSymbls =     fitSymbols.map( newStr => { 
+                      if(newStr.indexOf('CE') >-1 || newStr.indexOf('PE') > -1 ){
+                         // let lastCEandStrk = newStr.slice(11, -2);
+                          const prefix = newStr.substring(0, 5); // 'NIFTY'
+                          const suffix = newStr.substring(11);  // e.g., '24100CE'
+
+                        //  return prefix+shrExpr+suffix;  // this sends 'NIFTY2512235600CE'  like this 
+                           return newStr;  // send this way as we are converting is there at artilery side properly 
+                      }
+                      else {
+                          return newStr;
+                      }
+                  })
+               if( newSymbls !==undefined && Array.isArray(newSymbls)){
+                     console.log("generated new sybols : "+JSON.stringify(newSymbls))
+                  return newSymbls;
+               }
+               //else if (expirySymbols !== undefined ) { 
+              //else if (generatedApril !== undefined ) { 
+               else if (generatedArpilNew !== undefined ) { 
+                   // hard typed expiries of the current month 
+                  //   fitSymbols =   expirySymbols.filter(s => s.symbol === "NIFTY-50" ||  s.symbol.indexOf(fyersExpiry)>-1).map(ap => ap.symbol);
+                   //  fitSymbols =   generatedApril.filter(s => s.symbol === "NIFTY-50" ||  s.symbol.indexOf(fyersExpiry)>-1).map(ap => ap.symbol);
+                     fitSymbols =   generatedArpilNew.filter(s => s.symbol === "NIFTY-50" ||  s.symbol.indexOf(fyersExpiry)>-1).map(ap => ap.symbol);
+                   if(Array.isArray(fitSymbols)){
+                     //  
+                        const newSymbls =     fitSymbols.map( symIdKeys => { 
+                            let symBol = symIdKeys.symbol;
+                          if(symBol.indexOf('CE') >-1 || symBol.indexOf('PE') > -1 ){
+                            // let lastCEandStrk = newStr.slice(11, -2);
+                              const prefix = symBol.substring(0, 5); // 'NIFTY'
+                              const suffix = symBol.substring(11);  // e.g., '24100CE'
+
+                              return prefix+shrExpr+suffix;
+                          }
+                          else {
+                              return symBol;
+                            }
+                         })
+                        if( newSymbls !==undefined && Array.isArray(newSymbls)){
+                            console.log(" from external hard typed generated new sybols : "+JSON.stringify(newSymbls))
+                            return newSymbls;
+                       }
+                       else {
+                          return [];
+                       }
+
+                   }
+                   else {
+                       return [];
+                   }
+               }
+               else {
+                return [];
+               }
+            } ///  SELECTED Expiry is active 
+            else { 
+                dispatch(modalShow({ title: 'Exipry', message: `Please select Active Expiry Dates `, } ));
+            }
+          }
+          else {
+                return [];
+          }
+
+
+    }
+  const makeWebSocketChange = (newExpiry) => {
+
+     // 2. Generate the new set of symbols based on the newExpiry
+           const newSymbols = generateSymbolsForExpiry(newExpiry); // This function needs to exist
+             console.log(`New Expiry selected ${newExpiry} `);
+    		// dispatch(modalShow({ title: 'Exipry', message: `New Expiry selected ${newExpiry} `, } ));
+            // 3. Send the new subscription request to the server!
+            // This calls the sendSubscriptionRequest function exposed by the Context.
+            if (Array.isArray(newSymbols) && newSymbols.length >0 ) {
+               if(isConnected){ 
+                // trying to solve the blink issue on selection of expiry the options chain data fetched blinks are re=freshes
+
+               // resetStrikeMap();
+                sendSubscriptionRequest(newSymbols); }
+               
+            }
+            else {
+                dispatch(modalShow({ title: 'Exipry', message: `Exipry: Current only Available `, } ));
+            }
+  }
+
+    return (
+        <div className="relative z-50">
+            <label htmlFor="expiry-select" className="block text-xs font-medium text-zinc-600 mb-1">
+                Select Expiry Date
+            </label>
+            <div className="relative">
+                <select
+                    id="expiry-select"
+                    value={selectedExpiry}
+                    onChange={(e) =>  {makeWebSocketChange(e.target.value); onExpiryChange(e.target.value)} }
+                    className="appearance-none w-full max-w-[200px] bg-white border border-zinc-300 text-gray-800 py-2 pl-3 pr-10 rounded-xl shadow-md 
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-medium cursor-pointer transition"
+                >
+                    {expiryOptions.map((date) => (
+                        <option key={date} value={date}>
+                            {date}
+                        </option>
+                    ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-indigo-600">
+                    <Calendar className="w-5 h-5" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+function ScrollArrows({ value, setValue }) {
+  const increment = () => setValue((prev) => Math.min(5 , prev + 1));
+  const decrement = () => setValue((prev) => Math.max(0, prev - 1));
+
+  return (
+    <div className="absolute right-[-16px] top-1/2 -translate-y-1/2 
+                    flex flex-col items-center justify-center 
+                    w-5 h-[50px] rounded-lg border border-zinc-400 
+                    bg-white shadow-sm">
+      {/* Up Arrow */}
+      <button
+        onClick={increment}
+        className="flex-1 w-full flex items-center justify-center 
+                   hover:bg-zinc-100 active:bg-zinc-200"
+      >
+        <ChevronUp className="w-2 h-2 text-zinc-700" />
+      </button>
+
+      {/* Divider */}
+      <div className="w-full border-t border-b border-zinc-300" />
+      
+      {/* Down Arrow */}
+      <button
+        onClick={decrement}
+        className="flex-1 w-full flex items-center justify-center 
+                   hover:bg-zinc-100 active:bg-zinc-200"
+      >
+        <ChevronDown className="w-2 h-2 text-zinc-700" />
+      </button>
+    </div>
+  );
+}
+function PriceValue ({strike, ltp })  { 
+     
+  return ( `${ltp}` )
+}
+   
+  const optionStrikeMapper   = new Map();
+  const optionStrikeQtyMapper   = new Map();
+
+ function VerticalLimitPriceSlider({ idx ,  min = 100, max = 500, step = 1 ,onLimitPrice }) {
+ //  console.log(` min ${min} max ${max}  = ` );
+  let minNum = isNaN(parseFloat(min)) ? 0 : parseFloat(min);
+let maxNum = isNaN(parseFloat(max)) ? 0 : parseFloat(max);
+ 
+let t =  parseInt((minNum + maxNum) / 2) ;
+    //let optionStrike =  Array.from(strikeMap.entries()).at(idx);
+
+  //parseInt(Math.round(parseFloat((min + max) / 2)));
+  /* if(!optionStrikeMapper.has(idx)) {  optionStrikeMapper.set(idx,min);  prev = min;   return min ; } 
+  else { prev = optionStrikeMapper.get(idx);  return  optionStrikeMapper.get(idx); } */
+  //console.log("t value  = "+t);
+  const [value, setValue] = useState( prev => optionStrikeMapper.has(idx)  ? optionStrikeMapper.get(idx)    : min   );
+  
+  return (
+    <div className="w-full flex flex-col items-center justify-center py-1">
+      {/* Floating value indicator */}
+      <motion.div
+        key={value}
+        className="mb-2"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >   {/* ₹<PriceValue /> */}
+        <span className="px-1   rounded-full bg-indigo-600 text-white text-sm font-semibold shadow-md">
+         {value}
+        </span>
+      </motion.div>
+
+      {/* Vertical Slider */}
+      <div className="relative h-12 flex items-center">
+        <motion.input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => { setValue(Number(e.target.value)); onLimitPrice(Number(e.target.value)); 
+              optionStrikeMapper.set(idx,e.target.value);} }
+          className="absolute h-12 w-2 appearance-none cursor-pointer
+                     bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 rounded-full"
+          style={{ writingMode: "bt-lr", WebkitAppearance: "slider-vertical" }}
+          whileTap={{ scale: 1.05 }}
+        />
+      </div>
+
+      {/* Pill container (for label) */}
+       {/*<motion.div
+        className="mt-2 flex items-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[2px] shadow-lg"
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+      >
+        <div className="flex-1 bg-white dark:bg-gray-900 rounded-full px-4 py-3 flex items-center gap-2">
+          <span className="text-indigo-600 font-bold">₹</span>
+          <span className="font-semibold text-gray-800 dark:text-gray-200">
+            Limit Price: <span className="text-indigo-600">₹{value}</span>
+          </span>
+        </div> 
+      </motion.div>*/}
+    </div>
+  );
+}
+
+function SidewaysPriceSlider({ idx, min = 100, max = 500, step = 1, onLimitPrice }) {
+  const [value, setValue] = useState(min);
+  // 🔹 Sync state when LTP changes
+  useEffect(() => {
+    setValue(min);
+  }, [min]);
+  return (
+    <div className="w-full flex flex-col items-center justify-center py-1 sm:py-2">
+      {/* Floating Value */}
+      <motion.div
+        key={value}
+        className="mb-1 sm:mb-2"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        {/* className="px-2 rounded-full bg-indigo-600 text-white text-sm font-semibold shadow-md" */}
+        <span className="
+        px-1.5 sm:px-2
+        rounded-full
+        bg-indigo-600 text-white
+        text-xs sm:text-sm
+        font-semibold shadow-md
+      ">
+          {value}
+        </span>
+      </motion.div>
+
+      {/* Horizontal Slider className="relative w-40 flex items-center"*/}
+      <div className="relative w-56 sm:w-40 flex items-center" >
+        <motion.input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => {
+            setValue(Number(e.target.value));
+            onLimitPrice(Number(e.target.value));
+          }}
+         className="
+        w-full
+        h-3 sm:h-2
+        appearance-none cursor-pointer rounded-full
+        bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+          whileTap={{ scale: 1.05 }}
+        /> 
+         {/*   className="w-full h-2 appearance-none cursor-pointer rounded-full
+                     bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"  */}
+      </div>
+    </div>
+  );
+}
+function LimitPriceSlider({ min = 100, max = 500, step = 1 }) {
+  const [value, setValue] = useState((min + max) / 2);
+
+  return (
+    <div className="w-full max-w-md mx-auto p-2">
+      {/* Pill container */}
+      <motion.div
+        className="relative flex items-center justify-between rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[2px] shadow-lg"
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+      >
+        <div className="flex-1 bg-white dark:bg-gray-900 rounded-full px-2 py-1 flex items-center gap-2">
+          <span className="text-indigo-600 font-bold">₹</span>
+          <span className="font-semibold text-gray-800 dark:text-gray-200">
+            {/* */}
+            Limit Price: <span className="text-indigo-600">₹{value}</span>
+          </span>
+        </div>
+      </motion.div>
+
+      {/* Slider */}
+      <div className="mt-2 px-1">
+        <motion.input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => setValue(Number(e.target.value))}
+          className="w-full h-2 rounded-lg appearance-none cursor-pointer 
+                     bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+          whileTap={{ scale: 1.05 }}
+        />
+      </div>
+
+      {/* Floating value indicator */}
+      <motion.div
+        key={value}
+        className="mt-2 text-center"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <span className="px-2 py-1 rounded-full bg-indigo-600 text-white text-sm font-semibold shadow-md">
+          ₹{value}
+        </span>
+      </motion.div>
+    </div>
+  );
+}
+
+function ScrollDial({ value, setValue }) {
+  const y = useMotionValue(0);
+
+  // Step size = how many px per number
+  const STEP_PX = 30;
+
+  const handleDragEnd = (_, info) => {
+    const deltaSteps = Math.round(info.offset.y / STEP_PX);
+    if (deltaSteps !== 0) {
+      setValue((prev) => Math.max(0, prev  - deltaSteps));
+    }
+
+    // Snap back to center after drag
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      drag="y"
+      dragConstraints={{ top: -25, bottom: 10 }}
+      dragElastic={0.1}
+      onDragEnd={handleDragEnd}
+      className="absolute right-[-5px] top-1/2 -translate-y-1/2 
+                 w-5 h-5 rounded-md border border-zinc-400 
+                 bg-white from-zinc-200 to-zinc-400
+                 flex flex-col items-center justify-center shadow-inner
+                 cursor-grab active:cursor-grabbing overflow-hidden"
+    >
+      {/* Number display with a dial feel */}
+      <motion.div
+        style={{ y }}
+        className="flex flex-col items-center text-sm font-bold text-zinc-800"
+      >
+        {/* Active middle (highlighted with blue background) */}
+        <div className="h-[25px] w-full flex items-center justify-center 
+                        bg-grey-400 dark:text-white font-bold text-base">
+          {value}
+        </div>
+         {/* <span className="opacity-40">{value + 1}</span> */}
+        {/*<span className="text-lg">{value}</span>*}
+        {/* <span className="opacity-40">{value - 1 > 0 ? value - 1 : ""}</span>*/}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* provide a use context to hold the Price and Quantity  set using the controls */ 
+
+//function PriceQuantityContext () { 
+
+    const OptionContext = createContext({ price: 300 , qty: 0});
+
+
+function OptionProvider({ children }) {
+  const [limitPrice, setLimitPrice] = useState(0);
+const [quantity, setQuantity] = useState(x  =>    parseInt( lotSize* ( parseInt(( x !== null && x !== undefined) ? x : 0 ) ))  );
+
+  const increment = () => setLimitPrice(v => v );
+  const decrement = () => setLimitPrice(v => v - 1);
+  const increase = () => setQuantity(v => v );
+  const decrease = () => setQuantity(v => v - 1);
+
+  return (
+    <OptionContext.Provider value={{ limitPrice, increment, decrement, quantity , increase ,  decrease }}>
+      {children}
+    </OptionContext.Provider>
+  );
+}
+
+function withPutSpinner(WrappedComponent, opts = {}) {
+  const { minDuration = 300, Spinner = Loader2, overlayClassName = "" } = opts;
+
+  return function WithSpinner(props) {
+    const [loading, setLoading] = useState(false);
+    const startRef = useRef(0);
+
+    const ensureMinTime = async () => {
+      const elapsed = Date.now() - startRef.current;
+      if (elapsed < minDuration) {
+        await new Promise((r) => setTimeout(r, minDuration - elapsed));
+      }
+    };
+
+    // Wrap callbacks but do NOT remount the child
+    const wrapHandler = (fn) => async (...args) => {
+      if (!fn) return;
+      setLoading(true);
+      startRef.current = Date.now();
+      try {
+        const res = fn(...args);
+        if (res && typeof res.then === "function") {
+          const result = await res;
+          await ensureMinTime();
+          return result;
+        } else {
+          await ensureMinTime();
+          return res;
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    return (
+      <div className="relative inline-block w-full h-full">
+        {/* Pass down loading + wrapped callbacks */}
+        <WrappedComponent
+          {...props}
+          loading={loading}
+          onBuy={wrapHandler(props.onBuy)}
+          onSell={wrapHandler(props.onSell)}
+        />
+
+        {loading && (
+          <div
+            className={`absolute inset-0 z-50 flex items-center justify-center 
+                        bg-white/40 backdrop-blur-sm rounded-2xl pointer-events-none
+                        ${overlayClassName}`}
+          >
+            <Spinner className="w-5 h-5 animate-spin text-blue-600" />
+          </div>
+        )}
+      </div>
+    );
+  };
+}
+
+function withCallSpinner(WrappedComponent, opts = {}) {
+  const { minDuration = 300, Spinner = Loader2, overlayClassName = "" } = opts;
+
+  return function WithSpinner(props) {
+    const [loading, setLoading] = useState(false);
+    const startRef = useRef(0);
+
+    const ensureMinTime = async () => {
+      const elapsed = Date.now() - startRef.current;
+      if (elapsed < minDuration) {
+        await new Promise((r) => setTimeout(r, minDuration - elapsed));
+      }
+    };
+
+    // Wrap callbacks but do NOT remount the child
+    const wrapHandler = (fn) => async (...args) => {
+      if (!fn) return;
+      setLoading(true);
+      startRef.current = Date.now();
+      try {
+        const res = fn(...args);
+        if (res && typeof res.then === "function") {
+          const result = await res;
+          await ensureMinTime();
+          return result;
+        } else {
+          await ensureMinTime();
+          return res;
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    return (
+      <div className="relative inline-block w-full h-full">
+        {/* Pass down loading + wrapped callbacks */}
+        <WrappedComponent
+          {...props}
+          loading={loading}
+          onBuy={wrapHandler(props.onBuy)}
+          onSell={wrapHandler(props.onSell)}
+        />
+
+        {loading && (
+          <div
+            className={`absolute inset-0 z-50 flex items-center justify-center 
+                        bg-white/40 backdrop-blur-sm rounded-2xl pointer-events-none
+                        ${overlayClassName}`}
+          >
+            <Spinner className="w-5 h-5 animate-spin text-blue-600" />
+          </div>
+        )}
+      </div>
+    );
+  };
+}
+
+
+//}
+
+/* ----------------------------------------------------------------------------
+   SWIPE Call PILL COMPONENT
+   ----------------------------------------------------------------------------
+   - Reusable draggable pill
+   - Swiping LEFT = SELL, RIGHT = BUY
+   - Dynamic background changes based on drag direction
+   - Action confirmed on drag release if threshold is crossed
+----------------------------------------------------------------------------- */
+function SwipeCallPillInternal({ idx , side, label,ltp, subtitle, onBuy, onSell, loading=false, className = "" }) {
+  const x = useMotionValue(0);
+    const [locked, setLocked] = useState(false); // 🔒 NEW
+  const [quantity, setQuantity] = useState(x  => { 
+    
+          if( optionStrikeQtyMapper.has(idx))  { 
+             let y =  optionStrikeQtyMapper.get(idx);
+             return  parseInt( lotSize* ( parseInt(( y !== null && y !== undefined) ? y : 0 ) ));
+          } 
+          else { 
+
+              let y  =   parseInt( lotSize* ( parseInt(( x !== null && x !== undefined) ? x : 0 ) ));
+              optionStrikeQtyMapper.set(idx, y);
+              return y ;
+          }    
+    
+       }  ); // quantity state
+ 
+ 
+    const [limitPrice, setLimitPrice] = useState(ltp);
+ // const { limitPrice, increment, decrement } = useContext(OptionContext);
+//  const { quantity, increase, decrease } = useContext(OptionContext);
+ // Background color changes when dragging
+  const bg = useTransform(
+    x,
+    [-160, -80, 0, 80, 160],
+    [
+      "#fee2e2", // far sell (red)
+      "#fecaca", // near sell
+      "#f4f4f5", // neutralCALL
+      "#bbf7d0", // near buy
+      "#86efac", // far buy
+    ]
+  );
+    // Show hint arrows based on drag position
+    const opacitySell = useTransform(x, [-140, -60, 0], [1, 1, 0]);
+    const opacityBuy = useTransform(x, [0, 60, 140], [0, 1, 1]);
+  
+    // Flash small toast after action
+    const [justAction, setJustAction] = useState(null);
+    function roundToNearest5(num) {
+      // ensure number
+      let n = parseFloat(num);
+      if (isNaN(n)) return 0;
+
+      // round to nearest multiple of 5
+      let rounded = Math.round(n / 5) * 5;
+
+      // keep 2 decimal places
+      return parseFloat(rounded.toFixed(2));
+    }
+    const handleDragEnd = (_, info) => {
+       if (locked) return; // 🚫 don’t trigger when locked
+      const threshold = 90; // how far user must drag to trigger action
+      if (info.offset.x > threshold) {
+        setJustAction("BUY");
+        onBuy?.(parseInt(quantity*lotSize) , roundToNearest5(limitPrice ) );
+      } else if (info.offset.x < -threshold) {
+        setJustAction("SELL");
+        onSell?.(parseInt(quantity*lotSize), roundToNearest5(limitPrice ));
+      }
+    };
+     const screwRotation = useMotionValue(0);
+
+      // Each "click" = 15 degrees
+      const STEP_DEG = 15;
+      const onLimit = (price ) => { 
+          setLimitPrice(price);
+            //optionStrikeQtyMapper.set(idx, price);
+      }
+      const handleScrewDragEnd = (_, info) => {
+        const delta = info.offset.y;
+        // Up decreases quantity, Down increases
+        const stepChange = Math.round(delta / 20); // 20px drag = 1 step
+        if (stepChange !== 0) {
+          setQuantity((q) => Math.max(1, q + stepChange));
+              optionStrikeQtyMapper.set(idx, quantity);
+          // Snap rotation to step
+          const snapped = Math.round(screwRotation.get() / STEP_DEG) * STEP_DEG;
+          screwRotation.set(snapped);
+        }
+      };
+     const [orderStatus, setOrderStatus] = useState("");
+       const [visible, setVisible] = useState(false)
+  useEffect(() => {
+         //increase(x  =>    parseInt(65 * ( parseInt(( x !== null && x !== undefined) ? x : 0 ) )) )
+    console.log("Initial positions "+JSON.stringify(positionData));
+    const timer = setTimeout(() => {
+      const sellStatus = StorageUtils._retrieve(CommonConstants.remoteServerGeneralSellErrorBasic);
+        const recentSellORder  = StorageUtils._retrieve(CommonConstants.recentSellledOrder);
+      if (sellStatus?.isValid && sellStatus.data !== null) {
+        console.log("sellStatus.data  "+JSON.stringify(sellStatus.data));
+        let p =   sellStatus.data !=='' ?  JSON.parse(sellStatus.data):"";
+         let r = (recentSellORder.data !==undefined && recentSellORder.data !== "" )  ?  JSON.parse(recentSellORder.data) : "";
+        if ((p !== null &&  p.indexOf("Exception S") > -1 ) || 
+       ( ( r.code !== undefined ) &&   r.code !== 1101)) {
+          setOrderStatus("Order failed");
+           setVisible(true);
+          setTimeout(() =>{setVisible(false);   } , 2000);
+          StorageUtils._save(CommonConstants.remoteServerGeneralSellErrorBasic,"");
+          /* let orderSold=  document.getElementById("orderFailedStatus");
+           orderSold.setAttribute('display','block')
+              setTimeout(() => {
+                  let orderSold=  document.getElementById("orderFailedStatus");
+                 orderSold.setAttribute('display','none')
+                 orderSold.style.display = 'none';;
+              },2000);*/
+        } else if(( ( r.code !== undefined ) &&   r.code === 1101)) {
+          setOrderStatus("Order placed ");
+          setVisible(true);
+          setTimeout(() =>{setVisible(false);   }, 2000);
+           StorageUtils._save(CommonConstants.remoteServerGeneralSellErrorBasic,"");
+           StorageUtils._save(CommonConstants.recentSellledOrder,"");
+          /*let orderSold=  document.getElementById("orderSuccessStatus");
+            orderSold.setAttribute('display','block');
+             setTimeout(() => {
+                  let orderSold=  document.getElementById("orderSuccessStatus");
+                 orderSold.setAttribute('display','none');
+                 orderSold.style.display = 'none';
+              },2000);*/
+        }
+      }
+    },3500); 
+      return () => {  clearTimeout(timer);  /*let orderFailedStatus=  document.getElementById("orderFailedStatus");
+            let orderSold=  document.getElementById("orderSuccessStatus");
+               orderSold?.setAttribute('display','none');
+               orderFailedStatus?.setAttribute('display','none')*/
+
+         } // cleanup
+  }, []);
+
+    return (
+       <div className={`relative w-full select-none ${className}`}>
+
+         {/* Lock Button */}
+      <button id="optionLock"
+        onClick={() => setLocked(!locked)}
+        className="absolute -top-2 -right-2 z-20 rounded-full bg-zinc-200 p-1 shadow hover:bg-zinc-300"
+      >
+        {locked ? <Lock size={14} /> : <Unlock size={14} />}
+      </button>
+
+
+         {/* Action hints in background */}
+          {!locked && ( <div className="absolute inset-0 pointer-events-none flex items-center justify-between px-2 py-2">
+           <motion.div
+             style={{ opacity: opacitySell }}
+             className="flex items-center gap-2 text-red-600 text-[11px]"
+           >
+             <ArrowLeft size={14} /> <span>Slide to Sell</span>
+           </motion.div>
+           <motion.div
+             style={{ opacity: opacityBuy }}
+             className="flex items-center gap-2 text-green-700 text-[11px]"
+           >
+             <span>Slide to Buy</span> <ArrowRight size={14} />
+           </motion.div>
+         </div>
+           )}
+   
+         {/* Draggable Card 
+           className="relative z-10 grid grid-cols-[1fr_auto] items-center rounded-2xl border border-zinc-300 px-3 py-2 shadow-sm"
+          */}
+         <motion.div
+            drag={locked || loading ? false : "x"}   // 🚀 disable drag if locked
+           dragConstraints={{ left: -160, right: 160 }}
+           dragElastic={0.15}
+           whileTap={{ scale: 0.98 }}
+           onDragEnd={handleDragEnd}
+           style={{ x, background: bg }}
+          className="
+  relative z-10
+  flex flex-col gap-2
+  sm:grid sm:grid-cols-[1fr_auto] sm:items-center
+  rounded-2xl border border-zinc-300 px-3 py-2 shadow-sm"
+         >
+           <div>
+             {/*<div className="text-[13px] font-semibold leading-5 tracking-tight">
+               {label}          <div className="font-semibold leading-5 tracking-tight">{ltp}</div>
+             </div>*/}
+             <div className="flex justify-between items-center text-[13px] font-semibold leading-5 tracking-tight">
+               <span>  {label}     </span>
+               <span>{ltp}</span>
+             </div>
+             <div className="text-[11px] text-zinc-600">{subtitle}</div>
+           </div>
+           <div className="flex items-center gap-2 text-[10px]">
+             <span
+               className={`px-2 py-0.5 rounded-full ${
+                 side === "CALL"
+                   ? "bg-emerald-600/10 text-emerald-700"
+                   : "bg-blue-600/10 text-blue-700"
+               }`}
+             >
+               {side}
+             </span>  {/*parseInt(Math.round(parseFloat(  )))    parseInt(Math.round(parseFloat(  )))*3     */}
+ <SidewaysPriceSlider   idx={idx} min={ltp} max={  600   } step={1}  onLimitPrice  ={ onLimit } />
+                {/*  onSell={(qty) => onAction?.({ side: "CALL", action: "SELL", qty:qty, strike, row })} */}
+             <div className="h-[5px] right-[-56px] w-full flex items-center justify-center 
+                        bg-grey-400 dark:text-white font-bold text-base">
+                   {parseInt(quantity * lotSize)}
+               </div>
+           </div>
+           {/* Scroll wheel dial ScrollDial*/}
+           <ScrollArrows value={quantity} setValue={setQuantity} />
+
+
+         </motion.div>
+   
+         {/* Small Toast on Action */}
+         {justAction && (
+           <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[11px] flex items-center gap-1">
+             {justAction === "BUY" ? (
+               <span className="text-green-700 flex items-center gap-1">
+                 <Check size={12} /> Bought
+               </span>
+             ) : (
+               <span className="text-red-600 flex items-center gap-1">
+
+                {/* <X size={12} /> Sold
+                      {visible && orderStatus === "FAILED" && (*/} 
+              <span id="orderFailedStatus" className="text-red-600 flex items-center gap-1">
+                <X size={12} />   {orderStatus}
+              </span>
+            {/*  )}
+
+           {visible && orderStatus === "SOLD" && (
+              <span  id="orderSuccessStatus" className="text-red-600 flex items-center gap-1">
+                <X size={12} /> Sold
+              </span>
+            )}*/} 
+               </span>
+             )}
+           </div>
+         )}
+       </div>
+     );
+   }
+
+
+
+/* ----------------------------------------------------------------------------
+   SWIPE PUT PILL COMPONENT
+   ----------------------------------------------------------------------------
+   - Reusable draggable pill
+   - Swiping LEFT = SELL, RIGHT = BUY
+   - Dynamic background changes based on drag direction
+   - Action confirmed on drag release if threshold is crossed
+----------------------------------------------------------------------------- */
+function SwipePutPillInternal({ idx,  side, label,ltp, subtitle, onBuy, onSell,loading=false, className = "" }) {
+  const x = useMotionValue(0);
+  const [locked, setLocked] = useState(false); // 🔒 NEW
+  // inside component
+//const [loading, setLoading] = useState(loading);
+
+ const [quantity, setQuantity] = useState(x  =>  { 
+    
+          if( optionStrikeQtyMapper.has(idx))  { 
+             let y =  optionStrikeQtyMapper.get(idx);
+             return  parseInt(lotSize * ( parseInt(( y !== null && y !== undefined) ? y : 0 ) ));
+          } 
+          else { 
+
+              let y  =   parseInt(lotSize * ( parseInt(( x !== null && x !== undefined) ? x : 0 ) ));
+              optionStrikeQtyMapper.set(idx, y);
+              return y ;
+          }    
+    
+       });
+ //useState(x  =>    parseInt(65 * ( parseInt(( x !== null && x !== undefined) ? x : 0 ) ))  ); // quantity state
+const [limitPrice, setLimitPrice] = useState(ltp);
+ //const { limitPrice, increment, decrement } = useContext(OptionContext);
+ //const { quantity, increase, decrease } = useContext(OptionContext);
+   
+ // Background color changes when dragging
+  const bg = useTransform(
+    x,
+    [-160, -80, 0, 80, 160],
+    [
+      "#fee2e2", // far sell (red)
+      "#fecaca", // near sell
+      "#f4f4f5", // neutral
+      "#bbf7d0", // near buy
+      "#86efac", // far buy
+    ]
+  );
+    // Show hint arrows based on drag position
+    const opacitySell = useTransform(x, [-140, -60, 0], [1, 1, 0]);
+    const opacityBuy = useTransform(x, [0, 60, 140], [0, 1, 1]);
+  
+    // Flash small toast after action
+    const [justAction, setJustAction] = useState(null);
+    function roundToNearest5(num) {
+      // ensure number
+      let n = parseFloat(num);
+      if (isNaN(n)) return 0;
+
+      // round to nearest multiple of 5
+      let rounded = Math.round(n / 5) * 5;
+
+      // keep 2 decimal places
+      return parseFloat(rounded.toFixed(2));
+    }
+    /*const handleDragEnd = (_, info) => {
+      const threshold = 90; // how far user must drag to trigger action
+      if (info.offset.x > threshold) {
+        setJustAction("BUY");
+        onBuy?.(parseInt(quantity*65) , roundToNearest5(limitPrice ) );
+      } else if (info.offset.x < -threshold) {
+        setJustAction("SELL");
+        onSell?.(parseInt(quantity*65), roundToNearest5(limitPrice ));
+      }
+    };*/
+    const handleDragEnd = async (_, info) => {
+      const threshold = 90;
+      if (info.offset.x > threshold) {
+       // setLoading(true);
+        setJustAction("BUY");
+        await onBuy?.(parseInt(quantity * lotSize), roundToNearest5(limitPrice));
+      //  setLoading(false);
+      } else if (info.offset.x < -threshold) {
+      //  setLoading(true);
+        setJustAction("SELL");
+        await onSell?.(parseInt(quantity * lotSize), roundToNearest5(limitPrice));
+       // setLoading(false);
+      }
+    };
+     const screwRotation = useMotionValue(0);
+
+      // Each "click" = 15 degrees
+      const STEP_DEG = 15;
+      const onLimit = (price ) => { 
+         // increment(price);
+          setLimitPrice(price);
+      }
+      const handleScrewDragEnd = (_, info) => {
+        const delta = info.offset.y;
+        // Up decreases quantity, Down increases
+        const stepChange = Math.round(delta / 20); // 20px drag = 1 step
+        if (stepChange !== 0) {
+         // setQuantity((q) => Math.max(1, q + stepChange));
+          increase((q) => Math.max(1, q + stepChange));
+          // Snap rotation to step
+          const snapped = Math.round(screwRotation.get() / STEP_DEG) * STEP_DEG;
+          screwRotation.set(snapped);
+        }
+      };
+     const [orderStatus, setOrderStatus] = useState("");
+       const [visible, setVisible] = useState(false)
+  useEffect(() => {
+        // increase(x  =>    parseInt(65 * ( parseInt(( x !== null && x !== undefined) ? x : 0 ) )) )
+
+    const timer = setTimeout(() => {
+      const sellStatus = StorageUtils._retrieve(CommonConstants.remoteServerGeneralSellErrorBasic);
+      const recentSellORder  = StorageUtils._retrieve(CommonConstants.recentSellledOrder);
+      if ((sellStatus?.isValid && sellStatus.data !== null )|| 
+           (recentSellORder?.isValid && recentSellORder.data !== null)) {
+        console.log("sellStatus.data  "+JSON.stringify(sellStatus.data));
+        let p = sellStatus.data !=="" ?  JSON.parse(sellStatus.data) : "";
+             let r = (recentSellORder.data !==undefined && recentSellORder.data !=="")  ?  
+                      JSON.parse(recentSellORder.data) : "";
+        if ((p !== null && p.indexOf("Exception S") > -1) ||( ( r.code !== undefined ) &&   r.code !== 1101)) {
+          setOrderStatus("Order failed");
+           setVisible(true);
+          setTimeout(() =>{setVisible(false);   } , 2000);
+          StorageUtils._save(CommonConstants.remoteServerGeneralSellErrorBasic,"");
+          /* let orderSold=  document.getElementById("orderFailedStatus");
+           orderSold.setAttribute('display','block')
+              setTimeout(() => {
+                  let orderSold=  document.getElementById("orderFailedStatus");
+                 orderSold.setAttribute('display','none')
+                 orderSold.style.display = 'none';;
+              },2000);*/
+        } else if(( ( r.code !== undefined ) &&   r.code === 1101)) {
+          setOrderStatus("Order placed ");
+          setVisible(true);
+          setTimeout(() =>{setVisible(false);   }, 2000);
+           StorageUtils._save(CommonConstants.remoteServerGeneralSellErrorBasic,"");
+           StorageUtils._save(CommonConstants.recentSellledOrder,"");
+          /*let orderSold=  document.getElementById("orderSuccessStatus");
+          /*let orderSold=  document.getElementById("orderSuccessStatus");
+            orderSold.setAttribute('display','block');
+             setTimeout(() => {
+                  let orderSold=  document.getElementById("orderSuccessStatus");
+                 orderSold.setAttribute('display','none');
+                 orderSold.style.display = 'none';
+              },2000);*/
+        }
+      }
+    },3500); 
+      return () => {  clearTimeout(timer);  /*let orderFailedStatus=  document.getElementById("orderFailedStatus");
+            let orderSold=  document.getElementById("orderSuccessStatus");
+               orderSold?.setAttribute('display','none');
+               orderFailedStatus?.setAttribute('display','none')*/
+
+         } // cleanup
+  }, []);
+    // <div className={`relative w-full select-none ${className}`}>
+    // draggable={!locked} // 🚀 disable dragging when locked
+    return (
+       <div className={`relative flex items-center rounded-2xl p-2 transition 
+        ${locked ? "opacity-70" : "cursor-grab"}`}
+        
+       >
+        {/* Lock button 
+           className="absolute -right-5 top-1/2 -translate-y-1/2 p-1 rounded-full bg-gray-100 shadow"
+         */}
+        <button id="optionLock"
+          onClick={() => setLocked(!locked)}
+          className="absolute right-2 top-2 p-1 rounded-full bg-gray-100 shadow"
+        >
+          {locked ? <Lock size={16} /> : <Unlock size={16} />}
+        </button>
+
+         {/* Action hints in background */}
+         <div className="absolute inset-0 pointer-events-none flex items-center justify-between px-2 py-2">
+           <motion.div
+             style={{ opacity: opacitySell }}
+             className="flex items-center gap-2 text-red-600 text-[11px]"
+           >
+             <ArrowLeft size={14} /> <span>Slide to Sell</span>
+           </motion.div>
+           <motion.div
+             style={{ opacity: opacityBuy }}
+             className="flex items-center gap-2 text-green-700 text-[11px]"
+           >
+             <span>Slide to Buy</span> <ArrowRight size={14} />
+           </motion.div>
+         </div>
+   
+         {/* Draggable Card */}
+         {/*  className="relative z-10 grid grid-cols-[1fr_auto] items-center rounded-2xl border border-zinc-300 px-3 py-2 shadow-sm" */}
+         <motion.div
+            drag={locked || loading ? false : "x"}   // 🚀 disable drag if locked
+          
+           dragConstraints={{ left: -160, right: 160 }}
+           dragElastic={0.15}
+           whileTap={{ scale: 0.98 }}
+           onDragEnd={handleDragEnd}
+           style={{ x, background: bg }}
+          className="
+            relative z-10
+            flex flex-col gap-2
+            sm:grid sm:grid-cols-[1fr_auto] sm:items-center
+            rounded-2xl border border-zinc-300 px-3 py-2 shadow-sm"
+         >
+           <div>
+             {/*<div className="text-[13px] font-semibold leading-5 tracking-tight">
+               {label}          <div className="font-semibold leading-5 tracking-tight">{ltp}</div>
+             </div>*/}
+             <div className="flex justify-between items-center text-[13px] font-semibold leading-5 tracking-tight">
+               <span>  {label}     </span>
+               <span>{ltp}</span>
+             </div>
+             <div className="text-[11px] text-zinc-600">{subtitle}</div>
+           </div>
+           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                  {/* Side */}
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-[10px] self-start sm:self-center ${
+                      side === "CALL"
+                        ? "bg-emerald-600/10 text-emerald-700"
+                        : "bg-blue-600/10 text-blue-700"
+                    }`}
+                  >
+                    {side}
+                  </span>
+
+                  {/* Slider */}
+                  <div className="flex-1 min-w-0">
+                    <SidewaysPriceSlider
+                      idx={idx}
+                      min={ltp}
+                      max={600}
+                      step={1}
+                      onLimitPrice={onLimit}
+                    />
+                  </div>
+
+                  {/* Qty */}
+                  <div className="text-xs font-semibold text-center sm:w-[70px]">
+                    {parseInt(quantity * lotSize)}
+                  </div>
+
+                  {/* Arrows */}
+                  <div className="self-center">
+                    <ScrollArrows value={quantity} setValue={setQuantity} />
+                  </div>
+                </div>
+
+
+         </motion.div>
+         {loading && (
+          <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70 rounded-2xl">
+            <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+          </div>
+        )}
+   
+         {/* Small Toast on Action */}
+         {justAction && (
+           <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[11px] flex items-center gap-1">
+             {justAction === "BUY" ? (
+               <span className="text-green-700 flex items-center gap-1">
+                 <Check size={12} /> Bought
+               </span>
+             ) : (
+               <span className="text-red-600 flex items-center gap-1">
+
+                {/* <X size={12} /> Sold
+                      {visible && orderStatus === "FAILED" && (*/} 
+              <span id="orderFailedStatus" className="text-red-600 flex items-center gap-1">
+                <X size={12} />   {orderStatus}
+              </span>
+            {/*  )}
+
+           {visible && orderStatus === "SOLD" && (
+              <span  id="orderSuccessStatus" className="text-red-600 flex items-center gap-1">
+                <X size={12} /> Sold
+              </span>
+            )}*/} 
+               </span>
+             )}
+           </div>
+         )}
+       </div>
+     );
+   }
+
+
+
+
+
+
+
+// Helper function to format currency
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 2
+    }).format(value);
+  };
+
+  // Mock data for demonstration and initial state setup
+//const spot = "25,250.00";
+const strikes =  [  // this is a configuraton setting for every change in month of expiry 
+
+ { name: "NIFTY26M1024700CE", strike: "24700", call: { ltp: "247.65", bid: "247.1", ask: "248.5" }, put: { ltp: "68.65", bid: "68.45", ask: "69.1" } },
+  { name: "NIFTY25M1024650CE", strike: "24650", call: { ltp: "326.45", bid: "325.35", ask: "327.1" }, put: { ltp: "46.8", bid: "46.65", ask: "47.2" } },
+  { name: "NIFTY25M1024600CE", strike: "24600", call: { ltp: "180.7", bid: "180.3", ask: "181.5" }, put: { ltp: "101.05", bid: "100.8", ask: "101.6" } },
+  { name: "NIFTY25M1024550PE", strike: "24550", call: { ltp: "400.10", bid: "399.50", ask: "400.80" }, put: { ltp: "35.20", bid: "35.10", ask: "35.50" } },
+];
+
+const mockFunds = {
+  totalPnl: 102.05,
+  fundAvailable: 45000.00,
+  marginUsed: 5400.00,
+};
+
+
+
+
+  // Framer Motion variants for the modal
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.9, y: 50 },
+    visible: { opacity: 1, scale: 1, y: 0 },
+    exit: { opacity: 0, scale: 0.9, y: 50 },
+  };
+
+/* ----------------------------------------------------------------------------
+   PILL WITH CONTROLS COMPONENT
+   ----------------------------------------------------------------------------
+   - Extracted a wrapper
+   - This wont repeat slider/lock logic for both sides.
+   - The strike price remains centered only on desktop. Middle strike price (desktop only)
+----------------------------------------------------------------------------- */
+
+function PillWithControls({ idx, min=100, max=600 , step=1 ,  onLimit  ,  children }) {
+  const [locked, setLocked] = useState(false);
+
+  return (
+    <div className="relative flex items-center gap-2">
+      {/* The pill (CALL or PUT) */}
+      <div className="flex-1">{children}</div>
+
+      {/* Sideways slider */}
+      <div className="w-28">
+        <SidewaysPriceSlider  idx={idx}    min={ltp} max={  600   } step={1}  onLimitPrice  ={ onLimit } />
+      </div>
+
+      {/* Lock button */}
+      <button
+        onClick={() => setLocked(!locked)}
+        className="absolute -right-8 flex items-center justify-center w-6 h-6 rounded-full 
+                   bg-gray-200 hover:bg-gray-300 transition"
+      >
+        {locked ? (
+          <Lock size={14} className="text-gray-600" />
+        ) : (
+          <Unlock size={14} className="text-gray-600" />
+        )}
+      </button>
+    </div>
+  );
+}
+
+
+
+
+/* ----------------------------------------------------------------------------
+   OPTION ROW COMPONENT
+   ----------------------------------------------------------------------------
+   - Displays one strike row
+   - CALL pill on left, PUT pill on right
+   - Middle strike price (desktop only)
+----------------------------------------------------------------------------- */
+function OptionRow({  idx ,  row, onAction }) {
+  const [locked, setLocked] = useState(false);
+ // const SwipePutPillWithSpinner = withPutSpinner(SwipePutPill);
+ //const SwipeCallPillWithSpinner = withCallSpinner(SwipeCallPill, { minDuration: 500 });
+  const strike = row.strike;
+  const type =  row.type;
+     const ltp = row.ltp;
+  // handler when slider changes
+  const handleLimitPrice = (price) => {
+    onAction?.({ side: type === "CE" ? "CALL" : "PUT", action: "LIMIT", price, strike, row });
+  };
+  //   {/* <div className="grid grid-cols-1 sm:grid-cols-[1.2fr_0.8fr_1.2fr] gap-2 sm:gap-3 items-center rounded-2xl bg-white sm:bg-transparent p-2 sm:p-0">*/}
+  // <PillWithControls idx={idx} min={ltp} max={600} step={1}onLimit={handleLimitPrice}>
+  /* <motion.div
+      className="relative grid grid-cols-1 sm:grid-cols-[1.2fr_0.8fr_1.2fr] 
+                 gap-2 sm:gap-3 items-center p-2 sm:p-0 rounded-2xl 
+                 bg-white sm:bg-transparent shadow"
+      drag={!locked} // ✅ disable drag when locked
+      dragConstraints={{ left: -50, right: 50 }} // example constraint
+      dragElastic={0.1}
+    > 
+   */
+  return (
+  
+    <div className="grid grid-cols-1 sm:grid-cols-[1.2fr_0.8fr_1.2fr] gap-2 sm:gap-3 items-center rounded-2xl bg-white sm:bg-transparent p-2 sm:p-0"> 
+    {/* CALL pill */}
+      {type ==="CE" && (    <SwipeCallPill
+         idx = {idx}
+        side="CALL"
+        label={`CALL ${strike}`}
+        ltp = {`₹${row.ltp}` }
+        subtitle={`LTP ₹${row.ltp} · Bid ₹${row.bid} · Ask ₹${row.ask}`}
+        onBuy={(qty,price, orderType, scheduled) => onAction?.({ side: "CALL", action: "BUY",qty:qty,price:price, strike,  orderType:orderType, scheduled:scheduled ,row })}
+        onSell={(qty,price, orderType, scheduled) => onAction?.({ side: "CALL", action: "SELL", qty:qty,price:price, strike, orderType:orderType, scheduled:scheduled , row })}
+        className="sm:order-1"
+      />
+       
+      )
+      }
+     
+
+      {/* Strike (desktop only) */}
+      <div className="hidden sm:flex items-center justify-center text-sm text-zinc-700 font-semibold">
+        {strike}
+      </div>
+
+      {/* PUT pill  */}
+        {type ==="PE" && (   
+      <SwipePutPill
+          idx = {idx}
+          side="PUT"
+          label={`PUT ${strike}`}
+          ltp = {`₹${row.ltp}` }
+          subtitle={`LTP ₹${row.ltp} · Bid ₹${row.bid} · Ask ₹${row.ask}`}
+          onBuy={(qty,price , orderType , scheduled) => onAction?.({ side: "PUT", action: "BUY",qty:qty,price:price, strike,  orderType:orderType, scheduled:scheduled , row })}
+          onSell={(qty,price,orderType , scheduled) => onAction?.({ side: "PUT", action: "SELL",qty:qty,price:price, strike,  orderType:orderType, scheduled:scheduled, row })}
+          className="sm:order-3"
+        />  
+    
+       )
+      }   
+      
+    </div>
+  );
+}
+
+
+export default function OptionChainTable({positionData, activeIndexIn}) {
+    const dispatch = useDispatch();
+        const url = FYERSOPTIONCHAINWSSFEED; //'wss://192.168.1.3:8443/';
+      const [activeIndexCh, setActiveIndexCh] = useState(activeIndexIn);
+
+  useEffect(() => {
+    console.log("Updated OptionChainTable activeIndexCh:", activeIndexIn);
+  }, [activeIndexIn]);
+     // 1. Call the external hook logic
+    const { ws, connect ,strikeMap ,  resetStrikeMap } = useWebSocketStreamSeq(url, dispatch);
+     // do not do this it will cause all parsed spot and stikes and symbols empty
+     /*const [state, dispatch] = useReducer(webSocketSlice, {
+            symbol: null,
+            name: null,
+            time:null,
+            price:null,
+            searchTickers: null,
+            tickerBook: undefined,
+            niftyBook: undefined,
+            sensexBook: undefined,
+            bankNiftyBook: undefined,
+            tickerMap: {},   // 👈 initialize empty object
+            orderBook: undefined,
+            expiries:[],
+            selectedExpiry:null,
+            spot: null,
+            symbols: [],
+            connected: false,
+    }); */
+   // activate WebSocket listener
+  //  const { optionsMap, strikeMap } =  useWebSocketStream("wss://push.truedata.in:8082?user=FYERS2334&password=KdRi5X55",dispatch);
+   // THIS IS TO access and send the Expipry CHANGE request 
+   const {  optionsWebMap ,strikeWebMap ,sendSubscriptionRequest } = useWebSocket();
+  // const { openSubscriptionRequest ,sendSubscriptionRequest , optionsWebMap ,strikeWebMap  } = useWebSocket();
+  //  const { optionsMap, strikeMap } =  useWebSocketStreamSeq("wss://localhost:8443/",dispatch);
+ /*   // suppose niftyMap already exists (Map<name, valueArray>)
+  const sortedEntries = [...strikeMap?.entries()].sort(([, a], [, b]) => {
+  // a[0] is name according to our value array structure
+  const strikeA = Number(a[0].slice(11, -2));
+  const strikeB = Number(b[0].slice(11, -2));
+
+  if (Number.isFinite(strikeA) && Number.isFinite(strikeB)) {
+  if (strikeA !== strikeB) return strikeA - strikeB;
+  // tie-break by type (CE before PE alphabetically)
+  const typeA = a[0].slice(-2), typeB = b[0].slice(-2);
+  return typeA.localeCompare(typeB);
+  }
+
+  // fallback: keep original order
+  return 0;
+  });*/
+   const [ arrayMap , setArrayMap ] = useState( mp => [new Map()])
+  const spot = useSelector((state) => state.websocket.spot);
+  //const [ nifty50 ,  setNifty50 ] = useState( spot => spot !==undefined ? spot : 'NA');
+   let  nifty50  = ( spot => spot !==undefined ? spot : 'NA');
+     const [spotSort, setSpotSort] = useState('');
+    const symbols = useSelector((state) => state.websocket.symbols);
+     const [options , setOptions ]=  useState([]);// useSelector((state) => state.websocket.options);
+     const globOptions = useSelector((state) => state.websocket.options);
+    const [uniqOpt, setUniqOpt] = useState([]);
+  let strikes = useSelector(selectFilteredStrikes);
+  //opts => strikes.length > 0 ?   [...strikes]:  Array.isArray(opts) ? [...opts]: []
+  const [optionStrikes , setOptionStrikes] = useState([]);
+  const status = useSelector((state) => state.websocket.subscriptionStatus);
+ // Mock useSelector for demonstration purposes
+  //const status = undefined; // Replace with your actual Redux status
+  const [showModal, setShowModal] = useState(false);
+    const { showFramerModal, hideModal } = useModal();
+    const [showPositionModal, setShowPositionModal] = useState(false);
+    //  const [optionStrikes, setOptionStrikes] = useState([]);
+  const [currentPositions, setCurrentPositions] = useState([]);
+  // Mock Position Generator based on cached strikes
+  const arrayStrikeMap  = Array.from((positionData !==undefined && positionData !==null) ? positionData.entries() : []);
+  /*
+  position data fro cahce {"isValid":true,"data":"[{\"netQty\":1,\"qty\":1,\"avgPrice\":72256,\"netAvg\":71856,
+  \"side\":1,\"productType\":\"MARGIN\",\"realized_profit\":400,\"unrealized_profit\":461,\"pl\":861,\"ltp\":72717,
+  \"buyQty\":2,\"buyAvg\":72256,\"buyVal\":144512,\"sellQty\":1,\"sellAvg\":72656,\"sellVal\":72656,\"slNo\":0,
+  \"fyToken\":\"1120200831217406\",\"crossCurrency\":\"N\",\"rbiRefRate\":1,\"qtyMulti_com\":1,\"segment\":20,
+  \"symbol\":\"MCX:SILVERMIC20AUGFUT\",\"id\":\"MCX:SILVERMIC20AUGFUT-MARGIN\",\"cfBuyQty\":0,\"cfSellQty\":0,
+  \"dayBuyQty\":0,\"daySellQty\":1,\"exchange\":10}]","ttl":1760093209392}
+  */
+  /*const currentPositions = arrayStrikeMap.slice(0, 3).map((s, index) => ({
+    strike: s.symbol,
+    type:  s.side ===1 ?   'BUY' : 'SELL',  //index % 2 === 0 ? 'CALL' : 'PUT',
+    quantity:  s.netQty , //  (index + 1) * 50,
+    ltp:  s.avgPrice !==undefined ? s.avgPrice : 0, // parseFloat(index % 2 === 0 ? s.call?.ltp : s.put?.ltp),
+    pnl: s.pl   //(index % 3 === 0 ? 1 : -1) * (index + 1) * 125.50,
+  }));*/
+  
+  // State for the selected expiry date
+    const [selectedExpiry, setSelectedExpiry] = useState(mockExpiryDates[0]); // Default to the second date
+     const printed = new Set();	 
+     const store = new TickStore(); 
+    // Use the mock hook to simulate data streaming
+    const { isConnected, strikeData } = useWebSocketStreamDummy(selectedExpiry);
+    const [recalcLoading, setRecalcLoading] = useState(false);
+    const generateSymbolsForExpiry = (exr) =>{// NotE the artilery needs NITFY-50 symbol for mock trades , while true-data needs NIFTY 50
+         let  symbols = [ /* 'NIFTY 50' */ ,'NIFTY-50', 'NIFTY25D1625600CE', 'NIFTY25D1625600PE' , 'NIFTY25D1625700CE', 'NIFTY25D1625700PE', 
+                    'NIFTY25D1625800PE' , 'NIFTY25D1625800CE','NIFTY25D1625900CE' , 'NIFTY25D1625900PE',
+                'NIFTY25D2325600CE' , 'NIFTY25D2325600PE','NIFTY25D2325700CE' , 'NIFTY25D2325700PE' ,
+                'NIFTY25D2325800CE' , 'NIFTY25D2325800PE','NIFTY25D2325900CE' , 'NIFTY25D2325900PE'];
+           
+            const formatted = symbols.map(date => date.replace(/-/g, "").slice(2));
+            console.log(formatted);
+
+          if(exr !==undefined && exr !==null){
+               let shrExpr = exr.replace(/-/g,"").slice(2);
+              console.log("generated short date : "+shrExpr)
+              const newSymbls =     symbols.map( newStr => { 
+                      if(newStr.indexOf('CE') >-1 || newStr.indexOf('PE') > -1 ){
+                          let lastCEandStrk = newStr.slice(11, -2);
+                          return 'NIFTY'+shrExpr+lastCEandStrk;
+                      }
+                      else {
+                          return newStr;
+                      }
+                  })
+               if( newSymbls !==undefined && Array.isArray(newSymbls)){
+                     console.log("generated new sybols : "+JSON.stringify(newSymbls))
+                  return newSymbls;
+               }
+               else {
+                return [];
+               }
+          }
+          else {
+                return [];
+          }
+
+
+    }
+       /**
+     * Generates the full list of symbols for the new expiry code by combining strikes and types.
+     */
+    function dedupeStrikeMap(strikeMap) {
+  const seen = new Map(); // key: "NIFTY24100CE", value: entry
+
+         let fyersExpiryDateMapper = new Map();
+        fyersExpiryDateMapper.set('25D16','251216')
+        fyersExpiryDateMapper.set('25D23','251223')
+        fyersExpiryDateMapper.set('25DEC','251230')
+        fyersExpiryDateMapper.set('26106','260106')
+        fyersExpiryDateMapper.set('26113','260113')
+        
+
+  for (const [symbol, data] of strikeMap) {
+    // Extract expiry, strike, type (CE/PE)
+    let standDate = '';
+    let standUnderlying = '';
+    let standExpiry = '';
+    let standStrike= '';
+    let standType= '';
+
+    if (symbol !== undefined && symbol !== null ) {  
+    const extFyersDate = symbol.match(/^([A-Z]+)(\d{2}[A-Z]\d{2})(\d+)(CE|PE)$/);
+    if (extFyersDate) {
+      const expiry = extFyersDate[2];   // ✅ "25D16"
+      standStrike  = extFyersDate[3];   // ✅  "25600",            // group 3: strike
+      standType  = extFyersDate[4];   // ✅   "CE"                // group 4: type
+      standUnderlying = extFyersDate[1];  //   "NIFTY",            // group 1: underlying
+       //   console.log('fyers expiry date :: '+expiry);
+      standDate = fyersExpiryDateMapper.get(expiry);
+    }
+    let exp =standDate;
+    let standSymbol = standUnderlying+standDate+standStrike+standType;
+    const match = standSymbol.match(/^([A-Z]+)(\d{6})(\d+)(CE|PE)$/);
+    if (!match) continue; // skip invalid format
+
+    const [, underlying, expiry, strike, type] = match;
+    const uniqueKey = `${underlying}${strike}${type}`;
+
+    if (!seen.has(uniqueKey)) {
+      // keep first encountered (default behaviour)
+      seen.set(uniqueKey, [standSymbol, data]);
+    } else {
+      // 🔄 Optionally: choose latest by timestamp instead of first
+      const existing = seen.get(uniqueKey);
+      const existingTs = new Date(existing[1][2]).getTime(); // index 2 = timestamp
+      const currentTs = new Date(data[2]).getTime();
+
+      if (currentTs > existingTs) {
+        seen.set(uniqueKey, [standSymbol, data]); // replace with newer
+      }
+    }
+  } else {  console.log(`symbol : ${symbol} , data : ${data} `); continue; } 
+ }
+    // console.log( `dedupeStrikeMap:::  ${JSON.stringify(Array.from(seen.values()))}`)
+   // console.log( `dedupeStrikeMap:::  ${JSON.stringify(Array.from(strikeMap.entries()))}`)
+  // Convert back to same structure as strikeMap
+  return Array.from(seen.entries());
+}
+
+    const handleExpiryChange = (newExpiry) => {
+        setSelectedExpiry(newExpiry);
+
+         // 2. Generate the new set of symbols based on the newExpiry
+        /*   const newSymbols = generateSymbolsForExpiry(newExpiry); // This function needs to exist
+    
+            // 3. Send the new subscription request to the server!
+            // This calls the sendSubscriptionRequest function exposed by the Context.
+            if (Array.isArray(newSymbols) && newSymbols.length >0 ) {
+                 sendSubscriptionRequest(newSymbols);
+            }
+            else {
+                dispatch(showModal({ title: 'Exipry', message: `Exipry: Current only Available `, } ));
+            }
+           */
+        // In a real Redux app, you would dispatch an action here
+         //  dispatch(webSocketSliceDummy.actions.setExpiry(newExpiry));
+    };
+
+    const displayStrikes = useMemo(() => {
+        // Filter mock data based on selectedExpiry
+        return mockStrikes.filter(s => s.expiry === selectedExpiry);
+    }, [selectedExpiry]);
+
+
+
+  useEffect(() => {
+    // Safely derive arrayStrikeMap from props
+    const arrayStrikeMap = Array.from(
+      positionData !== undefined && positionData !== null
+        ? positionData.entries()
+        : []
+    ).map(([key, value]) => value); // extract actual position objects
+
+    // Build initial currentPositions array
+    const derivedPositions = arrayStrikeMap.slice(0, 3).map((s, index) => ({
+      strike: s.symbol,
+      type: s.side === 1 ? "BUY" : "SELL",
+      quantity: s.netQty ?? 0,
+      ltp: s.avgPrice ?? 0,
+      pnl: s.pl ?? 0,
+    }));
+
+    // Initialize or update the state
+    setCurrentPositions(derivedPositions);
+  }, [positionData]); // re-run when props change
+
+
+
+   // Caching logic for strikes data
+  useEffect(() => {
+    if (strikes.length > 0) {
+      setOptionStrikes(strikes);
+    }
+  }, [strikes]);
+
+    useEffect(() => {
+        /* Array.from(
+             new Set<string>(state.symbols.map ( sy => JSON.stringify(sy)))   
+            );  // //action.payload.map((s:any) => s.expiry)
+        */
+        setUniqOpt(new Set(symbols.map ( sy =>  sy.id)))
+       setTimeout( () => { console.log("opening websckoer ..");/* openSubscriptionRequest();*/},54001)
+  }, []);
+
+   useEffect(() => {
+   
+    // Check if the status is a valid string (not undefined or null)
+    setInterval(() => {
+       // strikes = useSelector(selectFilteredStrikes);
+       setOptions(opts =>   opts  = globOptions );
+      } , 1000)
+  }, [globOptions]);
+    // Use useEffect to manage modal visibility based on a valid status value.
+  // This prevents the modal from showing on initial render when status is undefined.
+  useEffect(() => {
+     //useWebSocketStream("wss://push.truedata.in:8082?user=FYERS2334&password=KdRi5X55",dispatch);
+    // Check if the status is a valid string (not undefined or null)
+    if (typeof status === 'string' && status.length > 0) {
+      setShowModal(true);
+    }
+  }, [status]); // Only re-run when the status value changes
+
+
+   // Use useEffect to cache the strikes data
+  useEffect(() => {
+    // Only update the state if the strikes array is not empty
+    if (strikes.length > 0) {
+      setOptionStrikes(strikes);
+    }
+     setUniqOpt(new Set(symbols.map ( sy =>  sy.id)))
+    
+   
+  }, [strikes]); // The effect runs whenever the 'strikes' array changes
+
+  /*
+  // Use useEffect to manage modal visibility based on a valid status value.
+  // This prevents the modal from showing on initial render when status is undefined.
+  useEffect(() => {
+    // Check if the status is a valid string (not undefined or null)
+    if (typeof status === 'string' && status.length > 0) {
+      setShowModal(true);
+    }
+    if(strikes !==null && strikes !==undefined){
+      setOptionStrikes(optS => { 
+          if ( strikes.length > 0 ) { 
+                 let cop = [...strikes];
+             optS = cop;
+             return optS;
+             }
+             else {
+             return Array.isArray(optS) ? [...optS]: []
+             }
+         //    
+            
+            });
+    }
+
+
+
+  }, [strikes , status]); // Only re-run when the status value changes
+  */
+   const  findKeyByValue =  (map  , targetValue ) =>  {
+        for (const [key, value] of map.entries()) {
+          // exception case values for fyers month end expiry 
+          let fyersExceptionMonth = expiryMonthSymbols;
+          if (fyersExceptionMonth !== undefined){ 
+               let found =    fyersExceptionMonth.find( monEx => monEx.expMonth ===targetValue )
+               if (found)
+                  return found.symbol;
+          }
+          if (value === targetValue) {
+            return value;
+          }
+        }
+        throw new Error(`Value "${targetValue}" not found in Map`);
+    }
+    // Action log
+    const [log, setLog] = useState([]);
+     const [isConnectedButton, setIsConnectedButton] = useState(false);
+   const [ shouldDisplay , setShouldDisplay] = useState( shUp => { 
+           // get 
+            let butCon =   document.getElementById("buttonConnected");
+            if (butCon !== undefined && butCon !== null){
+                 let socketState =  butCon.getAttribute('value');
+                  if(socketState === 'Connected'){
+                    shUp = true;
+                    console.log(" recalculate will show  ")
+                      return true;
+                  }
+                  else {
+                     console.log(" recalculate hidden   ")
+                     shUp = false;
+                    return false;
+                  }
+
+            }
+            else {
+               console.log(" recalculate hidden Websocket button not found   ")
+              shUp = false;
+              return false;
+            }
+      });
+    const recalculatOptionstrikes = (et ) => {
+
+           try {
+
+          setRecalcLoading(true);
+                let recentTickerToken =  StorageUtils._retrieve(CommonConstants.recentTickerToken )
+                  if (recentTickerToken  !== null &&  recentTickerToken !== undefined) {
+                 // MAKE    again hit to stock nse india and fyers python to get Nifty SPORT 
+                     //  indexNiftySpot =  fetchNiftySpot(recentTickerToken);
+                          (async () => {
+                            try { 
+                                let ttk  = recentTickerToken.data
+                               await recalculateNiftOptionStrikes(ttk).then(optionExpiriesCalculated => {
+
+                                   let total_array_expiries = JSON.parse(JSON.stringify(optionExpiriesCalculated));
+                                  StorageUtils._save(CommonConstants.NIFTYOPTIONSTRIKES,  {  total_array_expiries } );
+                                  console.log("Recalcuate NFTY OPTION STRIKES   Success and expiries generated save local storage ");
+
+                               }).catch((err1) => {
+                                     console.log("Recalcuate NFTY OPTION STRIKES  API down "+JSON.stringify(err1));
+
+                               });
+                              
+                            } catch (err) {
+                                console.log ("Recalculation invocation issue  " +JSON.stringify(err));
+                            }
+                          })();
+                
+                  }
+                  else { 
+
+                    console.log ("Recalculation needs user to be logged in  "  );
+                  }
+
+              
+     
+
+         } catch (err) {
+
+          console.log("Recalculate NFTY OPTION STRIKES parameters are not sufficient ",JSON.stringify(err));
+
+        } finally {
+
+          setRecalcLoading(false);
+
+        }
+
+    }
+    const recalculateNiftySStrikes =(evt) => { 
+     
+     
+        try {
+
+          setRecalcLoading(true);
+       const MARKETSTATUS_RECALCULATE =  "https://fyerssebi.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate";
+     // ONCE SPOT available trigger recalculate the Option Chain Strikes 
+                         // this is Node JS program only  we have not deployed the stocknse-india-new.mjs to   https://scraper-api-eyiz.onrender.com
+                         // also  https://scraper-api-eyiz.onrender.com is running as  a docker type script application not the mock-wss
+                         // this SIMILAR to MARKET STATUS in netlifystockfyersbridge/route.js /fyersgetmarketstatus
+        let recentTickerToken =  StorageUtils._retrieve(CommonConstants.recentTickerToken )
+                  if (recentTickerToken  !== null &&  recentTickerToken !== undefined) {
+                    console.log("Recalcuate NFTY OPTION STRIKES with token Being processed ");
+                  }
+       // Fetch options object
+        //  credentials: 'include', **This is the key parameter**  this casues 
+       /*
+         Access to fetch at 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate' from 
+         origin 'https://onedinaar.com' has been blocked by CORS policy: Response to preflight request doesn't pass 
+         access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the 
+         wildcard '*' when the request's credentials mode is 'include'.         
+        */
+        const options = {
+          method: 'GET', // Or 'POST', 'PUT', etc.
+        
+          headers: {
+            'Authorization': 'Bearer '+recentTickerToken.data // cannot send Authorization without credentials 
+            // Optional: specify content type if sending a body (e.g., for POST)
+            // 'Content-Type': 'application/json',
+          },
+          // body: JSON.stringify(yourData) // Optional: for POST/PUT requests
+        };                  
+       fetch(MARKETSTATUS_RECALCULATE, options)//{ cache: "no-store" }
+          .then(async (r) =>  {
+            if (!r.ok) throw new Error("Recalcuate  NFTY OPTION STRIKES API down");
+            let mData = await r.json();
+            let total_array_expiries = JSON.parse(JSON.stringify(mData));
+              StorageUtils._save(CommonConstants.NIFTYOPTIONSTRIKES,  {  total_array_expiries } );
+                console.log("Recalcuate NFTY OPTION STRIKES   Success and expiries generated save local storage ");
+              
+
+
+          }) .catch((err  ) => {
+            // setError(JSON.stringify(err));
+            // setMarkets([]); // UI still renders safely
+            console.log("Recalcuate NFTY OPTION STRIKES  API down");
+        });
+
+         } catch (err) {
+
+          console.log("Recalculate NFTY OPTION STRIKES API down", err);
+
+        } finally {
+
+          setRecalcLoading(false);
+
+        }
+            
+    }
+
+    const handleAction = (evt) => {
+
+      // CHECK USER LOGGED IN 
+      const res1 = StorageUtils._retrieve(CommonConstants.fyersToken);
+        if (res1.isValid && res1.data !== null &&  res1.data !== undefined) {
+
+
+      setLog((prev) => [
+        { time: new Date().toLocaleTimeString(), ...evt },
+        ...prev,
+      ].slice(0, 6));
+  
+      // Replace with your API call:
+      // placeOrder(evt)
+      /*
+      Trade Executed: 
+        {side: 'PUT', action: 'BUY', strike: '25100', row: {…}}
+        action
+        : 
+        "BUY"
+        row
+        : 
+        {strike: '25100', id: '302418025', type: 'PE', timestamp: '2025-09-23T15:31:12', ltp: '65', …}
+        side
+        : 
+        "PUT"
+        strike
+        : 
+        "25100"
+        [[Prototype]]
+        : 
+        Object
+      */
+       let table = new Map();
+         // this is also a configuration setting for converting yymmdd to fyers specific yyMdd format 
+        table.set('251216','25D16')
+        table.set('251223','25D23')
+        table.set('251230','25DEC')  /// 
+        table.set('260106','26106')   // NIFTY26106 in place
+        table.set('260113','26113')  // 
+        table.set('26M10','26310')  
+          table.set('26M17','26317') 
+	  table.set('26M24','26324')  
+          table.set('26M30','26330') 
+           table.set('26A07','26407') 
+            table.set('26A14','26414') 
+             table.set('26A21','26421') 
+        console.log(`Selected or slided evt.row.strike : ${JSON.stringify(evt.row.expiry)}`); 
+        console.log(`Order type evt.row.orderType : ${JSON.stringify(evt.row.orderType)}  schedueld: ${JSON.stringify(evt.row.scheduled)}`); 
+
+        let exp = table.get(evt.row.expiry);
+        if(exp !== undefined ){
+              console.log(` Slide expiry format ${evt.row.expiry}  mapped from table of fyers exipries:  ${exp}  ` );
+        }
+        else {   
+        try {
+               console.log(' Searching expiry the Fyers format in table of exipries:' );
+              const resultKey = findKeyByValue(table, evt.row.expiry);
+              console.log('Found Actual exipry:', resultKey); // 👉 251223
+                  // now expiry is in FYERS format 
+                  // so just return or set exp = evt.row.strike
+                  exp = resultKey ; //     evt.row.expiry;
+              } catch (err) {
+                  console.error(err.message);
+              }
+          }
+
+       let cepeAppender = "";
+        if ( evt.row.strike.indexOf("CE") > -1 ||  evt.row.strike.indexOf("PE") > -1 ) {
+            cepeAppender ="";
+
+        } else { 
+              if ( evt.row.strike.indexOf("CE") <= -1  && evt.row.type.indexOf("CE") >-1 ) {
+                    cepeAppender =evt.row.type;
+              }
+              if (   evt.row.strike.indexOf("PE")<=   -1  && evt.row.type.indexOf("PE") >-1 ){
+                   cepeAppender =evt.row.type;
+              }
+        }
+      let sellord = { qty: evt.qty, price : evt.price , symbol : 'NIFTY'+exp+evt.row.strike+cepeAppender ,orderType : evt.orderType , scheduled: evt.scheduled }
+      console.log(`place order Selected: ${JSON.stringify(sellord)}`); 
+      // validate price and qty 
+      if(parseInt(sellord.price) <= 0 || parseInt(sellord.qty) <= 0){
+           dispatch(modalShow({ title: 'Validate', message: `Quantity: ${sellord.qty} or Price: ${sellord.price} invalid `, } ));
+           return;
+      }
+      // place order Selected: {"qty":65,"price":"145.85","symbol":"NSE:NIFTY25093025300PE"}
+       showFramerModal({ 
+               status: 'loading', 
+              message: `Initiating order for ${sellord.qty} ${sellord.symbol}...` 
+            }); 
+            
+      if( evt.action == 'SELL'){
+         StorageUtils._save(CommonConstants.recentSellledOrder, JSON.stringify({ _id: '' , qty: sellord.qty, 
+         price: sellord.price , symbol: sellord.symbol, orderType : sellord.orderType , scheduled: sellord.scheduled   }));
+         
+      
+
+        dispatch(placeSellOrder({ _id: '' , qty: sellord.qty, price: sellord.price , symbol:sellord.symbol , orderType : sellord.orderType , scheduled: sellord.scheduled , showFramerModal , hideModal }));
+     }
+      if( evt.action == 'BUY'){
+         StorageUtils._save(CommonConstants.recentBuyOrderPlacedExclusive, JSON.stringify({ _id: '' , qty: sellord.qty, 
+         price: sellord.price , symbol: sellord.symbol , orderType : sellord.orderType , scheduled: sellord.scheduled  }));
+        dispatch(placeBuyOrder({ _id: '' , qty: sellord.qty, price: sellord.price , symbol:sellord.symbol, orderType : sellord.orderType , scheduled: sellord.scheduled , showFramerModal , hideModal  }));
+     }
+     
+     
+     // if(selectedSymbol && (symbolArray.length > 0) && positionPrice > 0 && positionQty > 0 ) {  
+            // const qtyNum = Number(tradeSet.qty);
+           // const priceNum = Number(tradeSet.price);
+      //        StorageUtils._save(CommonConstants.recentSellledOrder, JSON.stringify({ _id: '' , qty: positionQty, price: positionPrice , symbol: selectedSymbol}));
+      //        dispatch(placeSellOrder({ _id: '' , qty: positionQty, price: positionPrice , symbol: selectedSymbol}));
+    //    }
+
+
+
+
+      console.log("Trade Executed:", evt);
+    }
+    else {
+       // Show Time out User Loging Required 
+         console.log("User not Logged in ");
+          showFramerModal({ 
+               status: 'Verify', 
+              message: `User not Logged in ...` 
+            }); 
+       setTimeout(() => {
+            hideModal();
+          // setShowModal(false);
+      }, 2000);
+      /// setShowModal(true);
+    }
+    };
+  
+
+
+
+
+
+  return (
+    <div className="p-4">
+      {/* Conditionally render the modal if showModal is true */}
+      {showModal && <>
+             {/* Backdrop   backdrop-blur-sm too much blur */}
+          <div className="fixed inset-0 bg-black bg-opacity-40 z-40"></div> 
+
+          {/* Modal */}
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            {/* shadow-xl  not needed  */}
+            <div className="bg-white rounded-xl  p-6 w-[300px] max-w-[90%] border border-gray-200">
+            {/*  <h3 className="text-lg font-semibold mb-2 text-gray-800 text-center">Confirm Order</h3>*/}
+
+              <div className="flex items-center justify-between space-x-2">
+                 
+                <button
+                  
+                  className="flex-1 bg-green-700 py-1 rounded-lg hover:bg-brandgreen-600 transition"
+                >
+                <span className="font-semibold text-yellow-200" >  User Not Logged </span>
+                </button>
+ 
+              </div>
+
+              <button
+                onClick={() => setShowModal(false)}
+                className="mt-4 text-sm text-gray-500 hover:text-gray-700 block mx-auto"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+      
+      </>}
+      {/* Conditionally render the table if showModal is false url="wss://localhost:8443/" dispatch={dispatch}*/}
+      {!showModal && <>
+                    <WebSocketProvider wsInstance={ws} openConnection={connect} setIsConnectedButton = {setIsConnectedButton}>  
+                     <Header setRecalculate={ setShouldDisplay} inputActiveBtn = {'button1' }/>
+                <div className=" w-full bg-zinc-50 sm:bg-white p-1 sm:p-2"> {/* min-h-screen (gap between positon removed)  p-3 sm:p-6 isConnectedButton */}
+                    <div className="mx-auto overflow-hidden">{/*   max-w-4xl  */}
+                      
+                            {/* Header and Filter */}
+                      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 mb-6">
+                          <div>
+                              <h1 className="text-3xl font-extrabold text-gray-900 flex items-center gap-2">
+                                  <TrendingUp className="w-6 h-6 text-indigo-600" /> {activeIndexCh}  
+                              </h1>
+                              {/* (spot > spotSort ? spotSort  : spot ) causes Error: Too many re-renders. React limits the number of renders to prevent an infinite loop. */}
+                              <p className="text-sm text-zinc-500 mt-1">
+                                  Current Spot Price: <span className="font-semibold text-indigo-600">
+                                    <SpotIndex/>  </span>
+                                   {/* <Recalculate recalcLoading={recalcLoading}/> */} 
+                                   <>  {shouldDisplay && <button 
+                                      onClick={ () =>{  console.log("recalculate clicked "); recalculatOptionstrikes(); /*recalculateNiftySStrikes(); */  }}
+                                        disabled={recalcLoading && !shouldDisplay}
+                                      className="px-4 py-2 text-sm font-semibold rounded-lg transition duration-200 bg-cyan-600 hover:bg-cyan-700 text-white shadow-md"
+                                  >  
+                                    { recalcLoading ? (<span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full">At Spot </span> ): "Recalculate"}
+                                  </button>}
+                                  </>
+                                    
+
+                              </p>
+                              <p className={`text-xs mt-1 font-medium ${isConnected ? 'text-green-600' : 'text-red-600'}`}>
+                                  Status: {isConnected ? 'Streaming Live' : 'Connecting...'}
+                              </p>
+                          </div>
+                          
+                          {/* Expiry Filter (New Feature) */}
+                          <div className="mt-4 sm:mt-0">
+                              <ExpiryFilter 
+                                  selectedExpiry={selectedExpiry}
+                                  onExpiryChange={handleExpiryChange}
+                                  expiryOptions={mockExpiryDates}
+                                  dispatch = {dispatch}
+                                  resetStrikeMap={ resetStrikeMap}
+                              />
+                          </div>
+                      </header>
+                      
+                      
+                      
+                      {/* Header */}
+                      <div className="flex  mb-3">{/* items-center justify-between */}
+                        <h4 className="text-lg sm:text-2xl font-bold tracking-tight">
+                           Swipe to Trade
+                        </h4>
+                        <div className="hidden sm:flex items-center gap-2 text-[12px] text-zinc-600">
+                          <div className="h-3 w-3 rounded-full bg-emerald-500/50" /> Buy →
+                          Slide right
+                          <div className="h-3 w-3 rounded-full bg-rose-500/50" /> Sell → Slide
+                          left
+                        </div>
+                      </div>
+              
+                      {/* Desktop Header Row */}
+                      <div className="hidden sm:grid grid-cols-[1.2fr_0.8fr_1.2fr] text-[12px] text-zinc-600 px-1 mb-1">
+                        <div  className="px-4 ">STRIKE</div>
+                        <div className="text-center">CALLS</div>
+                        <div className="text-right sm:text-left">PUTS</div> STRIKE MAP SIZE: ::  {strikeMap?.size}
+                      </div>
+              
+                      {/* Option Rows */}
+                        {/*  .sort(([keyA, valueA], [keyB, valueB]) => {
+                            const strikeA = Number(valueA[0].slice(11, -2)); // value[0] = name
+                            const strikeB = Number(valueB[0].slice(11, -2));
+
+                            if (strikeA !== strikeB) return strikeA - strikeB;
+
+                            // tie-break CE vs PE (optional)
+                            const typeA = valueA[0].slice(-2);
+                            const typeB = valueB[0].slice(-2);
+                            return typeA.localeCompare(typeB); // CE before PE
+                        })*/}
+                      <div className="grid gap-6 sm:gap-12"> {/* strikeMap   && dedupeStrikeMap(strikeMap)*/}
+                        {strikeMap?.size > 0 && (  dedupeStrikeMap(strikeMap) )&&    
+                                 Array.from(strikeMap.entries())?.map(([key, value] , idx) => { 
+                                 let rawRow= value ; // value[1]; //tradeRow[1];
+                             if (printed.has(key))  { 
+                                     rawRow=  store.upsert(row);
+                             } 
+                              printed.add(key);
+                                
+			  //console.log(`  JSX:  ${rawRow.id} + ${key}   ` );	
+                          //    console.log("typeof rawRow " + typeof rawRow); // Expected output: "object"
+                           // console.log(`iterating map JSX:  ${idx} + ${key} ${JSON.stringify(rawRow)} `)
+                             // destructure only the fields you need
+                            // iterating map JSX:  11 + NIFTY25D3026100CE {"strike":"NIFTY25D3026100CE","id":"694458134","timestamp":"2025-12-27T09:29:15.653Z",
+                            // "ltp":"146.15","bid":"0","ask":"147.89","volume":"0","name":"NIFTY25D3026100CE","expiry":"25D30","type":"CE","strikeNumber":"26100CE"}
+                                  
+                                let    name = rawRow.strike  ,  id = rawRow.id , timestamp = rawRow.timestamp, ltp = rawRow.ltp ,   bid = rawRow.bid , ask = rawRow.ask ,
+                                volume  = rawRow.volume; //  }  = rawRow;
+                              // const [name, id, timestamp, ltp,, , , bid, ask, , , volume] = value;
+                              if (!Array.isArray(rawRow) ) { 
+                                    if( name    === 'NIFTY-50'   &&  ltp   !== undefined ){
+                                       nifty50  = ( cur => cur !== ltp ? ltp : cur );
+                          /* (spot > spotSort ? spotSort  : spot ) causes Error: Too many re-renders. React limits the number of renders to prevent an infinite loop. */              
+                                       //setSpotSort( spotS => spotS !== ltp ? ltp : spotS)
+                                    }
+                              }
+                               if (Array.isArray(rawRow) ) {   
+                                   const [name1, id1, timestamp1, ltp1, , , , bid1, ask1, , , volume1] = rawRow;
+                                     name = name1  ,  id =id1 , timestamp =timestamp1, ltp = ltp1 ,   bid = bid1, ask = ask1 ,
+                                       volume  =volume1;
+
+                              } 
+                              if ( (name    !== undefined && name    !== 'NIFTY-50'  &&  id   !==undefined && timestamp   !==undefined  &&  ltp   !==undefined ) && 
+                                     (   bid !==undefined ||  ask   !==undefined || volume   !==undefined)  ) {
+                              // const [name, id, timestamp, ltp, , , , bid, ask, , , volume] = rawRow;
+                                  let type = name.slice(-2);
+                                 
+                                    
+                                   
+                                   let strike =  name.slice(-7);
+                                      /* this is for artilery code i.e. self generated values of INDICES  strikeNumber: key.slice(-7)*/
+                                        /* this is  fyers.marketfeed code i.e. truedata  values of INDICES strike =  name.slice(11,-2); */
+                                    let expiry = name.slice(5, 10);
+                                  //   console.log(`  JSX:  ${idx} + ${key} ${JSON.stringify(strike)}    ${JSON.stringify(expiry)} ` )
+                                      /* this is for artilery code i.e. self generated values of INDICES  expiry: key.slice(5, 10),  */
+                                      /* this is  fyers.marketfeed code i.e. truedata  values of INDICES
+                                      expiry = name.slice(5, 11);
+                                      */
+                                            // construct a row object to pass down
+                                            const rowvalue = {
+                                              strike,
+                                              id,
+                                              type,
+                                              expiry,
+                                              timestamp,
+                                              ltp,
+                                              bid,
+                                              ask,
+                                              volume,
+                                            } 
+                                 
+                          return ( 
+                            <OptionProvider key={key+rowvalue.id}>
+                               
+                                   {/* All components within here, including OptionsTable, can now access the context */}
+                                      <OptionRow   idx={idx} key={key+rowvalue.id} row={ rowvalue} onAction={handleAction} />
+                                 
+                          </OptionProvider>
+                           )  }
+                           else { 
+                               return ( <>  </> );
+
+                           }
+                            }) 
+                        }
+                      </div>
+                 
+                      {/* Recent Actions */}
+                      <div className="mt-6 sm:mt-8">
+                        <h2 className="text-sm font-semibold text-zinc-700 mb-2">
+                          Recent Actions
+                        </h2>
+                        <div className="grid gap-1">
+                          {log.length === 0 && (
+                            <div className="text-[12px] text-zinc-500">
+                              Slide a card left/right to trade.
+                            </div>
+                          )}
+                          {log.map((l, i) => (
+                            <div key={i} className="text-[12px] text-zinc-700">
+                              {l.time}:{" "}
+                              <span className="font-semibold">
+                                {l.action} {l.side}
+                              </span>{" "}
+                              @ {l.strike}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+              
+                      {/* Mobile Legend */}
+                      <div className="sm:hidden mt-4 text-[11px] text-zinc-600">
+                        <div className="flex items-center justify-between">
+                          <span className="flex items-center gap-1">
+                            <ArrowLeft size={12} /> Slide left to sell
+                          </span>
+                          <span className="flex items-center gap-1">
+                            Slide right to buy <ArrowRight size={12} />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+               </WebSocketProvider>
+                </> }
+     
+        {/* --------------------- 3. Floating Gear Icon --------------------- */}
+      <motion.button
+        className="fixed bottom-6 right-6 p-4 bg-gray-900 text-white rounded-full shadow-2xl z-40 hover:bg-gray-700 transition-colors"
+        whileHover={{ scale: 1.1, rotate: 90 }}
+        whileTap={{ scale: 0.9, rotate: -90 }}
+        onClick={() => setShowPositionModal(!showPositionModal)}
+      >
+        <Settings size={24} />
+      </motion.button>
+                          
+       {/* --------------------- 4. Position Modal Dialog --------------------- */}
+      <AnimatePresence>
+        {showPositionModal && (
+          <motion.div
+            // Updated class for better mobile responsiveness: w-80 (desktop) becomes w-[90vw] (mobile)
+            className="fixed bottom-20 right-6 w-[90vw] sm:w-80 max-h-[80vh] bg-white rounded-xl shadow-2xl border border-gray-100 p-4 z-50 overflow-y-auto"
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            <div className="flex justify-between items-center border-b pb-2 mb-3 sticky top-0 bg-white">
+              <h3 className="text-lg font-bold text-gray-800 flex items-center">
+                <Coins size={20} className="mr-2 text-amber-500" />
+                Positions & Funds
+              </h3>
+              <button onClick={() => setShowPositionModal(false)} className="text-gray-400 hover:text-gray-700">
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Fund Summary Section */}
+            <div className="space-y-3 mb-4 p-3 bg-gray-50 rounded-lg">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-gray-600 flex items-center">
+                  <TrendingUp size={16} className={`mr-2 ${mockFunds.totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`} />
+                  P&L (M2M)
+                </span>
+                <span className={`font-bold text-lg ${mockFunds.totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {formatCurrency(mockFunds.totalPnl)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-500 flex items-center">
+                  <Wallet size={14} className="mr-1 text-indigo-500" />
+                  Funds Available
+                </span>
+                <span className="font-medium text-gray-800">
+                  {formatCurrency(mockFunds.fundAvailable)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-500 flex items-center">
+                  <Coins size={14} className="mr-1 text-gray-500" />
+                  Margin Used
+                </span>
+                <span className="font-medium text-gray-800">
+                  {formatCurrency(mockFunds.marginUsed)}
+                </span>
+              </div>
+            </div>
+
+            {/* Positions List Section */}
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">Strike Positions ({currentPositions.length})</h4>
+            <div className="space-y-2">
+              {currentPositions.length > 0 ? (
+                currentPositions.map((pos, index) => (
+                  <div key={index} className="p-3 bg-white rounded-lg border border-gray-200">
+                    <div className="flex justify-between items-center">
+                    {/*  {JSON.stringify(pos)}*/} 
+                      <span className="font-semibold text-sm text-gray-900">
+                        {pos.strike} <span className={`text-xs px-1 rounded ${pos.type === 'CALL' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{pos.type}</span>
+                      </span>
+                      <span className={`font-bold text-sm ${pos.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {formatCurrency(pos.pnl)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <span>Qty: {pos.quantity}</span>
+                      <span>LTP: ₹{pos.ltp.toFixed(2)}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-gray-500 text-center py-4 bg-gray-50 rounded-lg">No open positions found.</p>
+              )}
+            </div>
+            
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+         {/* Footer / Legend */}
+                <footer className="mt-8 pt-4 border-t text-xs text-zinc-500 flex justify-between items-center">
+                    <span>Swipe <span className="text-red-600 font-semibold">LEFT</span> to Sell | Swipe <span className="text-green-700 font-semibold">RIGHT</span> to Buy</span>
+                    <span className="flex items-center gap-1">
+                        <Wallet className="w-3 h-3" /> Trading Interface Demo
+                    </span>
+                </footer>
+
+
+
+
+
+    </div>
+  );
+}
+/*  REMOVWD 
+ <td className="px-4 py-2 text-center text-gray-800 font-semibold">
+                              {name.slice(-2)}
+                            </td>
+*/

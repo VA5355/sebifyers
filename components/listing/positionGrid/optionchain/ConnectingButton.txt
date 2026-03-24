@@ -1,0 +1,44 @@
+<button disabled="" class="flex items-center gap-3 px-6 py-3 bg-grey-100 text-white rounded-lg opacity-80 "> 
+             <div class="rounded-full w-5 h-5 border-3 border-t-transparent border border-yellow-300 text-yellow-800   animate-spin"> </div>
+             Connecting ....
+           </button>
+
+
+
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Loader, CheckCircle } from 'lucide-react';
+
+const LoadingButton = () => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleClick = () => {
+    setLoading(true);
+    setSuccess(false);
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      setSuccess(true);
+    }, 2000);
+  };
+
+  return (
+    <motion.button
+      onClick={handleClick}
+      disabled={loading}
+      className={`flex items-center gap-2 px-6 py-2 rounded-full text-white font-semibold transition-colors ${
+        loading ? 'bg-gray-500' : 'bg-blue-600 hover:bg-blue-700'
+      }`}
+      whileTap={{ scale: 0.95 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      {loading && <Loader className="w-5 h-5 animate-spin" />}
+      {!loading && success && <CheckCircle className="w-5 h-5" />}
+      {loading ? 'Connecting...' : success ? 'Connected!' : 'Connect'}
+    </motion.button>
+  );
+};
+
+export default LoadingButton;

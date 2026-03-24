@@ -1,0 +1,19 @@
+{
+    "messages": {
+      "qtyMultiples": "Quantity to be converted must be in multiples of lot Size",
+      "nullQty": "Quantity to be converted cannot be 0", 
+      "greaterQuantity": "The quantity to be converted cannot be greater than the available quantity.",
+      "mtfConversionTime": "Request is accepted only between 9 AM and 7 PM on trading days.",
+      "mtfRmsValidation": "Position conversion depends on margin availability and will be processed on the next trading day.",
+      "mtfPositionCancel": "If you sell this MTF position, the position conversion request may be cancelled.",
+      "cancelMtfRequest": "You are about to cancel this request. Please check the details and confirm.",
+      "freshPledge": {
+        "text": "Converting this position may impact the pledge request for this symbol.",
+        "link": "https://support.fyers.in/portal/en/kb/articles/is-it-possible-to-sell-my-holdings-after-submitting-a-pledge-request"
+      },
+      "previouslyPledged": {
+        "text": "Converting this position may reduce this symbol's pledged quantity and collateral margin.",
+        "link": "https://support.fyers.in/portal/en/kb/articles/can-i-sell-my-pledged-shares-without-unpledging-them-at-fyers" 
+      }
+    }
+  }

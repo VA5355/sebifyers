@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon-close</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-57" transform="translate(-815.000000, 0.000000)">
+            <g id="icon-close" transform="translate(815.000000, 0.000000)">
+                <polygon id="Fill-1" fill="#2A2B2E" points="20.0744375 7.0744375 18.9255625 5.9255625 12.9991875 11.8503125 7.0744375 5.9255625 5.9255625 7.0744375 11.8503125 12.9991875 5.9255625 18.9255625 7.0744375 20.0744375 12.9991875 14.1496875 18.9255625 20.0744375 20.0744375 18.9255625 14.1496875 12.9991875"></polygon>
+                <polygon id="Fill-2" points="0 26 26 26 26 0 0 0"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

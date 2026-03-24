@@ -1,0 +1,19 @@
+<svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="20" cy="13" r="1.5" stroke="#6A7483"/>
+<path d="M10.9692 48.6461L10.9692 51.5077" stroke="#6A7483" stroke-linecap="round"/>
+<path d="M9.53846 50.0769H12.4" stroke="#6A7483" stroke-linecap="round"/>
+<rect x="28.8659" y="10.9923" width="16.4183" height="40.0575" rx="1.5" fill="#33C659" stroke="#2A394E"/>
+<path d="M18.7316 23.1151L30.947 19.3893C31.9108 19.0953 32.8846 19.8164 32.8846 20.8241V49.5077C32.8846 50.3361 32.213 51.0077 31.3846 51.0077H19.1692C18.3408 51.0077 17.6692 50.3361 17.6692 49.5077V24.5499C17.6692 23.89 18.1005 23.3077 18.7316 23.1151Z" fill="#7DDE97" stroke="#2A394E"/>
+<rect x="37.7" y="15.7615" width="2.81538" height="3.76923" rx="0.5" fill="#EAF9EE" stroke="#2A394E"/>
+<rect x="37.7" y="23.3923" width="2.81538" height="3.76923" rx="0.5" fill="#EAF9EE" stroke="#2A394E"/>
+<rect x="37.7" y="31.0231" width="2.81538" height="3.76923" rx="0.5" fill="#EAF9EE" stroke="#2A394E"/>
+<rect x="23.3923" y="27.2077" width="2.81538" height="3.76923" rx="0.5" fill="#EAF9EE" stroke="#2A394E"/>
+<rect x="37.0765" y="35.3761" width="3.7325" height="3.7325" rx="1" fill="#EAF9EE"/>
+<rect x="23.3923" y="34.8385" width="2.81538" height="3.76923" rx="0.5" fill="#EAF9EE" stroke="#2A394E"/>
+<rect x="37.0765" y="41.5962" width="3.7325" height="3.7325" rx="1" fill="#EAF9EE"/>
+<rect x="23.3923" y="42.4692" width="2.81538" height="3.76923" rx="0.5" fill="#EAF9EE" stroke="#2A394E"/>
+<circle cx="43.8769" cy="44.9481" r="11.4462" fill="#FFCC02"/>
+<path d="M40.721 43.0444H47.9981" stroke="#2A394E" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M40.6718 40.5985L47.9973 40.5987" stroke="#2A394E" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M41.0792 40.5984L42.2749 40.5986L43.8774 40.5984C45.3448 40.5984 46.2987 41.6973 46.2987 43.1647C46.2987 44.6321 45.1091 45.8217 43.6417 45.8217H41.3775C41.2128 45.8217 41.0792 45.9553 41.0792 46.1201C41.0792 46.2019 41.1128 46.2802 41.1721 46.3365L46.0327 50.9504" stroke="#2A394E" stroke-width="1.4" stroke-linecap="round"/>
+</svg>

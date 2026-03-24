@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="243px" height="260px" viewBox="0 0 243 260" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 5</title>
+    <defs>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="-5.20417043e-16%" id="linearGradient-1">
+            <stop stop-color="#436AF5" offset="0%"></stop>
+            <stop stop-color="#5679F5" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="-36.7752985%" x2="50%" y2="80.3611883%" id="linearGradient-2">
+            <stop stop-color="#436AF5" offset="0%"></stop>
+            <stop stop-color="#6081F6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="-36.7752985%" x2="50%" y2="80.3611883%" id="linearGradient-3">
+            <stop stop-color="#436AF5" offset="0%"></stop>
+            <stop stop-color="#6081F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="✅Mandatory-update" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Mandatory-Update--2" transform="translate(-58.000000, -42.000000)">
+            <g id="Group-5" transform="translate(58.000000, 42.000000)">
+                <path d="M123.589734,0 C150.740346,0 174.120816,16.1122244 184.657793,39.2800053 C188.555653,38.2080981 192.663735,37.6360227 196.905678,37.6360227 C222.357339,37.6360227 242.989986,58.2307377 242.989986,83.6356061 C242.989986,86.4919969 242.729157,89.2875798 242.229975,92 L0.40623602,92 C0.138239312,89.9467044 0,87.8527144 0,85.7264962 C0,59.1668611 21.570495,37.6360227 48.1790489,37.6360227 C53.0985553,37.6360227 57.8458495,38.371995 62.3164505,39.7396505 C72.7498492,16.3258477 96.2597271,0 123.589734,0 Z" id="Path" fill="url(#linearGradient-1)"></path>
+                <g id="Group-3" transform="translate(38.000000, 63.000000)">
+                    <circle id="Oval" fill="#ECF0FE" opacity="0.100000001" cx="84" cy="84" r="84"></circle>
+                    <circle id="Oval" fill="#ECF0FE" opacity="0.100000001" cx="84" cy="84" r="63"></circle>
+                    <g id="Fyers-app-icon-120X120" transform="translate(37.000000, 37.000000)" fill-rule="nonzero">
+                        <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="94" height="94" rx="47"></rect>
+                        <g id="Fyers-App" transform="translate(11.818182, 16.090909)">
+                            <polygon id="Path-9" fill="#A1B4FA" points="48.9266611 23.3356643 48.9266611 23.0502009 38.3035156 0 24.3211765 1.61923699e-16 35.1257415 23.4438466 37.4282449 28.3163586"></polygon>
+                            <path d="M68.2892491,42.354985 L54.8280982,13.1468531 L54.8280982,13.1468531 L40.8457591,13.1468531 L54.4128936,42.5849491 C54.6665496,43.1353343 55.2035461,43.4858641 55.7930564,43.4858641 L67.5991678,43.4858641 C68.0213721,43.4858641 68.3636364,43.1318699 68.3636364,42.6951958 C68.3636364,42.5774789 68.3382223,42.4612474 68.2892491,42.354985 Z" id="Path-9-Copy" fill="#A1B4FA"></path>
+                            <path d="M38.2086878,45.4992481 L13.9823391,0 L13.9823391,0 L0,0 L24.4778482,45.8543123 C24.7469237,46.358371 25.2596291,46.6713287 25.8163315,46.6713287 L37.5390474,46.6713287 C37.9612518,46.6713287 38.303516,46.3173345 38.303516,45.8806604 C38.303516,45.7472857 38.2708947,45.6160784 38.2086878,45.4992481 Z" id="Path-7" fill="#436AF5" transform="translate(19.151758, 23.335664) scale(-1, 1) translate(-19.151758, -23.335664) "></path>
+                            <path d="M54.7332707,58.6461013 L30.506922,13.1468531 L30.506922,13.1468531 L16.5245829,13.1468531 L41.0024311,59.0011655 C41.2715066,59.5052241 41.784212,59.8181818 42.3409144,59.8181818 L54.0636303,59.8181818 C54.4858347,59.8181818 54.8280989,59.4641876 54.8280989,59.0275135 C54.8280989,58.8941389 54.7954777,58.7629316 54.7332707,58.6461013 Z" id="Path-7-Copy" fill="#436AF5" transform="translate(35.676341, 36.482517) scale(-1, 1) translate(-35.676341, -36.482517) "></path>
+                        </g>
+                    </g>
+                </g>
+                <path d="M183.999133,60.5451195 L185.51771,76.9457539 L185.495205,76.9459213 C185.499374,76.9917765 185.501504,77.0382205 185.501504,77.0851619 C185.501504,77.923849 184.821613,78.6037392 183.982926,78.6037392 C183.144239,78.6037392 182.464349,77.923849 182.464349,77.0851619 C182.464349,76.9805928 182.474918,76.8784922 182.495047,76.7798703 L183.999133,60.5451195 Z" id="Combined-Shape" fill="url(#linearGradient-2)" transform="translate(183.991030, 69.574429) rotate(33.000000) translate(-183.991030, -69.574429) "></path>
+                <path d="M25.9991328,214.545119 L27.51771,230.945754 L27.4952053,230.945921 C27.4993737,230.991776 27.5015036,231.03822 27.5015036,231.085162 C27.5015036,231.923849 26.8216134,232.603739 25.9829263,232.603739 C25.1442392,232.603739 24.464349,231.923849 24.464349,231.085162 C24.464349,230.980593 24.4749183,230.878492 24.4950469,230.77987 L25.9991328,214.545119 Z" id="Combined-Shape-Copy-2" fill="url(#linearGradient-2)" transform="translate(25.991030, 223.574429) scale(-1, -1) rotate(45.000000) translate(-25.991030, -223.574429) "></path>
+                <path d="M60.6617272,24.8077364 L62.5893516,46.6480237 C62.6775719,46.8744513 62.7259821,47.1207856 62.7259821,47.3784267 C62.7259821,48.489986 61.8248852,49.3910828 60.7133259,49.3910828 C59.683017,49.3910828 58.8335271,48.6169042 58.7148437,47.6185345 L58.6490711,47.6178393 L60.6617272,24.8077364 Z" id="Combined-Shape-Copy" fill="url(#linearGradient-3)" transform="translate(60.687527, 37.099410) scale(-1, 1) rotate(33.000000) translate(-60.687527, -37.099410) "></path>
+                <circle id="Oval" stroke="#5578F5" stroke-width="3" cx="213.5" cy="89.5" r="7"></circle>
+                <circle id="Oval-Copy" stroke="#5578F5" stroke-width="3" cx="18.5" cy="139.5" r="6"></circle>
+                <circle id="Oval-Copy-2" stroke="#5578F5" stroke-width="3" cx="190.5" cy="217.5" r="5"></circle>
+                <g id="Group-8" transform="translate(232.000000, 160.000000)" fill="#879EF5">
+                    <g id="Group-4" transform="translate(0.000000, 5.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="4.37179487" height="1" rx="0.5"></rect>
+                        <rect id="Rectangle-Copy-5" x="6.62820513" y="0" width="4.37179487" height="1" rx="0.5"></rect>
+                    </g>
+                    <g id="Group-4" transform="translate(5.500000, 5.500000) rotate(90.000000) translate(-5.500000, -5.500000) translate(0.000000, 5.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="4.37179487" height="1" rx="0.5"></rect>
+                        <rect id="Rectangle-Copy-5" x="6.62820513" y="0" width="4.37179487" height="1" rx="0.5"></rect>
+                    </g>
+                </g>
+                <g id="Group-8-Copy" transform="translate(11.000000, 75.000000)" fill="#879EF5">
+                    <g id="Group-4" transform="translate(0.000000, 5.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="4.76923077" height="1" rx="0.5"></rect>
+                        <rect id="Rectangle-Copy-5" x="7.23076923" y="0" width="4.76923077" height="1" rx="0.5"></rect>
+                    </g>
+                    <g id="Group-4" transform="translate(6.000000, 5.500000) rotate(90.000000) translate(-6.000000, -5.500000) translate(0.000000, 5.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="4.76923077" height="1" rx="0.5"></rect>
+                        <rect id="Rectangle-Copy-5" x="7.23076923" y="0" width="4.76923077" height="1" rx="0.5"></rect>
+                    </g>
+                </g>
+                <g id="Group-8-Copy-2" transform="translate(115.000000, 248.000000)" fill="#879EF5">
+                    <g id="Group-4" transform="translate(0.000000, 5.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="4.76923077" height="1" rx="0.5"></rect>
+                        <rect id="Rectangle-Copy-5" x="7.23076923" y="0" width="4.76923077" height="1" rx="0.5"></rect>
+                    </g>
+                    <g id="Group-4" transform="translate(6.000000, 5.500000) rotate(90.000000) translate(-6.000000, -5.500000) translate(0.000000, 5.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="4.76923077" height="1" rx="0.5"></rect>
+                        <rect id="Rectangle-Copy-5" x="7.23076923" y="0" width="4.76923077" height="1" rx="0.5"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

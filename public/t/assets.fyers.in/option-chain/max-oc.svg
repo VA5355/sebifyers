@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="20px" viewBox="0 0 24 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>expanded-view</title>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="expanded-view" stroke="#FFFFFF" stroke-width="1.7">
+            <rect id="Rectangle-Copy-4" x="0.85" y="0.85" width="22.3" height="17.73" rx="3"></rect>
+            <path d="M14.0713532,5.26828641 L17.3765342,5.26828641 C17.4869912,5.26828641 17.5765342,5.35782946 17.5765342,5.46828641 L17.5765342,8.55627283 L17.5765342,8.55627283" id="Path-4-Copy-4"></path>
+            <path d="M6.07135321,11.2682864 L9.37653425,11.2682864 C9.4869912,11.2682864 9.57653425,11.3578295 9.57653425,11.4682864 L9.57653425,14.5562728 L9.57653425,14.5562728" id="Path-4-Copy-5" transform="translate(7.823944, 12.912280) scale(-1, -1) translate(-7.823944, -12.912280) "></path>
+        </g>
+    </g>
+</svg>

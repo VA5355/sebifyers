@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+	 <link  type="text/css" rel="stylesheet" href="/bootcss/bootstrap.min.css"/>
+	  <script type="text/javascript" src="/jquery/jquery.min.js" crossorigin="anonymous"></script>	
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
+	  <script type="text/javascript" src="/js/bootstrap.min.js"  crossorigin="anonymous"></script>
+
+   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/asset/css/uploadaddhar.css">
+ <script src="https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@8.2.5/dist/dbr.js"
+      data-productKeys="t0068NQAAACwiu6aXm/RiDD7y6oAZlmMZOA5c6n1Gz8g3RyCV8qM7FcX1Yv8iY1GRN+ZerYU/hXcIeg2CIfAJzhsms30pQ40="></script>
+   <!-- https://jsfiddle.net/bootstrapious/8w7a50n2 -->
+
+   <link type="text/css" rel="Stylesheet" href="/asset/css/style_new.css" />
+     <script type="text/javascript">
+  
+   
+	</script>
+      <style type="text/css">
+        .borderbottom
+                {
+                        border-bottom:1px solid #dbdbdb;
+            }
+            @media (min-width: 1200px) {
+        .container {
+            max-width: 100%;
+        }
+        .input-sm{ font-size:.8rem; }
+    }
+    </style>
+</head>
+
+<body>
+   <div class="container py-5">
+
+    <!-- For demo purpose -->
+    
+<form method="POST" action="/apiuser/home" enctype="multipart/form-data" id="loginForm">
+    <header class="text-dark text-center">
+        <h1 class="display-4">One Dinaar - ICICI Direct Login  </h1>
+        <p class="lead mb-0">Fast & Quick </p>
+        <p class="mb-5 font-weight-light">Presented By
+            <a href="https://onedinaar.com" class="text-dark">
+                <u> tradedinaar.com </u>
+            </a>
+        </p>
+        <nav class="navbar pd0">
+			<div class="container" style="display:inline">
+				<div class="clear header_level_1">
+					<div class=" mrb20">
+						<div class="col-md-1 pd0">
+							<a class="navbar-brand hidden-xs" href="#"><img alt="Glaubhant Direct" src="/asset/images/glaublogo.png"></a>
+						</div>
+						<div class="col-md-1 pd0 mx-4">
+							<a class="hidden-xs" href="#"><img alt="Glaubhabt Direct" src="/asset/images/glaub_logo.png" style="width:70px;height: 50px;"></a>
+						</div>
+                        <!--  LGIN BOX -->
+                                            
+                        <div id="pnlgetlogin" class="col-md-5 live_status pull-right">
+                            <ul class="secondary_menu navbar-click" id="ulmainlogin">
+                            <li> <input class="form-control input-sm" id="txtuid" type="loginid" autocomplete="off"
+                                    placeholder="User ID" fieldname="User Id" validationchk="EmptyCheck validateUserId"
+                                    value='<%=loginuserid%>' invalidmsg="User Id contains invalid characters. Please re-enter the User Id">
+                            </li>
+                            <li>
+                                <div class="password-group" style="margin-top:-5px;">                               
+                                <input class="form-control input-sm" id="txtPass" type="password" placeholder="Password / PIN" 
+                                    fieldname="Password" validationchk="EmptyCheck " value='<%=password%>' maxlength="16" style="display:inline-block;">
+                                    <i class="bi bi-eye-slash" onclick="seteye()" id="togglePassword" style="position:absolute;"></i>
+                                </div>  
+                        <input type="hidden" id="hidp">
+                        <input type="hidden" id="htradekey" value='<%=TRADECHECKKEY%>' >
+                                    </li>
+                                    <li style="display:none;">
+                                            <input class="form-control input-sm" id="txtdob" type="password" placeholder="Pan No./DOB" fieldname="DOB(DD/MM/YYYY)/PAN" validationchk="EmptyCheck">
+                                    </li>
+                                    <li>
+                                                        <input type="button" class="btn outline blue logout-btn" style="vertical-align:top;padding:2px 8px;font-size:.9rem;margin-left:10px;" value="Login" onclick="submitform()">
+                                <input type="hidden" id="hidenc" value="010001~E3D6906763BC16E4C831834812141EE732F7480832900C6B38B52DA8EE4EBDB7E44F23308E414BD99D2FBC7CAD053350C237F01D078F255BC612CB1485354F1A1996DB248F23E0923F80FF70C87E009394483C06E1EBD05FB33F064D1EF98AB2237CA93A9820DC70810E4126DD0740FCAA7AB056A1BC7DB9485F56702219D0A9">
+                                <input type="hidden" id="hidslk" value="MNLpwR0u7HY6lANUMGOl6opA+BIVA+wwIcHUWQp8bbxansI4ZYNFvVadTMHLva29GiQbJ6C8Dvzh7oiQeLEZcCdoRGh2jinQ/ZbqodNzQ+GIkAnJ5osBWQabkx8fmC2kU9SJKI+Iq7Io4icjATZ3sqOmIpeninOHtRYyfYyaIAVqvD2x8yT+JXNKDywkbZigFPFDt1xrviNYtUltOF5kWnSswlrH1zsALyza+7L+ZmXktdpMe8APkMvFQCnZILs1MeM/70btImXZdKcLnbFLwQIYErdXKUmHFJ5Hud0CPb+bev9AxpVF9wW6ineUyz+GIl1qEH3avovrGIe2TxDmgLzJ0cpcs6UFf4k6HWCefvnHcnXwEQhPZ9O0jQSznLd2E/no7O+MjeU50EErBQeDI45DOaX3OaKA1inn8QbasDZIXHZ1ieLDk4ctTvClvy9fe/5o+7E6zSRCMghzwSgcx++JAzrDrCugbCuUfaJsPm6snaZEo0K5M7fNraO241q/dGA+VsxGMxDGSv+FvYBhxf53Eq5cDU7DEPG5O5InqdgfXYxVkP3ddhqoKLiYDRKjIrFJUaR5+Y1lydunSLLPD3ihUJaaRdc5INYjWaOakqVSyAg/kHkMBEhjXPU/ACBzRdKFIBCoNOdGd6gqnIPT+EwaMJZKPLBNA3G85gbVi79HdRd3qGOs5xMRBQ2HpH9R3uZnHcuLwInSZtb+fuQ/TMANWR8wTQpnXbYVjg1tZzuIu+qTML3CFN3udAPoa+2KIVgFAwmM9Y4nt+Cq+j5prVrhKoBxBorZndvfGjcxEikTiDmH+yKoRvqoBzk/TObCsxwK0nRDXv7BfB8Na4EH6/BOY6pa3zA2f8uWXbJ0H6ry5GurCwOHVSYGzN+XdaVnxO7Zfek0sqlovZ0PEMx0n6ROMlagjXlDcrcOK4qQu2S7x3fWON6BITm5esJqXjgQEvhN+KKPIsdlIgVqklWOhidRU7BDDYIl9sb6QysXYESFdmeD/hM6vI+61DJy06MIz5VHHZGRC8of21DowYVTZBZtf+paNxvIBhcaU8QFhjDz3pKWtvwCEm1HeWkdwk1KN3TY8LF+c12o5oGT9KyyOkByF0jeOrmZURYfsGkkEM9TpC/Fceb1GMN6J7JY0AXMConC/3c0cP4yPfjwULHc41zPTdM/JFHrONMluHlv5UiHSj6VMDfRbN0Kaam1K6tS8p0zRac5GdA=">                    
+                                <input type="hidden" id="istotp" value="N">                                        
+                                                </li>
+                                        </ul>   
+                        <div id="dvshowotp"></div>
+                        </div>
+                        <!-- LOGIN BOX -->
+            		</div>
+				</div>
+			</div>
+		</nav>
+
+
+
+
+
+
+       <!-- <img src="https://bootstrapious.com/i/snippets/sn-img-upload/image.svg" alt="" width="150" class="mb-4">-->
+    </header>
+
+<script type="text/javascript" src="/asset/iciciscripts/jscomm.js"></script>
+
+
+<script type="text/javascript" src="/asset/iciciscripts/loginpassencrypt.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/Barrett.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/Barrett.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/BigInt.js"></script>
+
+
+<script type="text/javascript">
+   var tradekey = "";      
+    $(document).ready(function () {
+       rsaE = $('#hidenc').val().split('~')[0];
+       rsaM = $('#hidenc').val().split('~')[1];
+       tradekey =  encodeURIComponent('<%=TRADECHECKKEY%>');
+       if (tradekey == null || tradekey == undefined )
+       tradekey =encodeURIComponent($('#htradekey').val());
+        console.log(" tradekey: "+tradekey)
+    });
+     function submitform() {               
+        //debugger;
+        if (!CheckFormValidation($('#pnlgetlogin'))) { return false; }
+        $('#hidp').val($.trim($('#txtPass').val()));  // cmdEncrypt(
+        $('#txtPass').val('************');                
+        ////PostForm("https://api.icicidirect.com/apiuser/home/validateuser", $('#form1'), $('#pnlgetlogin'));
+        //PostForm("/apiuser/home", $('#loginForm'), $('#dvshowotp'));
+        window.location.assign("https://api.icicidirect.com/apiuser/login?api_key="+tradekey);
+        // this redirects to https://localhost:56322/Globahanta?apisession=52982333 after PIN and OPT on Mobile 
+       //  PostForm("https://api.icicidirect.com/apiuser/login?api_key="+encodeURIComponent(TRADECHECKKEY), $('#loginForm'), $('#dvshowotp'));
+    }
+
+
+    $(document).keypress(function(e){
+        if ( event.which == 13 ) {
+            if($('#pnlotp').is(':visible'))
+            {
+                return;
+            }
+            submitform();
+          }
+    });
+
+ 
+
+function seteye()
+{
+    let _o = $(event.target).parent('.password-group'); 
+    if($(_o).find('input').attr("type") == "text")
+    {
+        $(_o).find('input').attr("type" ,"password");
+        $(_o).find('i').addClass("bi-eye-slash");
+        $(_o).find('i').removeClass("bi-eye");
+    }
+    else
+    {
+        $(_o).find('input').attr("type" ,"text");
+        $(_o).find('i').removeClass("bi-eye-slash");
+        $(_o).find('i').addClass("bi-eye");
+    }
+}
+</script>
+
+
+
+
+
+
+
+
+ </form>
+</div>
+
+	<!-- 
+		for (var i=0; (i+1+chunk) < lenghSt ; i+=chunk) {	array2 += array1.substring(i, i+chunk) + " \n"; console.log("array2 "+array2);  }
+	-->
+
+
+</body>
+</html>
+         

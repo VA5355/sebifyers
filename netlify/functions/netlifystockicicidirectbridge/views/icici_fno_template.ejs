@@ -1,0 +1,27 @@
+    
+<table id="table" data-toggle="table" data-flat="true" data-search="true" >
+    <thead>
+      <tr>
+          <th data-field="" data-sortable="true">Contract</th>
+          <th data-field="" data-sortable="true">Qty</th>
+          <th data-field="" data-sortable="true">Average Price</th>
+          <th data-field="" data-sortable="true">LTP</th>
+          <th data-field="" data-sortable="true">P&L</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% var count = 0; %>
+      <% fnoresult.forEach((order)=>{  %>
+          <tr data-index="<%= count %>">
+              <td><%= order.stock_code %>-<%= order.strike_price %></td>
+              <td><%= order.quantity %> </td>
+              <td><%= order.average_price %> </td>
+              <td><%=order.ltp %> </td>
+              <td><%=eval(( order.quantity *order.ltp ) - ( order.quantity *order.average_price  ) )%></td>
+          
+            </tr>
+          <% count +=1; %>
+      <% }) %>
+    </tbody>
+  </table>
+  <div> Total records : <%=count%></div>

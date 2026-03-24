@@ -1,0 +1,153 @@
+.overlay {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    background: #F4F7FF;
+    z-index: 99999;
+}
+
+.preloader {
+    height: 437px;
+    width: 437px;
+    border: 2px solid #FFFFFF;
+    background: rgba(238, 245, 253, 0.45) center;
+    box-shadow: 0 2px 29px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 50%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preloader::before {
+    content: "";
+    background: url("") no-repeat center;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    opacity: 0.5;
+    position: absolute;
+}
+
+.quote-content {
+    width: 287px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.quote-content.loading,
+#loader.loading {
+    display: block;
+}
+
+.quote-content blockquote {
+    color: #2a394e;
+    display: block;
+    font-size: 18px;
+    margin: 0;
+    text-align: center;
+    border: none;
+}
+
+.quote-content small {
+    color: #6A7582;
+    display: block;
+    font-size: 14px;
+    text-align: center;
+    border: none;
+}
+
+img.author-image {
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    filter: grayscale(100%);
+}
+
+.jumping-dots-loader {
+    height: 30px;
+    border-radius: 100%;
+    position: relative;
+    margin: 0 auto;
+}
+
+.jumping-dots-loader span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 100%;
+    background-color: #E94656;
+    margin: 20px 3px;
+}
+
+.jumping-dots-loader span:nth-child(1) {
+    animation: bounce 1s ease-in-out 0.20s infinite;
+    background-color: #E94656;
+}
+
+.jumping-dots-loader span:nth-child(2) {
+    animation: bounce 1s ease-in-out 0.30s infinite;
+    background-color: #FFBD36;
+}
+
+.jumping-dots-loader span:nth-child(3) {
+    animation: bounce 1s ease-in-out 0.40s infinite;
+    background-color: #2ADEA1;
+}
+
+.jumping-dots-loader span:nth-child(4) {
+    animation: bounce 1s ease-in-out 0.50s infinite;
+    background-color: #8672FA;
+}
+
+@keyframes bounce {
+    0%,
+    75%,
+    100% {
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        -o-transform: translateY(0);
+        transform: translateY(0)
+    }
+    25% {
+        -webkit-transform: translateY(-20px);
+        -ms-transform: translateY(-20px);
+        -o-transform: translateY(-20px);
+        transform: translateY(-20px)
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .preloader {
+        width: 342px;
+        height: 342px;
+    }
+    .jumping-dots-loader span {
+        width: 11px;
+        height: 11px;
+        margin: 15px 3px;
+    }
+    .quote-content blockquote {
+        font-size: 13px;
+    }
+    img.author-image {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .preloader {
+        width: 307px;
+        height: 307px;
+    }
+    .quote-content small {
+        font-size: 12px;
+    }
+    .quote-content blockquote {
+        font-size: 12px;
+    }
+}

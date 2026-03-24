@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="537px" height="537px" viewBox="0 0 537 537" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>default-company-icon</title>
+    <g id="default-company-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="537" height="537"></rect>
+        <g id="Group" transform="translate(112.986251, 87.943100)" fill="#C9CDD2">
+            <polygon id="Path-3" points="290.145331 361.965324 224.379865 361.965324 224.379865 36.4004997 112.411802 87.8858253 112.411802 119.805852 89.7614674 126.744143 89.7614674 73.880397 248.362429 8.40490243e-16 290.145331 28.3901045"></polygon>
+            <polygon id="Path-7" points="1.63821574e-13 155.449127 159.401327 100.945536 201.46739 127.861866 201.46739 360.773343 137.179926 360.773343 137.179926 132.221331 23.1312711 171.44227 23.1312711 360.773343 -8.44840418e-14 360.773343"></polygon>
+            <polygon id="Path-8" points="120.605935 358.086086 35.016427 358.086086 35.016427 325.011398 120.605935 319.603784"></polygon>
+            <polygon id="Path-9" points="120.605935 302.583999 35.016427 310.036389 35.016427 277.481801 120.605935 263.309843"></polygon>
+            <polygon id="Path-10" points="120.605935 246.500744 35.016427 263.309843 35.016427 231.45543 120.605935 208.250502"></polygon>
+            <polygon id="Path-11" points="120.605935 192.780839 35.016427 216.520192 35.016427 183.624638 120.605935 153.398795"></polygon>
+        </g>
+    </g>
+</svg>

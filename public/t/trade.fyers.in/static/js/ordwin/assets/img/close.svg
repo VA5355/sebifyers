@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Close</title>
+    <g id="User-Settings" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-764.000000, -142.000000)" id="Group-10">
+            <g transform="translate(153.000000, 127.000000)">
+                <g id="Close" transform="translate(611.000000, 15.000000)">
+                    <polygon id="Fill-1" fill="#FFFFFF" points="12.3535 4.3535 11.6465 3.6465 7.9995 7.2925 4.3535 3.6465 3.6465 4.3535 7.2925 7.9995 3.6465 11.6465 4.3535 12.3535 7.9995 8.7075 11.6465 12.3535 12.3535 11.6465 8.7075 7.9995"></polygon>
+                    <polygon id="Fill-2" points="0 16 16 16 16 0 0 0"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

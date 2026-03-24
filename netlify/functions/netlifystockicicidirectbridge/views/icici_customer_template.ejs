@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link  type="text/css" rel="stylesheet" href="/bootcss/bootstrap.min.css"/>
+	
+     <link type="text/css" rel="Stylesheet" href="/asset/css/style_new.css" />
+      <style type="text/css">
+        
+    </style>
+</head>
+<body>
+<div class="container py-5">
+          
+ <form method="POST" action="<%=posturl%>/apiuser/home" enctype="multipart/form-data" id="loginForm">  
+    <header class="text-dark text-center">
+        <h1 class="display-4">OneDinaar</h1>
+        <p class="lead mb-0">Fast & Quick </p>
+        <p class="mb-5 font-weight-light">Presented By
+            <a href="https://onedinaar.com" class="text-dark">
+                <u>Daily Profits </u>
+            </a>
+        </p>
+        <nav class="navbar pd0">
+			<div class="container" style="display:inline">
+				<div class="clear header_level_1">
+					<div class=" mrb20">
+						<div class="col-md-1 pd0">
+							<a class="navbar-brand hidden-xs" href="#"><img alt="OneDinaar" src="/images/glaub_logo.png"></a>
+						</div>
+						<div class="col-md-1 pd0 mx-4">
+							<a class="hidden-xs" href="#"><img alt="OneDinaar" src="/images/OneDinaar.gif" style="width:70px;height: 50px;"></a>
+						</div>
+                      <!------------ LOGIN IN CUsTINER PROFILE -->
+                        <div id="pnlotp" class="col-md-8 live_status">
+                          <div   class="pull-left">
+                            <h2>WELCOME : <a href="javascript://" onclick="$('#ulmainlogin').show();$('#txtPass').val('');$('#dvshowotp').empty();" 
+                                style="margin-right:20px;" ><img src="/images/front-images.png"
+                               style="height:15px;width:20px" /></a> </h2> 
+                           </div>
+                         <div style="float: left;width: fit-content;" class="col-md-4 mx-4">
+                            
+                            <div class="panel-group">  <!-- PANEL GROUP -->
+                              
+                               <div class="panel panel-primary">
+                                <div class="panel-heading"> 
+                                    <h2> 
+                                    <%=requesterName%>
+                                     </h2>
+                                </div>
+                                <div class="panel-body"></div>
+                              </div>
+                            
+                            </div> <!-- PANEL GROUP -->
+                         
+                        
+                            </div>        <!-- fit-content -->
+                            <div   class="pull-right">
+                                <div class="main-time">As on  <span class="label label-success"> <%=lastlogin%></div>
+                            </div>
+                        </div>  <!-- pnlotp-->
+                      
+            		</div>
+                    <!-- LOGNEED INCUSTOMER PRFILE  BOX -->
+				</div>
+			</div>
+		</nav>
+
+    </header>
+      <div class="container trade-content-box" style="display:inline">
+        
+       <div class="row background"> 
+            <div id="tradsmart" class="col-md-8 live_status">
+
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading"> <h2>Portfolio </h2></div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-success"> <h3> Equity</h3></li>
+                            <li class="list-group-item list-group-item-info"> <h3>Equity Margin</h3></li>
+                            <li class="list-group-item list-group-item-warning"> <h3>Futures & Options</h3>
+                                <button type="button" class="btn btn-primary float-right" value="show" onclick="showPositons()"> Show  </button>  
+                                <button type="button" class="btn btn-primary" value="show" onclick=""><a href="<%=posturl%>/getMoneyFlowScreen"> <span class="badge" > Calculate Money Flow </span></a>  </button>
+                                </li>
+                                  
+                            <li class="list-group-item list-group-item-danger"> <h3>Currency</h3></li>
+                          </ul>
+                    </div>
+                 </div>
+            </div>
+           </div> <!--trade smart end -->
+         </div>
+           <div class="row background">
+            <div class="panel-group">
+                <div class="panel panel-success">
+                     <div class="panel-heading"> <h2>Positions</h2></div>
+                     <div class="panel-body"> 
+                        <div id="fnopositions" class="col-md-8 live_status">
+                            <div id="postionsfno" >
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+          </div>
+       <input type="hidden" id="hidtk" value="69864603" />
+       <input type="hidden" id="hictyp" value="IND" />
+       <input type="hidden" id="hisd" value="" />
+       <input type="hidden" id="hiistotp" value="N" />
+     
+         <div id="dvreotp" ></div>
+      </div>    
+</form>
+</div>
+
+
+</body>
+<script type="text/javascript" src="/jquery/jquery.min.js" ></script>	
+<script type="text/javascript" src="/js/bootstrap.min.js" ></script>
+
+
+<!-- the /asset maps to groww-task\public\   iciciscripts inside it  in netifystockicicidirectbridge  -->
+<script type="text/javascript" src="/asset/iciciscripts/jscomm.js"></script>
+
+
+<script type="text/javascript" src="/asset/iciciscripts/loginpassencrypt.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/Barrett.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/Barrett.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/BigInt.js"></script>
+
+<script type="text/javascript">
+    var tradekey = "";      
+     $(document).ready(function () {
+        rsaE = $('#hidenc').val().split('~')[0];
+        rsaM = $('#hidenc').val().split('~')[1];
+        tradekey =  encodeURIComponent('<%=TRADECHECKKEY%>');
+        if (tradekey == null || tradekey == undefined )
+        tradekey =encodeURIComponent($('#htradekey').val());
+         console.log(" tradekey: "+tradekey)
+     });
+      function submitform() {               
+         debugger;
+         if (!CheckFormValidation($('#pnlgetlogin'))) { return false; }
+         $('#hidp').val($.trim($('#txtPass').val()));  // cmdEncrypt(
+         $('#txtPass').val('************');                
+         ////PostForm("https://api.icicidirect.com/apiuser/home/validateuser", $('#form1'), $('#pnlgetlogin'));
+         //PostForm("/apiuser/home", $('#loginForm'), $('#dvshowotp'));
+         window.location.assign("https://api.icicidirect.com/apiuser/login?api_key="+tradekey);
+        //  PostForm("https://api.icicidirect.com/apiuser/login?api_key="+encodeURIComponent(TRADECHECKKEY), $('#loginForm'), $('#dvshowotp'));
+     }
+     function showPositons () {
+        debugger;
+        ShowPositions("<%=posturl%>/fnopositions",'adfg',$('#postionsfno'))
+
+     }
+     $(document).keypress(function(e){
+         if ( event.which == 13 ) {
+             if($('#pnlotp').is(':visible'))
+             {
+                 return;
+             }
+             submitform();
+           }
+     });
+ 
+     function seteye()
+    {
+        let _o = $(event.target).parent('.password-group'); 
+        if($(_o).find('input').attr("type") == "text")
+        {
+            $(_o).find('input').attr("type" ,"password");
+            $(_o).find('i').addClass("bi-eye-slash");
+            $(_o).find('i').removeClass("bi-eye");
+        }
+        else
+        {
+            $(_o).find('input').attr("type" ,"text");
+            $(_o).find('i').removeClass("bi-eye-slash");
+            $(_o).find('i').addClass("bi-eye");
+        }
+     }
+ </script>
+
+
+
+</html>

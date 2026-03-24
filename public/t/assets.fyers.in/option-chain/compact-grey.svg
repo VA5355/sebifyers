@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>compact-grey</title>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="compact-grey" stroke="#747E8B" stroke-width="1.5">
+            <g id="Group-4">
+                <rect id="Rectangle" x="0.75" y="0.75" width="12.5" height="12.5" rx="1"></rect>
+                <rect id="Rectangle" x="0.75" y="0.75" width="6.5" height="12.5" rx="1"></rect>
+                <line x1="0" y1="7" x2="14" y2="7" id="Path-3"></line>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link  type="text/css" rel="stylesheet" href="/bootcss/bootstrap.min.css"/>
+
+     <!--<link type="text/css" rel="Stylesheet" href="/asset/css/style_new.css" /> -->
+     <!--<script  src="/js/bootstrap.bundle.js" ></script>-->
+     <!--bootstrap.bundle.min.js --> 
+     	 <!--	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+     	<script type="text/javascript" src="/jquery/jquery.min.js" ></script>-->
+
+     <script src="/asset/plugins/jquery/jquery.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+     <script src="/asset/plugins/jquery-ui/jquery-ui.min.js"></script>	
+
+
+     	<script  src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js">
+
+         <!-- ChartJS -->
+	<script src="/asset/plugins/chart.js/Chart.min.js"></script>
+       <!-- Bootstrap 4
+	<script src="/asset/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+	<!-- ChartJS -->
+	<script src="/asset/plugins/chart.js/Chart.min.js"></script>
+
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	  
+	   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+	  <!-- <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+	 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> -->
+	 <script type="text/javascript"  src="/asset/iciciscripts/moneyflow.js"></script>
+	 <script type="text/javascript"  src="/asset/iciciscripts/indexStrikePrices.js"></script>
+	 <script>
+	 	var day = 4;
+	 	var date = new Date();
+	 	var nextYear = date.getFullYear() + 1;
+	 	var listofThrusday= [];
+	 	var parameters ={"stock_code":'',
+							"exch_code":'',
+							"from_date":'',
+							"to_date":'',
+							"interval":'',
+							"product_type":'',
+							"expiry_date":'',
+							"right":'',
+					"strike_price":''};
+	 	while(date.getDay() != day)
+	 	{
+	 	    date.setDate(date.getDate() + 1)
+	 	}
+
+	 	while(date.getFullYear() < nextYear)
+	 	{
+	 	    var yyyy = date.getFullYear();
+
+	 	    var mm = (date.getMonth() + 1);
+	 	    mm = (mm < 10) ? '0' + mm : mm;
+
+	 	    var dd = date.getDate();
+	 	    dd = (dd < 10) ? '0' + dd : dd;
+
+	 	    var li  ="<li><span class='dropdown-item' >"+yyyy + '-' + mm + '-' + dd +"</span></li>"
+
+	 		listofThrusday.push(li);
+	 	    console.log(yyyy + '-' + mm + '-' + dd)
+
+	 	    date.setDate(date.getDate() + 7);
+	 	}
+	 	const range = (start, stop, step) => Array.from( { length: (stop - start) / step + 1 }, (value, index) => start + index * step );
+	 	
+	 	let arrayStrikeRange = range(18000, 23000, 50);
+	 	listofCNXBANK =  range(42000,52000,100);
+	 	
+	 	let bucketStrikes = { 'CNXBAN' : listofCNXBANK , 'NIFTY' : arrayStrikeRange  , 'NIFFIN':  listofNIFFIN , 'NIFSEL':  listofNIFSEL  , 'CNXIT': listofCNXIT }; 
+	 	
+	 	let expiryDates = { 'CNXBAN' : expiryOfCNXBANK , 'NIFTY' : listofThrusday  , 'NIFFIN':  expiryOfNIFFIN , 'NIFSEL':  expiryOfNIFSEL  , 'CNXIT': expiryOfCNXIT }; 
+	 	
+</script>
+      <style type="text/css">
+        #datepicker{width:180px;}
+      #datepicker > span:hover{cursor: pointer;}
+      	.scrollable-menu {
+	    height: auto;
+	    max-height: 200px;
+	    overflow-x: hidden;
+	}
+	#totalRec {
+
+		color:#f7fac1;
+	}
+	.div-small {
+		    font-size: 12px;
+  		  font-weight: 800;
+	}
+	 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th
+	       {
+		     height: 5px;
+		     width: fit-content;
+		     line-height:0.52857143;
+		     overflow:auto;
+		     text-align: center;
+			}
+	.table-small {
+				height: 5px;
+		         width: 100%;
+		        font-size:10px;
+		}
+	
+    </style>
+</head>
+<body>
+<div class="container py-5">
+
+ <form method="POST" action="/apiuser/home" enctype="multipart/form-data" id="loginForm">
+    <header class="text-dark text-center">
+        <h1 class="display-4">GlaubHanta Ex-TRADER</h1>
+        <p class="lead mb-0">Fast & Quick </p>
+        <p class="mb-5 font-weight-light">Presented By
+            <a href="https://SaakalaaCaarvitaa.com" class="text-dark">
+                <u>GlaubHanta (Saakalaa Caarvitaa) </u>
+            </a>
+        </p>
+        <nav class="navbar pd0">
+			<div class="container" style="display:inline">
+				<div class="clear header_level_1">
+					<div class=" mrb20">
+						<div class="col-md-1 pd0">
+							<a class="navbar-brand hidden-xs" href="#"><img alt="Glaubhant Direct" ></a>  <!-- src="/images/glaublogo.png" --> 
+						</div>
+						<div class="col-md-1 pd0 mx-4">
+							<a class="hidden-xs" href="#"><img alt="Glaubhabt Direct"  style="width:70px;height: 50px;"></a> <!-- src="/images/glaub_logo.png" --> 
+						</div>
+                      <!------------ LOGIN IN CUsTINER PROFILE -->
+                        <div id="pnlotp" class="col-md-8 live_status">
+                          <div   class="pull-left">
+                            <h2>WELCOME : <a href="javascript://" onclick="$('#ulmainlogin').show();$('#txtPass').val('');$('#dvshowotp').empty();"
+                                style="margin-right:20px;" ><img 
+                               style="height:15px;width:20px" /></a> </h2> <!-- src="/images/front-images.png" --> 
+                           </div>
+                         <div style="float: left;width: fit-content;" class="col-md-4 mx-4">
+
+                            <div class="panel-group">  <!-- PANEL GROUP -->
+
+                               <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h2>
+                                    <%=requesterName%>
+                                     </h2>
+                                </div>
+                                <div class="panel-body"></div>
+                              </div>
+
+                            </div> <!-- PANEL GROUP -->
+
+
+                            </div>        <!-- fit-content -->
+                            <div   class="pull-right">
+                                <div class="main-time">As on  <span class="label label-success"> <%=lastlogin%></div>
+                            </div>
+                        </div>  <!-- pnlotp-->
+
+            		</div>
+                    <!-- LOGNEED INCUSTOMER PRFILE  BOX -->
+				</div>
+			</div>
+		</nav>
+
+    </header>
+      <div class="container trade-content-box" style="display:inline">
+
+      <div class="row">
+        	<div id="strikeSelector" class="col-md-12 live_status">
+          	<div class="row">
+           <div class="col-sm-2 btn-group" style="background-color:lavender;">
+              <input type="text" class="form-control countrycode dropdown-toggle" data-bs-toggle="dropdown"
+                 name="stock_code" id="stockcode_buton" value="">
+           	<!-- <button class="btn dropdown-toggle" type="button" name="stock_code" id="stockcode_buton" data-bs-toggle="dropdown">
+			NIFTY
+		  </button> --> 
+			  <ul class="dropdown-menu stockcode" aria-labelledby="stockcode_buton">
+					  <li selected="selected"><span class="dropdown-item" >NIFTY</span></li>
+					  <li><span class="dropdown-item" >CNXBAN</span></li>
+					  <li><span class="dropdown-item" >NIFFIN</span></li>
+					  <li><span class="dropdown-item" >CNXIT</span></li>
+
+					  <li><span class="dropdown-item" >NIFSEL</span></li>
+					  <li><span class="dropdown-item" >RELIND</span></li>
+	                  </ul>
+           
+           </div>
+      	   	 <div class="col-sm-2 btn-group" style="background-color:lavenderblush;"> 
+      	   	 	<button class="btn dropdown-toggle" type="button" name="exch_code" id="exch_code_buton" data-bs-toggle="dropdown">
+				NFO
+			  </button>
+				  <ul class="dropdown-menu exch_code" aria-labelledby="exch_code_buton">
+						  <li selected="selected"><span class="dropdown-item" >NSE</span></li>
+						  <li><span class="dropdown-item" >NFO</span></li>
+				</ul>
+		 </div>
+      	   	  <div class="col-sm-2 btn-group" style="background-color:lavenderblush;">
+      	   	  	<button class="btn dropdown-toggle" type="button" name="product_type" id="product_type_buton" data-bs-toggle="dropdown">
+				Options
+			  </button>
+				  <ul class="dropdown-menu product_type" aria-labelledby="product_type_buton">
+						  <li ><span class="dropdown-item" >Cash</span></li>
+						  <li selected="selected"><span class="dropdown-item" >Options</span></li>
+						  <li ><span class="dropdown-item" >Futures</span></li>
+			</ul>
+      	   	  
+      	   	  </div>
+              </div>
+              <div class="row">
+         		 <div class="col-sm-2" style="background-color:lavender;">
+         		 	<!-- From Date -->
+      			         	<div id="datepicker"
+      			             class="input-group date"
+      			             data-date-format="mm-dd-yyyy">
+      			            <input class="form-control"
+      			                   type="text" readonly name="fromDate" />
+      			            <span class="input-group-addon">
+      			                <i class="glyphicon glyphicon-calendar"></i>
+      			            </span>
+      			        </div>
+
+               	<!--<div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    From Date
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+      		  </div> -->
+               </div>
+         		  <div class="col-sm-2" >
+         		  	<!--To Date -->
+      			  <div id="datepicker2"
+      				 class="input-group date"
+      				 data-date-format="mm-dd-yyyy">
+      				<input class="form-control"
+      					   type="text" readonly name="toDate" />
+      				<span class="input-group-addon">
+      					<i class="glyphicon glyphicon-calendar"></i>
+      				</span>
+      			</div>
+              </div>
+         		 <div class="col-sm-2 btn-group" ><button type="button" id="interval_button"
+                  class="btn dropdown-toggle" name="interval" data-bs-toggle="dropdown" >
+                  	30minute
+                 		<!-- data-toggle="interval" -->
+                  </button>
+      			  <ul class="dropdown-menu interval" aria-labelledby="interval_button" >
+      			  			<li><span class="dropdown-item" >1minute</span></li>
+      			  			<li><span class="dropdown-item" >5minute</span></li>
+								<li><span class="dropdown-item" >15minute</span></li>
+      			  			<li selected="selected"><span class="dropdown-item" >30minute</span></li>
+								<li ><span class="dropdown-item" >45minute</span></li>
+								<li ><span class="dropdown-item" >60minute</span></li>
+      			  			<li><span class="dropdown-item" >1day</span></li>
+      			                 <!--
+      			                 {"Error":"Valid Candle Intervals are '1minute','5minute','30minute','1day' and '1second'","Status":500}
+      			                 	
+      			                 <li><a href="#">1Min</a></li>
+      			                  <li><a href="#">3Min</a></li>
+      			                  <li><a href="#">5Min</a></li>
+      			                  <li><a href="#">15Min</a></li>-->
+                   </ul>
+                </div>
+         		  <div class="col-sm-2 btn-group" >
+         		    <input type="text" class="form-control countrycode dropdown-toggle" data-bs-toggle="dropdown"
+                 name="strikePrice" id="strike_button" value="">
+         		  	<!--<button  type="button" class="btn dropdown-toggle" name="strikePrice" id="strike_button"
+                      data-bs-toggle="dropdown">
+      			            	19000
+      			           
+      			            </button> -->
+      						  <ul id="strikePrice" class="dropdown-menu scrollable-menu strike"
+                              aria-labelledby="strike_button">
+      						              <li><span class="dropdown-item" >17500 </span></li>
+                 				  </ul>
+
+         		  </div>
+         		 <div class="col-sm-2 btn-group" >
+         		 		<button  type="button" class="btn dropdown-toggle" id="expiry_button" name="expiry_date" data-bs-toggle="dropdown">
+      						2011-02-10
+      					  </button>
+					  <ul id="expiry" aria-labelledby="expiry_button" class="dropdown-menu thrusday">
+					   <li><span class="dropdown-item" >2011-02-10 </span></li>
+     					</ul>
+         		 </div>
+         		  <div class="col-sm-2 btn-group"> 
+         		 <!-- <input type="checkbox" checked data-toggle="toggle" data-on="CALL" data-off="PUT"> -->
+	     			<button  type="button" class="btn dropdown-toggle" id="right_button" name="right" data-bs-toggle="dropdown">
+						CALL
+					  </button>
+				  <ul id="right" aria-labelledby="right_button" class="dropdown-menu right">
+				   <li><span class="dropdown-item" >Call </span></li>
+				   <li><span class="dropdown-item" >Put</span></li>
+				   <li><span class="dropdown-item" >Others</span></li>
+				 </ul>
+         		 	<!--<div class="form-check form-switch">
+			   		<input class="form-check-input" type="checkbox" role="switch" id="right" placeholder="call" value="Call">
+			   		<label class="form-check-label" for="right">CALL</label>
+			       </div>-->
+         		  
+         		  
+         		  </div>
+               </div>
+          </div>   <!-- Strile selector -->
+
+          <div class="row">
+            <div id="strikeSelector2" class="col-md-12 live_status">
+             <div style="margin-left:15px;">
+		<table id= "moneyData" class="table">
+		    <tbody>
+			<tr><th scope="row">  <button class="btn" type="button" name="OpenINTEREST" id="ajaxFetchOpenInterest"  >
+			      							            FETCH OPEN INTEREST
+							            </button>     </th>
+						</tr>
+      		    </tbody>
+      		 </table>
+      	    </div> <!--Style -->
+      	   	<div class="profile">
+      	   	    <div id="totalCount" class="btn btn-primary div-small"> Total records :  <span id="totalRec" class="badge bg-secondary"> </span> </div>
+      		   <table id= "userdata"   class="table table-bordered table-small">
+		    	<thead><th scope="col">Sr No</th><th scope="col">CLOSE</th><th scope="col">HIGH</th><th scope="col">LOW</th><th scope="col">OPEN</th><th scope="col">AVERAGE</th><th >OPEN INTEREST</th><th scope="col">VOLUME</th>
+						<th scope="col">MONEY FLOW</th><th scope="col">NET MONEY FLOW</th><th scope="col">DATE </th> </thead>
+      		      <tbody> </tbody>
+      		   </table>
+ 
+      		</div> <!--profile --> 
+		  <div class="card-body">
+                <div class="tab-content p-0">
+                  <!--  Morris chart - Sales -->
+                  <div class="chart tab-pane active" id="revenue-chart" style="position: 'relative', height: 300">
+                    <canvas id="revenue-chart-canvas" height={300} style="height: 300" />                         
+                  </div>
+                  <div className="chart tab-pane" id="sales-chart" style="position: 'relative', height: 300">
+                    <canvas id="sales-chart-canvas" height={300} style="height: 300" />                         
+                  </div>  
+                </div>
+              </div><!--  /.card-body -->
+		  <div className="card-body">
+                <canvas className="chart" id="line-chart" style="min-height: 250, height: 250, max-height: 250, max-width: '100%'"/>
+            </div>  
+
+            </div><!-- strikeSelector2 --> 
+          </div>
+
+
+  </div>  <!-- row -->
+       <input type="hidden" id="hidtk" value="69864603" />
+       <input type="hidden" id="hictyp" value="IND" />
+       <input type="hidden" id="hisd" value="" />
+       <input type="hidden" id="hiistotp" value="N" />
+
+         <div id="dvreotp" ></div>
+      </div>
+</form>
+</div>
+<script src=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
+ 
+
+
+</body>
+<!-- --><script type="text/javascript" src="/js/bootstrap.min.js" ></script>
+
+<script type="text/javascript" src="/asset/iciciscripts/jscomm.js"></script>
+
+
+<script type="text/javascript" src="/asset/iciciscripts/loginpassencrypt.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/Barrett.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/Barrett.js"></script>
+<script type="text/javascript" src="/asset/iciciscripts/BigInt.js"></script>
+<script type="text/javascript">
+    var tradekey = "";
+     $(document).ready(function () {
+       // rsaE = $('#hidenc').val().split('~')[0];
+       // rsaM = $('#hidenc').val().split('~')[1];
+        tradekey =  encodeURIComponent('<%=TRADECHECKKEY%>');
+        if (tradekey == null || tradekey == undefined )
+        tradekey =encodeURIComponent($('#htradekey').val());
+         console.log(" tradekey: "+tradekey)
+     });
+      function submitform() {
+         debugger;
+         if (!CheckFormValidation($('#pnlgetlogin'))) { return false; }
+         $('#hidp').val($.trim($('#txtPass').val()));  // cmdEncrypt(
+         $('#txtPass').val('************');
+         ////PostForm("https://api.icicidirect.com/apiuser/home/validateuser", $('#form1'), $('#pnlgetlogin'));
+         //PostForm("/apiuser/home", $('#loginForm'), $('#dvshowotp'));
+         window.location.assign("https://api.icicidirect.com/apiuser/login?api_key="+tradekey);
+        //  PostForm("https://api.icicidirect.com/apiuser/login?api_key="+encodeURIComponent(TRADECHECKKEY), $('#loginForm'), $('#dvshowotp'));
+     }
+     function showPositons () {
+        debugger;
+        ShowPositions("/fnopositions",'adfg',$('#postionsfno'))
+
+     }
+     $(document).keypress(function(e){
+         if ( event.which == 13 ) {
+             if($('#pnlotp').is(':visible'))
+             {
+                 return;
+             }
+             submitform();
+           }
+     });
+
+     function seteye()
+    {
+        let _o = $(event.target).parent('.password-group');
+        if($(_o).find('input').attr("type") == "text")
+        {
+            $(_o).find('input').attr("type" ,"password");
+            $(_o).find('i').addClass("bi-eye-slash");
+            $(_o).find('i').removeClass("bi-eye");
+        }
+        else
+        {
+            $(_o).find('input').attr("type" ,"text");
+            $(_o).find('i').removeClass("bi-eye-slash");
+            $(_o).find('i').addClass("bi-eye");
+        }
+     }
+ </script>
+ <script src=
+ "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
+<script type="text/javascript">
+	//var dummyData = "";
+       var moneyrecords = [];   // rewuired to calcuate the moneyflow from the dummyData , later from the Ajaxcalll back on click of fetch records
+	   // 1. Get the current date using the JavaScript Date object
+          const currentDate = new Date();
+
+    // 2. Extract year, month, and day components and pad with leading zeros if necessary
+    const year = currentDate.getFullYear();
+    // getMonth() returns 0-indexed values (0 for Jan, 1 for Feb, etc.), so add 1
+    const month = ("0" + (currentDate.getMonth() + 1)).slice(-2); 
+    const day = ("0" + currentDate.getDate()).slice(-2);
+
+    // 3. Format the date as YYYYMMDD
+        const formattedDate = year + "-"+ month + "-"+ day; // e.g., "20251220"
+        $(function () {
+        
+                var intervalDefault = $('#interval_button[name="interval"]').text().trim();
+        	$.ajax({
+		  type: "GET",
+		  url: "/asset/iciciscripts/moneyflow"+intervalDefault+".js",   
+		  dataType: "script",
+		  async:false
+		}, function( data ) {
+				console.log(" ajax moneyflow " +JSON.stringify(data));
+				
+		},
+		 function (err) {
+		        console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
+		  	dummyData = {"Error":null,"Status":200,"Success":[]};      
+   			 }
+		
+		);
+	       // sET EXPIRY BUTTON DATE 
+		   $("#expiry_button").text(formattedDate);
+				
+            $("#datepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true,
+            }).datepicker('update', new Date());
+            $("#datepicker2").datepicker({
+			                autoclose: true,
+			                todayHighlight: true,
+            }).datepicker('update', new Date());
+			// DROPDOWNS
+			 for (var i = 0; i < listofThrusday.length; i++) {
+			 	const $newThurs = $(listofThrusday[i]);
+			     $("#expiry").append($newThurs);
+			 }
+			 console.log("arrayStrikeRange  " + JSON.stringify(arrayStrikeRange));
+			 for (var h = 0; h < arrayStrikeRange.length; h++) {
+				 var strike =  arrayStrikeRange[h];
+				 
+			 	const $newThurs = $("<li><span class='dropdown-item'>"+ strike + "</span></li>");
+			 	$("#strikePrice").append($newThurs);
+			 }
+			 // $("#expiry").show();
+			 $(".thrusday li span").click(function(){
+			 				  var selText = $(this).text();
+			 				  console.log(" selText trusday " +selText);
+			 				  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+			 });
+		         $(".strike li span").click(function(){
+				  var selText = $(this).text();
+				  console.log(" selText strike " +selText);
+				  
+				  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+				  ("#strike_button").val(selText);
+			});  		
+			
+			 var moneyrecords = [];
+			 try {
+				 $("#userdata > tbody").html("");
+			     refreshOPENINTEREST(dummyData);
+			  } catch(error) {
+			      console.log("moeny flow Data unable to PARSE " +JSON.stringify(error));
+ 			 }
+			
+			/*   TEMPORARY COMMENTED
+			$.getJSON('moneyflow.json', function(data) {
+			        $.each(data.Success, function(i, f) {
+
+			           var avg =  ( f.open > f.close  ? (f.open - f.close)/2  : (f.close- f.open)/2);
+			            avg = avg +   (f.open + f.close)/2;
+			           var tblRow = "<tr>" + "<th scope='row'>" + "<td>" + f.close + "</td>" +
+					   			            "<td>" + f.high + "</td>" + "<td>" + f.low + "</td>" + "<td>" + f.open + "</td>" +
+					   			            "<td>" + avg + "</td>" +
+					   			            "<td>" + f.open_interest + "</td>"  +
+					   			            "<td>" + f.volume + "</td>"  +
+					   			            "</th>"+
+			            "</tr>";
+
+
+			            $(tblRow).appendTo("#userdata tbody");
+    		  }); //each
+			}); // getJSON
+			*/
+
+        });
+        // DROPDOWNS
+        $(".interval li ").click(function(){
+		  var selText = $(this).text();
+		  
+		  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+	});
+	$("#strikePrice li span").click(function(){
+		  var selText = $(this).text();
+		  console.log(" selText strike " +selText);
+		  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+	});
+	$(".stockcode li span").click(function(){
+		  var selText = $(this).text();
+			console.log(" selText stockcode " +selText);
+		  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+		  
+		  // SELECT the STRIKE PRICE 
+		  arrayStrikeRange = bucketStrikes[selText];
+		  if(arrayStrikeRange == undefined) { arrayStrikeRange =  bucketStrikes['NIFTY'] } 
+		  console.log("arrayStrikeRange  " + JSON.stringify(arrayStrikeRange));
+		  $("#strikePrice").empty();
+		  $("#strikePrice").addClass('strike');
+		  for (var h = 0; h < arrayStrikeRange.length; h++) {
+		  	 var strike =  arrayStrikeRange[h];
+		  				 
+		   	const $newThurs = $("<li><span class='dropdown-item'>"+ strike + "</span></li>");
+		 	$("#strikePrice").append($newThurs);
+		  }
+		  $("#strikePrice li span").click(function(){
+		  		  var selText = $(this).text();
+		  		  console.log(" selText strike " +selText);
+		  		  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+		 });
+		  
+		  
+		  $("#strike_button").val(arrayStrikeRange[0]);
+		 // SELECT the EXPIRY RANGE
+		 arrayExpiryDates = expiryDates[selText];
+		  $("#expiry").empty();
+		 $("#expiry").addClass('strike');
+		 for (var h = 0; h < arrayExpiryDates.length; h++) {
+		 		  	 var dates =  arrayExpiryDates[h];
+		 		  				 
+		 		   	const $newThurs = $("<li><span class='dropdown-item'>"+ dates + "</span></li>");
+		 		 	$("#expiry").append($newThurs);
+		 }
+		 $("#expiry li span").click(function(){
+		 		  		  var selText = $(this).text();
+		 		  		  console.log(" selText strike " +selText);
+		 		  		  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+		 });
+		  
+		  
+		  
+		  
+	});	
+	$(".exch_code li span").click(function(){
+		  var selText = $(this).text();
+			console.log(" selText exch_code " +selText);
+		  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+	});
+	$(".product_type li span").click(function(){
+		 var selText = $(this).text();
+		console.log(" selText product_type " +selText);
+		 $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+	});
+	$(".right li span").click(function(){
+			 var selText = $(this).text();
+			console.log(" selText right " +selText);
+			console.log(" selText name " +$(this).attr('name'));
+			let parentBut$ = $(this).parents('.btn-group').find('.dropdown-toggle');
+			if(selText.trim()=="Call"){
+				parentBut$.css("background-color", "green");
+				parentBut$.css("color", "white");
+			}
+			if(selText.trim() =="Put"){
+			   parentBut$.css("background-color", "red");
+			    parentBut$.css("color", "white");
+			}
+			if(selText.trim() == "Others"){
+			  parentBut$.css("background-color", "orange");
+			   parentBut$.css("color", "white");
+			}
+			 $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+	});
+	$("#ajaxFetchOpenInterest").click(function(e){
+	  	e.preventDefault();
+	  var stock_code = $('#stockcode_buton[name="stock_code"]').val().trim();
+				  var exch_code = $('#exch_code_buton[name="exch_code"]').text().trim();
+				  var from_date = $('input[name="fromDate"]').val().trim();
+				  var to_date = $('input[name="toDate"]').val().trim();
+			    	var interval = $('#interval_button[name="interval"]').text().trim();
+				var product_type = $('#product_type_buton[name="product_type"]').text().trim();
+					var expiry_date = $('#expiry_button[name="expiry_date"]').text().trim();
+					var right = $('#right_button[name="right"]').text().trim();
+					var strike_price = $('#strike_button[name="strikePrice"]').val().trim();
+	
+				console.log(`${stock_code} ${exch_code} ${from_date} ${to_date} ${interval} ${product_type} ${expiry_date} ${right} ${strike_price} `);
+	
+				  parameters["stock_code"] =`${stock_code}`;
+				 parameters["exch_code"] = `${exch_code}`;
+				 parameters["from_date"] = `${from_date}`;
+				 parameters["to_date"] = `${to_date}`;
+				 parameters["interval"] = `${interval}`;
+				 parameters["product_type"] = `${product_type}`;
+				 parameters["expiry_date"] = `${expiry_date}`;
+				 parameters["right"] = `${right}`;
+				parameters["strike_price"] = `${strike_price}` ;
+
+	 console.log("... money flow data fetch " + JSON.stringify(parameters));
+				 // DO GET
+			$.ajax({
+					  type : "GET",
+					  url : "https://localhost:56322/getDummyMONEYData",
+					  contentType : "application/json",
+					  // data : {platformAjax:platform, genreAjax:genre},
+					  data : parameters,
+					  dataType : "json",
+						
+					success: async function(data, textStatus, jqXHR) {
+						if(data.Success)		
+							 { console.log("moeny flow records " +JSON.stringify(data.Success.length)); }
+						try {
+						   var dummyVar =  JSON.stringify(data)  ;
+						    $("#userdata > tbody").html("");
+						    refreshOPENINTEREST(dummyVar);
+						  } catch(error) {
+						      console.log("moeny flow Data unable to PARSE " +JSON.stringify(error));
+						  }
+					 }
+				})
+					  
+         		 
+	});
+       function refreshOPENINTEREST(data) {
+          dummyData = data;
+         var dummyMoneyJSON = {};
+       			 if(dummyData && whatIsIt(dummyData ) =="String") {
+       			   dummyMoneyJSON =  JSON.parse(dummyData);
+       			 }
+       			 previousAvgPrice =0;previousMoneyFlow = 0;
+       			 let totalRec= 0;
+       			 if(dummyMoneyJSON.Success !==undefined) {
+       			  for (var i = 0; i < dummyMoneyJSON.Success.length; i++) {
+       			 			 	const f  =dummyMoneyJSON.Success[i];
+       			 			   var avg =  ( f.open > f.close  ? (f.open - f.close)/2  : (f.close- f.open)/2);
+       						  			            avg = avg +   (f.open + f.close)/2;
+       
+       						  	  volume =Math.floor( (  (( f.open > f.close  ? f.volume  : (avg > previousAvgPrice ? f.volume : -f.volume)) * avg ) % 10000) / 1000 );
+       						  	  netmoneyflow = previousMoneyFlow +volume;
+       						  var convertedDate =  new Date(f.datetime.substring(0,10));
+       						  var month = convertedDate.getMonth() + 1
+          							 var day = convertedDate.getDay();
+          							 var year = convertedDate.getFullYear();
+          							 var shortStartDate =convertedDate.toDateString() /// month + "/" + day + "/" + year;
+       						 var trimavg =  Math.trunc(avg)+"";
+       						  	trimavg =trimavg.replace(/\s/g, "");	
+       						 var tblRow = "<tr>"  +   "<td>" + totalRec + "</td>"  +
+								                "<td>" + f.close + "</td>" +
+       						 			            "<td>" + f.high + "</td>" + "<td>" + f.low + "</td>" + "<td>" + f.open + "</td>" +
+       						 			            "<td>" + trimavg + "</td>" +
+       						 			            "<td>" + f.open_interest + "</td>"  +
+       						 			            "<td>" + f.volume + "</td>"  +
+       						 			              "<td>" + volume + "</td>"  +
+       						 			                "<td>" + netmoneyflow + "</td>"  +
+       						 			              "<td>" + shortStartDate + "</td>"  +
+       						 			            "</th>"+
+       			            "</tr>";
+       						 previousAvgPrice = avg;
+       						  previousMoneyFlow  = volume;
+ 				     moneyrecords[i]= netmoneyflow;
+       			            $(tblRow).appendTo("#userdata tbody");
+       			            totalRec+=1;
+       			 }
+       			   console.log("totalRec "+totalRec);
+       			 	$("#totalRec").text(totalRec+"");
+				// CHECK if salesChart  Chart JS variable is available 
+				if (salesChartData !=undefined){
+					salesChartData.datasets.data =  moneyrecords;
+					console.log("sales-chart cleared ");	
+					salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d')
+					salesChart = new Chart(salesChartCanvas, { // lgtm[js/unused-local-variable]
+						type: 'line',
+						data: salesChartData,
+						options: salesChartOptions
+					})
+					salesChart.update(); 
+					console.log("sales-chart updated ");	
+				}else {
+					console.log("sales-chart not available for access ");
+
+				}
+			 /*	if(salesChart !=undefined )	{
+					salesChart.data.datasets.forEach((dataset) => {
+        			   dataset.data.pop();
+   					 });	
+					salesChart.update(); 
+					console.log("sales-chart cleared ");	
+					for (var i = 0; i < moneyrecords.length; i++) {
+					 let data =  moneyrecords[i]  
+					salesChart.data.datasets.forEach((dataset) => {
+    					    dataset.data.push(data);
+   					 });
+					}
+					 salesChart.update(); 
+				}
+				else {
+					console.log("sales-chart not available for access ");
+
+				}*/
+			 }
+             
+       }
+       function whatIsIt(object) {
+        var stringConstructor = "test".constructor;
+	var arrayConstructor = [].constructor;
+	var objectConstructor = ({}).constructor;
+       
+           if (object === null) {
+               return "null";
+           }
+           if (object === undefined) {
+               return "undefined";
+           }
+           if (object.constructor === stringConstructor) {
+               return "String";
+           }
+           if (object.constructor === arrayConstructor) {
+               return "Array";
+           }
+           if (object.constructor === objectConstructor) {
+               return "Object";
+           }
+           {
+               return "don't know";
+           }
+     }
+    </script>
+	   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+                <!-- caalcuatle the Money Flow graph after moneyrecrods calculated  from the dummyData from moneyflow js-->                        
+         <script src="/asset/dist/js/pages/dashboard.js"></script>
+
+</html>

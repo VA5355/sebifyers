@@ -1,0 +1,1949 @@
+{
+  "T2T": {
+    "BSE": "-TS|-ZP|-MT|-Z|-ST|-T|-R|-XT",
+    "NSE": "-BE|-BZ|-ST"
+  },
+  "alert_creation_flags": {
+    "show_close": false,
+    "show_equals": false,
+    "show_volume": false
+  },
+  "amount": {
+    "ddpi_enrollment_charges": 0
+  },
+  "analytics_exceptions": {
+    "exceptional_clients": [
+      "XH09530",
+      "XP17807",
+      "XY01644",
+      "XA27633",
+      "XV15456",
+      "XB15270",
+      "XC05414",
+      "XM21752",
+      "XM23980",
+      "FM1557",
+      "DS6359",
+      "XD18723",
+      "XT05189",
+      "XS02150"
+    ],
+    "track_debug_analytics": false
+  },
+  "api_retry_count": 3,
+  "app_ver": [
+    {
+      "app_name": "fy_app_android",
+      "background_svg_dark": "",
+      "background_svg_light": "",
+      "cur_ver": "2.2.5",
+      "date_update": "18-04-2025 07:12",
+      "decline_button_color": "",
+      "decline_button_text": "",
+      "decline_text_color": "",
+      "desc": "We've fine tuned the app behind the scenes to further enhance your trading experience.\nDon't wait - experience the difference today.",
+      "icon_svg": "",
+      "link": "https://play.google.com/store/apps/details?id=com.fyers.trader",
+      "min_ver": "2.2.5",
+      "update_button_color": "",
+      "update_button_text": "",
+      "update_text_color": ""
+    },
+    {
+      "app_name": "fy_app_ios",
+      "background_svg_dark": "",
+      "background_svg_light": "",
+      "cur_ver": "2.2.5",
+      "date_update": "18-04-2025 23:11",
+      "decline_button_color": "",
+      "decline_button_text": "",
+      "decline_text_color": "",
+      "desc": "We've fine tuned the app behind the scenes to further enhance your trading experience.\nDon't wait - experience the difference today.",
+      "icon_svg": "",
+      "link": "https://apps.apple.com/us/app/fyers/id1526652184",
+      "min_ver": "2.2.5",
+      "update_button_color": "",
+      "update_button_text": "",
+      "update_text_color": ""
+    },
+    {
+      "app_name": "fy_app_android_v2",
+      "background_svg_dark": "",
+      "background_svg_light": "",
+      "cur_ver": "3.3.0",
+      "date_update": "11-10-2025 14:50",
+      "decline_button_color": "",
+      "decline_button_text": "",
+      "decline_text_color": "",
+      "desc": "Invest via Specialised Investment Funds (SIFs).\nCustomise font size for better readability.\nEnhanced news section.\nFaster, more stable app performance.",
+      "icon_svg": "",
+      "link": "https://play.google.com/store/apps/details?id=com.fyers.trader",
+      "min_ver": "3.1.0",
+      "update_button_color": "",
+      "update_button_text": "",
+      "update_text_color": ""
+    },
+    {
+      "app_name": "fy_app_ios_v2",
+      "background_svg_dark": "",
+      "background_svg_light": "",
+      "cur_ver": "3.3.0",
+      "date_update": "11-10-2025 14:50",
+      "decline_button_color": "",
+      "decline_button_text": "",
+      "decline_text_color": "",
+      "desc": "Invest via Specialised Investment Funds (SIFs).\nCustomise font size for better readability.\nEnhanced news section.\nFaster, more stable app performance.",
+      "icon_svg": "",
+      "link": "https://apps.apple.com/us/app/fyers/id1526652184",
+      "min_ver": "3.1.0",
+      "update_button_color": "",
+      "update_button_text": "",
+      "update_text_color": ""
+    }
+  ],
+  "bod_process": {
+    "bod_end_time": "07:30",
+    "bod_start_time": "05:00",
+    "message": "Morning system updates in progress. Holdings, positions and funds will appear normally after 7:30 AM. No action needed.",
+    "no_bod": [
+      "Sunday"
+    ],
+    "show_bod_alert": true
+  },
+  "chart_session_timing": {
+    "mcx_session_time": "0900-2355|1815-1915:"
+  },
+  "code": 200,
+  "data_socket": {
+    "cl_cug": [
+      "XS53027",
+      "XV15456",
+      "XT05527",
+      "XP17807",
+      "XS05805",
+      "XS20129",
+      "XY01644",
+      "FP0068",
+      "FV0071",
+      "FT0004",
+      "FA1716",
+      "XR00738",
+      "XV09821",
+      "Test1236",
+      "XN08824",
+      "XS00045",
+      "DS06359",
+      "XP15926",
+      "XL01431",
+      "XC03431",
+      "DV00497",
+      "XP01470",
+      "XS32823",
+      "XT00031",
+      "XP01470",
+      "XK17407",
+      "XN12991"
+    ],
+    "cl_cug_k": [
+      "DA04332",
+      "FY0001",
+      "XP01470",
+      "XP20963",
+      "XR00839"
+    ],
+    "cl_range_k": [],
+    "cl_range_mob": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "cl_range_web": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "global_mob": "0",
+    "global_mob_k": "0",
+    "global_web": "1",
+    "global_web_k": "0"
+  },
+  "indices_volume": {
+    "enabled_flag": true,
+    "enabled_flag_ost": false,
+    "list_cug": [
+      "YP16464",
+      "FAC78741",
+      "YK00122",
+      "FAA43929"
+    ],
+    "list_series": [
+      "X"
+    ],
+    "enabled_indices": [
+      "NSE:NIFTY50-INDEX",
+      "NSE:NIFTYBANK-INDEX",
+      "NSE:FINNIFTY-INDEX",
+      "NSE:MIDCPNIFTY-INDEX",
+      "NSE:NIFTYNXT50-INDEX",
+      "BSE:SENSEX-INDEX",
+      "BSE:BANKEX-INDEX"
+    ],
+    "predefinedIndicesMapper": {
+      "NSE:NIFTY50-INDEX": "predefined_nifty50",
+      "NSE:NIFTYBANK-INDEX": "predefined_niftybank",
+      "NSE:FINNIFTY-INDEX": "predefined_finnifty",
+      "NSE:MIDCPNIFTY-INDEX": "predefined_niftymidcapselect",
+      "NSE:NIFTYNXT50-INDEX": "predefined_niftynext50",
+      "BSE:SENSEX-INDEX": "predefined_bsesensex",
+      "BSE:BANKEX-INDEX": "predefined_bsebankex"
+    }
+  },
+  "drawing_optimisation_config": {
+    "enable": false,
+    "kodi_savechart_url": "https://api-g1.fyers.in/tv/",
+    "list_cug": [
+      "XC01651",
+      "XP20963",
+      "XP01139",
+      "YA21880",
+      "XP17807",
+      "YP16464",
+      "YV11236",
+      "XV14580",
+      "DS06359",
+      "XT00328",
+      "XS54731",
+      "XS42044",
+      "XG09529",
+      "XR45785",
+      "XK23824",
+      "XM44577",
+      "XM03798",
+      "FP0869",
+      "XN24086",
+      "XR07069",
+      "XV27581",
+      "XA33422",
+      "XR14497"
+    ],
+    "list_series": [
+      "A",
+      "D",
+      "F",
+      "X",
+      "Y",
+      "N",
+      "B",
+      "C",
+      "G",
+      "H",
+      "J",
+      "K",
+      "M",
+      "P",
+      "S",
+      "T",
+      "U",
+      "V",
+      "Z",
+      "L",
+      "R"
+    ],
+    "max_drawings_limit": 500
+  },
+  "enabled_features": {
+    "additionalInfoUpdate": true,
+    "app_hide_notification_setting": true,
+    "charts_market_status_key": true,
+    "correctionKeyFlag": false,
+    "drawingOptimizationList": [],
+    "drawing_storage_optimization": false,
+    "enableEditPAN": true,
+    "enable_hash_key_validation_profile": true,
+    "enable_hash_key_validation_signup": true,
+    "indexedDb_enabled": true,
+    "is_ddpi_enable_free_offer": true,
+    "is_ddpi_enabled": true,
+    "is_ipo_enabled": true,
+    "is_kra_status_enabled": true,
+    "is_mpp_new_flow": true,
+    "is_mtf_enabled": true,
+    "is_new_payout_flow_enabled": true,
+    "is_reverse_penny_drop_down": false,
+    "mtf": true,
+    "nps_lite": true,
+    "prepost_candle_restrict": true,
+    "should_redirect_to_profile": true,
+    "show_market_depth_on_scalper": true,
+    "show_profile_section": true,
+    "show_sell_unpledge_popup": true,
+    "smart_exit": true,
+    "smart_order_types": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "smart_order_types_v2": [
+      1,
+      0,
+      1,
+      1,
+      1
+    ],
+    "smart_orders": true,
+    "tab_change_refresh_enabled": true,
+    "tab_change_refresh_time": 60,
+    "trader_tab_change_refresh_enabled": false,
+    "trader_tab_change_refresh_time": 60
+  },
+  "endpoints": {
+    "current": {
+      "alerts": {
+        "alerts_create": "https://api-t1.fyers.in/api/v3/price-alert",
+        "alerts_dashboard": "https://alerts.fyers.in/dashboard",
+        "alerts_delete": "https://api-t1.fyers.in/api/v3/price-alert",
+        "alerts_get": "https://api-t1.fyers.in/api/v3/price-alert",
+        "alerts_modify": "https://api-t1.fyers.in/api/v3/price-alert",
+        "alerts_toggle": "https://api-t1.fyers.in/api/v3/toggle-alert",
+        "alerts_trending": "https://api-t1.fyers.in/api/v3/trending-alert"
+      },
+      "banner": {
+        "banner": "https://api-t1.fyers.in/malabar/v1/banners/",
+        "home_qsg": "https://assets.fyers.in/qsg_web/home/Consolidated_Introductory_QSG.mp4"
+      },
+      "baskets": {
+        "all_items": "https://api-t1.fyers.in/indus/v1/baskets/all-items",
+        "basket_items": "https://api-t1.fyers.in/indus/v1/baskets/items",
+        "basket_margin": "https://api-t1.fyers.in/trade/v3/baskets/margin",
+        "basket_reset": "https://api-t1.fyers.in/indus/v1/baskets/reset",
+        "basket_update": "https://api.fyers.in/fydev/v1/updatebasket",
+        "baskets_execute": "https://api-t1.fyers.in/trade/v3/baskets/execute",
+        "baskets_get": "https://api-t1.fyers.in/indus/v1/baskets"
+      },
+      "baskets_old": {
+        "all_items": "https://api.fyers.in/fydev/v1/baskets/all-items",
+        "basket_items": "https://api.fyers.in/fydev/v1/baskets/items",
+        "basket_margin": "https://api-t1.fyers.in/trade/v3/baskets/margin",
+        "basket_reset": "https://api.fyers.in/fydev/v1/baskets/reset",
+        "basket_update": "https://api.fyers.in/fydev/v1/updatebasket",
+        "baskets_execute": "https://api-t1.fyers.in/trade/v3/baskets/execute",
+        "baskets_get": "https://api.fyers.in/fydev/v1/baskets"
+      },
+      "cdsl": {
+        "auth_cdsl": "https://trade.fyers.in/edis/AuthCdsl.html",
+        "base_cdsl_v1": "https://api.fyers.in/fy/cdsl/dev"
+      },
+      "data": {
+        "base_data": "https://data.fyers.in/dev-fyers",
+        "base_indus": "https://api-t1.fyers.in/indus",
+        "futures_chain": "https://api-t1.fyers.in/indus/data/v1/futures",
+        "highs_lows": "https://api-t1.fyers.in/indus/data/v1/highlow",
+        "history": "https://api-t1.fyers.in/indus/history",
+        "investor_details": "https://api-i1.fyers.in/investment/tapi/v1/investors-details-v2",
+        "market_depth": "https://api-t1.fyers.in/indus/data/v1/depth",
+        "marks": "https://api-t1.fyers.in/indus/data/v1/marks",
+        "multi_symbols": "https://api-t1.fyers.in/indus/data/v1/multi/symbols",
+        "multi_symbols_v2": "https://api-t1.fyers.in/indus/data/v1/multiSymbols",
+        "multi_symbols_v2_app": "https://api-t1.fyers.in/indus/data/v1/multiSymbols",
+        "options_chain": "https://api-t1.fyers.in/indus/data/v1/options-chain",
+        "pcr_maxpain": "https://api-t1.fyers.in/indus/data/v1/pcr-maxpain",
+        "popular_search": "https://api-t1.fyers.in/indus/data/v1/popular_search",
+        "quotes": "https://api-t1.fyers.in/indus/data/v1/quotes",
+        "quotes_gm": "https://api-t1.fyers.in/indus/data/v1/quotes/mobile/discover",
+        "search": "https://api-t1.fyers.in/indus/data/v1/search",
+        "smart_search_text": "https://public.fyers.in/app/smartSearchText.json",
+        "snapshot": "https://trade.fyers.in/v1/snapshot",
+        "stock_widgets": "https://data.fyers.in/dev-fyers/mobileapi/stock-widgets",
+        "symbols": "https://data.fyers.in/dev-fyers/symbols/V3/",
+        "symbols_web": "https://api-t1.fyers.in/indus/data/v1/symbols",
+        "time_sales": "https://api-t1.fyers.in/indus/data/v1/timesales"
+      },
+      "ddpi_mtf": {
+        "approveNameMismatch": "https://api-a1.fyers.in/marina/v1/ddpi/approveName",
+        "ddpi_approval_timeline": "https://api-a1.fyers.in/marina/v1/ddpi/timeline",
+        "ddpi_esign": "https://api-a1.fyers.in/marina/v1/ddpi/esign",
+        "ddpi_mtf_status": "https://api-a1.fyers.in/marina/v1/ddpi/status",
+        "ddpi_mtf_status_v2": "https://api-a1.fyers.in/marina/v1/ddpi/statusV2",
+        "download_esign_pdf": "https://api-a1.fyers.in/marina/v1/ddpi/user/listing/file",
+        "esignValidateV2": "https://api-a1.fyers.in/marina/v1/ddpi/esignValidateV2",
+        "fetchRealtimeFunds": "https://api-a1-prod.fyers.in/myaccount/prod/realtime-funds",
+        "initiate-digilocker": "https://api-a1.fyers.in/identity-details/initiate-digilocker",
+        "mtf_auth_banner": "https://api-t1.fyers.in/cdsl/mtf/banner",
+        "mtf_auth_setup": "https://api-t1.fyers.in/cdsl/mtf/authorize_setup",
+        "mtf_ddpi_base_url": "https://mtfddpi.fyers.in/",
+        "mtf_send_otp": "https://api-a1.fyers.in/marina/v1/mtf/send_otp",
+        "mtf_verify_otp": "https://api-a1.fyers.in/marina/v1/mtf/verify_otp",
+        "saveeSignDetails": "https://api-a1.fyers.in/marina/v1/ddpi/esignValidate",
+        "approve_name_mismatch_v2": "https://api-a1.fyers.in/marina/v1/ddpi/approveNameV2",
+        "esign_validate_v3": "https://api-a1.fyers.in/marina/v1/ddpi/esignValidateV3",
+        "ddpi_mtf_submit_request": "https://api-a1.fyers.in/marina/v1/mtf/enable_request",
+        "ddpi_mtf_video_url": "https://assets.fyers.in/mtf/MTF_podcast_for_landing_page.mp4"
+      },
+      "depository": {
+        "edis_details": "https://api.fyers.in/fy/cdsl/dev/edis/details",
+        "edis_details_kambala": "https://api.fyers.in/fy/cdsl/dev/cdslEdis/details",
+        "edis_setup": "https://api.fyers.in/fy/cdsl/dev/edis/index",
+        "edis_setup_kambala": "https://api.fyers.in/fy/cdsl/dev/cdslEdis/index",
+        "edis_tpin": "https://api.fyers.in/fy/cdsl/dev/edis/tpin",
+        "edis_tpin_kambala": "https://api.fyers.in/fy/cdsl/dev/cdslEdis/tpin",
+        "mtf_pledge_success_redirection_url": "https://api-t1.fyers.in/cdsl/mtf/txncallback",
+        "pledge_reqdetails": "https://api.fyers.in/fy/cdsl/dev/pledge/reqdetails",
+        "pledge_setup": "https://api.fyers.in/fy/cdsl/dev/pledge/setup",
+        "pledge_status": "https://api.fyers.in/fy/cdsl/dev/pledge/status",
+        "pledge_userdata": "https://api.fyers.in/fy/cdsl/dev/pledge/userdata",
+        "unpledge_setup": "https://api.fyers.in/fy/cdsl/dev/unpledge/setup",
+        "unpledge_status": "https://api.fyers.in/fy/cdsl/dev/unpledge/status",
+        "edis_setup_kambala_v2": "https://api-t1.fyers.in/fy/cdsl/v2/edis/index",
+        "edis_tpin_kambala_v2": "https://api-t1.fyers.in/fy/cdsl/v2/edis/tpin",
+        "pledge_details_v2": "https://api-t1.fyers.in/fy/cdsl/v2/unpledge/pledge-detail",
+        "pledge_info_v2": "https://api-t1.fyers.in/fy/cdsl/v2/unpledge/pledge-info",
+        "pledge_setup_v2": "https://api-t1.fyers.in/fy/cdsl/v2/pledge/setup",
+        "pledge_status_v2": "https://api-t1.fyers.in/fy/cdsl/v2/pledge/status",
+        "unpledge_setup_v2": "https://api-t1.fyers.in/fy/cdsl/v2/unpledge/setup"
+      },
+      "depository_v2": {
+        "edis_setup_kambala": "https://api-t1.fyers.in/fy/cdsl/v2/edis/index",
+        "edis_tpin_kambala": "https://api-t1.fyers.in/fy/cdsl/v2/edis/tpin",
+        "pledge_details": "https://api-t1.fyers.in/fy/cdsl/v2/unpledge/pledge-detail",
+        "pledge_info": "https://api-t1.fyers.in/fy/cdsl/v2/unpledge/pledge-info",
+        "pledge_setup": "https://api-t1.fyers.in/fy/cdsl/v2/pledge/setup",
+        "pledge_status": "https://api-t1.fyers.in/fy/cdsl/v2/pledge/status",
+        "unpledge_setup": "https://api-t1.fyers.in/fy/cdsl/v2/unpledge/setup"
+      },
+      "discover": {
+        "base_screeners": "https://screeners.fyers.in/koshi/v2/screeners/",
+        "event_details": "https://screeners.fyers.in/koshi/v2/eventDetails",
+        "events": "https://screeners.fyers.in/koshi/v2/events",
+        "get_news_settings": "https://api-g1.fyers.in/settings?setting=news",
+        "ipo": "https://api-t1.fyers.in/indus/home/ipo",
+        "market_all": "https://api-t1.fyers.in/indus/data/v1/quotes/discover?market=all",
+        "market_time": "https://api-t1.fyers.in/indus/home/market_time",
+        "markets": "https://api-t1.fyers.in/indus/home/markets",
+        "quotes": "https://api-t1.fyers.in/indus/data/v1/quotes/discover",
+        "redirection": "https://trade.fyers.in",
+        "related_videos": "https://youtu.be/HcaWIO3-FaY",
+        "related_videos_app": "https://youtu.be/HcaWIO3-FaY",
+        "screeners_config": "https://screeners.fyers.in/koshi/v2/screeners/config",
+        "screeners_data": "https://screeners.fyers.in/koshi/v2/async/screeners/",
+        "symbol_details_video": "https://youtu.be/A_JG7_lntJM?si=tMAcwItf-z_rEUPE",
+        "trendchart": "https://api-t1.fyers.in/indus/data/v1/trendchart/webp",
+        "update_news_settings": "https://api-g1.fyers.in/settings/news"
+      },
+      "fia": {
+        "alchemy_status": "https://api-t1.fyers.in/fyassist/backend/rag/alchemy/status",
+        "anchors": "https://api-t1.fyers.in/fyassist/backend/rag/anchors",
+        "chat": "https://api-t1.fyers.in/fyassist/backend/rag/chat",
+        "chat_v2": "https://api-t1.fyers.in/fyassist/backend/rag/chat/v2",
+        "feedback": "https://api-t1.fyers.in/fyassist/backend/rag/feedback",
+        "fia_koshi": "https://screeners.fyers.in/koshi/cug/async/screeners/",
+        "history": "https://api-t1.fyers.in/fyassist/backend/rag/history",
+        "history_uid": "https://api-t1.fyers.in/fyassist/backend/rag/history/:uid",
+        "screener_save": "https://api-t1.fyers.in/fyassist/backend/rag/screener/save"
+      },
+      "fia_nucleus": {
+        "available_tools": "https://api-t1.fyers.in/nucleus/v1/available_tools",
+        "cancel_chat_cid_mid": "https://api-t1.fyers.in/nucleus/v1/cancel-chat",
+        "chat": "https://api-t1.fyers.in/nucleus/v1/chat",
+        "chat_auto_suggest": "https://api-t1.fyers.in/nucleus/v1/chat/auto-suggest",
+        "chat_cid_mid": "https://api-t1.fyers.in/nucleus/v1/chat",
+        "conversation_cid": "https://api-t1.fyers.in/nucleus/v1/conversation",
+        "feedback": "https://api-t1.fyers.in/nucleus/v1/feedback",
+        "history": "https://api-t1.fyers.in/nucleus/v1/history",
+        "history_cid": "https://api-t1.fyers.in/nucleus/v1/history",
+        "history_search": "https://api-t1.fyers.in/nucleus/v1/history/search",
+        "load_screener": "https://api-t1.fyers.in/tess/screener",
+        "oldfiachat_history": "https://api-t1.fyers.in/nucleus/v1/oldfiachat/history",
+        "prompts": "https://api-t1.fyers.in/nucleus/v1/prompts",
+        "save_fia_screener": "https://api-g1.fyers.in/settings/fia_favourite_screeners"
+      },
+      "fund_transfer": {
+        "bank_details": "https://api.fyers.in/fydev/v1/fundtx/v1/bankdetails",
+        "fund_transfer_web": "https://fundtransfer.fyers.in/v2/",
+        "funds": "https://api.fyers.in/fundtransfer/dev/funds",
+        "fy_bank_details": "https://api.fyers.in/fydev/v1/bank/info",
+        "fy_bank_details_kambala": "https://api.fyers.in/fydev/v1/bank/user/info",
+        "order_status_atom": "https://api.fyers.in/fundtransfer/dev/ftStatus",
+        "order_status_razorpay": "https://api.fyers.in/fundtransfer/dev/ftStatus",
+        "payment_create": "https://api.fyers.in/fundtransfer/dev/payment/create",
+        "payout_nubra": "https://api-a1.fyers.in/nubra/withdrawal",
+        "validate_vpa": "https://api.fyers.in/fundtransfer/dev/validate-vpa",
+        "withdraw_funds": "https://api-a1-prod.fyers.in/myaccount/prod/withdraw-fund",
+        "withdraw_funds_learn_more": "https://support.fyers.in/portal/en/kb/articles/how-long-does-it-take-to-process-a-withdrawal-request",
+        "withdraw_history": "https://api-a1-prod.fyers.in/myaccount/prod/withdrawal-history",
+        "withdraw_history_new": "https://api-a1-prod.fyers.in/myaccount/prod/user-withdrawal-history",
+        "withdrawable_funds": "https://api-a1-prod.fyers.in/myaccount/prod/my-funds",
+        "withdrawable_funds_new": "https://api-a1-prod.fyers.in/myaccount/prod/user-funds"
+      },
+      "funds_v2": {
+        "add_bank": "https://api-a1.fyers.in/funds/v1/api/add_bank",
+        "add_funds": "https://api-a1.fyers.in/funds/v1/api/add_funds",
+        "cancel_mandate": "https://api-a1.fyers.in/funds/v1/api/cancel_mandate",
+        "cancel_withdrawal": "https://api-a1.fyers.in/funds/v1/api/cancel_withdrawal",
+        "client_contact_details": "https://api-a1.fyers.in/funds/v1/api/client_contact_details",
+        "client_red_flag": "https://api-a1.fyers.in/funds/v1/api/client_red_flag",
+        "create_mandate": "https://api-a1.fyers.in/funds/v1/api/create_mandate",
+        "deactivate_bank": "https://api-a1.fyers.in/funds/v1/api/deactivate_bank",
+        "download_transactions": "https://api-a1.fyers.in/funds/v1/api/download_transactions",
+        "explore_now_high_margin": "https://fyers.in/haircut/cash/",
+        "fund_config": "https://api-a1.fyers.in/funds/v1/api/config",
+        "fund_details": "https://api-a1.fyers.in/funds/v1/api/fund_details",
+        "fund_support_portal": "https://support.fyers.in/portal/en/kb/fund-management",
+        "funds_status": "https://api-a1.fyers.in/funds/v1/api/add_funds_status?order_id=",
+        "get_download_key": "https://api-a1.fyers.in/funds/v1/api/transaction_download_key",
+        "get_instant_margin_learn_more": "https://support.fyers.in/portal/en/kb/articles/what-is-a-haircut-and-how-does-it-impact-the-pledge-margin",
+        "get_mandate_history": "https://api-a1.fyers.in/funds/v1/api/get_mandate_txn",
+        "get_mandate_list": "https://api-a1.fyers.in/funds/v1/api/get_mandates",
+        "get_mandates": "https://api-a1.fyers.in/funds/v1/api/get_mandates",
+        "get_transactions": "https://api-a1.fyers.in/funds/v1/api/transactions",
+        "get_upi_suggestions": "https://api-a1.fyers.in/funds/v1/api/get_upi_id",
+        "get_user_banks": "https://api-a1.fyers.in/funds/v1/api/get_banks",
+        "ifsc_search": "https://api-t1.fyers.in/indus/data/v1/ifscsearch",
+        "instant_withdraw_funds_learn_more": "https://support.fyers.in/portal/en/kb/articles/what-are-the-terms-and-conditions-for-instant-fund-withdrawal",
+        "instant_withdrawal": "https://api-a1.fyers.in/funds/v1/api/instant_withdrawal",
+        "invite_friends": "https://signup.fyers.in/?utm-source=Customer-Referral&utm-medium=",
+        "modify_withdrawal": "https://api-a1.fyers.in/funds/v1/api/modify_withdrawal",
+        "nri_file_upload": "https://api-a1.fyers.in/funds/v1/api/add_bank/upload_bank_documents",
+        "penny_verification": "https://api-a1.fyers.in/funds/v1/api/add_bank/penny_drop",
+        "quarterly_settlement_learn_more": "https://fyers.in/blog/unlocking-opportunities-with-pledge-to-trade.html",
+        "reactivate_bank": "https://api-a1.fyers.in/funds/v1/api/reactivate_bank",
+        "request_withdrawal": "https://api-a1.fyers.in/funds/v1/api/request_withdrawal",
+        "reverse_penny_verification": "https://api-a1.fyers.in/funds/v1/api/add_bank/req_rpd",
+        "rpd_poll": "https://api-a1.fyers.in/funds/v1/api/add_bank/rpd_pool",
+        "send_otp": "https://api-a1.fyers.in/funds/v1/api/send_otp",
+        "set_alias": "https://api-a1.fyers.in/funds/v1/api/set_alias",
+        "set_primary": "https://api-a1.fyers.in/funds/v1/api/set_primary",
+        "smart_filter": "https://api-a1.fyers.in/funds/v1/api/transactions_filter",
+        "user_funds": "https://api-a1.fyers.in/funds/v1/api/get_user_funds",
+        "user_funds_v2": "https://api-a1.fyers.in/funds/v1/api/user_funds",
+        "validate_instant_withdrawal": "https://api-a1.fyers.in/funds/v1/api/validate_instant_withdrawal",
+        "validate_upi_id": "https://api-a1.fyers.in/funds/v1/api/verify_upi_id",
+        "verify_otp": "https://api-a1.fyers.in/funds/v1/api/verify_otp",
+        "withdraw_funds_learn_more": "https://support.fyers.in/portal/en/kb/articles/how-long-does-it-take-to-process-a-withdrawal-request",
+        "withdrawable_margin": "https://api-a1.fyers.in/funds/v1/api/get_withdrawable_margin"
+      },
+      "global_navigation": {
+        "status": "https://api-t1.fyers.in/indus/home/status"
+      },
+      "global_settings": {
+        "charts": "https://api-g1.fyers.in/settings/charts",
+        "get_settings": "https://api-g1.fyers.in/settings",
+        "news_v2": "https://api-g1.fyers.in/settings/news_v2",
+        "option_chain": "https://api-g1.fyers.in/settings/option_chain",
+        "order_window_v2": "https://api-g1.fyers.in/settings/order_window_v2",
+        "scalper": "https://api-g1.fyers.in/settings/scalper",
+        "user": "https://api-g1.fyers.in/settings/user",
+        "get_settings_mob": "https://api-g1.fyers.in/settings"
+      },
+      "home": {
+        "markets": "https://api-t1.fyers.in/indus/home"
+      },
+      "info": {
+        "manage_account": "https://myaccount.fyers.in/ManageAccount",
+        "notice_board": "https://fyers.in/notice-board/",
+        "privacy_policy": "https://fyers.in/privacy-policy",
+        "privacy_policy_web": "https://fyers.in/privacy-policy",
+        "public_notification": "https://public.fyers.in/messages/public.json",
+        "school_of_stock_article1": "https://fyers.in/school-of-stocks/module/introduction-to-stock-markets.html",
+        "school_of_stock_article2": "https://fyers.in/school-of-stocks/module/technical-analysis.html",
+        "school_of_stock_article3": "https://fyers.in/school-of-stocks/module/options.html",
+        "school_of_stock_home": "https://fyers.in/school-of-stocks/",
+        "support": "https://support.fyers.in/portal/en/home",
+        "tnc": "https://fyers.in/terms-and-conditions"
+      },
+      "insights": {
+        "base_insights": "https://insights.fyers.in",
+        "insights_economic_calendar": "https://insights.fyers.in/economic-calendar/",
+        "insights_forex": "https://insights.fyers.in/forex/",
+        "insights_fundamentals": "https://insights.fyers.in/fundamentals/",
+        "insights_technicals": "https://insights.fyers.in/technicals/"
+      },
+      "investment": {
+        "mf_holdings": "https://api-i1.fyers.in/fy/mf/v1/holdings"
+      },
+      "invite": {
+        "check_status": "https://api-a1-prod.fyers.in/campaigns/v1/checkstatus",
+        "invite_share_link": "https://signup.fyers.in/?utm-source=Customer-Referral&utm-medium=",
+        "refer": "https://api-a1-prod.fyers.in/campaigns/v1/refer",
+        "subscribe": "https://api-a1-prod.fyers.in/campaigns/v1/subscribe"
+      },
+      "ipo": {
+        "cancel_ipo_order": "https://api-i1.fyers.in/investment/tapi/v1/ipo/v2/cancel-order",
+        "create_ipo_order": "https://api-i1.fyers.in/investment/tapi/v1/ipo/v2/place-order",
+        "get_ipo_details": "https://api-i1.fyers.in/investment/jhelum/v1/api/offer_details_v2",
+        "get_ipo_list": "https://api-i1.fyers.in/investment/jhelum/v1/api/offer_list_v2",
+        "get_upi_suggestions": "https://api-i1.fyers.in/investment/tapi/v1/ipo/v2/fetch-upi-id",
+        "modify_ipo_order": "https://api-i1.fyers.in/investment/tapi/v1/ipo/v2/modify-order",
+        "order_by_id": "https://api-i1.fyers.in/investment/tapi/v1/ipo/v2/order-by-id",
+        "order_list": "https://api-i1.fyers.in/investment/tapi/v1/ipo/v2/orders",
+        "validate_upi_id": "https://api-i1.fyers.in/investment/tapi/v1/ipo/v2/validate-upi"
+      },
+      "locale": {
+        "translations": "https://assets.fyers.in/localization/"
+      },
+      "login": {
+        "api_v2_direct_login": "https://api.fyers.in/api/v2/direct-login",
+        "api_v2_login": "https://api.fyers.in/api/v2/token",
+        "change_account_status": "https://api-t2.fyers.in/vagator/v2/change_account_status",
+        "change_password": "https://api-t2.fyers.in/vagator/v2/change_password",
+        "change_pin": "https://api-t2.fyers.in/vagator/v2/change_pin",
+        "change_pin_v2": "https://api-t2.fyers.in/vagator/v2/change_pin_v2",
+        "check_pwd": "https://api-t2.fyers.in/vagator/v2/check_pwd",
+        "check_user_status": "https://api-t2.fyers.in/vagator/v2/check_user_status",
+        "create_password": "https://api-t2.fyers.in/vagator/v2/create_password",
+        "create_pin": "https://api-t2.fyers.in/vagator/v2/create_pin",
+        "create_pin_v2": "https://api-t2.fyers.in/vagator/v2/create_pin_v2",
+        "forgot_pin": "https://api-t2.fyers.in/vagator/v2/forgot_pin",
+        "forgot_pin_v2": "https://api-t2.fyers.in/vagator/v2/forgot_pin_v2",
+        "generate_qr": "https://api-t2.fyers.in/vagator/v2/generate_qr",
+        "get_oms_data_v2": "https://api-t2.fyers.in/vagator/v2/get_oms_data_v2",
+        "get_tradecast_token": "https://api-t2.fyers.in/vagator/v2/get_tradecast_token",
+        "get_user_id": "https://api-t2.fyers.in/vagator/v2/get_user_id",
+        "get_user_id_v2": "https://api-t2.fyers.in/vagator/v2/get_user_id_v2",
+        "get_user_id_v3": "https://api-t2.fyers.in/vagator/v2/get_user_id_v3",
+        "internal_reset_pwd": "https://api-t2.fyers.in/vagator/v2/internal_reset_pwd",
+        "login": "https://api-t2.fyers.in/vagator/v2/login",
+        "login_guest_user": "https://api-t2.fyers.in/vagator/v2/guest_user/login_v2",
+        "login_web": "https://login.fyers.in",
+        "logout": "https://api-t2.fyers.in/vagator/v2/logout",
+        "logout_web_qr_device": "https://api-t2.fyers.in/vagator/v2/logout",
+        "put_new_user_data": "https://api-t2.fyers.in/vagator/v2/put_new_user_data",
+        "refresh_token": "https://api-t2.fyers.in/vagator/v2/refresh_token",
+        "refresh_token_v2": "https://api-t2.fyers.in/vagator/v2/refresh_token_v2",
+        "register_guest_user": "https://api-t2.fyers.in/vagator/v2/guest_user/register",
+        "resend_otp": "https://api-t2.fyers.in/vagator/v2/resend_otp",
+        "send_login_otp": "https://api-t2.fyers.in/vagator/v2/send_login_otp",
+        "send_login_otp_v2": "https://api-t2.fyers.in/vagator/v2/send_login_otp_v2",
+        "send_login_otp_v3": "https://api-t2.fyers.in/vagator/v2/send_login_otp_v3",
+        "send_otp": "https://api-t2.fyers.in/vagator/v2/send_otp",
+        "send_otp_v2": "https://api-t2.fyers.in/vagator/v2/send_otp_v2",
+        "set_biometric": "https://api-t2.fyers.in/vagator/v2/set_biometric",
+        "sign_up": "https://open-account.fyers.in/",
+        "update_fcm_data": "https://api-t2.fyers.in/vagator/v2/update_fcm_data",
+        "validate_access_refresh_tokens": "https://api-t1.fyers.in/gk/validate_tokens",
+        "validate_qr": "https://api-t2.fyers.in/vagator/v2/validate_qr",
+        "verify_otp": "https://api-t2.fyers.in/vagator/v2/verify_otp",
+        "verify_pin": "https://api-t2.fyers.in/vagator/v2/verify_pin",
+        "verify_pin_v2": "https://api-t2.fyers.in/vagator/v2/verify_pin_v2",
+        "verify_token": "https://api-t2.fyers.in/vagator/v2/verify_token",
+        "verify_token_gk": "https://api-t1.fyers.in/gk/verify_token",
+        "verify_token_v2": "https://api-t2.fyers.in/vagator/v2/verify_token_v2",
+        "validate_web_qr": "https://api-t2.fyers.in/vagator/v2/validate_qrcode",
+        "qr_web_device_list": "https://api-t2.fyers.in/vagator/v2/get_session_devices?source=qr",
+        "verify_otp_v2": "https://api-t2.fyers.in/vagator/v2/verify_otp_v2",
+        "device_update": "https://api-t1.fyers.in/utility/v2/public/device-update"
+      },
+      "manage_account_v2": {
+        "accountAggregatorPoll": "https://api-a1.fyers.in/manage/account/financial-proof/poll",
+        "accoutClosureReasonSubmit": "https://api-a1.fyers.in/manage/account/close-account/reason",
+        "activateSegmentsFinFetch": "https://api-a1.fyers.in/manage/account/financial-proof/verification",
+        "approveNameMismatchInEsign": "https://api-a1.fyers.in/manage/account/name-match/approval",
+        "cancelAccontClosure": "https://api-a1.fyers.in/manage/account/close-account/cancel",
+        "cancelPendingOrders": "https://api-a1.fyers.in/manage/account/cancel/pending/order",
+        "checkDormantStatus": "https://api-a1.fyers.in/manage/account/check/dormant",
+        "checkOpenPositionsAndPendingOrders": "https://api-a1.fyers.in/manage/account/open/positions/orders",
+        "closeAccountReference": "https://support.fyers.in/portal/en/kb/articles/how-can-i-close-my-account-with-fyers",
+        "commodityDeclaration": "https://api-a1.fyers.in/manage/account/commodity/declaration",
+        "deleteProfilePhoto": "https://api-a1.fyers.in/manage/account/profile-pic",
+        "emailDocuments": "https://api-a1.fyers.in/manage/account/client/documents/email",
+        "fetchAccountHistory": "https://api-a1.fyers.in/manage/account/client/history",
+        "fetchDocuments": "https://api-a1.fyers.in/manage/account/client/documents",
+        "fetchHistoryFilters": "https://api-a1.fyers.in/manage/account/client/historyFilters",
+        "freezeAccount": "https://api-a1.fyers.in/manage/account/freeze/account",
+        "fundsRedirectionUrl": "https://app.fyers.in/v2/#/funds",
+        "generatePDFForEsign": "https://api-a1.fyers.in/manage/account/pdf/generate",
+        "generatePDFPollForEsign": "https://api-a1.fyers.in/manage/account/pdf/poll",
+        "getCityAndStateFromPincode": "https://api-a1.fyers.in/manage/account/state/city",
+        "getClientProfileDetails": "https://api-t1.fyers.in/indus/user/v1/user-profile",
+        "getProfileDetails": "https://api-a1.fyers.in/manage/account/client/details",
+        "initiateDigilocker": "https://api-a1.fyers.in/manage/account/initiate/digilocker",
+        "initiateEsign": "https://api-a1.fyers.in/manage/account/esign/initiate",
+        "logoutFromAllSession": "https://api-a1.fyers.in/manage/account/logout/device",
+        "profilePhotoUpload": "https://api-a1.fyers.in/manage/account/profile-pic/edit",
+        "reActivateDormant": "https://api-a1.fyers.in/manage/account/reactive/dormant",
+        "saveDigilocker": "https://api-a1.fyers.in/manage/account/save/digilocker",
+        "saveEsignDetails": "https://api-a1.fyers.in/manage/account/esign/save",
+        "saveSignatureImage": "https://api-a1.fyers.in/manage/account/signature-verification",
+        "saveSignatureLiveImage": "https://api-a1.fyers.in/manage/account/request-verification",
+        "sendOTP": "https://api-a1.fyers.in/manage/account/send_otp",
+        "takeABreak": "https://api-a1.fyers.in/manage/account/take/a/break",
+        "totp": "https://api-t2.fyers.in/vagator/v2/totp",
+        "transferHoldingsDetails": "https://api-a1.fyers.in/manage/account/close-account/transfer-details",
+        "unfreezeRequest": "https://api-a1.fyers.in/manage/account/unfreeze/request",
+        "unfreezeVerifyEmail": "https://api-a1.fyers.in/manage/account/unfreeze/verify/email",
+        "unfreezeVerifyMobAndEmail": "https://api-a1.fyers.in/manage/account/unfreeze/verify",
+        "unfreezeVerifyMobile": "https://api-a1.fyers.in/manage/account/unfreeze/verify/mobile",
+        "updateFundSettlementFrequency": "https://api-a1.fyers.in/manage/account/change/settlement",
+        "updateKYCDetails": "https://api-a1.fyers.in/manage/account/update/user",
+        "uploadProofForFinFetch": "https://api-a1.fyers.in/manage/account/financial-proof/upload",
+        "validateCloseAccount": "https://api-a1.fyers.in/manage/account/close-account/validation",
+        "validateKycDetails": "https://api-a1.fyers.in/manage/account/email/mobile/check",
+        "validateSelfie": "https://api-a1.fyers.in/manage/account/selfie-validation",
+        "verifyOTP": "https://api-a1.fyers.in/manage/account/verify_otp"
+      },
+      "master_files": {
+        "bse_cd_csv": "https://public.fyers.in/sym_details/BSE_CD.csv",
+        "bse_cd_gzip": "https://public.fyers.in/sym_details/sym_master_12_12.gz",
+        "bse_cd_zip": "https://public.fyers.in/sym_details/BSE_CD.zip",
+        "bse_cm_csv": "https://public.fyers.in/sym_details/BSE_CM.csv",
+        "bse_cm_gzip": "https://public.fyers.in/sym_details/sym_master_12_10.gz",
+        "bse_cm_json": "https://public.fyers.in/sym_details/BSE_CM.json",
+        "bse_cm_zip": "https://public.fyers.in/sym_details/BSE_CM.zip",
+        "bse_fo_csv": "https://public.fyers.in/sym_details/BSE_FO.csv",
+        "bse_fo_gzip": "https://public.fyers.in/sym_details/sym_master_12_11.gz",
+        "bse_fo_zip": "https://public.fyers.in/sym_details/BSE_FO.zip",
+        "holiday_master": "https://assets.fyers.in/json/holiday-data.json",
+        "icons_gzip": "https://public.fyers.in/icons/icons.gz",
+        "indices_mapping": "https://dev.fyers.in/sym_details/index_map.gzip",
+        "mcx_com_csv": "https://public.fyers.in/sym_details/MCX_COM.csv",
+        "mcx_com_gzip": "https://public.fyers.in/sym_details/sym_master_11_20.gz",
+        "mcx_com_zip": "https://public.fyers.in/sym_details/MCX_COM.zip",
+        "mcx_order_window_json": "https://public.fyers.in/sym_details/mcx_order_window.json",
+        "nse_cd_csv": "https://public.fyers.in/sym_details/NSE_CD.csv",
+        "nse_cd_gzip": "https://public.fyers.in/sym_details/sym_master_10_12.gz",
+        "nse_cd_zip": "https://public.fyers.in/sym_details/NSE_CD.zip",
+        "nse_cm_csv": "https://public.fyers.in/sym_details/NSE_CM.csv",
+        "nse_cm_gzip": "https://public.fyers.in/sym_details/sym_master_10_10.gz",
+        "nse_cm_zip": "https://public.fyers.in/sym_details/NSE_CM.zip",
+        "nse_fo_csv": "https://public.fyers.in/sym_details/NSE_FO.csv",
+        "nse_fo_gzip": "https://public.fyers.in/sym_details/sym_master_10_11.gz",
+        "nse_fo_zip": "https://public.fyers.in/sym_details/NSE_FO.zip",
+        "sym_details": "https://public.fyers.in/sym_details",
+        "symbols_combined_gzip": "https://public.fyers.in/sym_details/sym_master.gz"
+      },
+      "mf": {
+        "cancel_order_sip": "https://api-i1.fyers.in/mf/txn/v1/cancel-order/sip",
+        "get-bse-payment-link": "https://api-i1.fyers.in/mf/txn/v1/get-bse-payment-link",
+        "get-cancel-reasons": "https://api-i1.fyers.in/mf/txn/v1/get-cancel-reasons",
+        "get_banks": "https://api-i1.fyers.in/mf/txn/v1/get-banks",
+        "get_mandates": "https://api-i1.fyers.in/mf/txn/v1/get-mandates",
+        "get_sip_schedule_dates": "https://api-i1.fyers.in/mf/data/v2/sip_schedule_dates",
+        "learn-more": "https://support.fyers.in/portal/en/kb/articles/why-are-some-mutual-funds-restricted-to-sip-or-lumpsum-investments-only",
+        "mf_about_details": "https://api-i1.fyers.in/mf/data/v2/scheme/details/about",
+        "mf_chart_details": "https://api-i1.fyers.in/mf/data/v2/scheme/details/chart",
+        "mf_data_assortments": "https://api-i1.fyers.in/mf/data/v2/assortments",
+        "mf_data_collateral": "https://api-i1.fyers.in/mf/data/v2/collateral",
+        "mf_data_home": "https://api-i1.fyers.in/mf/data/v2/home",
+        "mf_explore_data": "https://api-i1.fyers.in/mf/data/v2/explore",
+        "mf_filter_data": "https://api-i1.fyers.in/mf/data/v2/explore/filters",
+        "mf_get_order_window": "https://api-i1.fyers.in/mf/data/v2/get_order_window",
+        "mf_holdings": "https://api-i1.fyers.in/mf/txn/v1/get-holdings",
+        "mf_holdings_and_allocation": "https://api-i1.fyers.in/mf/data/v2/scheme/details/holding-allocation",
+        "mf_manage_sip_data": "https://api-i1.fyers.in/mf/txn/v1/manage-sip",
+        "mf_manage_sip_details": "https://api-i1.fyers.in/mf/txn/v1/get-sip-details",
+        "mf_order_history": "https://api-i1.fyers.in/mf/txn/v1/get-order-history",
+        "mf_overview_details": "https://api-i1.fyers.in/mf/data/v2/scheme/details/overview",
+        "mf_place_redeem_order": "https://api-i1.fyers.in/mf/txn/v1/place-order/redeem",
+        "mf_redeem_details": "https://api-i1.fyers.in/mf/data/v2/redeem-ow",
+        "place_lumpsum_order": "https://api-i1.fyers.in/mf/txn/v1/place-order/lumpsum",
+        "place_sip_order": "https://api-i1.fyers.in/mf/txn/v1/place-order/sip"
+      },
+      "mobile_chart": {
+        "charts": "https://trade.fyers.in/mobile/v2/1.0/index.html"
+      },
+      "news": {
+        "news_details": "https://api-t1.fyers.in/news/v1/newsIdData",
+        "news_filters": "https://api-t1.fyers.in/news/v1/newsFilter",
+        "news_realtime": "https://api-t1.fyers.in/news/v1/getRtNewsData",
+        "news_symbol": "https://api-t1.fyers.in/news/v1/getNewsData"
+      },
+      "notification": {
+        "public_notification_get": "https://api-t1.fyers.in/malabar/v1/public_notification"
+      },
+      "nps": {
+        "export": "https://api-t1.fyers.in/api/nps/npsExport",
+        "insights": "https://api-t1.fyers.in/api/nps/npsInsights",
+        "prompt": "https://api-t1.fyers.in/api/nps/npsPrompt",
+        "store": "https://api-t1.fyers.in/api/nps/npsStore"
+      },
+      "open_account": {
+        "accountStatusPolling": "https://api-a1.fyers.in/signup/v2/user/status/poll",
+        "aggregatorPolling": "https://api-a1.fyers.in/signup/v2/user/aggregator-status",
+        "eSign": "https://api-a1.fyers.in/signup/v2/user/esign-document",
+        "eSignSuccess": "https://api-a1.fyers.in/signup/v2/user/esign-success",
+        "editPanDetails": "https://api-a1.fyers.in/signup/v2/user/identity-details/edit/pan",
+        "fixApplication": "https://api-a1.fyers.in/signup/v2/user/change-esign-status",
+        "fixRejectionIssues": "https://api-a1.fyers.in/signup/v2/nri/fix-issue",
+        "generatePDF": "https://api-a1.fyers.in/signup/v2/user/pdf/generate",
+        "getAssets": "https://api-a1.fyers.in/signup/v2/user/get-assets",
+        "getDigioId": "https://api-a1.fyers.in/signup/v2/nri/vkyc-request",
+        "getDocument": "https://api-a1.fyers.in/signup/v2/nri/get-document",
+        "getPincodeData": "https://api-a1.fyers.in/signup/v2/user/get-pincode-data",
+        "getReversePennyDropDetails": "https://api-a1.fyers.in/signup/v2/bank-details/setu-penny-drop",
+        "getVideoUrl": "https://api-a1.fyers.in/signup/v2/nri/vkyc-fetch",
+        "googleSignIn": "https://api-a1.fyers.in/signup/v2/social/login",
+        "guest_login": "https://api-a1.fyers.in/signup/v2/guest/login",
+        "initDigilocer": "https://api-a1.fyers.in/signup/v2/identity-details/initiate-digilocker",
+        "ipvSave": "https://api-a1.fyers.in/signup/v2/ipv/save",
+        "ipvSaveNri": "https://api-a1.fyers.in/signup/v2/nri/ipv/submit",
+        "itNameFetch": "https://api-a1.fyers.in/signup/v2/it-name/fetch",
+        "kraStatusAPI": "https://api-a1.fyers.in/marina/v1/kra/profile",
+        "nameMatchUpdate": "https://api-a1.fyers.in/signup/v2/user/esign/accept-name-mismatch",
+        "nriAccountStatusPolling": "https://api-a1.fyers.in/signup/v2/nri/status/poll",
+        "nriGetBankDetails": "https://api-a1.fyers.in/signup/v2/nri/bank-details/fetch",
+        "nriSubmitApplication": "https://api-a1.fyers.in/signup/v2/nri/application-submit",
+        "nriSubmitNominee": "https://api-a1.fyers.in/signup/v2/nri/nomination-details/submit",
+        "pdfPoll": "https://api-a1.fyers.in/signup/v2/user/pdf/poll",
+        "pennyDrop": "https://api-a1.fyers.in/signup/v2/bank-details/penny-drop",
+        "reversePennyDropSocket": "wss://api-a1.fyers.in/signup/v2/create-websocket",
+        "rpdPolling": "https://api-a1.fyers.in/signup/v2/bank-details/poll",
+        "saveAdditionalInfo": "https://api-a1.fyers.in/signup/v2/additional-info/save",
+        "saveBankDetails": "https://api-a1.fyers.in/signup/v2/user/bank-details/save",
+        "saveDigiLockerDetails": "https://api-a1.fyers.in/signup/v2/identity-details/save-digilocker-details",
+        "saveDocumentInfo": "https://api-a1.fyers.in/signup/v2/nri/document-details/submit",
+        "saveIdentityDetails": "https://api-a1.fyers.in/signup/v2/identity-details/save",
+        "saveNominationDetails": "https://api-a1.fyers.in/signup/v2/nomination/save",
+        "saveNriAdditionalInfo": "https://api-a1.fyers.in/signup/v2/nri/additional-details/submit",
+        "saveNriBankDetails": "https://api-a1.fyers.in/signup/v2/nri/bank-details/submit",
+        "saveNriSegments": "https://api-a1.fyers.in/signup/v2/nri/segment-details/submit",
+        "saveSegments": "https://api-a1.fyers.in/signup/v2/user/segments/save",
+        "sendEmailOTP": "https://api-a1.fyers.in/signup/v2/email/send-otp",
+        "sendOTP": "https://api-a1.fyers.in/signup/v2/send-otp",
+        "signUpLevel": "https://api-a1.fyers.in/signup/v2/levels",
+        "skipDerivatives": "https://api-a1.fyers.in/signup/v2/user/skip-derivatives",
+        "statusPageWebSocket": "wss://api-a1.fyers.in/signup-ucc/v2/create-websocket-status-page",
+        "submitAddress": "https://api-a1.fyers.in/signup/v2/nri/address-details/submit",
+        "submitPan": "https://api-a1.fyers.in/signup/v2/nri/pan-details/submit",
+        "updateMobile": "https://api-a1.fyers.in/signup/v2/nri/update-mobile",
+        "updateUserType": "https://api-a1.fyers.in/signup/v2/update-user-type",
+        "uploadDec": "https://api-a1.fyers.in/signup/v2/nri/upload",
+        "uploadProof": "https://api-a1.fyers.in/signup/v2/user/activate-derivatives",
+        "userAggregatioStart": "https://api-a1.fyers.in/signup/v2/user/account_aggregation_start",
+        "userReviewData": "https://api-a1.fyers.in/signup/v2/user/review-data",
+        "userTradeExperience": "https://api-a1.fyers.in/signup/v2/user/trade-experience",
+        "validateDOB": "https://api-a1.fyers.in/signup/v2/identity-details/validate-dob",
+        "verifyEmailOTP": "https://api-a1.fyers.in/signup/v2/email/verify-otp",
+        "verifyOTP": "https://api-a1.fyers.in/signup/v2/verify-otp",
+        "verifyPan": "https://api-a1.fyers.in/signup/v2/nri/pan/verify",
+        "watchTutorial": "https://www.youtube.com/watch?v=LiRDD8MCbzQ",
+        "watchTutorialWeb": "https://www.youtube.com/watch?v=LiRDD8MCbzQ",
+        "selfie_validate": "https://api-a1.fyers.in/signup/v2/user/validate-selfie",
+        "single_upload_api": "https://api-a1.fyers.in/onboarding/file-upload/all",
+        "verifyOTPV2": "https://api-a1.fyers.in/signup/v2/verify-otp-v2",
+        "digio_rpd": "https://api-a1.fyers.in/signup/v2/bank-details/initiate-digio-rpd",
+        "hyperverge_data": "https://api-a1.fyers.in/signup/v2/user/get-details-for-ipv-verification",
+        "hyperverge_poll": "https://api-a1.fyers.in/signup/v2/user/hyperverge-poll"
+      },
+      "option_chain": {
+        "option_chain": "https://api-t1.fyers.in/indus/data/v1/options-chain-v2",
+        "option_chain_settings": "https://api-t1.fyers.in/v2/indus/user/option-settings"
+      },
+      "products": {
+        "debt_market": "https://debt.fyers.in/explore/g-secs/",
+        "insta_options": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=F0AQSZXZ6E-102&redirect_uri=https://instaoptions.fyers.in/auth/fyers/callback&response_type=code&state=sample_state&agent=Mobile&token_id=",
+        "integrated_platforms": "https://fyers.in/integrated-platforms/list",
+        "ipos": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=EFR7964223-101&redirect_uri=https://ipo.fyers.in&response_type=code&state=sample_state&agent=Mobile&token_id=",
+        "mutual_funds": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=V71C1UQU24-101&redirect_uri=https://direct.fyers.in/auth/redirect&response_type=code&state=sample_state&agent=Mobile&token_id=",
+        "my_account": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=GT2V66D5Y4-101&redirect_uri=https://myaccount.fyers.in/&response_type=code&state=sample_state&agent=Mobile&token_id=",
+        "my_account_ledger": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=GT2V66D5Y4-101&redirect_uri=https://myaccount.fyers.in/&response_type=code&state=Ledger&agent=Mobile&token_id=",
+        "notice_board": "https://fyers.in/notice-board/",
+        "pledge": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=SOFG221ZX4-101&redirect_uri=https://pledge.fyers.in/index.html&response_type=code&state=sample_state&agent=Mobile&token_id=",
+        "profile": "https://app.fyers.in/profile/personal/?token_id=",
+        "sos": "https://fyers.in/school-of-stocks/",
+        "support": "https://support.fyers.in/portal/en/home"
+      },
+      "qsg": {
+        "mark_seen": "https://api-g1.fyers.in/settings/qsgs",
+        "qsg_list": "https://api-g1.fyers.in/settings/qsgs"
+      },
+      "quickTrade": {
+        "getQuickTradeBannerStatusUrl": "https://api-g1.fyers.in/settings?setting=quick_trade_immutable",
+        "postQuickTradeBannerStatusUrl": "https://api-g1.fyers.in/settings/quick-trade-immutable",
+        "quickTradeGet": "https://api-g1.fyers.in/settings?setting=quick_trade",
+        "quickTradePut": "https://api-g1.fyers.in/settings/quick-trade",
+        "quickTradeReset": "https://api-g1.fyers.in/settings/quick-trade/reset"
+      },
+      "reports_tax_pnl": {
+        "download_tax_pnl_data": "https://api-a1.fyers.in/reports/v1/api/download_tax_pnl",
+        "get_download_key": "https://api-a1.fyers.in/reports/v1/api/tax_pnl_download_key",
+        "get_financial_years": "https://api-a1.fyers.in/reports/v1/api/fin_year",
+        "get_tax_pnl_data": "https://api-a1.fyers.in/reports/v1/api/tax_pnl",
+        "clear_tax_redirect_url": "https://cleartax.in/entity/GetFyersAuthCode",
+        "clear_tax_state_value": "8aea0b3c-874d-4ae7-85fd-57a5c2d534cf",
+        "quicko_redirect_url": "https://accounts.quicko.com/login"
+      },
+      "scalper": {
+        "action_support_article": "https://support.fyers.in/portal/en/kb/articles/what-are-the-hotkeys-shortcut-keys-for-fyers-web-to-simplify-the-charting-experience",
+        "chart": "https://app.fyers.in/ost/chart/chart.html",
+        "saved_charts": "https://api-t1.fyers.in/indus/user/v1/savechart",
+        "tablet_feedback": "https://api-g1.fyers.in/settings/tablet-feedback"
+      },
+      "screeners": {
+        "abandoned_baby_bottom": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/abandoned-baby-bottom",
+        "abandoned_baby_top": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/abandoned-baby-top",
+        "bearish_engulfing": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/bearish-engulfing",
+        "bearish_harami": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/bearish-harami",
+        "bearish_harami_cross": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/bearish-harami-cross",
+        "black_marubozu": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/black-marubozu",
+        "bullish_engulfing_pattern": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/bullish-engulfing-pattern",
+        "bullish_harami": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/bullish-harami",
+        "bullish_harami_cross": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/bullish-harami-cross",
+        "bullish_kicking": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/bullish-kicking",
+        "candlestick_strength": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/candlestick-strength",
+        "dark_cloud_cover": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/dark-cloud-cover",
+        "downside_tasuki_gap": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/downside-tasuki-gap",
+        "dragonfly_doji": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/dragonfly-doji",
+        "hammer": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/hammer",
+        "hanging_man": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/hanging-man",
+        "identical_three_crows": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/identical-three-crows",
+        "inverted_hammer": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/inverted-hammer",
+        "morning_star": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/morning-star",
+        "piercing_line": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/piercing-line",
+        "shooting_star": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/shooting-star",
+        "three_white_soldiers": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/three-white-soldiers",
+        "upside_tasuki_gap": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/upside-tasuki-gap",
+        "white_marubozu": "https://api-t1-cdn.fyers.in/v1/screeners/fy-screeners/candlestick/white-marubozu"
+      },
+      "settings": {
+        "custom_favorites": "https://api-g1.fyers.in/settings/screeners/custom/favourites",
+        "delete_favourites": "https://api-g1.fyers.in/settings/screeners/favourites/:unique-key",
+        "kodi_settings": "https://api-g1.fyers.in/settings",
+        "ow_setting_create": "https://api-g1.fyers.in/settings/order-window",
+        "scaler_setting_get": "https://api-g1.fyers.in/settings?setting=scalper",
+        "scaler_setting_reset": "https://api-g1.fyers.in/settings/scalper/reset",
+        "scaler_setting_save": "https://api-g1.fyers.in/settings/scalper",
+        "scalper_chart_settings": "https://api-g1.fyers.in/settings?setting=scalper_chart",
+        "scalper_chart_settings_post": "https://api-g1.fyers.in/settings/scalper-chart",
+        "scalper_saved_chart": "https://api-g1.fyers.in/settings/scalper-chart",
+        "screener_config": "https://api-g1.fyers.in/settings/screeners/predefined",
+        "screener_favourites": "https://api-g1.fyers.in/settings/screeners/favourites",
+        "screener_settings": "https://api-g1.fyers.in/settings",
+        "user_settings": "https://api-g1.fyers.in/settings/user",
+        "user_settings_get": "https://api-g1.fyers.in/settings?setting=user"
+      },
+      "smart_exit": {
+        "position_pnl": "https://api-t1.fyers.in/flows/tc/se/positionspnl",
+        "smart_exit_action": "https://api-t1.fyers.in/flows/tc/se",
+        "timeline": "https://api-t1.fyers.in/flows/tc/timeline",
+        "toggle_status": "https://api-t1.fyers.in/flows/tc/se/activate"
+      },
+      "smart_orders": {
+        "cancel_smart_order": "https://api-t1.fyers.in/smart-order/cancel",
+        "modify_smart_order": "https://api-t1.fyers.in/smart-order/modify",
+        "order_book": "https://api-t1.fyers.in/smart-order/orderbook",
+        "order_book_v2": "https://api-t1.fyers.in/smart-order/v2/orderbook",
+        "order_history": "https://api-t1.fyers.in/smart-order/history",
+        "pause_smart_order": "https://api-t1.fyers.in/smart-order/pause",
+        "resume_smart_order": "https://api-t1.fyers.in/smart-order/resume",
+        "smart_order_mpp": "https://public.fyers.in/mpp_details/mpp_config.json",
+        "start_limit_order": "https://api-t1.fyers.in/smart-order/limit",
+        "start_sip_order": "https://api-t1.fyers.in/smart-order/sip",
+        "start_step_order": "https://api-t1.fyers.in/smart-order/step",
+        "start_trail_order": "https://api-t1.fyers.in/smart-order/trail"
+      },
+      "sockets": {
+        "hsm_app_fyers": "wss://socket.fyers.in/hsm/v1/app/prod",
+        "interactive": "wss://socket.fyers.in/trade/v3",
+        "market_data_1": "wss://api-socket.fyers.in/dev/data",
+        "market_data_2": "wss://socket.fyers.in/hsm/v1/app/prod",
+        "market_data_3": "wss://api-socket.fyers.in/hsm/v1",
+        "market_data_4": "wss://socket.fyers.in/hsm/v1-5/web/prod",
+        "market_data_5": "wss://socket.fyers.in/hsm/v1-5/app-web/prod",
+        "multi_purpose": "wss://socket.fyers.in/general-events",
+        "tradecast": "wss://socket.fyers.in/juhu/tradecast",
+        "versova": "wss://rtsocket.fyers.in/versova"
+      },
+      "sow": {
+        "charges": "https://api-t1.fyers.in/puri/v1/orderCharges",
+        "gtt_terms_condition": "https://support.fyers.in/portal/en/kb/articles/what-is-gtt-can-i-place-a-gtt-order-in-fyers",
+        "heads_up": "https://api-t1.fyers.in/puri/v1/headsUp",
+        "heads_up_v2": "https://api-t1.fyers.in/puri/v2/headsUp"
+      },
+      "subscriptions": {
+        "activate_third_party_app": "https://api.fyers.in/api/beta/activateThirdParty",
+        "app_ratings": "https://api.fyers.in/fydev/v1/appRating",
+        "cancel_subscription": "https://api.fyers.in/api/beta/subscriptions",
+        "create_subscription": "https://api.fyers.in/api/beta/subscriptions",
+        "create_third_party_app": "https://api.fyers.in/api/beta/appThirdParty",
+        "get_all_plans": "https://api.fyers.in/api/beta/get_all_plans",
+        "get_all_products": "https://api.fyers.in/api/beta/get_all_products",
+        "get_msiuser_details": "https://api.fyers.in/api/beta/get_msiuser_details",
+        "get_product_report": "https://api.fyers.in/api/beta/get_product_report",
+        "get_subscriptions": "https://api.fyers.in/api/beta/subscriptions",
+        "reactivate_subscription": "https://api.fyers.in/api/beta/subscriptions"
+      },
+      "symbol_app": {
+        "about_companies": "https://screeners.fyers.in/koshi/v2/screeners/about",
+        "company_financials": "https://screeners.fyers.in/koshi/v2/screeners/companyFinancials",
+        "ratio": "https://screeners.fyers.in/koshi/v2/screeners/ratios",
+        "similar_companies": "https://screeners.fyers.in/koshi/v2/screeners/similarCompanies",
+        "stock_analysis": "https://screeners.fyers.in/koshi/v2/screeners/stockAnalysis",
+        "technical_analysis": "https://screeners.fyers.in/koshi/v2/screeners/technicalAnalysis",
+        "trendchart": "https://api-t1.fyers.in/indus/data/v1/trendchart"
+      },
+      "symbol_details": {
+        "about_companies": "https://api-t1-cdn.fyers.in/v1/screeners/about",
+        "add_peers_column": "https://api-g1.fyers.in/settings/peers",
+        "add_performance_key_ratio": "https://api-g1.fyers.in/settings/key_ratio_performance",
+        "balance_sheet": "https://screeners.fyers.in/koshi/v2/screeners/company-financial/balance-sheet",
+        "block_deals": "https://screeners.fyers.in/koshi/v2/screeners/block-deals",
+        "company_details": "https://screeners.fyers.in/koshi/v2/screeners/company-details",
+        "company_financial_cashflow": "https://screeners.fyers.in/koshi/v2/screeners/company-financial/cashflow",
+        "company_financial_pnl": "https://screeners.fyers.in/koshi/v2/screeners/company-financial/pnl",
+        "company_financial_quarterly": "https://screeners.fyers.in/koshi/v2/screeners/company-financial/quarterly",
+        "dividends": "https://screeners.fyers.in/koshi/v2/screeners/dividends",
+        "financial_ratio": "https://screeners.fyers.in/koshi/v2/screeners/financial-ratio",
+        "fundamentals_companyfinancials": "https://api-t1-cdn.fyers.in/v1/screeners/fundamentals/company-financials",
+        "fundamentals_keyratio": "https://api-t1-cdn.fyers.in/v1/screeners/fundamentals/key-ratio/",
+        "insider_trading_sast": "https://screeners.fyers.in/koshi/v2/screeners/insider-trading-sast",
+        "key_ratio": "https://api-g1.fyers.in/settings/key_ratio",
+        "key_ratios": "https://screeners.fyers.in/koshi/v2/screeners/key-ratios",
+        "mutual_fund_holding": "https://screeners.fyers.in/koshi/v2/screeners/mutual-fund-holding",
+        "option_chain": "https://api-t1.fyers.in/indus/data/v1/options-chain",
+        "peers": "https://screeners.fyers.in/koshi/v2/screeners/peers",
+        "ratio_customisation": "https://api-g1.fyers.in/settings",
+        "ratios_financial_health": "https://screeners.fyers.in/koshi/v2/screeners/ratios-financial-health",
+        "ratios_quality": "https://screeners.fyers.in/koshi/v2/screeners/ratios-quality",
+        "reset_key_ratio": "https://api-g1.fyers.in/settings/key_ratio/reset",
+        "reset_peers": "https://api-g1.fyers.in/settings/peers/reset",
+        "reset_performance_key_ratio": "https://api-g1.fyers.in/settings/key_ratio_performance/reset",
+        "share_holding": "https://screeners.fyers.in/koshi/v2/screeners/share-holding",
+        "similar_companies": "https://api-t1-cdn.fyers.in/v1/screeners/similar",
+        "swot": "https://api-t1-cdn.fyers.in/v1/screeners/SWOT",
+        "technical_meters": "https://screeners.fyers.in/koshi/v2/screeners/technical-meters",
+        "technical_ratios": "https://screeners.fyers.in/koshi/v2/screeners/technical-ratios",
+        "technicals": "https://api-t1-cdn.fyers.in/v1/screeners/eod-technicals",
+        "trendchart": "https://api-t1.fyers.in/indus/data/v1/trendchart"
+      },
+      "tooltip_links": {
+        "asm_gsm": "https://support.fyers.in/portal/en/kb/articles/why-am-i-getting-an-error-stating-this-scrip-is-marked-under-asm-gsm-by-the-exchange",
+        "beta_analysis": "https://support.fyers.in/portal/en/kb/articles/what-does-beta-analysis-mean-in-fyers-2-0-app",
+        "bfo_mpp_learn_more": "https://support.fyers.in/portal/en/kb/articles/what-is-mpp-and-how-does-it-affect-trade-execution",
+        "bo": "https://support.fyers.in/portal/en/kb/articles/how-to-place-a-bracket-order-in-fyers-2-0-app",
+        "co": "https://support.fyers.in/portal/en/kb/articles/how-to-place-cover-order-in-the-fyers-2-0-app",
+        "freshPledgeLink": "https://support.fyers.in/portal/en/kb/articles/is-it-possible-to-sell-my-holdings-after-submitting-a-pledge-request",
+        "fundamentals_companyfinancials": "https://support.fyers.in/portal/en/kb/articles/what-is-company-financials-in-fyers-2-0-app",
+        "fundamentals_keyratio": "https://support.fyers.in/portal/en/kb/articles/what-is-key-ratios-in-fyers-2-0-app",
+        "fundamentals_research": "https://support.fyers.in/portal/en/kb/articles/what-does-fundamentals-research-mean-in-the-fyers-2-0-app",
+        "gtt": "https://support.fyers.in/portal/en/kb/articles/how-to-place-gtt-order-in-fyers-2-0-app",
+        "gtt_advanced": "",
+        "insufficient_funds": "https://support.fyers.in/portal/en/kb/articles/how-to-transfer-funds-using-fyers-app-2-0",
+        "invest": "https://support.fyers.in/portal/en/kb/articles/what-is-invest-option-in-the-fyers-2-0-app",
+        "lpp_learn_more": "https://support.fyers.in/portal/en/kb/articles/what-are-alerts-in-the-order-panel",
+        "marginRequiredTooltip": "https://support.fyers.in/portal/en/kb/articles/what-is-margin-required",
+        "market": "https://support.fyers.in/portal/en/kb/articles/how-to-place-a-market-order-in-fyers-2-0-app",
+        "mtf_learn_more": "https://support.fyers.in/portal/en/kb/platforms-tools/margin-trading-facility",
+        "mtf_ow": "https://support.fyers.in/portal/en/kb/articles/what-is-margin-trading-facility-mtf",
+        "previouslyPledgedLink": "https://support.fyers.in/portal/en/kb/articles/can-i-sell-my-pledged-shares-without-unpledging-them-at-fyers",
+        "prod_redirection_banner_learn_more": "https://support.fyers.in/portal/en/kb/articles/what-is-the-difference-between-fyers-app-and-fyers-ea-in-the-play-app-store",
+        "qvt": "https://support.fyers.in/portal/en/kb/articles/what-does-qvt-mean-in-the-fyers-2-0-app",
+        "schedule": "https://support.fyers.in/portal/en/kb/articles/how-to-place-schedule-order-in-the-fyers-2-0-app",
+        "scores": "https://support.fyers.in/portal/en/kb/articles/what-is-scores-option-in-the-fyers-2-0-app",
+        "support_resistance": "https://support.fyers.in/portal/en/kb/articles/what-is-the-use-of-support-resistance-option-in-the-fyers-2-0-app",
+        "t2t_segment": "https://support.fyers.in/portal/en/kb/articles/why-am-i-getting-an-error-stating-this-scrip-is-in-t2t-segment-and-cannot-be-squared-off-until-settlement",
+        "technicals": "https://support.fyers.in/portal/en/kb/articles/what-is-meant-by-technical-analysis",
+        "trade": "https://support.fyers.in/portal/en/kb/articles/what-is-trade-option-in-fyers-2-0-app",
+        "trigger": "https://support.fyers.in/portal/en/kb/articles/how-to-place-trigger-order-stop-loss-market-order-in-fyers-2-0-app"
+      },
+      "trade_redirections": {
+        "buy": "https://trade.fyers.in/?funcName=orderWindowBuy&symbolName=",
+        "charts": "https://trade.fyers.in/?funcName=openChart&symbolName=",
+        "option_chain": "https://trade.fyers.in/?funcName=ocChain&symbolName=",
+        "sell": "https://trade.fyers.in/?funcName=orderWindowSell&symbolName="
+      },
+      "tradecast": {
+        "get_device_list": "https://api-t1.fyers.in/juhu/tradecast/devicelist"
+      },
+      "trading": {
+        "brokeragecalculator": "https://fyers.in/calculator/brokerage",
+        "funds": "https://api-t1.fyers.in/trade/v3/funds",
+        "gtt": "https://api-t1.fyers.in/trade/v3/gtt/orders",
+        "holdings": "https://api-t1.fyers.in/trade/v3/holdings",
+        "mtf_conversion_learn_more": "https://support.fyers.in/portal/en/kb/articles/can-i-convert-an-mtf-position-to-overnight",
+        "mtf_positions_cancel": "https://api-t1.fyers.in/trade/v3/positions/cancel",
+        "mtf_positions_conversion": "https://api-t1.fyers.in/trade/v3/positions/conversion",
+        "order_history": "https://api-t1.fyers.in/trade/v3/orders/history",
+        "orders_cancel": "https://api-t1.fyers.in/trade/v3/orders",
+        "orders_get": "https://api-t1.fyers.in/trade/v3/orders",
+        "orders_margin": "https://api-t1.fyers.in/trade/v3/margin",
+        "orders_modify": "https://api-t1.fyers.in/trade/v3/orders",
+        "orders_multi": "https://api-t1.fyers.in/trade/v3/orders/multi",
+        "orders_place": "https://api-t1.fyers.in/trade/v3/orders",
+        "orders_slice": "https://api-t1.fyers.in/trade/v3/orders/slice",
+        "positions": "https://api-t1.fyers.in/trade/v3/positions",
+        "positions_convert": "https://api-t1.fyers.in/trade/v3/positions",
+        "positions_exit": "https://api-t1.fyers.in/trade/v3/positions",
+        "positions_reverse": "https://api-t1.fyers.in/trade/v3/positions/reverse",
+        "trades": "https://api-t1.fyers.in/trade/v3/tradebook"
+      },
+      "tv_charts": {
+        "base_data_savechart": "https://data.fyers.in/dev-fyers/savechart",
+        "base_savedcharts": "https://savedcharts.fyers.in",
+        "charts_settings_get": "https://data.fyers.in/dev-fyers/chartSettings/",
+        "charts_settings_post": "https://data.fyers.in/dev-fyers/chartSettings/",
+        "save_charts_base": "https://api-t1.fyers.in/indus/user/v1/savechart",
+        "saved_charts_get": "https://data.fyers.in/dev-fyers/savechart/1.2/charts",
+        "saved_charts_post": "https://data.fyers.in/dev-fyers/savechart/1.2/charts",
+        "study_templates": "https://data.fyers.in/dev-fyers/savechart/1.2/study_templates"
+      },
+      "user": {
+        "account_opening_status": "https://api-a1-prod.fyers.in/signup/v1/user/get-user-data",
+        "chart_settings": "https://api-t1.fyers.in/indus/user/v1/chart-settings",
+        "profile": "https://api-t1.fyers.in/indus/user/v1/user-profile",
+        "refer_and_earn": "https://fyers.in/refer-and-earn/",
+        "settings_get": "https://api-g1.fyers.in/settings/preferences",
+        "settings_post": "https://api-g1.fyers.in/settings/preferences",
+        "clevertap_user_preference": "https://api-t1.fyers.in/utility/v2/public/email-preference/"
+      },
+      "watchlist": {
+        "export_watchlist": "https://api-t1.fyers.in/indus/v1/watchlist/export/wl",
+        "get_watchlist_by_id": "https://api-t1.fyers.in/indus/v1/watchlist/wl_id",
+        "get_watchlist_by_name": "https://api-t1.fyers.in/indus/v1/watchlist/wl_name",
+        "import_watchlist": "https://api-t1.fyers.in/indus/v1/watchlist/mobile/v2",
+        "meta": "https://api-t1.fyers.in/indus/v1/watchlist/meta",
+        "mobile_get": "https://api-t1.fyers.in/indus/v1/watchlist/mobile/v1",
+        "mobile_post": "https://api-t1.fyers.in/indus/v1/watchlist/mobile/v1",
+        "mtf_sym_list": "https://api-t1.fyers.in/indus/v1/watchlist/get_mtf_scripts",
+        "post_watchlist_by_name": "https://api-t1.fyers.in/indus/v1/watchlist/web/v1",
+        "predefined_details": "https://api-t1.fyers.in/indus/v1/watchlist/predefined/get-data",
+        "predefined_watchlist": "https://api-t1.fyers.in/indus/v1/watchlist/predefined/v2",
+        "recent_search": "https://api-t1.fyers.in/indus/v1/watchlist/recent_search/v1",
+        "watchlist_actions": "https://api-t1.fyers.in/indus/v1/watchlist/action/wl",
+        "web_delete": "https://api-t1.fyers.in/indus/v1/watchlist/web/v1",
+        "web_get": "https://api-t1.fyers.in/indus/v1/watchlist/web/v1",
+        "web_post": "https://api-t1.fyers.in/indus/v1/watchlist/web/v1",
+        "web_recent_search": "https://api-t1.fyers.in/indus/v1/watchlist/recent_search/v1"
+      },
+      "web": {
+        "base_api_d1": "https://api-d1.fyers.in",
+        "base_api_fydev": "https://api.fyers.in/fydev/v1",
+        "base_betatrade": "https://betatrade.fyers.in",
+        "base_datapub": "https://datapub.fyers.in",
+        "base_gocharting": "https://fyers.gocharting.com",
+        "base_mahi_kambala": "https://api-t1.fydev.tech/trade/v3",
+        "base_myaccount": "https://myaccount.fyers.in",
+        "base_quantsapp": "https://fyers.quantsapp.com",
+        "base_vagator_v1": "https://api.fyers.in/vagator/v1",
+        "marketsmith_evaluation_page": "https://marketsmith.fyers.in/evaluation/Evaluation.html"
+      },
+      "reports_v2": {
+        "get_config": "https://api-a1.fyers.in/reports/v2/api/config",
+        "get_split_report": "https://api-a1.fyers.in/reports/v2/api/request_report/stocksplit",
+        "get_bonus_report": "https://api-a1.fyers.in/reports/v2/api/request_report/bonus",
+        "get_dividend_report": "https://api-a1.fyers.in/reports/v2/api/request_report/dividend",
+        "get_merger_report": "https://api-a1.fyers.in/reports/v2/api/request_report/merger",
+        "get_right_issue_report": "https://api-a1.fyers.in/reports/v2/api/request_report/rightsissues",
+        "get_demerger_report": "https://api-a1.fyers.in/reports/v2/api/request_report/demerger",
+        "get_ledger_report": "https://api-a1.fyers.in/reports/v2/api/ledger",
+        "get_buyback_report": "https://api-a1.fyers.in/reports/v2/api/request_report/buyback",
+        "get_capital_reduction_report": "https://api-a1.fyers.in/reports/v2/api/request_report/capitalreduction",
+        "report_support_article_url": "https://support.fyers.in/portal/en/kb/reports",
+        "ledger_support_article_url": "https://support.fyers.in/portal/en/kb/reports/ledger",
+        "tax_pnl_support_article_url": "https://support.fyers.in/portal/en/kb/platforms-tools/my-account/tax-pnl",
+        "corporate_actions_support_article_url": "https://support.fyers.in/portal/en/kb/reports/corporate-actions"
+      },
+      "Deeplink": {
+        "traffic_source_api": "https://api-t1.fyers.in/utility/v2/public/event-update",
+        "signup_traffice_source_api": "https://api-t1.fyers.in/utility/v2/public/signup-event-update"
+      }
+    }
+  },
+  "exchange_icons": {
+    "bseIcon": "https://public.fyers.in/icons/icons_bse/BSE.png",
+    "mcxIcon": "https://public.fyers.in/icons/icons_nse/MCX.png",
+    "nseIcon": "https://public.fyers.in/icons/icons_nse/NSE.png"
+  },
+  "hsm_config": {
+    "cug_mob": [
+      "XA53627",
+      "YG02480",
+      "YA09355",
+      "YH01038",
+      "XK28706",
+      "XS47964",
+      "XR07069",
+      "YK04391",
+      "YA23541"
+    ],
+    "cug_web": [],
+    "enable_mob": false,
+    "enable_web": true,
+    "user_type_mob": "PREMIUM",
+    "user_type_web": "M"
+  },
+  "login": {
+    "notice": [
+      {
+        "additional_info": {
+          "link": "https://www.sebi.gov.in/reports-and-statistics/research/jan-2023/study-analysis-of-profit-and-loss-of-individual-traders-dealing-in-equity-fando-segment_67525.html",
+          "text": "SEBI study dated January 25, 2023, on “Analysis of Profit and Loss of Individual Traders dealing in equity Futures and Options (F&O) Segment”, wherein Aggregate Level findings are based on annual Profit/Loss incurred by individual traders in equity F&O during FY 2021-22."
+        },
+        "body": [
+          {
+            "content": [
+              "9 out of 10 individual traders in equity Futures and Options Segment, incurred net losses.",
+              "On an average, loss makers registered net trading loss close to ₹50,000.",
+              "Over and above the net trading losses incurred, loss makers expended an additional 28% of net trading losses at transaction costs.",
+              "Those making net trading profits, incurred between 15% to 50% of such profits as transaction cost."
+            ],
+            "type": "li"
+          }
+        ],
+        "body_html": "<HTML><HTML>",
+        "btn": [
+          {
+            "action": 0,
+            "link": "",
+            "text": "I understand"
+          }
+        ],
+        "notice_id": 123,
+        "platforms": [
+          0
+        ],
+        "subtitle": "",
+        "title": "Risk Disclosure on Derivatives",
+        "type": 1
+      },
+      {
+        "body": [
+          {
+            "content": "https://assets.fyers.in/qsg/funds/mandate.mp4",
+            "type": "video"
+          }
+        ],
+        "btn": [
+          {
+            "action": 0,
+            "link": "",
+            "text": "Close"
+          }
+        ],
+        "notice_identifier": "qsg",
+        "subtitle": "Create Fund Mandate"
+      },
+      {
+        "body": [
+          {
+            "content": "https://assets.fyers.in/qsg/funds/instant_withdrawal.mp4",
+            "type": "video"
+          }
+        ],
+        "btn": [
+          {
+            "action": 0,
+            "link": "",
+            "text": "Close"
+          }
+        ],
+        "notice_identifier": "qsg",
+        "subtitle": "Instant Funds Withdrawal"
+      },
+      {
+        "body": [
+          {
+            "content": "https://assets.fyers.in/qsg/funds/funds.mp4",
+            "type": "video"
+          }
+        ],
+        "btn": [
+          {
+            "action": 0,
+            "link": "",
+            "text": "Close"
+          }
+        ],
+        "notice_identifier": "qsg",
+        "subtitle": "Add Funds Easily"
+      }
+    ]
+  },
+  "maintenance_window": {
+    "description": "The app won't be available from 5:30 AM till 11:00 AM on 3rd Aug 2024.",
+    "flag": 0,
+    "time_end": 1722663023,
+    "time_start": 1722643204,
+    "title": "We are improving the application for you!"
+  },
+  "marketing": [
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Smart-Exit-Alert.png",
+      "description": "Optimize every exit and navigate your trades effortlessly.",
+      "id": "1",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Smart-Exit-Alert.png",
+      "link": "",
+      "title": "Introducing, Smart Exit Alert",
+      "type": ""
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Insta-Options.png",
+      "description": "Explore and execute F&O strategies seamlessly using the options dashboard and ready-made strategies.",
+      "id": "2",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Insta-Options.png",
+      "link": "https://fyers.in/products/instaoptions/",
+      "title": "Introducing Insta Options",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Web-1.5.png",
+      "description": "Web 1.5 Beta",
+      "id": "3",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Web-1.5.png",
+      "link": "https://trade.fyers.in/",
+      "title": "Web 1.5 Beta",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Tradingview.png",
+      "description": "Trading with FYERS",
+      "id": "4",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Tradingview.png",
+      "link": "https://fyers.in/products/tradingview/",
+      "title": "Trading with FYERS",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Debt-Market.png",
+      "description": "Debt Markets",
+      "id": "5",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Debt-Market.png",
+      "link": "https://debt.fyers.in/explore/g-secs",
+      "title": "Debt Markets",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Verified_P&L.png",
+      "description": "With only a few clicks, you can instantly share your own confirmed P&L links.",
+      "id": "6",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Verified_P&L.png",
+      "link": "https://community.fyers.in/blogs-gdppin8d/post/say-hello-to-verified-p-l-Obo6QmKZu1bYHHz",
+      "title": "Verified P&L",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/api.png",
+      "description": "Start Algo trading or integrate with third-party platforms using FYERS API, for absolutely free.",
+      "id": "8",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/api.png",
+      "link": "https://fyers.in/api",
+      "title": "FYERS API",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Community.png",
+      "description": "Join FYERS Community now to share your thoughts and connect with other traders and investors!",
+      "id": "9",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Community.png",
+      "link": "https://fyers.in/community",
+      "title": "FYERS Community",
+      "type": "EXT"
+    }
+  ],
+  "marketing_banners_versioned": [
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/smartOrder_v2.jpg",
+      "description": "Trade smarter with Fyers' Smart Order, ensuring optimal order execution every time.",
+      "id": "1",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/smartOrder_v2.jpg",
+      "link": "https://support.fyers.in/portal/en/kb/articles/what-is-a-smart-limit-order",
+      "max_ver_fy_app_android": "10.0.0",
+      "max_ver_fy_app_android_v2": "10.0.0",
+      "max_ver_fy_app_ios": "10.0.0",
+      "max_ver_fy_app_ios_v2": "10.0.0",
+      "min_ver_fy_app_android": "2.0.25",
+      "min_ver_fy_app_android_v2": "2.0.53",
+      "min_ver_fy_app_ios": "2.0.25",
+      "min_ver_fy_app_ios_v2": "2.0.53",
+      "title": "Smart Orders",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Tradingview.png",
+      "description": "Trading with FYERS",
+      "id": "2",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Tradingview.png",
+      "link": "https://fyers.in/products/tradingview/",
+      "max_ver_fy_app_android": "10.0.0",
+      "max_ver_fy_app_android_v2": "10.0.0",
+      "max_ver_fy_app_ios": "10.0.0",
+      "max_ver_fy_app_ios_v2": "10.0.0",
+      "min_ver_fy_app_android": "2.0.0",
+      "min_ver_fy_app_android_v2": "2.0.0",
+      "min_ver_fy_app_ios": "2.0.0",
+      "min_ver_fy_app_ios_v2": "2.0.0",
+      "title": "Trading with FYERS",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Verified_P&L.png",
+      "description": "With only a few clicks, you can instantly share your own confirmed P&L links.",
+      "id": "3",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Verified_P&L.png",
+      "link": "https://community.fyers.in/blogs-gdppin8d/post/say-hello-to-verified-p-l-Obo6QmKZu1bYHHz",
+      "max_ver_fy_app_android": "10.0.0",
+      "max_ver_fy_app_android_v2": "10.0.0",
+      "max_ver_fy_app_ios": "10.0.0",
+      "max_ver_fy_app_ios_v2": "10.0.0",
+      "min_ver_fy_app_android": "2.0.0",
+      "min_ver_fy_app_android_v2": "2.0.0",
+      "min_ver_fy_app_ios": "2.0.0",
+      "min_ver_fy_app_ios_v2": "2.0.0",
+      "title": "Verified P&L",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/api.png",
+      "description": "Start Algo trading or integrate with third-party platforms using FYERS API, for absolutely free.",
+      "id": "5",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/api.png",
+      "link": "https://fyers.in/api",
+      "max_ver_fy_app_android": "10.0.0",
+      "max_ver_fy_app_android_v2": "10.0.0",
+      "max_ver_fy_app_ios": "10.0.0",
+      "max_ver_fy_app_ios_v2": "10.0.0",
+      "min_ver_fy_app_android": "2.0.0",
+      "min_ver_fy_app_android_v2": "2.0.0",
+      "min_ver_fy_app_ios": "2.0.0",
+      "min_ver_fy_app_ios_v2": "2.0.0",
+      "title": "FYERS API",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/Community.png",
+      "description": "Join FYERS Community now to share your thoughts and connect with other traders and investors!",
+      "id": "6",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/Community.png",
+      "link": "https://fyers.in/community",
+      "max_ver_fy_app_android": "10.0.0",
+      "max_ver_fy_app_android_v2": "10.0.0",
+      "max_ver_fy_app_ios": "10.0.0",
+      "max_ver_fy_app_ios_v2": "10.0.0",
+      "min_ver_fy_app_android": "2.0.0",
+      "min_ver_fy_app_android_v2": "2.0.0",
+      "min_ver_fy_app_ios": "2.0.0",
+      "min_ver_fy_app_ios_v2": "2.0.0",
+      "title": "FYERS Community",
+      "type": "EXT"
+    },
+    {
+      "dark_image": "https://public.fyers.in/icons/icons_marketing/ddpi_banner.png",
+      "description": "With DDPi, you can now sell your holdings effortlessly, eliminating the need for repetitive OTPs and T-PINs.",
+      "id": "7",
+      "light_image": "https://public.fyers.in/icons/icons_marketing/ddpi_banner.png",
+      "link": "ENABLE_DDPI",
+      "max_ver_fy_app_android": "10.0.0",
+      "max_ver_fy_app_android_v2": "10.0.0",
+      "max_ver_fy_app_ios": "10.0.0",
+      "max_ver_fy_app_ios_v2": "10.0.0",
+      "min_ver_fy_app_android": "2.0.15",
+      "min_ver_fy_app_android_v2": "2.0.53",
+      "min_ver_fy_app_ios": "2.0.15",
+      "min_ver_fy_app_ios_v2": "2.0.53",
+      "title": "Freedom From T-Pin",
+      "type": "INT"
+    },
+    {
+      "dark_image": "https://assets.fyers.in/mobileBanner/MTF_PRODUCT_BANNER.png",
+      "description": "Take advantage of the Margin Trading Facility (MTF) to invest in stocks with up to 5X leverage.",
+      "id": "8",
+      "light_image": "https://assets.fyers.in/mobileBanner/MTF_PRODUCT_BANNER.png",
+      "link": "ENABLE_MTF",
+      "max_ver_fy_app_android": "10.0.0",
+      "max_ver_fy_app_android_v2": "10.0.0",
+      "max_ver_fy_app_ios": "10.0.0",
+      "max_ver_fy_app_ios_v2": "10.0.0",
+      "min_ver_fy_app_android": "2.0.15",
+      "min_ver_fy_app_android_v2": "2.0.53",
+      "min_ver_fy_app_ios": "2.0.15",
+      "min_ver_fy_app_ios_v2": "2.0.53",
+      "title": "Margin Trading Facility",
+      "type": "INT"
+    }
+  ],
+  "master_files_update_time": {
+    "holiday_json": 1715961600,
+    "mcx_slot_sync_time": 1727317553,
+    "mpp_json": 1719185408,
+    "predef_watchlist_sync_time": 1760321906307,
+    "smart_search_text_json": 1721874635,
+    "sym_bse_cd": 1760313105,
+    "sym_bse_cd_gz": 1760313107,
+    "sym_bse_cm": 1760312499,
+    "sym_bse_cm_gz": 1760312508,
+    "sym_bse_fo": 1760312810,
+    "sym_bse_fo_gz": 1760312807,
+    "sym_combined": 1760322168,
+    "sym_config": 1760322168,
+    "sym_icon": 1758801357,
+    "sym_mcx_com": 1760234510,
+    "sym_mcx_com_gz": 1760320909,
+    "sym_nse_cd": 1760312205,
+    "sym_nse_cd_gz": 1760312207,
+    "sym_nse_cm": 1760321554,
+    "sym_nse_cm_gz": 1760321579,
+    "sym_nse_com": 1760320607,
+    "sym_nse_com_gz": 1760320608,
+    "sym_nse_fo": 1760312049,
+    "sym_nse_fo_gz": 1760311914,
+    "translations_sync_time": 1760338568
+  },
+  "mtf_assets": {
+    "mtf_banner_dark": "https://assets.fyers.in/mobileBanner/mtf_banner_dark.jpg",
+    "mtf_banner_light": "https://assets.fyers.in/mobileBanner/mtf_banner_light.jpg",
+    "mtf_icon_dark": "https://assets.fyers.in/mobileBanner/mtf_lev_logo_dark.svg",
+    "mtf_icon_light": "https://assets.fyers.in/mobileBanner/mtf_lev_logo_light.svg",
+    "mtf_leverage_upto": "4X",
+    "mtf_rate_of_interest": "18"
+  },
+  "payment_gateway_android": {
+    "primary": "razorpay",
+    "secondary": "atom"
+  },
+  "payment_gateway_ios": {
+    "primary": "atom",
+    "secondary": "razorpay"
+  },
+  "payment_gateway_ios_new": {
+    "primary": "razorpay",
+    "secondary": "atom"
+  },
+  "redirections": {
+    "alerts": "https://alerts.fyers.in/dashboard/",
+    "app_redirection": "https://app.fyers.in/discover.html",
+    "big_share": "https://ipo.bigshareonline.com/IPO_Status.html",
+    "bse_india": "https://www.bseindia.com/investors/appli_check.aspx",
+    "community": "https://community.fyers.in/",
+    "contact_us": "https://fyers.in/contact-us/",
+    "discover": "https://app.fyers.in",
+    "dormant": "https://app.fyers.in/profile/dormant/?token_id=",
+    "haircut_securities": "https://fyers.in/haircut/stock/",
+    "kfintech": "https://ipostatus.kfintech.com/",
+    "kra_status_article": "https://support.fyers.in/portal/en/kb/articles/what-is-a-kra-and-what-does-it-mean-if-my-kyc-status-is-on-hold-rejected-or-under-process",
+    "link_in_time": "https://in.mpms.mufg.com/Initial_Offer/public-issues.html",
+    "support_discover": "https://support.fyers.in/portal/en/kb/platforms-tools/fyers-web/discover",
+    "support_discover_app": "https://support.fyers.in/portal/en/kb/platforms-tools/fyers-app/discover-on-app",
+    "verified_pnl": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=GT2V66D5Y4-101&redirect_uri=https://myaccount.fyers.in/verified-day-pnl/&response_type=code&state=sample_state&agent=Mobile&token_id="
+  },
+  "s": "ok",
+  "show_prod_migration_banner": true,
+  "smart_exit_flags": {
+    "enable_smart_exit_ws_backup": false,
+    "enable_smart_exit_ws_backup_time": 120,
+    "smart_exit_or_alert_name_identifier": 0
+  },
+  "snooze": {
+    "charts_correctionKey": "1815-1915:20191027;1815-1915:20201114;1815-1915:20211104;1815-1915:20221024;1815-1915:20231112;0915-1530:20240120;0915-1230:20240302;0915-2355:20200201;0900-1230:20240518;1800-1900:20241101;0900-1700:20250201",
+    "charts_correctionKey_segment": {
+      "COMMODITY_MARKET": "1815-1915:20191027;1815-1915:20201114;1815-1915:20211104;1815-1915:20221024;1815-1915:20231112;0915-1530:20240120;0915-1230:20240302;0915-2355:20200201;0900-1230:20240518;1800-1900:20241101;0900-1700:20250201;0900-2330:20250317;0900-2330:20250318;0900-2330:20250417;0900-2330:20250421;0900-2330:20250422;0900-2330:20250423;0900-2330:20250424;0900-2330:20250425;0900-2330:20250428;0900-2330:20250429;0900-2330:20250430;0900-2330:20250501;1700-2330:20250501;0900-2330:20250502;0900-2330:20250505;0900-2330:20250506;0900-2330:20250507;0900-2330:20250508;0900-2330:20250509;0900-2330:20250512;0900-2330:20250513;0900-2330:20250514;0900-2330:20250515;0900-2330:20250516;0900-2330:20250519;0900-2330:20250520;0900-2330:20250521;0900-2330:20250522;0900-2330:20250523;0900-2330:20250526;0900-2330:20250527;0900-2330:20250528;0900-2330:20250529;0900-2330:20250530;0900-2330:20250602;0900-2330:20250603;0900-2330:20250604;0900-2330:20250605;0900-2330:20250606;0900-2330:20250609;0900-2330:20250610;0900-2330:20250611;0900-2330:20250612;0900-2330:20250613;0900-2330:20250616;0900-2330:20250617;0900-2330:20250618;0900-2330:20250619;0900-2330:20250620;0900-2330:20250623;0900-2330:20250624;0900-2330:20250625;0900-2330:20250625;0900-2330:20250626;0900-2330:20250627;0900-2330:20250630;0900-2330:20250701;0900-2330:20250702;0900-2330:20250703;0900-2330:20250704;0900-2330:20250707;0900-2330:20250708;0900-2330:20250709;0900-2330:20250710;0900-2330:20250711;0900-2330:20250714;0900-2330:20250715;0900-2330:20250716;0900-2330:20250717;0900-2330:20250718;0900-2330:20250721;0900-2330:20250722;0900-2330:20250723;0900-2330:20250724;0900-2330:20250725;0900-2330:20250728;0900-2330:20250729;0900-2330:20250730;0900-2330:20250731;0900-2330:20250801;0900-2330:20250804;0900-2330:20250805;0900-2330:20250806;0900-2330:20250807;0900-2330:20250808;0900-2330:20250811;0900-2330:20250812;0900-2330:20250813;0900-2330:20250814;0900-2330:20250818;0900-2330:20250819;0900-2330:20250820;0900-2330:20250821;0900-2330:20250822;0900-2330:20250825;0900-2330:20250826;1700-2330:20250827;0900-2330:20250828;0900-2330:20250829;0900-2330:20250901;0900-2330:20250902;0900-2330:20250903;0900-2330:20250904;0900-2330:20250905;0900-2330:20250908;0900-2330:20250909;0900-2330:20250910;0900-2330:20250911;0900-2330:20250912;0900-2330:20250915;0900-2330:20250916;0900-2330:20250917;0900-2330:20250918;0900-2330:20250919;0900-2330:20250922;0900-2330:20250923;0900-2330:20250924;0900-2330:20250925;0900-2330:20250926;0900-2330:20250929;0900-2330:20250930;0900-2330:20251001;0900-2330:20251003;0900-2330:20251006;0900-2330:20251007;0900-2330:20251008;0900-2330:20251009;0900-2330:20251010;0900-2330:20251013",
+      "CURRENCY_MARKET": "1815-1915:20191027;1815-1915:20201114;1815-1915:20211104;1815-1915:20221024;1815-1915:20231112;0915-1530:20240120;0915-1230:20240302;0915-2355:20200201;0900-1230:20240518;1800-1900:20241101;0900-1700:20250201",
+      "EQUITY_AND_DERIVATIVES_MARKET": "1815-1915:20191027;1815-1915:20201114;1815-1915:20211104;1815-1915:20221024;1815-1915:20231112;0915-1530:20240120;0915-1230:20240302;0915-2355:20200201;0900-1230:20240518;1800-1900:20241101;0900-1700:20250201",
+      "default": "1815-1915:20191027;1815-1915:20201114;1815-1915:20211104;1815-1915:20221024;1815-1915:20231112;0915-1530:20240120;0915-1230:20240302;0915-2355:20200201;0900-1230:20240518;1800-1900:20241101;0900-1700:20250201"
+    },
+    "charts_sessionHolidayKey": "20240126,20240329,20240815,20241002",
+    "charts_sessionHolidayKey_segment": {
+      "COMMODITY_MARKET": "20240126,20240329,20240815,20241002,20250418,20250815,20251002",
+      "CURRENCY_MARKET": "20240126,20240329,20240815,20241002,20250414,20250418,20250512,20250815,20250827,20250905,20251002",
+      "EQUITY_AND_DERIVATIVES_MARKET": "20240126,20240329,20240815,20241002,20250410,20250414,20250418,20250501,20250815,20250827,20251002",
+      "default": "20240126,20240329,20240815,20241002"
+    },
+    "mob_ddpi_frequency_banner": 1,
+    "nps": 30,
+    "profitThreshold": 100
+  },
+  "support": {
+    "support_email": "support@fyers.in",
+    "support_number": "080-60001111"
+  },
+  "supported_languages": {
+    "mobile": {
+      "English": "en_IN",
+      "मराठी": "mr_IN",
+      "हिन्दी": "hi_IN",
+      "ગુજરાતી": "gu_IN",
+      "தமிழ்": "ta_IN",
+      "తెలుగు": "te_IN",
+      "ಕನ್ನಡ": "kn_IN"
+    },
+    "mobile_order": [
+      "en_IN",
+      "hi_IN",
+      "kn_IN",
+      "ta_IN",
+      "mr_IN",
+      "gu_IN",
+      "te_IN"
+    ],
+    "web": [
+      "english",
+      "hindi",
+      "kannada",
+      "telugu",
+      "tamil",
+      "gujarati",
+      "marathi",
+      "malayalam"
+    ]
+  },
+  "trending_apps": [
+    {
+      "action": "MARKETS",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/MARKETS.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/MARKETS.png",
+      "title": "Markets",
+      "type": "INT"
+    },
+    {
+      "action": "OPTIONS_CHAIN",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/OPTION_CHAIN.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/OPTION_CHAIN.png",
+      "title": "Option Chain",
+      "type": "INT"
+    },
+    {
+      "action": "SCREENERS",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/DISCOVER.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/DISCOVER.png",
+      "title": "Discover",
+      "type": "INT"
+    },
+    {
+      "action": "PROFILE",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/PROFILE.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/PROFILE.png",
+      "title": "Profile",
+      "type": "INT"
+    },
+    {
+      "action": "BASKET",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/BASKET.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/BASKET.png",
+      "title": "Baskets",
+      "type": "INT"
+    },
+    {
+      "action": "PRICE_ALERT",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/PRICE_ALERT.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/PRICE_ALERT.png",
+      "title": "Price alert",
+      "type": "INT"
+    },
+    {
+      "action": "PORTFOLIO",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/PORTFOLIO.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/PORTFOLIO.png",
+      "title": "Portfolio",
+      "type": "INT"
+    },
+    {
+      "action": "https://fyers.in/integrated-platforms/",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/INTEGRATED_PLATFORMS.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/INTEGRATED_PLATFORMS.png",
+      "title": "Integrated Platforms",
+      "type": "EXT"
+    },
+    {
+      "action": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=EFR7964223-101&redirect_uri=https://ipo.fyers.in&response_type=code&state=sample_state&agent=Mobile&token_id=",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/IPO.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/IPO.png",
+      "title": "IPO",
+      "type": "EXT"
+    },
+    {
+      "action": "ORDERS",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/ORDERS.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/ORDERS.png",
+      "title": "Orders",
+      "type": "INT"
+    },
+    {
+      "action": "https://fyers.in/notice-board/",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/NOTICEBOARD.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/NOTICEBOARD.png",
+      "title": "Noticeboard",
+      "type": "EXT"
+    },
+    {
+      "action": "https://api-t1.fyers.in/api/v3/generate-authcode?client_id=SOFG221ZX4-101&redirect_uri=https://pledge.fyers.in/index.html&response_type=code&state=sample_state&agent=Mobile&token_id=",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/PLEDGE.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/PLEDGE.png",
+      "title": "Pledge",
+      "type": "EXT"
+    },
+    {
+      "action": "PRODUCTS",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/PRODUCTS.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/PRODUCTS.png",
+      "title": "Products",
+      "type": "INT"
+    },
+    {
+      "action": "https://fyers.in/school-of-stocks/",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/SCHOOL_OF_STOCKS.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/SCHOOL_OF_STOCKS.png",
+      "title": "School of stocks",
+      "type": "EXT"
+    },
+    {
+      "action": "SETTINGS",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/SETTINGS.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/SETTINGS.png",
+      "title": "Settings",
+      "type": "INT"
+    }
+  ],
+  "trending_apps_web": [
+    {
+      "action": "https://trade.fyers.in/index.html?funcName=ocChain&symbolName=NSE:NIFTY50-INDEX",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/OPTION_CHAIN.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/OPTION_CHAIN.png",
+      "title": "Option Chain",
+      "type": "EXT"
+    },
+    {
+      "action": "https://api.fyers.in/api/v2/generate-authcode?client_id=GT2V66D5Y4-101&redirect_uri=https://myaccount.fyers.in/&response_type=code&state=sample_state&agent=Mobile&token_id=",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/MY_ACCOUNT.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/MY_ACCOUNT.png",
+      "title": "My Account",
+      "type": "EXT"
+    },
+    {
+      "action": "https://alerts.fyers.in",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/PRICE_ALERT.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/PRICE_ALERT.png",
+      "title": "Price alert",
+      "type": "EXT"
+    },
+    {
+      "action": "https://fyers.in/integrated-platforms/",
+      "icon_dark": "https://public.fyers.in/icons/icons_trending_apps/dark/INTEGRATED_PLATFORMS.png",
+      "icon_light": "https://public.fyers.in/icons/icons_trending_apps/INTEGRATED_PLATFORMS.png",
+      "title": "Integrated Platforms",
+      "type": "EXT"
+    }
+  ],
+  "tv_config": {
+    "exchanges": [
+      {
+        "desc": "",
+        "name": "All Exchanges",
+        "value": ""
+      },
+      {
+        "desc": "National Stock Exchange",
+        "name": "NSE",
+        "value": "NSE"
+      },
+      {
+        "desc": "Multi Commodity Exchange",
+        "name": "MCX",
+        "value": "MCX"
+      },
+      {
+        "desc": "Bombay Stock Exchange",
+        "name": "BSE",
+        "value": "BSE"
+      }
+    ],
+    "supported_resolutions": [
+      "5S",
+      "10S",
+      "15S",
+      "30S",
+      "45S",
+      "1",
+      "2",
+      "3",
+      "5",
+      "10",
+      "15",
+      "20",
+      "30",
+      "45",
+      "60",
+      "75",
+      "120",
+      "180",
+      "240",
+      "D",
+      "W",
+      "M",
+      "3M",
+      "6M",
+      "12M"
+    ],
+    "supports_group_request": false,
+    "supports_marks": true,
+    "supports_search": true,
+    "supports_time": true,
+    "supports_timescale_marks": false,
+    "symbols_types": [
+      {
+        "name": "All types",
+        "value": ""
+      },
+      {
+        "name": "Stocks",
+        "value": "Stock"
+      },
+      {
+        "name": "Futures",
+        "value": "Futures"
+      },
+      {
+        "name": "Options",
+        "value": "Options"
+      },
+      {
+        "name": "ETFs",
+        "value": "ETF"
+      },
+      {
+        "name": "Indices",
+        "value": "INDEX"
+      }
+    ]
+  },
+  "user_settings_default": {
+    "chartAutoSave": "1",
+    "chart_version": 0,
+    "continuous_futures": 0,
+    "corporate_action": 0,
+    "default_screens": {
+      "slot_1": "market",
+      "slot_2": "screeners",
+      "slot_3": "portfolio",
+      "slot_4": "orders",
+      "slot_5": "products"
+    },
+    "exit_positions": {
+      "exit_all": 1,
+      "productType": [
+        "ALL",
+        "INTRADAY",
+        "MARGIN",
+        "CO",
+        "BO",
+        "CNC"
+      ],
+      "segment": [
+        0,
+        10,
+        11,
+        12,
+        20
+      ],
+      "side": [
+        0,
+        1,
+        -1
+      ]
+    },
+    "favourites": {
+      "1": "NSE:NIFTY50-INDEX",
+      "2": "NSE:NIFTYBANK-INDEX"
+    },
+    "fingerprint_flag": "N",
+    "loginType": "",
+    "options_chain": {
+      "default_symbol": "NSE:NIFTY50-INDEX",
+      "horizontal_bars": "oi",
+      "isBidAskShown": "1",
+      "isCompactView": "1",
+      "quick_view": [
+        {
+          "expiry": "-",
+          "name": "NIFTY",
+          "symbol": "NSE:NIFTY50-INDEX"
+        },
+        {
+          "expiry": "-",
+          "name": "BANKNIFTY",
+          "symbol": "NSE:NIFTYBANK-INDEX"
+        },
+        {
+          "expiry": "-",
+          "name": "FINNIFTY",
+          "symbol": "NSE:FINNIFTY-INDEX"
+        },
+        {
+          "expiry": "-",
+          "name": "USDINR",
+          "symbol": ""
+        },
+        {
+          "expiry": "-",
+          "name": "CRUDE",
+          "symbol": ""
+        },
+        {
+          "expiry": "-",
+          "name": "SILVER",
+          "symbol": ""
+        },
+        {
+          "expiry": "-",
+          "name": "GOLD",
+          "symbol": ""
+        }
+      ],
+      "showLtpPerLot": "1",
+      "show_positions": "1",
+      "strike_above": "20",
+      "strike_below": "20",
+      "strikes_no_oi": "1",
+      "strikes_no_volume": "1",
+      "value_greeks": [
+        "analysis",
+        "oi",
+        "iv",
+        "volume"
+      ]
+    },
+    "orderType": {
+      "BO": "",
+      "CNC": "",
+      "CO": "",
+      "DEFAULT": "2",
+      "INTRADAY": "",
+      "MARGIN": ""
+    },
+    "orderWindow": {
+      "max_loss": "",
+      "orderType": "MARKET",
+      "position_sizing": 0,
+      "pre_fill_qty": 0,
+      "price": "",
+      "productType": "INTRADAY",
+      "stickyOrderwindow": 0,
+      "stop_loss": "",
+      "stoploss_takeprofit": 1,
+      "value": ""
+    },
+    "predefined_watchlist": "1",
+    "product": {
+      "10": "",
+      "11": "",
+      "12": "",
+      "20": "",
+      "DEFAULT": "INTRADAY"
+    },
+    "reset": "0",
+    "selected_language": "en_IN",
+    "supported_exchanges": [
+      "NSE",
+      "BSE",
+      "MCX"
+    ],
+    "theme": "LIGHT",
+    "tradeNotifications": "1",
+    "tradePopUpWeb": "1",
+    "tvWidgetInterval": "1h",
+    "tv_lib_ver": "default",
+    "validity": "DAY"
+  },
+  "version": "5.10",
+  "watchlist_flags": {
+    "max_symbols_per_watchlist": 250
+  }
+}

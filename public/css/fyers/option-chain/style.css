@@ -1,0 +1,117 @@
+/* Redundant code. Remove while moving to production: Start */
+@font-face {
+    font-family: Trebuchet;
+    src: url('https://trade.fyers.in/trading/widgets/css/lib/fonts/Trebuchet MS.ttf');
+  }
+  body, input {
+    color: #4a4a4a;
+    font-size: 14px;
+    font-family: 'Trebuchet', Tahoma, Arial, sans-serif;
+  }
+  input:focus, textarea:focus {
+      outline: none;
+  }
+  /* Redundant code. Remove while moving to production: Start */
+  .d-fw-canvas { overflow: hidden; position: fixed;top: 0px;left: 0px;width: 0px;height: 0px;z-index: -1;visibility: hidden; }
+  .d-fw-canvas.open { width: 100vw;height: 100vh;z-index: 8;visibility: visible;cursor: not-allowed;pointer-events: none; }
+  .d-overlay { position: absolute;top: 10%;left: 10%;display: inline-block;box-shadow: 0px 0px 48px 0px rgba(0, 0, 0, 0.40);background-color: #fff;cursor: default;pointer-events: all; min-width: 550px;}
+  .d-overlay.d-dark { background-color: #131922; border: 1px solid #2F3241; color: #B1B2B4; }
+  .d-overlay .d-head { position: relative; margin-bottom: 10px; margin: 15px; cursor: move;}
+  .d-overlay .d-head .d-title { font-size: 20px; }
+  .d-overlay.d-dark .d-head .d-title { color: white; }
+  .d-overlay .d-head .d-close-container { position: absolute;right: 0; opacity: .5; cursor: pointer; }
+  .d-overlay .d-head .d-close-container:hover { position: absolute;right: 0; opacity: .75; cursor: pointer; }
+  .d-overlay .d-tabs { color:#858585; margin: 0 15px 5px 15px; cursor: pointer; }
+  .d-overlay .d-tabs span { opacity: .75 }
+  .d-overlay .d-tabs span:hover { opacity: 1 }
+  .d-overlay .d-tabs span.d-active { color:#2d98e7; opacity: 1 }
+  .d-overlay .d-tabs span.d-push-right { margin-right: 25px; }
+  .d-overlay .d-table-header { background-color:#f1f3f6;padding: 5px 15px; margin-bottom: 15px; }
+  .d-overlay.d-dark .d-table-header { background-color:#272C3E; }
+  .d-overlay .d-table-header span { display: inline-block; color: #aaacad; }
+  .d-overlay .d-table-header > .d-move-right { right: 15px; }
+  .d-overlay .d-table-row { padding: 5px 15px; }
+  .d-overlay .d-table { display: table; width: 100%; }
+  .d-overlay .d-table-row .d-table > span { display: inline-block; padding-bottom: 2px}
+  .d-overlay .d-table-highs-n-lows.d-table-row .d-table > span { border-bottom: 3px solid #eceeef;}
+  .d-overlay.d-dark .d-table-highs-n-lows.d-table-row .d-table > span { border-bottom: 3px solid #2F3241;}
+  .d-overlay .d-table-highs-n-lows.d-table-row .d-table > span.d-highs-and-lows {  width: 50%; background: linear-gradient(to right, #e65768, #5db0dd) left bottom no-repeat; background-size: 100% 3px; padding-bottom: 5px; border-width: 0; position: relative; }
+  .d-overlay.d-dark .d-table-highs-n-lows.d-table-row .d-table > span.d-highs-and-lows {  width: 50%; background: linear-gradient(to right, #ED4663, #2E97E6) left bottom no-repeat; background-size: 100% 3px; padding-bottom: 5px; border-width: 0; position: relative; }
+  .d-overlay .d-table-futures-chain { border-bottom: 1px solid #eceeef; cursor: pointer; }
+  .d-overlay.d-dark .d-table-futures-chain { cursor: pointer; border-bottom: 1px solid #2F3241; cursor: pointer; }
+  .d-overlay .d-table-ca-chain { border-bottom: 1px solid #eceeef; }
+  .d-overlay.d-dark .d-table-ca-chain { border-bottom: 1px solid #2F3241; }
+  .d-overlay .d-table-ca-chain:last-child { border-bottom: none; margin-bottom: 15px; }
+  .d-overlay .d-returns-col { width: 30%; text-align: right;}
+  .d-overlay .d-one-fifth { width: 20%; }
+  .d-overlay .d-one-fourth { width: 25%; }
+  .d-overlay .d-two-fifth { width: 40%; }
+  .d-overlay .d-one-third { width: 33%; }
+  .d-overlay .d-half { width: 50%; }
+  .d-overlay .d-ltp-ball { position: absolute; width: 9px; height: 9px; background-color: #4a4a4a; border-radius: 9px; bottom: -3px; left: 0px; }
+  .d-overlay.d-dark .d-ltp-ball { background-color: white; }
+  .d-overlay .d-footer { margin: 15px; position: relative; color: #b3b3b3; }
+  .d-overlay .d-footer .d-ltp { font-weight: bold; color: #4a4a4a; }
+  .d-overlay.d-dark .d-footer .d-ltp { color: white; }
+  .d-overlay .d-footer a, .d-overlay .d-footer span.d-buy, .d-overlay .d-footer span.d-sell, .d-overlay .d-footer span.d-watchlist, .d-overlay .d-footer span.d-watchlist-disabled { text-decoration: none; color: white; padding: 5px 10px; margin-left: 5px; font-weight: bold; opacity: .9; cursor: pointer; }
+  .d-overlay .d-footer a:hover, .d-overlay .d-footer span.d-buy:hover, .d-overlay .d-footer span.d-sell:hover, .d-overlay .d-footer span.d-watchlist:hover { text-decoration: none; color: white; padding: 5px 10px; margin-left: 5px; font-weight: bold; opacity: 1}
+  .d-overlay .d-footer a.d-buy, .d-overlay .d-footer span.d-buy { background-color: #5db0dd; text-transform: uppercase; }
+  .d-overlay.d-dark .d-footer a.d-buy, .d-overlay .d-footer span.d-buy { background-color: #2E97E6; }
+  .d-overlay .d-footer a.d-sell, .d-overlay .d-footer span.d-sell { background-color: #e65768; text-transform: uppercase; }
+  .d-overlay.d-dark .d-footer a.d-sell, .d-overlay .d-footer span.d-sell { background-color: #ED4663; }
+  .d-overlay .d-footer a.d-watchlist, .d-overlay .d-footer span.d-watchlist { background-color: #5db0dd; text-transform: uppercase;}
+  .d-overlay.d-dark .d-footer a.d-watchlist, .d-overlay .d-footer span.d-watchlist { background-color: #2E97E6; }
+  .d-overlay .d-footer a.d-watchlist-disabled, .d-overlay .d-footer span.d-watchlist-disabled { background-color: #4a4a4a; text-transform: uppercase; pointer-events:none; }
+  .d-overlay .d-empty-box { text-align: center; padding: 3rem; }
+  .d-overlay .d-ca-tab { padding: 0 0 5px 15px; display: table-cell; width: 25%; }
+  .d-overlay .d-ca-tab .d-ca-header { margin-bottom:15px }
+  .d-overlay .d-ca-tab .d-ca-header div { }
+  .d-overlay .d-ca-tab .d-ca-header div span { display: block; margin: 0 15px 5px 0; cursor: pointer; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+  .d-overlay.d-dark .d-ca-tab .d-ca-header div span { border-bottom: 1px solid #363C4D; }
+  .d-overlay .d-ca-tab .d-ca-header div span.d-ca-tab-active { color: #2d98e7; }
+  .d-overlay .d-ca-tab .d-ca-header div span.d-ca-tab-link { color:#858585; opacity:.75; }
+  .d-overlay .d-ca-tab .d-ca-header div span.d-ca-tab-link:hover { opacity:1; }
+  .d-overlay .d-ca-tab .d-ca-header .d-ca-cta { position: relative; margin-top: 15px; }
+  .d-overlay .d-ca-tab .d-ca-header .d-ca-cta input { border:1px solid #eceeef; padding:5px; color:#4a4a4a; }
+  .d-overlay.d-dark .d-ca-tab .d-ca-header .d-ca-cta input { border:1px solid #2F3241; }
+  .d-overlay .d-ca-tab .d-ca-header .d-ca-cta input.d-ca-action-type { background:url('https://trade.fyers.in/trading/widgets/css/drop-down.gif') no-repeat right; cursor:pointer; width:100px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+  .d-overlay .d-ca-tab .d-ca-header .d-ca-cta ul#d-ca-dropdown { list-style:none; border:1px solid #eceeef; position:absolute; left:0; top:24px; background:white; font-size:12px; margin:0; padding:0; visibility:hidden; text-align: left; }
+  .d-overlay.d-dark .d-ca-tab .d-ca-header .d-ca-cta ul#d-ca-dropdown { border:1px solid #2F3241; background:#131922; }
+  .d-overlay .d-ca-tab .d-ca-header .d-ca-cta ul#d-ca-dropdown li { padding:5px 0; width:88px; border-bottom:1px solid #eceeef; margin:0 5px; cursor: pointer; }
+  .d-overlay.d-dark .d-ca-tab .d-ca-header .d-ca-cta ul#d-ca-dropdown li { border-bottom:1px solid #2F3241; }
+  .d-overlay .d-ca-tab .d-ca-header .d-ca-cta ul#d-ca-dropdown li:hover { opacity:.75; }
+  .d-ca-table-forthcoming .d-ca-historical { display: none; }
+  .d-ca-table-historical .d-ca-forthcoming { display: none; }
+  .d-overlay .Demerger .D, .d-overlay .Demerger .B,.d-overlay .Demerger .M,.d-overlay .Demerger .R, .d-overlay .Demerger .S,.d-overlay .Merger .D, .d-overlay .Merger .B,.d-overlay .Merger .DM,.d-overlay .Merger .R, .d-overlay .Merger .S, .d-overlay .Bonus .D, .d-overlay .Bonus .M,.d-overlay .Bonus .DM,.d-overlay .Bonus .R, .d-overlay .Bonus .S, .d-overlay .Dividend .B,.d-overlay .Dividend .M,.d-overlay .Dividend .DM, .d-overlay .Dividend .R, .d-overlay .Dividend .S, .d-overlay .Rights .B,.d-overlay .Rights .M,.d-overlay .Rights .DM, .d-overlay .Rights .D, .d-overlay .Rights .S, .d-overlay .Split .B,.d-overlay .Split .M,.d-overlay .Split .DM, .d-overlay .Split .D, .d-overlay .Split .R {
+    display: none !important;
+}
+  .d-overlay a.d-btn { text-decoration: none; color: #4a4a4a; padding: 5px 18px; margin-left: 5px; font-weight: bold; opacity: .9; background-color: #f3f3f3; border: 1px solid #ccc; cursor: pointer; }
+  .d-overlay.d-dark a.d-btn { color: white; background-color: #1F2D3F; border: 1px solid #363C4E; }
+  .d-overlay a.d-btn:hover { text-decoration: none; color: #4a4a4a; padding: 5px 18px; margin-left: 5px; font-weight: bold; opacity: 1; background-color: #f3f3f3; border: 1px solid #ccc; }
+  .d-overlay.d-dark a.d-btn:hover { color: white;opacity: 1; background-color: #1F2D3F; border: 1px solid #363C4E; }
+  .d-overlay .d-tab-md-head {background-color:#f1f3f6; padding:0 15px;}
+  .d-overlay.d-dark .d-tab-md-head { background-color:#272C3E;}
+  .d-overlay .d-tab-md-head-bg { background-color:#f1f3f6; }
+  .d-overlay.d-dark .d-tab-md-head-bg { background-color:#272C3E; }
+  
+  .d-relative { position: relative;}
+  .d-move-right { position: absolute; right: 0; }
+  .d-align-right { text-align: right; }
+  .d-red { color: #e65768; }
+  .d-dark .d-red { color: #ED4663; }
+  .d-green  { color: #238853; }
+  .d-bg-grey { background-color: #eee; }
+  .d-overlay.d-dark .d-bg-grey { background-color: #272C3E; }
+  .d-border-top { border-top: 1px solid #ccc; }
+  .d-overlay.d-dark .d-border-top { border-top: 1px solid #363C4E; }
+  .d-border-bottom { border-bottom: 1px solid #ccc; }
+  .d-overlay.d-dark .d-border-bottom { border-bottom: 1px solid #363C4E; }
+  .d-border-left { border-left: 1px solid #f3f3f3; }
+  .d-dark .d-border-left { border-left: 1px solid #363C4D; }
+  .d-input-text { margin-bottom: 5px;border: 1px solid #eceeef;padding: 5px;width:95px; }
+  .d-dark .d-input-text { background:#131922;border: 1px solid #363C4E; color: #434D5A; }
+  .d-input-time { margin-bottom: 5px;border: 1px solid #eceeef;padding: 5px;width:194px; }
+  .d-dark .d-input-time { border: 1px solid #363C4E; background:#131922; color: #434D5A; }
+  .d-hr { height: 0;border: none;border-bottom: 1px solid #f3f3f3; margin-bottom:15px; }
+  .d-dark .d-hr { border-bottom: 1px solid #363C4D; }
+  #d-table-body { min-height: 50px; max-height: 225px; overflow-y: scroll; }

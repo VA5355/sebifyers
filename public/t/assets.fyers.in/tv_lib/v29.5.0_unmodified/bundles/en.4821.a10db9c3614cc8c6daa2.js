@@ -1,0 +1,9 @@
+(self.webpackChunktradingview = self.webpackChunktradingview || []).push([
+    [4821], {
+        824821: e => {
+            e.exports = {
+                en: ["Ticks"]
+            }
+        }
+    }
+]);

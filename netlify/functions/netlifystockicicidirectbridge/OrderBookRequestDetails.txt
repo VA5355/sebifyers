@@ -1,0 +1,35 @@
+
+
+	https://api.icicidirect.com/equity/orderbookdtl
+
+Request Example:-
+{"AppKey": "69I1o_408312906X5z4K)1nG7P066062",
+ "time_stamp": "26-Mar-2021 11:09:46",
+ "JSONPostData": "{\"SessionToken\":\"721173\",\"Idirect_Userid\":\"NIFTY123\",\"order_refernece\":\"20201230N100000002\",\"order_flow\":\"B\"}",
+ "Checksum": "0220d0d720e5869daf6cb52cad433b31c8910797e3038af66192c4e7265ac619"}
+
+Response Example:-
+{
+    "Status": 200,
+    "Error": null,
+    "Success": [
+        {
+            "order_modification_counter": "1",
+            "order_xchng_ack_no": "*",
+            "order_xchng_ack_tm": "",
+            "order_flow": "B",
+            "order_qty": "19",
+            "order_rate": "1013.00",
+            "order_stp_loss_price": "0.00",
+            "order_disclosed_qty": "0",
+            "order_type": "M",
+            "order_remarks": "",
+            "order_initial_limit": "0.00",
+            "order_intial_sltp": "0.00",
+            "LTP": "0.00",
+            "LimitOffset": "0.00",
+            "ord_mbc_flg": "N",
+            "ord_cutoff_prc": "0.00"
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+<svg width="134" height="156" viewBox="0 0 134 156" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="6.46094" y="54.4238" width="67.1569" height="76.8367" rx="4" transform="rotate(-16.3629 6.46094 54.4238)" fill="#F4F5F6"/>
+<g filter="url(#filter0_d_3919_188231)">
+<rect x="25.3125" y="35.1895" width="74.9305" height="96.1458" rx="4" fill="white"/>
+<rect x="33.4375" y="71.752" width="59.1319" height="2.70833" fill="#EAEBED"/>
+<rect x="33" y="55" width="32" height="2" fill="#BFC4CA"/>
+<rect x="32.5625" y="49.25" width="32" height="2" fill="#BFC4CA"/>
+<rect x="33.4375" y="78.0723" width="59.1319" height="2.70833" fill="#EAEBED"/>
+<rect x="33.4375" y="84.3906" width="59.1319" height="2.70833" fill="#EAEBED"/>
+<rect x="33.4375" y="90.7109" width="59.1319" height="2.70833" fill="#EAEBED"/>
+<rect x="33.4375" y="97.0293" width="59.1319" height="2.70833" fill="#EAEBED"/>
+<rect x="33.4375" y="103.35" width="24.375" height="2.70833" fill="#EAEBED"/>
+<circle cx="92.5694" cy="40.5694" r="16.5694" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M92.7457 53.4915C85.7065 53.4915 80 47.785 80 40.7457C80 33.7065 85.7065 28 92.7457 28C99.785 28 105.491 33.7065 105.491 40.7457C105.491 47.785 99.785 53.4915 92.7457 53.4915Z" fill="#FFDB4E"/>
+<path d="M93 33.5V41L97 43.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<filter id="filter0_d_3919_188231" x="1.3125" y="0" width="131.826" height="155.336" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="12"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.164706 0 0 0 0 0.223529 0 0 0 0 0.305882 0 0 0 0.12 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3919_188231"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3919_188231" result="shape"/>
+</filter>
+</defs>
+</svg>

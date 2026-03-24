@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="background:transperant;">
+    <title>icon/select-arrow/down</title>
+    <g id="icon/select-arrow/down" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="" x="0" y="0" width="16" height="16"></rect>
+        <g id="arrow-down">
+            <path d="M6.71302064,10.6667579 L2.36635417,6.32009077 C2.17302084,6.12675744 2.17302084,5.80675781 2.36635417,5.61342448 C2.5596875,5.42009115 2.87968761,5.42009115 3.07302094,5.61342448 L7.41968759,9.96009096 C7.73968758,10.2800909 8.25968776,10.2800909 8.57968775,9.96009096 L12.9263535,5.61342448 C13.1196868,5.42009115 13.4396877,5.42009115 13.633021,5.61342448 C13.8263544,5.80675781 13.8263544,6.12675744 13.633021,6.32009077 L9.2863547,10.6667579 C8.93302139,11.0200912 8.46635449,11.2000904 7.99968783,11.2000904 C7.53302117,11.2000904 7.06635396,11.0200912 6.71302064,10.6667579 Z" id="Vector" fill="#6A7483" fill-rule="nonzero"></path>
+            <path d="M16,0 L16,16 L0,16 L0,0 L16,0 Z" id="Vector" opacity="0"></path>
+        </g>
+    </g>
+</svg>

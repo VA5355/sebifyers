@@ -1,0 +1,628 @@
+/* Custom css injected to library. Styling changes in trading view can be updatef here. Eg: Header color */
+
+:root {
+    --quickTradeThunderOff: url(https://assets.fyers.in/images/quickTrade/thunderOff.svg);
+    --icon-stroke-color: #131722;
+}
+
+html.theme-dark img.header-icon {
+    filter: invert(100%) grayscale(100%) brightness(50%);
+}
+
+.ka-cell,
+.ka-thead-cell {
+    border-right: 1px solid #f0f3fa !important;
+    border-bottom: 1px solid #f0f3fa !important;
+}
+
+html.theme-dark .ka-thead-cell,
+html.theme-dark .ka-cell {
+    border-right: 1px solid #2a2e39 !important;
+    border-bottom: 1px solid #2a2e39 !important;
+}
+
+.topbar-item {
+    display: flex;
+    align-items: center;
+}
+
+/*
+  This piece of code helps in enabling the text content in topbar item content.
+  As per current requirement we are disabling this .
+*/
+
+/* .topbar-item .topbar-item-label {
+  margin-left: 3px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.125rem;
+} */
+
+.custom-topbar-item-container {
+    padding: 0 !important;
+}
+
+.custom-topbar-item {
+    padding: 0px 4px;
+    margin: 0 2px;
+    border-radius: 4px;
+}
+
+.custom-topbar-item.custom-topbar-item-large {
+    padding: 0 8px;
+}
+
+.topbar-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 28px;
+}
+
+.beta-all-item .topbar-img-container {
+    height: 26px;
+}
+
+.mtf-all-item .topbar-img-container {
+    height: 26px;
+}
+
+/* .fiaBox .topbar-img-container{
+  height : 26px;
+} */
+
+.switch-to-latest .topbar-img-container {
+    width: 69px;
+}
+
+.switch-to-legacy .topbar-img-container {
+    width: 25px;
+    cursor: default !important;
+}
+
+.switch-to-legacy .topbar-img-container div {
+    display: flex;
+    width: 59px;
+    justify-content: space-between;
+    padding: 0px !important;
+    cursor: default !important;
+}
+
+.topmost-saved-charts-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-reset-chart-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-change-theme-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-user-settings-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-popout-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-basket-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-fiaBox {
+    margin-left: 10px;
+    min-width: 52px !important;
+}
+
+.topmost-authorize-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-exit-all-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-visit-discover-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-visit-instaoptions:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-add-funds-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-report-bug-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-active-option-chain-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-active-smartOrderbook-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-my-account-item:hover {
+    background-color: #f2f2f2;
+}
+
+.topmost-visit-instaoptions .topbar-img-container img,
+.visit-discover-item .topbar-img-container img {
+    height: 18px;
+}
+
+.btn-pos-conv {
+    border-color: transparent;
+    cursor: pointer;
+    height: 25px;
+    width: 20px;
+    background: url("https://assets.fyers.in/trade_web/icons/light-edit.svg") no-repeat transparent;
+}
+
+html.theme-dark .btn-pos-conv {
+    background: url("https://assets.fyers.in/trade_web/icons/dark-edit.svg") no-repeat transparent;
+}
+
+.btn-gtt-close {
+    border-color: transparent;
+    cursor: pointer;
+    height: 25px;
+    width: 20px;
+    background: url("https://assets.fyers.in/global-components/trade-icons/basket/bw-close-icon.svg") no-repeat transparent;
+}
+
+html.theme-dark .btn-gtt-close {
+    background: url("https://assets.fyers.in/global-components/trade-icons/basket/bw-close-icon-dark.svg") no-repeat transparent;
+    opacity: 0.65;
+}
+
+.gtt-order-button-empty-container {
+    display: flex;
+    min-width: 48px;
+    justify-content: center;
+}
+
+html.theme-dark .topmost-saved-charts-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-reset-chart-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-change-theme-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-user-settings-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-popout-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-basket-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-authorize-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-exit-all-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-add-funds-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-report-bug-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-active-option-chain-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-visit-discover-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-visit-instaoptions:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .topmost-active-smartOrderbook-item:hover {
+    background-color: #303030;
+}
+
+html.theme-dark .custom-topbar-item-container .product-menu-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/menuIconDark.svg");
+}
+
+html.theme-dark .topmost-saved-charts-item:hover .custom-topbar-item-container .saved-charts-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Viewsavedcharts-Dark.svg");
+}
+
+html.theme-dark .topmost-reset-chart-item:hover .custom-topbar-item-container .reset-chart-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/reset-dark.svg");
+}
+
+html.theme-dark .topmost-change-theme-item:hover .custom-topbar-item-container .change-theme-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/theme-switch-dark.svg");
+}
+
+html.theme-dark .topmost-user-settings-item:hover .custom-topbar-item-container .user-settings-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Usersettings-Dark.svg");
+}
+
+html.theme-dark .topmost-popout-item:hover .custom-topbar-item-container .popout-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Pop-out-chart-Dark.svg");
+}
+
+html.theme-dark .topmost-basket-item:hover .custom-topbar-item-container .basket-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Basket-orders-Dark.svg");
+}
+
+html.theme-dark .topmost-authorize-item:hover .custom-topbar-item-container .authorize-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Holding-Authorization-Dark.svg");
+}
+
+html.theme-dark .topmost-add-funds-item:hover .custom-topbar-item-container .add-funds-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Funds-Dark.svg");
+}
+
+html.theme-dark .topmost-report-bug-item:hover .custom-topbar-item-container .report-bug-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/reportBugDark.svg");
+}
+
+html.theme-dark .topmost-active-option-chain-item:hover .custom-topbar-item-container .active-option-chain-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Option-chain-dark.svg");
+}
+
+html.theme-dark .topmost-visit-discover-item:hover .custom-topbar-item-container .visit-discover-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/discover_dark_theme.svg");
+}
+
+.dashboard-breakeven-text {
+    color: #131722 !important;
+}
+
+html.theme-dark .dashboard-breakeven-text {
+    color: #d1d4dc !important;
+}
+
+.custom-topbar-topmost-element {
+    height: calc(100% - 4px);
+    border-radius: 5px;
+}
+
+.form-MgR0zejo .arrow-merBkM5y {
+    display: none !important;
+}
+
+.menu-MgR0zejo.button-merBkM5y.apply-common-tooltip.accessible-merBkM5y,
+.menu-MgR0zejo.button-merBkM5y.apply-common-tooltip {
+    pointer-events: none !important;
+}
+
+.menu-MgR0zejo.button-merBkM5y.apply-common-tooltip {
+    justify-content: center;
+}
+
+.topmost-beta-all-item .topbar-img-container {
+    width: 63px;
+}
+
+.topmost-beta-all-item .custom-topbar-item-large .topbar-img-container {
+    width: 48px;
+}
+
+.topmost-mtf-all-item .topbar-img-container {
+    min-width: 48px;
+}
+
+.topmost-mtf-all-item .custom-topbar-item-large .topbar-img-container {
+    width: 48px;
+}
+
+.topmost-beta-all-item .custom-topbar-item.beta-all-item .topbar-item {
+    border-radius: 37px;
+    background: linear-gradient(261deg, #fc706b 0%, #8d78ff 49.06%, #436af5 100%);
+}
+
+.beta-all-item-text-container {
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.mtf-all-item-text-container {
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.beta-all-item-wrapper {
+    display: flex !important;
+}
+
+.beta-all-item-img-container {
+    height: 13px;
+    width: 13px;
+    margin-right: 6px;
+}
+
+.beta-all-item-img-container img {
+    height: 13px;
+    width: 13px;
+}
+
+.topmost-legacy-all-item:hover {
+    background-color: #eaebed;
+}
+
+/*
+ Hover for smart icon need to be done .
+*/
+
+html.theme-dark .topmost-legacy-all-item:hover {
+    background-color: #2a394e;
+}
+
+.ka-cell {
+    max-width: none !important;
+}
+
+.cellContent-Tu141ut0 {
+    max-width: none !important;
+}
+
+.ka-table {
+    table-layout: auto !important;
+}
+
+.topmost-beta-all-item .custom-topbar-item-large.beta-all-item .topbar-img-container {
+    width: 63px;
+}
+
+.topmost-beta-all-item .custom-topbar-item-large.mtf-all-item .topbar-img-container {
+    width: 63px;
+}
+
+.scalper-item .topbar-item img {
+    height: 24px;
+}
+
+.topbar-img-container:nth-child(-n+3) {
+    cursor: pointer;
+}
+
+div[data-section-name="bracketsPLDisplay"] {
+    display: none !important;
+}
+
+button[aria-label="Sync drawings options"] {
+    display: none;
+}
+
+#metric-items svg {
+    display: none;
+}
+
+#metric-items {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.custom-topbar-item.quickTrade-item .topbar-item .topbar-img-container {
+    width: 100px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 0px;
+    height: 23px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    width: 43px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    background-image: url(https://assets.fyers.in/images/quickTrade/thunderOff.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+input:checked+.slider {
+    background-color: #436AF5;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #436AF5;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
+    background-image: url(https://assets.fyers.in/images/quickTrade/thunderOn.svg);
+}
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.QuickTradeCheckbox {
+    width: 70px;
+}
+
+/* .fiaBox{
+  width: 70px;
+} */
+
+.quickTradeTextHeader {
+    display: flex;
+    flex-direction: column;
+    color: #20232b;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 11px;
+    margin-right: 5px;
+}
+
+html.theme-dark .slider:before {
+    background-image: url(https://assets.fyers.in/images/quickTrade/thunderOffDark.svg);
+}
+
+html.theme-dark .slider {
+    background-color: #6A7582;
+}
+
+html.theme-dark input:checked+.slider {
+    background-color: #436AF5;
+}
+
+html.theme-dark .quickTradeTextHeader {
+    color: #B2B5BE;
+}
+
+html.theme-dark input:checked+.slider:before {
+    background-image: url(https://assets.fyers.in/images/quickTrade/thunderOn.svg);
+}
+
+html.theme-dark {
+    --icon-stroke-color: #d1d4dc;
+}
+
+.icon-GJX1EXhk svg.fy-alert-from-chart-icon {
+    height: 20px;
+    width: 20px;
+}
+
+/* Hiding product type selection in DOM */
+
+.trading-panel-content-LlInYWMC .tv-dom-panel-WJ5VG8Pz .bottomBlock-pOOE9kBn .container-l6FVmx3S .headerWrapper-tEyqHGm0,
+.trading-panel-content-LlInYWMC .tv-dom-panel-WJ5VG8Pz .bottomBlock-pOOE9kBn .container-l6FVmx3S .headerWrapper-tEyqHGm0 .header-tEyqHGm0 {
+    display: none !important;
+}
+
+html.theme-dark .topmost-add-funds-item .custom-topbar-item-container .add-funds-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Funds-Dark.svg");
+}
+
+html.theme-dark .topmost-basket-item .custom-topbar-item-container .basket-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Basket-orders-Dark.svg");
+}
+
+html.theme-dark .topmost-fiaBox .custom-topbar-item-container .fiaBox img {
+    content: url("https://assets.fyers.in/fy_ui/fia/fia-new-dark.svg");
+}
+
+.topmost-fiaBox .custom-topbar-item-container .fiaBox img {
+    height: 24px !important;
+    padding-left: 4px;
+}
+
+html.theme-dark .topmost-my-account-item .custom-topbar-item-container .my-account-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/myAccountDark.svg");
+}
+
+html.theme-dark .topmost-user-settings-item .custom-topbar-item-container .user-settings-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Usersettings-Dark.svg");
+}
+
+html.theme-dark .topmost-reset-chart-item .custom-topbar-item-container .reset-chart-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/reset-dark.svg");
+}
+
+html.theme-dark .topmost-change-theme-item .custom-topbar-item-container .change-theme-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/theme-switch-dark.svg");
+}
+
+html.theme-dark .topmost-refresh-trading-item .custom-topbar-item-container .refresh-trading-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/reset-dark.svg");
+}
+
+html.theme-dark .topmost-popout-item .custom-topbar-item-container .popout-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Pop-out-chart-Dark.svg");
+}
+
+html.theme-dark .topmost-popout-item .custom-topbar-item-container .popout-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Pop-out-chart-Dark.svg");
+}
+
+html.theme-dark .topmost-saved-charts-item .custom-topbar-item-container .saved-charts-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Viewsavedcharts-Dark.svg");
+}
+
+html.theme-dark .topmost-authorize-item .custom-topbar-item-container .authorize-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Holding-Authorization-Dark.svg");
+}
+
+html.theme-dark .topmost-report-bug-item .custom-topbar-item-container .report-bug-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/reportBugDark.svg");
+}
+
+html.theme-dark .topmost-active-option-chain-item .custom-topbar-item-container .active-option-chain-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Option-chain-dark.svg");
+}
+
+html.theme-dark .topmost-active-smartOrderbook-item .custom-topbar-item-container .active-smartOrderbook-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Smart-OrderBook-Dark.svg");
+}
+
+html.theme-dark .topmost-exit-all-item .custom-topbar-item-container .exit-all-item img {
+    content: url("https://assets.fyers.in/global-components/trade-icons/topBar/iconfix/dark/Manage-Dark.svg");
+}
+
+html.theme-dark .custom-topbar-item-container .product-menu-item img {
+    display: block !important;
+}
