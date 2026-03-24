@@ -19,8 +19,8 @@ var fyersAPI =  new upstoxClientSdk.ApiClient(true);
 var client_id=  'PW3-6Agd37PB52Q6B6DDpYWLuT7b';          //"JDK56F3KP5-200"; // "7GSQW68AZ4-100" ; // PROD 
 var secret_key = "ixtzp79svm"; 		 // "MGY8LRIY0M"; // PROD 
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
-var redirectUrl  = 'https://fyerssebi.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
-//"https://fyerssebi.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
+var redirectUrl  = 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
+//"https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 //var redirectUrl  = "https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 //var fyers= new fyersModel({"path":"./","enableLogging":true})
 //fyers.setAppId(client_id)
@@ -811,7 +811,7 @@ router.get('/upstoxauthcallback', async function (req,res) {
 
 
 
-        let redirectUrlInternal  = "https://fyerssebi.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxauthcodeverify"
+        let redirectUrlInternal  = "https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxauthcodeverify"
        //res.send(output)
        setCORSHeaders( res )
              res.send("{ data: comming soon }");
@@ -2127,7 +2127,7 @@ router.get('/upstoxsdklogin', async function (req,res) {
       let your_auth_code = randomNumberBasedOnNow;
       let your_client_id = 'e7a79a25-6f2d-490a-9898-275fd89cbeb6';
       let your_client_secret = 'ixtzp79svm';
-      let your_redirect_url = 'https://fyerssebi.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
+      let your_redirect_url = 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
       // defined at line 628 near about 
       
       let opts = { 
@@ -2346,7 +2346,7 @@ async function handledUpstoxRedirectAuthCode(authcode, req , res ){
       let your_auth_code = randomNumberBasedOnNow;
       let your_client_id = 'e7a79a25-6f2d-490a-9898-275fd89cbeb6';
       let your_client_secret = 'ixtzp79svm';
-      let your_redirect_url = 'https://fyerssebi.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
+      let your_redirect_url = 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
       // defined at line 628 near about 
        // https://api.upstox.com/v2/login/authorization/token
       let opts = { 

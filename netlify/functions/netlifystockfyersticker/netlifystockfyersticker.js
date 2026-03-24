@@ -17,7 +17,7 @@ var fyersModel= require("fyers-api-v3").fyersModel
 //var client_id= "7GSQW68AZ4-100"
 var client_id= "JDK56F3KP5-200"
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
-var redirectUrl  = "https://fyerssebi.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersauthcodeverify"
+var redirectUrl  = "https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersauthcodeverify"
 //var redirectUrl  = "https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersauthcodeverify"
 var fyers= new fyersModel({"path":"./","enableLogging":true})
 fyers.setAppId(client_id)

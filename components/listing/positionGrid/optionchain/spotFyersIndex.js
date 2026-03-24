@@ -4,7 +4,7 @@
 
 const NSE_URL = "http://localhost:3065/"; // https://artillery2feed.com/
 //const FYERS_URL = "https://localhost:9384/stream"; // // https://fyersfeed.onrender.com/
-const FYERS_URL = "https://fyerssebi.netlify.app/.netlify/functions/netlifystockfyersticker/fyerslocallive"; // // https://fyersfeed.onrender.com/
+const FYERS_URL = "https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/fyerslocallive"; // // https://fyersfeed.onrender.com/
 const FYERS_RECAL = "https://artilleryfeed.onrender.com/recalculate-option-strikes" ;  //9384  localhost:8443 this is for fyers stream indices no Option Chain publishing 
 
 const FYERS_SYMBOL = "NSE:NIFTY50-INDEX";
