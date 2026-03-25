@@ -19,7 +19,7 @@ var fyersModel= require("fyers-api-v3").fyersModel
 //var client_id= "7GSQW68AZ4-100"
 var client_id= "JDK56F3KP5-200"
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
-var redirectUrl  = "https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
+var redirectUrl  = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 //var redirectUrl  = "https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 var fyers= new fyersModel({"path":"./","enableLogging":true})
 fyers.setAppId(client_id)
@@ -57,13 +57,13 @@ const handler = async (event,context) => {
   try {
     const subject = event.queryStringParameters.name || 'World'
     // ruled out gives error 
-    /* Access to fetch at 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate' from origin
+    /* Access to fetch at 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate' from origin
     	 'https://onedinaar.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: 
     	 The 'Access-Control-Allow-Origin' header contains multiple values 'https://192.168.1.3:8888 , https://192.168.1.3:3000 , https://localhost:8888 ,
-    	  https://successrate.netlify.app , https://onedinaar.com , https://fyersfeed.onrender.com', but only one is allowed. 
+    	  https://onedinaar.com , https://onedinaar.com , https://fyersfeed.onrender.com', but only one is allowed. 
     	  Have the server send the header with a valid value.
     	*/
-        //   //'Access-Control-Allow-Origin':'https://192.168.1.3:8888 , https://192.168.1.3:3000 , https://localhost:8888 , https://successrate.netlify.app , https://onedinaar.com , https://fyersfeed.onrender.com ',	
+        //   //'Access-Control-Allow-Origin':'https://192.168.1.3:8888 , https://192.168.1.3:3000 , https://localhost:8888 , https://onedinaar.com , https://onedinaar.com , https://fyersfeed.onrender.com ',	
     if (event.httpMethod === 'OPTIONS') {
       return {
         statusCode: 200,

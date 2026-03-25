@@ -75,12 +75,12 @@ Request Example:-
 }
 */
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
-var redirectUrl  = "https://successrate.netlify.app/.netlify/functions/netlifystockicicidirectbridge/api/icicidirectauthcodeverify" 
+var redirectUrl  = "https://onedinaar.com/.netlify/functions/netlifystockicicidirectbridge/api/icicidirectauthcodeverify" 
  // we cannot use the above redirect uri as icicidirect allow only one App , so we may have to either replace the existing 
  //  https://localhost:56322/icici/login  with above   https://localhost:56322/getMoneyFlowScreen
  // so the menucomponent .jsx   logByIciciDirectPlatform will point to TRADE_LOGIN_URL i.e. https://api.icicidirect.com/apiuser/login?api_key=api_key
  // but the POP Up Form will finally redirect to the old app i.e. https://localhost:56322/icici/login
- // and not call back our all coded -- https://successrate.netlify.app/.netlify/functions/netlifystockicicidirectbridge/api/icicidirectauthcodeverify
+ // and not call back our all coded -- https://onedinaar.com/.netlify/functions/netlifystockicicidirectbridge/api/icicidirectauthcodeverify
 //var redirectUrl  = "https://store-stocks.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxauthcodeverify"
 //var fyers= new fyersModel({"path":"./","enableLogging":true})
 //fyers.setAppId(client_id)

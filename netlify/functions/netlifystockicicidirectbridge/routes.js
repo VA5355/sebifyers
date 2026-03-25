@@ -20,8 +20,8 @@ var fyersAPI =  new upstoxClientSdk.ApiClient(true);
 var client_id=  'PW3-6Agd37PB52Q6B6DDpYWLuT7b';          //"JDK56F3KP5-200"; // "7GSQW68AZ4-100" ; // PROD 
 var secret_key = "ixtzp79svm"; 		 // "MGY8LRIY0M"; // PROD 
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
-var redirectUrl  = 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
-//"https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
+var redirectUrl  = 'https://onedinaar.com/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
+//"https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 //var redirectUrl  = "https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 //var fyers= new fyersModel({"path":"./","enableLogging":true})
 //fyers.setAppId(client_id)
@@ -275,7 +275,7 @@ async function showFYERSPROFILEQUOTES (req ,res , data  ){
 }
 
 // STEP icicidirect MAKE A CALL to the proxy  that CALLBACK OUR APP WITH 
-// REDIRECT URI PROVIDED by US ONLY https://successrate.netlify.app/.netlify/functions/netlifystockicicidirectbridge/api/icicidirectauthcodeverify
+// REDIRECT URI PROVIDED by US ONLY https://onedinaar.com/.netlify/functions/netlifystockicicidirectbridge/api/icicidirectauthcodeverify
 router.get('/icicidirectcallback', async function (req,res) {
 
     try {
@@ -371,7 +371,7 @@ router.get('/icicidirectcallback', async function (req,res) {
 				TRADECHECKKEY :"7`xZ6=v63s37L227e214j454mFN#h5Q4",
 				requesterDesig : "Angular UX - Developer",
                 triggerredirectpython:triggerredirectpython,
-                posturl:"https://successrate.netlify.app/.netlify/functions/netlifystockicicidirectbridge/api"
+                posturl:"https://onedinaar.com/.netlify/functions/netlifystockicicidirectbridge/api"
 				})
 				.then(result => {
 					emailTemplate = result;
@@ -403,7 +403,7 @@ router.get('/icicidirectcallback', async function (req,res) {
 });
 
 // STEP icicidirect MAKE A CALL to the proxy  that CALLBACK OUR APP WITH 
-// REDIRECT URI PROVIDED by US ONLY https://successrate.netlify.app/.netlify/functions/netlifystockicicidirectbridge/api/icicidirectauthcodeverify
+// REDIRECT URI PROVIDED by US ONLY https://onedinaar.com/.netlify/functions/netlifystockicicidirectbridge/api/icicidirectauthcodeverify
 router.post('/icicidirectcallbackpost', async function (req,res) {
 
     try {
@@ -486,7 +486,7 @@ router.post('/icicidirectcallbackpost', async function (req,res) {
 				TRADECHECKKEY :"7`xZ6=v63s37L227e214j454mFN#h5Q4",
 				requesterDesig : "Angular UX - Developer",
                 triggerredirectpython:triggerredirectpython,
-                posturl:"https://successrate.netlify.app/.netlify/functions/netlifystockicicidirectbridge/api"
+                posturl:"https://onedinaar.com/.netlify/functions/netlifystockicicidirectbridge/api"
 				})
 				.then(result => {
 					emailTemplate = result;
@@ -618,7 +618,7 @@ router.get('/upstoxsdkcallback', async function (req,res) {
 
     try {
         data = { "Upstox":"GOOD MORNING"}
-        let redirectUrlInternal = 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
+        let redirectUrlInternal = 'https://onedinaar.com/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
         //res.send(output)
         /*
         <input type="hidden" id="hidenUserId"  value='<%=PUSHLIEDDAYUPSTOXUSERID%>'>
@@ -666,7 +666,7 @@ router.get('/upstoxcallback', async function (req,res) {
 
     try {
         data = { "Upstox":"GOOD MORNING"}
-        let redirectUrlInternal = 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
+        let redirectUrlInternal = 'https://onedinaar.com/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
         //res.send(output)
         /*
         <input type="hidden" id="hidenUserId"  value='<%=PUSHLIEDDAYUPSTOXUSERID%>'>
@@ -1044,7 +1044,7 @@ async function handledUpstoxRedirectAuthCode(authcode, req , res ){
       let your_auth_code = randomNumberBasedOnNow;
       let your_client_id = 'e7a79a25-6f2d-490a-9898-275fd89cbeb6';
       let your_client_secret = 'ixtzp79svm';
-      let your_redirect_url = 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
+      let your_redirect_url = 'https://onedinaar.com/.netlify/functions/netlifyupstoxbridge/api/upstoxcallback';
       // defined at line 628 near about 
        // https://api.upstox.com/v2/login/authorization/token
       let opts = { 

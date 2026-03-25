@@ -2258,7 +2258,7 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
         try {
 
           setRecalcLoading(true);
-       const MARKETSTATUS_RECALCULATE =  "https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate";
+       const MARKETSTATUS_RECALCULATE =  "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate";
      // ONCE SPOT available trigger recalculate the Option Chain Strikes 
                          // this is Node JS program only  we have not deployed the stocknse-india-new.mjs to   https://scraper-api-eyiz.onrender.com
                          // also  https://scraper-api-eyiz.onrender.com is running as  a docker type script application not the mock-wss
@@ -2270,7 +2270,7 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
        // Fetch options object
         //  credentials: 'include', **This is the key parameter**  this casues 
        /*
-         Access to fetch at 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate' from 
+         Access to fetch at 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate' from 
          origin 'https://onedinaar.com' has been blocked by CORS policy: Response to preflight request doesn't pass 
          access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the 
          wildcard '*' when the request's credentials mode is 'include'.         

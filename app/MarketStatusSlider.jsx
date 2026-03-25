@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const API_URL = "https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetmarketstatus";
+const API_URL = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetmarketstatus";
 
 /* ---------- helpers ---------- */
 

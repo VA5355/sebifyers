@@ -12,8 +12,8 @@ import {
 } from "lucide-react";
 import { useEffect, useState, useCallback, useRef } from "react";
 
-const API_URL = "https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetmarketstatus";
-const MARKETSTATUS_RECALCULATE = "https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate";  //"http://192.168.1.3:3065/recalculate-option-strikes"
+const API_URL = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetmarketstatus";
+const MARKETSTATUS_RECALCULATE = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersniftyoptionrecalculate";  //"http://192.168.1.3:3065/recalculate-option-strikes"
 const REFRESH_INTERVAL = 180 * 1000; // 180 seconds
 export default function SpotIndex() {
   const [markets, setMarkets] = useState([]);

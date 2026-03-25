@@ -21,8 +21,8 @@ var fyersModel= fyersV3.fyersModel
 var client_id= "JDK56F3KP5-200"; // "7GSQW68AZ4-100" ; // PROD 
 var secret_key = "G75gMipThUCNWpLA"; 		 // "MGY8LRIY0M"; // PROD 
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
-var redirectUrl  = "https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
-var BASEREF  = "https://successrate.netlify.app"
+var redirectUrl  = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
+var BASEREF  = "https://onedinaar.com"
 var MARKETSTATUS  ="https://scraper-api-eyiz.onrender.com"
 var MARKETSTATUS_RECALCULATE  ="https://artilleryfeed.onrender.com"
 let cachedCSV = null;
@@ -639,7 +639,7 @@ router.get('/fyersgetnsecsv', async function (req, res) {
       return res.send(cachedCSV);
     }
 
-    const response = await fetch("https://successrate.netlify.app/NSE_CM.csv");
+    const response = await fetch("https://onedinaar.com/NSE_CM.csv");
     const csvText = await response.text();
 
     cachedCSV = csvText;
@@ -675,7 +675,7 @@ try {
 
 
     if (csvText === undefined) {
-       console.log("FETCH https://successrate.netlify.app/NSE_CM.csv   not okay ");
+       console.log("FETCH https://onedinaar.com/NSE_CM.csv   not okay ");
 		  setCORSHeaders( res )
 		res.send("{ data: error }" );
     }

@@ -17,33 +17,33 @@ import axios from "axios";
 
 const FYERSAPI = axios.create({
    //   baseURL: 'https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersbridge/api'
-  //baseURL: 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api'
-  baseURL: 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api'
+  //baseURL: 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api'
+  baseURL: 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api'
 })
 const UPSTOXAPI = axios.create({
    //   baseURL: 'https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersbridge/api'
-  //baseURL: 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api'
-  baseURL: 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api'
+  //baseURL: 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api'
+  baseURL: 'https://onedinaar.com/.netlify/functions/netlifyupstoxbridge/api'
 })
 const ICICDIRECTAPI = axios.create({
    //   baseURL: 'https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersbridge/api'
-  //baseURL: 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api'
-  baseURL: 'https://successrate.netlify.app/.netlify/functions/netlifystockicicidirectbridge/api'
+  //baseURL: 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api'
+  baseURL: 'https://onedinaar.com/.netlify/functions/netlifystockicicidirectbridge/api'
 })
 //const FYERSAPILOGINURL = 'https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyerscallback'
 //const FYERSAPINSECSV = 'https://store-stocks.netlify.app';
-//const FYERSAPILOGINURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyerscallback'
-const FYERSAPILOGINURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyerscallback'
-const FYERSAPITRADEBOOKURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgettradebook'
-const FYERSAPIPOSITIONBOOKURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetpositionbook'
-const FYERSAPIHOLDINGSURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetholdings'
-const FYERSAPIORDERBOOKSURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetorderbook'
-const FYERSAPICANCELORDER = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyerscancelorder'
-const FYERSAPIBUYORDER = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersplacebuyorder'
-const FYERSAPISELLORDER = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersplacesellorder'
+//const FYERSAPILOGINURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerscallback'
+const FYERSAPILOGINURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerscallback'
+const FYERSAPITRADEBOOKURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgettradebook'
+const FYERSAPIPOSITIONBOOKURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetpositionbook'
+const FYERSAPIHOLDINGSURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetholdings'
+const FYERSAPIORDERBOOKSURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetorderbook'
+const FYERSAPICANCELORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerscancelorder'
+const FYERSAPIBUYORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersplacebuyorder'
+const FYERSAPISELLORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersplacesellorder'
 
-const FYERSAPITICKERURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersgetticker'
-const FYERSAPITHREESECQUOTE = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersgetbsecequote'
+const FYERSAPITICKERURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetticker'
+const FYERSAPITHREESECQUOTE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetbsecequote'
 
 //const FYERSAPIMARKETFEEDRENDER = 'https://fyersmarketfeed.onrender.com/stream' // ?accessToken=
 const FYERSAPIMARKETFEEDRENDER_SOCKET = 'https://rendersocketio-k4d8.onrender.com'  // 'https://localhost:9584' // ?accessToken=  'http://localhost:5000/stream' 
@@ -55,26 +55,26 @@ const FYERSAPIPOSITIONSRENDER = 'http://fyers-positions-socket-git.onrender.com/
 const FYERSAPIMARKETCUSTOMFEED = 'https://fyersbook.onrender.com/stream' // ?accessToken=
 const FYERSOPTIONCHAINWSSFEED = "wss://artilleryfeed.onrender.com/"; //'wss://192.168.1.3:8443/';
 
-const FYERSAPITICKERACCESTOKEN = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersaccesstoken'
-const FYERSAPITICKERURLCLOSE = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/close'
-//const FYERSAPINSECSV = 'https://successrate.netlify.app';
-const FYERSAPINSECSV = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetnsecsv'; 
-const BASEREF = 'https://successrate.netlify.app'; 
+const FYERSAPITICKERACCESTOKEN = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersaccesstoken'
+const FYERSAPITICKERURLCLOSE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/close'
+//const FYERSAPINSECSV = 'https://onedinaar.com';
+const FYERSAPINSECSV = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetnsecsv'; 
+const BASEREF = 'https://onedinaar.com'; 
 
 
-const UPSTOXAPILOGINURL = 'https://successrate.netlify.app/.netlify/functions/netlifyupstoxbridge/api/upstoxauthcallback'
+const UPSTOXAPILOGINURL = 'https://onedinaar.com/.netlify/functions/netlifyupstoxbridge/api/upstoxauthcallback'
 const     TRADE_LOGIN_URL = "https://api.icicidirect.com/apiuser/login?api_key="
   // upstoxsdklogin this is internal may be for later use 
-/*const FYERSAPITRADEBOOKURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgettradebook'
-const FYERSAPIPOSITIONBOOKURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetpositionbook'
-const FYERSAPIHOLDINGSURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetholdings'
-const FYERSAPIORDERBOOKSURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersgetorderbook'
-const FYERSAPICANCELORDER = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyerscancelorder'
-const FYERSAPIBUYORDER = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersplacebuyorder'
-const FYERSAPISELLORDER = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersplacesellorder'
+/*const FYERSAPITRADEBOOKURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgettradebook'
+const FYERSAPIPOSITIONBOOKURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetpositionbook'
+const FYERSAPIHOLDINGSURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetholdings'
+const FYERSAPIORDERBOOKSURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetorderbook'
+const FYERSAPICANCELORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerscancelorder'
+const FYERSAPIBUYORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersplacebuyorder'
+const FYERSAPISELLORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersplacesellorder'
 
-const FYERSAPITICKERURL = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersgetticker'
-const FYERSAPITHREESECQUOTE = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersgetbsecequote'
+const FYERSAPITICKERURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetticker'
+const FYERSAPITHREESECQUOTE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetbsecequote'
 
 //const FYERSAPIMARKETFEEDRENDER = 'https://fyersmarketfeed.onrender.com/stream' // ?accessToken=
 const FYERSAPIMARKETFEEDRENDER = 'https://localhost:9384/stream' // ?accessToken=  'http://localhost:5000/stream' 
@@ -83,9 +83,9 @@ const FYERSAPIORDERSRENDER = 'http://localhost:5002/stream' // ?accessToken=
 const FYERSAPIPOSITIONSRENDER = 'http://localhost:5003/stream' // ?accessToken=
 const FYERSAPIMARKETCUSTOMFEED = 'https://localhost:9555/stream' // ?accessToken=
 
-const FYERSAPITICKERACCESTOKEN = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/fyersaccesstoken'
-const FYERSAPITICKERURLCLOSE = 'https://successrate.netlify.app/.netlify/functions/netlifystockfyersticker/api/close'
-const FYERSAPINSECSV = 'https://successrate.netlify.app';
+const FYERSAPITICKERACCESTOKEN = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersaccesstoken'
+const FYERSAPITICKERURLCLOSE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/close'
+const FYERSAPINSECSV = 'https://onedinaar.com';
 
 */
 
