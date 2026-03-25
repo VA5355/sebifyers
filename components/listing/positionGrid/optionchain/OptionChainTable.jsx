@@ -64,7 +64,7 @@ import {  Wifi } from "lucide-react";
                     tableGlobalExipryMapper.set('2026-03-10','26M10')
              tableGlobalExipryMapper.set('2026-03-17','26M17' )
                 tableGlobalExipryMapper.set('2026-03-24','26M24')
-             tableGlobalExipryMapper.set('2026-03-31','26M31' )
+             tableGlobalExipryMapper.set('2026-03-30','26M30' )
               tableGlobalExipryMapper.set('2026-04-07','26A07')
              tableGlobalExipryMapper.set('2026-04-14','26A14' )
              tableGlobalExipryMapper.set('2026-04-21','26A21')
