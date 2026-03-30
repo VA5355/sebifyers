@@ -2551,7 +2551,7 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
                       <div className="hidden sm:grid grid-cols-[1.2fr_0.8fr_1.2fr] text-[12px] text-zinc-600 px-1 mb-1">
                         <div  className="px-4 ">STRIKE</div>
                         <div className="text-center">CALLS</div>
-                        <div className="text-right sm:text-left">PUTS</div> STRIKE MAP SIZE: ::  {strikeMap?.size}
+                        <div className="text-right sm:text-left">PUTS</div>  {/* STRIKE MAP SIZE: ::  {strikeMap?.size} */}
                       </div>
               
                       {/* Option Rows */}

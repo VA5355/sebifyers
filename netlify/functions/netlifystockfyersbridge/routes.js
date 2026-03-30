@@ -11,6 +11,8 @@ var ejs = require('ejs');
 var fyersV3= require("fyers-api-v3");
 const ism = require('@zero65tech/indian-stock-market');
 const FyersSocket = require("fyers-api-v3").fyersDataSocket
+import { ComplyCube } from "@complycube/api";
+
 const FyersAPI =fyersV3.fyersModel
 
 var fyersAPI = new FyersAPI()
@@ -20,6 +22,10 @@ var fyersModel= fyersV3.fyersModel
 //var client_id= "7GSQW68AZ4-100"
 var client_id= "JDK56F3KP5-200"; // "7GSQW68AZ4-100" ; // PROD 
 var secret_key = "G75gMipThUCNWpLA"; 		 // "MGY8LRIY0M"; // PROD 
+var complycubeKey = "test_TUIzVEN3Y2djeXdrU0ZEa1M6N2ZmZjY1ZjA5NzExYzk5NGZiNDk3YjJmMjRlOWUQDgwqVE-6aMBLYLbQv6i5N5y7bC5SajqSjHPzt8UJUqbZ8a==";
+// sand box key https://portal.complycube.com/developers/key
+// test_TUIzVEN3Y2djeXdrU0ZEa1M6N2ZmZjY1ZjA5NzExYzk5NGZiNDk3YjJmMjRlOWUQDgwqVE-6aMBLYLbQv6i5N5y7bC5SajqSjHPzt8UJUqbZ8a==
+
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
 var redirectUrl  = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 var BASEREF  = "https://onedinaar.com"
@@ -37,6 +43,7 @@ var authcode='';
 var global_auth_code ='';
 var recentUserAuthCode = '';
 var globalLogin = undefined;
+var globalKyc = undefined;
 let iterateObject = function*(obj) {
 	for (let k in obj) yield [ k, obj[k] ];
   };
@@ -344,9 +351,227 @@ async function showFYERSPROFILEQUOTES (req ,res , data  ){
 		console.log(e);
 		res.send("{ data: error }" );
 	}
-
-
 }
+ // Subscribe , Complycube KYC initialisation 
+const complycube = new ComplyCube({
+  apiKey: complycubeKey
+});
+
+async function createClientAndToken( kycPerson , req , res  ) {
+  try {
+    const client = await complycube.client.create({
+      type: kycPerson.typeOfEnity,
+      email:  kycPerson.email , //    "john.doe@example.com",
+      personDetails: {
+        firstName: kycPerson.firstName , //  "John",
+        lastName: kycPerson.lastName , // "Doe",
+        dob:   kycPerson.dob  //  "1990-01-01"
+      }
+    }); 
+
+    const token = await complycube.token.generate(client.id, {
+      referrer: "*://*/*"
+    });
+
+    console.log("✅ Client:", client);
+    console.log("🔑 Token:", token);
+	setCORSHeaders( res )
+    res.send(JSON.stringify ({ client, token }) ) ;
+
+  } catch (err) {
+    console.error("❌ Error:", err);
+     setCORSHeaders( res )
+	 res.send(JSON.stringify ({ data : 'Susbscribe Client token generate failed '}) ) ;
+
+
+  }
+}
+// Convert dd-mm-yyyy → yyyy-mm-dd (for input value)
+const convertToISO = (date) => {
+  if (!date) return "";
+  const [dd, mm, yyyy] = date.split("-");
+  return `${yyyy}-${mm}-${dd}`;
+};
+// Step1 first get client credentials as above and then trigger a Token 
+
+router.get("/subscribe/complycubeKyc", async function (req, res ) { 
+
+   	let typeOfEnity = ''
+	let email  = ''
+	let firstName= '';
+	let lastName= '';
+	let dob= '';
+	try {
+	if( req.query !== null && req.query !== undefined ){
+		console.log("Subscribe comply cube KYC  QUERY PARAMS " +JSON.stringify(req.query))
+		var complyCubeJSON  = JSON.parse(JSON.stringify(req.query));
+		typeOfEnity = complyCubeJSON['typeOfEnity'];
+		  email =complyCubeJSON['email'];
+		  firstName =complyCubeJSON['firstName'];
+		  lastName =complyCubeJSON['lastName'];
+		 dob= complyCubeJSON['dob'];
+		  // convert to YYYY-MM-DD style 
+		  dob = convertToISO(dob);
+
+		 console.log(`typeOfEnity: ${typeOfEnity}  email : ${email}  firstName : ${firstName}  lastName : ${lastName}  dob:  ${dob} `);
+
+		return  await createClientAndToken({ 'typeOfEnity' : typeOfEnity , 'email': email , 'firstName': firstName, 'lastName' : lastName , 'dob' : dob } ,req,res);
+
+	}
+	else if( req.params !== null && req.params !== undefined && req.params.length > 1){
+
+		console.log("Subscribe comply cube KYCPARAMS : "+ JSON.stringify(req.params))
+
+
+	}
+	else { 
+		 console.log("REDIRECT from Fyers is with not PARAMTEREs , or could not PARSE THEM ")
+
+	if(res.data !== null && res.data !==undefined){
+		typeOfEnity = res .data['typeOfEnity'];
+		  email = res .data['email'];
+		 firstName= res .data['firstName'];
+		///
+		// 
+	    }
+      }
+	  // setCORSHeaders( res )
+	  // res.send(JSON.stringify ({ data : 'Susbscribe Client person validation failed '}) ) ;
+	} catch (error) {
+			let ret =  {
+			statusCode: 500,
+			headers: {
+				"Access-Control-Allow-Origin": "*"
+			},
+			body: JSON.stringify({
+				error: "KYC  Status Fetch Failed ",
+				message: error.message
+			})
+    	  };
+		console.log(error)
+						//let wd1 = `NSE:${symbol}-EQ`;
+						//let ret = {  "symbol": wd1 , "status" : " Input error "+JSON.stringify(err) };
+						 setCORSHeaders( res );
+						res.send( JSON.stringify( ret));
+
+ 
+  }
+	//  res.send(JSON.stringify({"auth_code" :auth_code}))
+
+});
+// Step2 webhook for session started  https://192.168.1.3:8888/.netlify/functions/netlifystockfyersbridge/api/subscribe/kycsession
+// https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/subscribe/kycsession
+// d9c08b2faaf5dc8d688802a32a5c0dbb 
+router.get("/subscribe/kycsession", async function (req, res ) { 
+
+   	let typeOfEnity = ''
+	let email  = ''
+	let firstName= '';
+	let lastName= '';
+	let dob= '';
+
+	if( req.query !== null && req.query !== undefined ){
+		console.log("Subscribe comply cube KYC  QUERY PARAMS " +JSON.stringify(req.query))
+		var complyCubeJSON  = JSON.parse(JSON.stringify(req.query));
+		typeOfEnity = complyCubeJSON['typeOfEnity'];
+		  email =complyCubeJSON['email'];
+		  firstName =complyCubeJSON['firstName'];
+		  lastName =complyCubeJSON['lastName'];
+		 dob= complyCubeJSON['dob'];
+
+		 console.log(`typeOfEnity: ${typeOfEnity}  email : ${email}  firstName : ${firstName}  lastName : ${lastName}  dob:  ${dob} `);
+
+		 await createClientAndToken({ 'typeOfEnity' : typeOfEnity , 'email': email , 'firstName': firstName, 'lastName' : lastName , 'dob' : dob } ,req,res);
+
+	}
+	else if( req.params !== null && req.params !== undefined && req.params.length > 1){
+
+		console.log("Subscribe comply cube KYCPARAMS : "+ JSON.stringify(req.params))
+
+
+	}
+	else { 
+		 console.log("REDIRECT from Fyers is with not PARAMTEREs , or could not PARSE THEM ")
+
+	if(res.data !== null && res.data !==undefined){
+		typeOfEnity = res .data['typeOfEnity'];
+		  email = res .data['email'];
+		 firstName= res .data['firstName'];
+		///
+		// 
+	}
+    }
+	 setCORSHeaders( res )
+	res.send(JSON.stringify ({ data : 'Susbscribe Client person validation failed '}) ) ;
+	
+	//  res.send(JSON.stringify({"auth_code" :auth_code}))
+
+});
+ //fyerskycorder
+ // Step 2 to start the Workflow session at client side using Next JS SSR that will mount the ComplyCube Web-SDK 
+
+router.get("/fyerskycorder", async function (req, res ) { 
+
+   	let typeOfEnity = ''
+	let email  = ''
+	let firstName= '';
+	let lastName= '';
+	let dob= '';
+	let clientId= '';  
+	let token = '';  
+	if( req.query !== null && req.query !== undefined ){
+		console.log("Fyerskycorder check client id  comply cube KYC  QUERY PARAMS with client Id to mount the workflow at NEXT JS client side   " +JSON.stringify(req.query))
+		var complyCubeJSON  = JSON.parse(JSON.stringify(req.query)); 
+		typeOfEnity = complyCubeJSON['typeOfEnity'];
+		  email =complyCubeJSON['email'];
+		  firstName =complyCubeJSON['firstName'];
+		  lastName =complyCubeJSON['lastName'];
+		 dob= complyCubeJSON['dob'];
+		 clientId= complyCubeJSON['clientId'];
+		 token= complyCubeJSON['token'];
+
+		 //console.log(`typeOfEnity: ${typeOfEnity}  email : ${email}  firstName : ${firstName}  lastName : ${lastName}  dob:  ${dob} `);
+
+		 console.log(`typeOfEnity: ${typeOfEnity}  email : ${email}  firstName : ${firstName}  lastName : ${lastName}  dob:  ${dob}  clientId : ${clientId}  token:  ${token}`);
+		 if (clientId !== undefined  && clientId !== null && token !==undefined && token !==null) {
+    			  return res.redirect(302, "/comply-cube-session");
+  		  }
+		  else {
+					 return res.redirect(302, "/comply-cube-client-failed");
+		  }
+		 //await createClientAndToken({ 'typeOfEnity' : typeOfEnity , 'email': email , 'firstName': firstName, 'lastName' : lastName , 'dob' : dob } ,req,res);
+
+	}
+	else if( req.params !== null && req.params !== undefined && req.params.length > 1){
+
+		console.log("fyerskycorder comply cube KYCPARAMS : "+ JSON.stringify(req.params))
+
+
+	}
+	else { 
+		 console.log("fyerskycorder from KYC no clientId token PARAMTEREs , or could not PARSE THEM ")
+
+	if(res.data !== null && res.data !==undefined){
+		typeOfEnity = res .data['typeOfEnity'];
+		  email = res .data['email'];
+		 firstName= res .data['firstName'];
+		///
+		// 
+	}
+    }
+	 setCORSHeaders( res )
+	  const now = Date.now()
+		globalKyc = { "value" : {"clientId" :clientId , "token" :token,   "ttl" :now}};
+		 return res.redirect(
+      302,
+      `/comply-cube-client-fallback?${params.toString()}`
+    );
+	//res.send(JSON.stringify ({ data : 'Susbscribe Client person validation failed '}) ) ;
+	
+	//  res.send(JSON.stringify({"auth_code" :auth_code}))
+
+});
+
 
 //-----------------STEP1------------- FYERS REDIRECT --- 
 // Auth Code Redirect -------------

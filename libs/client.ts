@@ -42,6 +42,11 @@ const FYERSAPICANCELORDER = 'https://onedinaar.com/.netlify/functions/netlifysto
 const FYERSAPIBUYORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersplacebuyorder'
 const FYERSAPISELLORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersplacesellorder'
 
+const FYERSAPIKYCORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerskycorder'
+const FYERSAPICOMPLYCUBEURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/subscribe/complycubeKyc'
+//const FYERSAPIKYCORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/subscribe/complycubeKyc'
+
+
 const FYERSAPITICKERURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetticker'
 const FYERSAPITHREESECQUOTE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetbsecequote'
 
@@ -95,7 +100,7 @@ export { API , FYERSAPI ,UPSTOXAPI, ICICDIRECTAPI , FYERSAPILOGINURL , FYERSAPIN
   FYERSAPICANCELORDER,FYERSAPIBUYORDER,FYERSAPISELLORDER
   ,FYERSAPIORDERBOOKSURL ,FYERSAPITICKERURL , FYERSAPITICKERURLCLOSE ,FYERSAPITICKERACCESTOKEN,FYERSAPITHREESECQUOTE,
   FYERSAPIMARKETFEEDRENDER , FYERSAPIMARKETCUSTOMFEED,FYERSAPIORDERSRENDER,FYERSAPIPOSITIONSRENDER,
-  FYERSAPIPOSITIONBOOKURL, FYERSAPIMARKETFEEDRENDER_SOCKET,FYERSOPTIONCHAINWSSFEED,
+  FYERSAPIPOSITIONBOOKURL, FYERSAPIMARKETFEEDRENDER_SOCKET,FYERSOPTIONCHAINWSSFEED,FYERSAPICOMPLYCUBEURL, FYERSAPIKYCORDER,
 
   UPSTOXAPILOGINURL , TRADE_LOGIN_URL
 };

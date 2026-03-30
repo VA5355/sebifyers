@@ -385,6 +385,16 @@ export const CommonConstants = {
      sampleIndicesDataVersion1:  JSON.stringify(      indicesTickerData), 
      sampleThreeSecSensexDataVersion1:  JSON.stringify(      sensexThreeSecData), 
      sampleTickerNiftyDataVersion1:  JSON.stringify(      niftyTickerData) ,
+  
+
+   existingKycCacheKey : "existingKycCacheKey",
+    recentUserKycToken : "recentUserKycToken",
+    recentKycExclusive : "recentKycExclusive",
+    recentKycOrder : "recentKycOrder",
+    recentKycOrderStatus : "recentKycOrderStatus",
+    remoteServerComplyCubeErrorBasic : "remoteServerComplyCubeErrorBasic",
+    remoteServerGeneralKycErrorBasic : "remoteServerGeneralKycErrorBasic",
+    remoteServerGeneralKycErrorKey : "remoteServerGeneralKycErrorKey",
 
     // ICICI DIRECT Details 
     ICICI_API_KEY : "7`xZ6=v63s37L227e214j454mFN#h5Q4",
