@@ -43,7 +43,7 @@ const FYERSAPIBUYORDER = 'https://onedinaar.com/.netlify/functions/netlifystockf
 const FYERSAPISELLORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersplacesellorder'
 
 const FYERSAPIKYCORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerskycorder'
-const FYERSAPICOMPLYCUBEURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/subscribe/complycubeKyc'
+const FYERSAPICOMPLYCUBEURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/subscribe/complycubeKyc'
 //const FYERSAPIKYCORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/subscribe/complycubeKyc'
 
 
