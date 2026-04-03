@@ -195,7 +195,7 @@ export const completeKyc = (params = {}   ) => {
                             console.log(" clientKyc  "+JSON.stringify(clientKyc)+" ");
                             console.log(" tokenKyc  "+JSON.stringify(tokenKyc)+" ");
 
-                                        dispatch(showModal({ title: 'Id Generation Status', message: `Client ${firstName} \n ${lastName} \n ID Generated `, }  ));
+                                        dispatch(showModal({ title: 'Id Generation Status', message: `Client ${firstName} \n ${lastName} \n Post Kyc... id will be emailed  `, }  ));
                                       // should enable the COMPLY CUBE KYC CLIENT mount web-sdk as the client and token are generated 
                                         if(mountStartVerify !==undefined){
                                           let mountStartVerification = true;

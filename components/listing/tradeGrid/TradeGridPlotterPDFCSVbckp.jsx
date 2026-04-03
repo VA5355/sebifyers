@@ -31,6 +31,7 @@ import {disableLoader, enableLoader} from "@/redux/slices/miscSlice"
 //import React, {useEffect, useState} from 'react'
 import tradeBook from './tradesample.json';
 import IndexCard from '../positionGrid/IndexCard';
+import IndexCardNseYahoo from '../positionGrid/IndexCardNseYahoo';
 import './tradestyles.css'; // ✅ No 'tradestyles.'
 import {useDispatch, useSelector} from 'react-redux';
 import { getTradeData } from "./tradeGridBook.actions";
@@ -42,8 +43,12 @@ import { exportTradeBookPDF, exportTradeBookCSV } from "@/utils/tradeExport";
 //CUSTOME HOOK to DETECT MOBILE 
 //import { useIsMobile } from "./useIsMobile";
  import   useIsMobile   from "./useIsMobile";
-
+import ConnectionStatus from "./ConnectionStatus";
+import SSLWarning from "./SSLWarning";
 import  {  TradeBookMobileView as  MobileView }   from "./TradeBookMobileView";
+import { useMarketSocket } from "./useMarketSocket";
+import { normalizeMarket } from "./normalizeMarket";
+import MarketCard from "./MarketCard";
 
 const TradeGridPlotterPDFCSV = ({ tradeDataB   }) => {
   StorageUtils._save(CommonConstants.tradeDataCacheKey,CommonConstants.sampleTradeDataVersion1);
@@ -171,6 +176,11 @@ const [exportError, setExportError] = useState(null); // string | null
 const getSortIndicator = (column) =>
     sortColumn === column ? (sortDirection === "asc" ? " ▲" : " ▼") : "";
 
+ // NSE MARKET SOCKET 
+         const { nseData, status } = useMarketSocket();
+
+       //   const nseData = useMarketSocket();
+        const market = normalizeMarket(nseData);
 
      useEffect(() => {
            console.log("TradeTable:   " )
@@ -436,9 +446,79 @@ const refreshTrades =  (event ) => {
    /** Export PDF CSV  */
   return (
     <div className="overflow-x-auto w-full bg-zinc-100">
-        <br/>
-        
-          <div className="max-w-7xl mx-auto space-y-4">
+      <div className="max-w-7xl mx-auto space-y-4">{/* Header Section NSE based Market Socket */}
+              <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              NSE Market Indices 
+            </h1>
+          </div>
+                {/* 🔥 STATUS BAR */}
+            <div className="flex justify-between items-center">
+              <h1 className="text-xl font-bold">Market Dashboard</h1>
+              <ConnectionStatus status={status} />
+            </div>
+                      {/* 🔥 SSL WARNING */}
+              <SSLWarning status={status} />
+                <div className="grid grid-cols-6 md:grid-cols-1 gap-4">  {/*  className="flex flex-wrap items-center gap-3" */}
+            <div className="relative group"> 
+              {nseData !==undefined ? (    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                 {/*   <MarketCard
+                    name="NIFTY 50"
+                    value={market.nifty?.last || market.nifty?.regularMarketPrice}
+                    change={market.nifty?.variation || market.nifty?.regularMarketChange}
+                  />
+
+                  <MarketCard
+                    name="BANK NIFTY"
+                    value={market.banknifty?.last || market.banknifty?.regularMarketPrice}
+                    change={market.banknifty?.variation || market.banknifty?.regularMarketChange}
+                  />
+
+                  <MarketCard
+                    name="SENSEX"
+                    value={market.sensex?.last || market.sensex?.regularMarketPrice}
+                    change={market.sensex?.variation || market.sensex?.regularMarketChange}
+                  /> */} 
+               <IndexCardNseYahoo  spanId="sensex-price" statusId="sensex-status" 
+                  label="SENSEX" 
+                  symbol="BSE:SENSEX-INDEX" 
+                  data={tickerMap['BSE:SENSEX-INDEX']} 
+                  colorClass={`${colorSENSEXClass}`} timeId="sensex-time"
+                   name="SENSEX"
+                    value={market.sensex?.last || market.sensex?.regularMarketPrice}
+                    change={market.sensex?.variation || market.sensex?.regularMarketChange}
+                /> 
+                  {/* px-1 py-1 rounded bg-gray-100   */}
+                <IndexCardNseYahoo  spanId="banknifty-price" statusId="banknifty-status"
+                  label="BANKNIFTY" 
+                  symbol="NSE:NIFTYBANK-INDEX" 
+                  data={tickerMap['NSE:NIFTYBANK-INDEX']} 
+                  colorClass={`${colorBankNIFTYClass}`} timeId="banknity-time"
+                  name="BANK NIFTY"
+                    value={market.banknifty?.last || market.banknifty?.regularMarketPrice}
+                    change={market.banknifty?.variation || market.banknifty?.regularMarketChange}
+                />
+                   {/* px-1 py-1 rounded bg-gray-100   */}
+                <IndexCardNseYahoo  spanId="nifty-price" statusId="nifty-status"
+                  label="NIFTY 50" 
+                  symbol="NSE:NIFTY50-INDEX" 
+                  data={tickerMap['NSE:NIFTY50-INDEX']} 
+                  colorClass={` ${colorNIFTYClass}`} timeId="nifty-time"
+                   name="NIFTY 50"
+                    value={market.nifty?.last || market.nifty?.regularMarketPrice}
+                    change={market.nifty?.variation || market.nifty?.regularMarketChange}
+                /> 
+
+
+              </div>) : (<div>Loading...</div>)}
+            
+             </div>
+           </div>
+       </div>
+        <div className="max-w-7xl mx-auto space-y-4">
 
            {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -516,7 +596,7 @@ const refreshTrades =  (event ) => {
                  {/* Stream Market Data */}
        {/* Real-time Indices Ticker */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <IndexCard  spanId="sensex-price" statusId="sensex-status" 
+         {/*  <IndexCard  spanId="sensex-price" statusId="sensex-status" 
             label="SENSEX" 
             symbol="BSE:SENSEX-INDEX" 
             data={tickerMap['BSE:SENSEX-INDEX']} 
@@ -533,7 +613,7 @@ const refreshTrades =  (event ) => {
             symbol="NSE:NIFTY50-INDEX" 
             data={tickerMap['NSE:NIFTY50-INDEX']} 
             colorClass={`px-1 py-1 rounded bg-gray-100 ${colorNIFTYClass}`} timeId="nifty-time"
-          />
+          /> */}
         </div>    
 
  

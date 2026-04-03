@@ -36,6 +36,12 @@ import PositionsTabs from './PositionsTabs';
 import SellPlus2Order from './SellPlus2Order';
 import FetchPositionButton from './FetchPositionButton';
 import IndexCard from './IndexCard';
+import IndexCardNseYahoo from './IndexCardNseYahoo';
+import ConnectionStatus from "../tradeGrid/ConnectionStatus";
+import SSLWarning from "../tradeGrid/SSLWarning";
+import { useMarketSocket } from "../tradeGrid/useMarketSocket";
+import { normalizeMarket } from "../tradeGrid/normalizeMarket";
+
 import isEqual from 'lodash.isequal';
 //CUSTOME HOOK to DETECT MOBILE 
 //import { useIsMobile } from "./useIsMobile";
@@ -659,6 +665,11 @@ const handleSymbolClickOld = (symbol) => {
 const getSortIndicator = (column) =>
     sortColumn === column ? (sortDirection === "asc" ? " ▲" : " ▼") : "";
 
+ // NSE MARKET SOCKET 
+         const { nseData, status } = useMarketSocket();
+
+       //   const nseData = useMarketSocket();
+        const market = normalizeMarket(nseData);
 
      useEffect(() => {
           // console.log("PositionTable:   " )
@@ -1211,7 +1222,14 @@ const handleIndexActive = (e) => {
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
               Positions
             </h1>
-          </div>
+          </div> 
+                 {/* 🔥 STATUS BAR */}
+            <div className="flex justify-between items-center">
+              <h1 className="text-xl font-bold">Market Dashboard</h1>
+              <ConnectionStatus status={status} />
+            </div>
+                      {/* 🔥 SSL WARNING */}
+              <SSLWarning status={status} />
 
             {/* Broker Selector & Main Actions */}
           <div className="flex flex-wrap items-center gap-3">
@@ -1311,8 +1329,8 @@ const handleIndexActive = (e) => {
                       }}> </span>
              </p>
       </div> */}
-       {/* Stream Market Data */}
-       {/* Real-time Indices Ticker   colorClass={`${colorSENSEXClass}`} */}
+    {/* Stream Market Data */} {/**  colorClass={`px-1 py-1 rounded bg-gray-100 ${colorBankNIFTYClass}`}   */}  {/**  colorClass={`px-1 py-1 rounded bg-gray-100 ${colorNIFTYClass}`}  */}
+       {/* Real-time Indices Ticker   colorClass={`${colorSENSEXClass}`} 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <IndexCard  spanId="sensex-price" statusId="sensex-status" 
             label="SENSEX" 
@@ -1322,7 +1340,7 @@ const handleIndexActive = (e) => {
              isActiveIn = {isActive}
              timeId="sensex-time"
           />
-          {/**  colorClass={`px-1 py-1 rounded bg-gray-100 ${colorBankNIFTYClass}`}   */}
+         
           <IndexCard  spanId="banknifty-price" statusId="banknifty-status"
             label="BANKNIFTY" 
             symbol="NSE:NIFTYBANK-INDEX" 
@@ -1331,7 +1349,7 @@ const handleIndexActive = (e) => {
              isActiveIn = {isActive}
             timeId="banknity-time"
           />
-                 {/**  colorClass={`px-1 py-1 rounded bg-gray-100 ${colorNIFTYClass}`}  */}
+               
           <IndexCard  spanId="nifty-price" statusId="nifty-status"
             label="NIFTY 50" 
             symbol="NSE:NIFTY50-INDEX" 
@@ -1341,6 +1359,62 @@ const handleIndexActive = (e) => {
             timeId="nifty-time"
           />
         </div>
+        */}
+               <div className="grid grid-cols-6 md:grid-cols-1 gap-4">  {/*  className="flex flex-wrap items-center gap-3" */}
+            <div className="relative group"> 
+              {nseData !==undefined ? (    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                 {/*   <MarketCard
+                    name="NIFTY 50"
+                    value={market.nifty?.last || market.nifty?.regularMarketPrice}
+                    change={market.nifty?.variation || market.nifty?.regularMarketChange}
+                  />
+
+                  <MarketCard
+                    name="BANK NIFTY"
+                    value={market.banknifty?.last || market.banknifty?.regularMarketPrice}
+                    change={market.banknifty?.variation || market.banknifty?.regularMarketChange}
+                  />
+
+                  <MarketCard
+                    name="SENSEX"
+                    value={market.sensex?.last || market.sensex?.regularMarketPrice}
+                    change={market.sensex?.variation || market.sensex?.regularMarketChange}
+                  /> */} 
+               <IndexCardNseYahoo  spanId="sensex-price" statusId="sensex-status" 
+                  label="SENSEX" 
+                  symbol="BSE:SENSEX-INDEX" 
+                  data={tickerMap['BSE:SENSEX-INDEX']}   onClickIn={handleIndexActive}
+                  colorClass={`${colorSENSEXClass}`} timeId="sensex-time"
+                   name="SENSEX"
+                    value={market.sensex?.last || market.sensex?.regularMarketPrice}
+                    change={market.sensex?.variation || market.sensex?.regularMarketChange}
+                /> 
+                  {/* px-1 py-1 rounded bg-gray-100   */}
+                <IndexCardNseYahoo  spanId="banknifty-price" statusId="banknifty-status"
+                  label="BANKNIFTY" 
+                  symbol="NSE:NIFTYBANK-INDEX" 
+                  data={tickerMap['NSE:NIFTYBANK-INDEX']}   onClickIn={handleIndexActive}
+                  colorClass={`${colorBankNIFTYClass}`} timeId="banknity-time"
+                  name="BANK NIFTY"
+                    value={market.banknifty?.last || market.banknifty?.regularMarketPrice}
+                    change={market.banknifty?.variation || market.banknifty?.regularMarketChange}
+                />
+                   {/* px-1 py-1 rounded bg-gray-100   */}
+                <IndexCardNseYahoo  spanId="nifty-price" statusId="nifty-status"
+                  label="NIFTY 50" 
+                  symbol="NSE:NIFTY50-INDEX" 
+                  data={tickerMap['NSE:NIFTY50-INDEX']}   onClickIn={handleIndexActive}
+                  colorClass={` ${colorNIFTYClass}`} timeId="nifty-time"
+                   name="NIFTY 50"
+                    value={market.nifty?.last || market.nifty?.regularMarketPrice}
+                    change={market.nifty?.variation || market.nifty?.regularMarketChange}
+                /> 
+
+
+              </div>) : (<div>Loading...</div>)}
+            
+             </div>
+           </div>
         
           <br/>
           <div className="flex justify-end ">  
