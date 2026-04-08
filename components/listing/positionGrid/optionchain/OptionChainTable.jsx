@@ -27,10 +27,13 @@ import { generated , generatedApril, generateSymbolsApril , getHighestId , baseS
 import expiryMonthSymbols from "./OptionChainMonthEndSymbols";
 import TickStore from "./tickStore";
 import SpotIndex  from "./spotIndex";
-import  { fetchNiftySpot , recalculateNiftOptionStrikes }  from "./spotFyersIndex";
+import  { fetchNiftySpot ,fetchNiftyYahooindices,  recalculateNiftOptionStrikes }  from "./spotFyersIndex";
 import { ChevronUp, ChevronDown, Calendar } from "lucide-react";
  
 import {  Wifi } from "lucide-react";
+ import { saveLtp } from "@/redux/slices/indicesSlice";
+ import {   setSpot   } from '@/redux/slices/webSocketSlice';
+import { selectSpotBySymbol } from '@/redux/selectors/webSockSelector';
 
  
 // Fyers Custom Format Exipry Table Mapper 
@@ -486,8 +489,12 @@ const mockExpiryDates = [  //this is a configuration setting to be set every cha
     '2026-04-07',
     '2026-04-14',
     '2026-04-21',
-    '2026-04-28' 
-
+    '2026-04-28' ,
+     '2026-05-05' ,
+     '2026-05-26' ,
+       '2026-06-30' ,
+       '2026-09-29' ,
+         '2026-12-29' ,
 ];
 
 
@@ -572,6 +579,27 @@ function ExpiryFilter({ selectedExpiry, onExpiryChange, expiryOptions , dispatch
                             }
                           })();
                 
+                  }
+                  else {  // with SEBI Rule now we don't get the ACCES TOKEN there is always BAD GATEWAY
+                       // still try fetch the NIFTY SPOT without token from the new Fairvinay/nseyahooindices
+                           (async () => {
+                            try { 
+                                let ttk  = '';
+                              const nifty = await fetchNiftyYahooindices(ttk);
+                                console.log("📈 NIFTY SPOT from  NSEYahooindices =", nifty);
+                              indexNiftySpot =    nifty;
+                           /*     [
+            "NIFTY-50",
+            "784832087",
+            "timestamp",
+            "25600.19",  // 👈 LTP
+            ...
+          ] */
+                              setSpot([{name: 'NIFTY-50' ,  id: (Math.random() * 5) , timestamp : new Date().getTime(),symbol: nifty }])
+                            } catch (err) {
+                                console.error(err.message);
+                            }
+                          })();
                   }
 
               }   
@@ -704,6 +732,7 @@ function ExpiryFilter({ selectedExpiry, onExpiryChange, expiryOptions , dispatch
             } ///  SELECTED Expiry is active 
             else { 
                 dispatch(modalShow({ title: 'Exipry', message: `Please select Active Expiry Dates `, } ));
+                dispatch(saveLtp)
             }
           }
           else {
@@ -721,11 +750,41 @@ function ExpiryFilter({ selectedExpiry, onExpiryChange, expiryOptions , dispatch
             // 3. Send the new subscription request to the server!
             // This calls the sendSubscriptionRequest function exposed by the Context.
             if (Array.isArray(newSymbols) && newSymbols.length >0 ) {
+              // check the new symbols entry is matching the nifty spot 
+
                if(isConnected){ 
                 // trying to solve the blink issue on selection of expiry the options chain data fetched blinks are re=freshes
+               let isNearNiftySpot = false;
 
+                  newSymbols.forEach(sym => {
+
+                    // Skip spot symbol
+                    if (sym === "NIFTY-50") return;
+
+                    if (sym.includes("CE") || sym.includes("PE")) {
+
+                      // Extract strike properly
+                      const strike = Number(sym.slice(11, -2)); // ✅ correct
+
+                      if (!isNaN(strike)) {
+
+                        // ✅ Proper near logic
+                        if (Math.abs(strike - niftyPrice) <= 300) {
+                          isNearNiftySpot = true;
+                        }
+
+                      }
+                    }
+                  });
                // resetStrikeMap();
-                sendSubscriptionRequest(newSymbols); }
+              if (isNearNiftySpot) {
+                  sendSubscriptionRequest(newSymbols);
+                } else {
+                  sendSubscriptionRequest([]);
+                }
+              
+              
+              }
                
             }
             else {
@@ -1851,7 +1910,7 @@ function OptionRow({  idx ,  row, onAction }) {
 
 export default function OptionChainTable({positionData, activeIndexIn}) {
     const dispatch = useDispatch();
-        const url = FYERSOPTIONCHAINWSSFEED; //'wss://192.168.1.3:8443/';
+        const url = FYERSOPTIONCHAINWSSFEED; // intentionally swapped to avoid overlap nseyahooindices ;
       const [activeIndexCh, setActiveIndexCh] = useState(activeIndexIn);
 
   useEffect(() => {
@@ -1902,6 +1961,7 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
   });*/
    const [ arrayMap , setArrayMap ] = useState( mp => [new Map()])
   const spot = useSelector((state) => state.websocket.spot);
+  const niftyPrice = useSelector(selectSpotBySymbol("NIFTY-50"));
   //const [ nifty50 ,  setNifty50 ] = useState( spot => spot !==undefined ? spot : 'NA');
    let  nifty50  = ( spot => spot !==undefined ? spot : 'NA');
      const [spotSort, setSpotSort] = useState('');
@@ -1980,9 +2040,112 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
 
 
     }
+
+   /** REMOVES Duplicate Expiries within the expiry , and considers only one EPIRY  */
+function dedupeStrikeMap(strikeMap) {
+  const seen = new Map();
+
+  const today = new Date();
+
+  let fyersExpiryDateMapper = new Map();
+  fyersExpiryDateMapper.set('25D16','251216');
+  fyersExpiryDateMapper.set('25D23','251223');
+  fyersExpiryDateMapper.set('25DEC','251230');
+  fyersExpiryDateMapper.set('26106','260106');
+  fyersExpiryDateMapper.set('26113','260113');
+  fyersExpiryDateMapper.set('26A13', '26413'); // Apr 13, 2026
+fyersExpiryDateMapper.set('26A21', '26421'); // Apr 21, 2026
+fyersExpiryDateMapper.set('26A28', '26428'); // Apr 28, 2026
+    fyersExpiryDateMapper.set('26413','260106');
+  fyersExpiryDateMapper.set('26M05','26505');
+    fyersExpiryDateMapper.set('26M12','26512');
+  fyersExpiryDateMapper.set('26M26','26526');
+
+  for (const [symbol, data] of strikeMap) {
+
+    if (!symbol) continue;
+
+    const matchFyers = symbol.match(/^([A-Z]+)(\d{2}[A-Z]\d{2})(\d+)(CE|PE)$/);
+    if (!matchFyers) continue;
+
+    const underlying = matchFyers[1];
+    const expiryRaw = matchFyers[2];
+    const strike = matchFyers[3];
+    const type = matchFyers[4];
+
+    const expiryStr = fyersExpiryDateMapper.get(expiryRaw);
+    if (!expiryStr) continue;
+
+    // ✅ Convert to Date (YYMMDD → Date)
+    const year = 2000 + parseInt(expiryStr.slice(0, 2));
+    const month = parseInt(expiryStr.slice(2, 4)) - 1;
+    const day = parseInt(expiryStr.slice(4, 6));
+
+    const expiryDate = new Date(year, month, day);
+    //console.log("expiryDate  ")
+    // ❌ Skip past expiry
+    if (expiryDate < today) continue;
+
+    const standSymbol = `${underlying}${expiryStr}${strike}${type}`;
+
+    // ✅ UNIQUE KEY (strike + type ONLY)
+    const uniqueKey = `${underlying}${strike}${type}`;
+
+    if (!seen.has(uniqueKey)) {
+      seen.set(uniqueKey, {
+        symbol: standSymbol,
+        data,
+        expiryDate
+      });
+    } else {
+      const existing = seen.get(uniqueKey);
+
+      // ✅ Pick nearest expiry (future)
+      if (expiryDate < existing.expiryDate) {
+        seen.set(uniqueKey, {
+          symbol: standSymbol,
+          data,
+          expiryDate
+        });
+      }
+    }
+  }
+
+  // ✅ Convert to array
+  const result = Array.from(seen.values()).map(v => [v.symbol, v.data]);
+
+  // ✅ SORT (strike + CE/PE)
+  result.sort((a, b) => {
+    const strikeA = extractStrike(a[0]);
+    const strikeB = extractStrike(b[0]);
+
+    if (strikeA !== strikeB) return strikeA - strikeB;
+
+    if (a[0].endsWith("CE") && b[0].endsWith("PE")) return -1;
+    if (a[0].endsWith("PE") && b[0].endsWith("CE")) return 1;
+
+    return 0;
+  });
+  //console.log(" unique expiries "+result.length)
+  return result;
+}
+
+function extractStrike(symbol) {
+  if (!symbol) return 0;
+
+  // Matches last 5 digits before CE/PE
+  const match = symbol.match(/(\d{5})(CE|PE)$/);
+
+  if (match) {
+    return parseInt(match[1], 10);
+  }
+
+  return 0; // fallback
+}
+
        /**
      * Generates the full list of symbols for the new expiry code by combining strikes and types.
-     */
+    
     function dedupeStrikeMap(strikeMap) {
   const seen = new Map(); // key: "NIFTY24100CE", value: entry
 
@@ -2039,7 +2202,7 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
    // console.log( `dedupeStrikeMap:::  ${JSON.stringify(Array.from(strikeMap.entries()))}`)
   // Convert back to same structure as strikeMap
   return Array.from(seen.entries());
-}
+}*/
 
     const handleExpiryChange = (newExpiry) => {
         setSelectedExpiry(newExpiry);
@@ -2454,16 +2617,18 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
 
   return (
     <div className="p-4">
-      {/* Conditionally render the modal if showModal is true */}
-      {showModal && <>
-             {/* Backdrop   backdrop-blur-sm too much blur */}
+      {/* Conditionally render the modal if showModal is true 
+        or time being as the Fyers access token is unavailable please revert back to showModal 
+         */}   {/* Backdrop   backdrop-blur-sm too much blur */}  {/* Modal */}   {/* shadow-xl  not needed  */}  {/*  <h3 className="text-lg font-semibold mb-2 text-gray-800 text-center">Confirm Order</h3>*/}
+     {/*  {!showModal && <>
+          
           <div className="fixed inset-0 bg-black bg-opacity-40 z-40"></div> 
 
-          {/* Modal */}
+        
           <div className="fixed inset-0 flex items-center justify-center z-50">
-            {/* shadow-xl  not needed  */}
+         
             <div className="bg-white rounded-xl  p-6 w-[300px] max-w-[90%] border border-gray-200">
-            {/*  <h3 className="text-lg font-semibold mb-2 text-gray-800 text-center">Confirm Order</h3>*/}
+          
 
               <div className="flex items-center justify-between space-x-2">
                  
@@ -2485,9 +2650,12 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
             </div>
           </div>
       
-      </>}
-      {/* Conditionally render the table if showModal is false url="wss://localhost:8443/" dispatch={dispatch}*/}
-      {!showModal && <>
+      </>}*/} 
+      {/* Conditionally render the table if showModal is false url="wss://localhost:8443/" dispatch={dispatch}
+        SKIPPING the FYERS   LOGIN ....   for time being as the Fyers access token is unavailable please revert back to !showModal */}
+         {/*  {!showModal  && <> <> }  */ }
+
+ 
                     <WebSocketProvider wsInstance={ws} openConnection={connect} setIsConnectedButton = {setIsConnectedButton}>  
                      <Header setRecalculate={ setShouldDisplay} inputActiveBtn = {'button1' }/>
                 <div className=" w-full bg-zinc-50 sm:bg-white p-1 sm:p-2"> {/* min-h-screen (gap between positon removed)  p-3 sm:p-6 isConnectedButton */}
@@ -2566,9 +2734,9 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
                             const typeB = valueB[0].slice(-2);
                             return typeA.localeCompare(typeB); // CE before PE
                         })*/}
-                      <div className="grid gap-6 sm:gap-12"> {/* strikeMap   && dedupeStrikeMap(strikeMap)*/}
+                      <div className="grid gap-6 sm:gap-12"> {/* strikeMap   && dedupeStrikeMap(strikeMap) Array.from(strikeMap.entries()) */}
                         {strikeMap?.size > 0 && (  dedupeStrikeMap(strikeMap) )&&    
-                                 Array.from(strikeMap.entries())?.map(([key, value] , idx) => { 
+                                dedupeStrikeMap(strikeMap)?.map(([key, value] , idx) => { 
                                  let rawRow= value ; // value[1]; //tradeRow[1];
                              if (printed.has(key))  { 
                                      rawRow=  store.upsert(row);
@@ -2681,7 +2849,7 @@ export default function OptionChainTable({positionData, activeIndexIn}) {
                     
                   </div>
                </WebSocketProvider>
-                </> }
+            
      
         {/* --------------------- 3. Floating Gear Icon --------------------- */}
       <motion.button

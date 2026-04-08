@@ -14,3 +14,5 @@ export const selectFilteredStrikes = createSelector(
     );*/
   }
 );
+export const selectSpotBySymbol = (symbol ) => (state ) =>
+  state.websocket.spot?.[symbol]?.price || null;

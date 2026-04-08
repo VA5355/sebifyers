@@ -73,8 +73,37 @@ const websocketSlice = createSlice({
        // structure of action.payload = { id: id , name: name , symbol : symbol }
        // e.g NIFTY-50  784832087_NIFTY-50  --> NIFTY-50,784832087,2025-12-17T13:32:45.995Z,25600.19,0,0,0,25601.02,25602.49,25600.72,25601.03,5056279,2899111,0,0,0,0,0 
              // let tempSymbolTickReceived = action.payload;
-         let spotPrice = niftySpot.symbol[3];
-         state.spot = spotPrice;
+       //  let spotPrice = niftySpot.symbol[3];
+      //   state.spot = spotPrice;
+        /**
+           Expected tick format (example):
+          [
+            "NIFTY-50",
+            "784832087",
+            "timestamp",
+            "25600.19",  // 👈 LTP
+            ...
+          ]
+          */
+          const tick = action.payload;
+         if (Array.isArray(tick)) {
+            const symbolName = tick[0];     // "NIFTY-50"
+            const ltp = Number(tick[3]);    // safe parse
+                  
+            if (!isNaN(ltp)) {
+              state.spot = {
+                symbol: symbolName,
+                price: ltp,
+                time: tick[2]
+              };
+
+              // 🔥 ALSO store in tickerMap (VERY POWERFUL)
+           //   state.tickerMap[symbolName] = {
+             //   price: ltp,
+           //     time: tick[2]
+            //  };
+            }
+          }
       /*tempSymbolTickReceived structure 
       /* stateSymbols tructure 
      strikeMap, [["NIFTY25D1625600CE",["NIFTY25D1625600CE","753989373","2025-12-16T10:39:25.056Z","130.21",null,null,null,"0","132.28",

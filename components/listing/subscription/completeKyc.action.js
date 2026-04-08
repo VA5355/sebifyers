@@ -9,7 +9,7 @@ import { showModal, showError } from '../../common/service/ModalService';
 import { useModal } from '@/providers/ModalProvider';
 import {CommonConstants} from "@/utils/constants"
 import toast from "react-hot-toast"
-import { FYERSAPINSECSV ,FYERSAPITHREESECQUOTE , FYERSAPIORDERBOOKSURL ,  FYERSAPITICKERACCESTOKEN, FYERSAPICOMPLYCUBEURL,
+import { FYERSAPINSECSV ,FYERSAPITHREESECQUOTE , FYERSAPIORDERBOOKSURL ,  FYERSAPITICKERACCESTOKEN, FYERSAPICOMPLYCUBEURLPOST,
      FYERSAPIKYCORDER , FYERSAPISELLORDER} from '@/libs/client';
 
       const KYC_URL  = [   FYERSAPIKYCORDER  ] ;
@@ -121,8 +121,15 @@ export const completeKyc = (params = {}   ) => {
                    const fetchAuthToken = async () => {
 
                      try {
-                                          
-                          const res = await API.get(FYERSAPITICKERACCESTOKEN , {params: { "auth_code" : auth_code }});
+                         let tempCode="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."+
+    "eyJhcHBfaWQiOiJKREs1NkYzS1A1IiwidXVpZCI6ImJiZGM5NTc1YzA4MDQ4OTRhZWVjZTQz"+
+    "YWRjNDc1NjUwIiwiaXBBZGRyIjoiIiwibm9uY2UiOiIiLCJzY29wZSI6IiIsImRpc3BsYXlfbm"+
+   "FtZSI6IlhWMzEzNjAiLCJvbXMiOiJLMSIsImhzbV9rZXkiOiJiMTNiZDMzMWU3OGNkY2ZiYWRkNTM"+
+ "1MThhNDlmZGQ5ODQzNGMyOTc0ZjBjMmIxYjZhOTY4ODc3ZiIsImlzRGRwaUVuYWJsZWQiOiJOIiwiaXN"+
+ "NdGZFbmFibGVkIjoiTiIsImF1ZCI6IltcImQ6MVwiLFwiZDoyXCIsXCJ4OjBcIixcIng6MVwiLFwieDoy"+
+"XCJdIiwiZXhwIjoxNzc1NTAzMjkxLCJpYXQiOjE3NzU0NzMyOTEsImlzcyI6ImFwaS5sb2dpbi5meWVycy5"+
+"pbiIsIm5iZiI6MTc3NTQ3MzI5MSwic3ViIjoiYXV0aF9jb2RlIn0.T-PqmMJhz2W989FEtcnxo7rotduXR5RwlFh4uHm7Eoo";                 
+                          const res = await API.get(FYERSAPITICKERACCESTOKEN , {params: { "auth_code" : tempCode }});
                           const text = await res.data ;
                           StorageUtils._save(CommonConstants.recentUserKycToken, text)
 
@@ -130,7 +137,8 @@ export const completeKyc = (params = {}   ) => {
                               (spinnerIsAvailable ?   setTimeout(hideModal, 300): console.log("Spinner unavailavle to close ") ) ;
 
                           // GET THe KYC  
-                           const kycBook = await API.get(FYERSAPICOMPLYCUBEURL , {params: { "auth_code" : auth_code }});
+                           const kycBook = await API.get(FYERSAPICOMPLYCUBEURLPOST , {params: {  "id" : _id, 
+                                       "mobileNumber":mobileNumber ,  lastName:lastName, dob:dob,  firstName: firstName,  email:email  ,typeOfEnity:typeOfEnity    }});
                             const orderKycData = await kycBook.data ;
                             // https://192.168.1.3:8888/.netlify/functions/netlifystockfyersbridge/subscribe/complycubeKyc  
                             // send the { client , token }
@@ -140,7 +148,7 @@ export const completeKyc = (params = {}   ) => {
                                  token = orderKycData.token;
                                  clientKyc = client;
                                  tokenKyc = token;
-                            console.log(" return from  "+FYERSAPICOMPLYCUBEURL+" ");
+                            console.log(" return from  "+FYERSAPICOMPLYCUBEURLPOST+" ");
                             console.log(" clientKyc  "+JSON.stringify(clientKyc)+" ");
                             console.log(" tokenKyc  "+JSON.stringify(tokenKyc)+" ");
 
@@ -148,7 +156,7 @@ export const completeKyc = (params = {}   ) => {
 
                                   }
                                   else {
-                                    console.log(" return from  "+FYERSAPICOMPLYCUBEURL+" empty or not parseable " );
+                                    console.log(" return from  "+FYERSAPICOMPLYCUBEURLPOST+" empty or not parseable " );
                                   }
                           // PARSE and SEGREGATE ORDER BOOK fill recentBuyOrderPlaced
                           // let orderRecent =     parseOrderBook (orderData); 
@@ -180,7 +188,7 @@ export const completeKyc = (params = {}   ) => {
                             //  (spinnerIsAvailable ?   setTimeout(hideModal, 300):  setTimeout( () => { console.log("Spinner unavailavle to close ") } , 300) ) ;
 
                           // GET THe KYC  
-                           const kycBook = await API.get(FYERSAPICOMPLYCUBEURL , {params: {  "id" : _id, 
+                           const kycBook = await API.get(FYERSAPICOMPLYCUBEURLPOST , {params: {  "id" : _id, 
                                        "mobileNumber":mobileNumber ,  lastName:lastName, dob:dob,  firstName: firstName,  email:email  ,typeOfEnity:typeOfEnity    }});
                             const orderKycData = await kycBook.data ;
                             // https://192.168.1.3:8888/.netlify/functions/netlifystockfyersbridge/subscribe/complycubeKyc  
@@ -191,7 +199,7 @@ export const completeKyc = (params = {}   ) => {
                                  token = orderKycData.token;
                                  clientKyc = client;
                                  tokenKyc = token;
-                            console.log(" return from  "+FYERSAPICOMPLYCUBEURL+" ");
+                            console.log(" return from  "+FYERSAPICOMPLYCUBEURLPOST+" ");
                             console.log(" clientKyc  "+JSON.stringify(clientKyc)+" ");
                             console.log(" tokenKyc  "+JSON.stringify(tokenKyc)+" ");
 
@@ -206,7 +214,7 @@ export const completeKyc = (params = {}   ) => {
                                         }
                                   }
                                   else {
-                                    console.log(" return from  "+FYERSAPICOMPLYCUBEURL+" empty or not parseable " );
+                                    console.log(" return from  "+FYERSAPICOMPLYCUBEURLPOST+" empty or not parseable " );
                                   }
 
 

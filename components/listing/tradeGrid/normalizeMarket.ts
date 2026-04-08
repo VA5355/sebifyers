@@ -15,12 +15,35 @@ export function normalizeMarket(data: any) {
   // Yahoo format
   if (data.source === "YAHOO") {
     const list = data.data?.quoteResponse?.result || [];
+      
+    let yahooList = {};
+   try {
+         if(list !==undefined && Array.isArray(list) && list.length > 0){
 
-    return {
-      nifty: list.find((i: any) => i.symbol === "^NSEI"),
-      banknifty: list.find((i: any) => i.symbol === "^NSEBANK"),
-      sensex: list.find((i: any) => i.symbol === "^BSESN")
-    };
+
+            yahooList =  {
+                nifty: list.find((i: any) => i.symbol === "^NSEI"),
+                banknifty: list.find((i: any) => i.symbol === "^NSEBANK"),
+                sensex: list.find((i: any) => i.symbol === "^BSESN")
+              };
+
+
+         }
+
+
+
+
+   }catch (erer){
+
+        console.log("normalising yahoo indices faces issues "+ JSON.stringify(erer));
+
+
+   }
+
+
+
+
+    return  yahooList;
   }
 
   return {};

@@ -777,8 +777,42 @@ export function generateOptionChain({
 
   return results;
 }
+function generateDynamicStrikes(spot ) {
+  const step = 100;
 
+  const lower = Math.floor((spot - 1400) / step) * step; // 21300
+  const upper = Math.ceil((spot + 1200) / step) * step;  // 23900
 
+  return { lower, upper };
+}
+function generateStrikesFromSpot(spot) {
+  const { lower, upper } = generateDynamicStrikes(spot);
+
+  const year = "26";
+  const monthCode = "A";
+  const expiries = ["07", "14", "21", "28"];
+
+  let id = 600000000;
+  const result = [];
+
+  for (const exp of expiries) {
+    for (let strike = lower; strike <= upper; strike += 100) {
+      result.push({
+        id: String(id++),
+        symbol: `NIFTY${year}${monthCode}${exp}${strike}CE`,
+        k: 0
+      });
+
+      result.push({
+        id: String(id++),
+        symbol: `NIFTY${year}${monthCode}${exp}${strike}PE`,
+        k: 0
+      });
+    }
+  }
+
+  return result;
+}
 
 
   export default expirySymbols;

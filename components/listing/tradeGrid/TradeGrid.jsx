@@ -26,6 +26,11 @@ import StreamToggleButton from './StreamToggleButton';
  import   useIsMobile   from "./useIsMobile";
 
 import  {  TradeBookMobileView as  MobileView }   from "./TradeBookMobileView";
+import { useMarketSocket } from "./useMarketSocket";
+import { normalizeMarket } from "./normalizeMarket";
+import MarketCard from "./MarketCard";
+
+
 
 const TradeGrid = ({ tradeDataB   }) => {
   StorageUtils._save(CommonConstants.tradeDataCacheKey,CommonConstants.sampleTradeDataVersion1);
@@ -100,6 +105,9 @@ const TradeGrid = ({ tradeDataB   }) => {
 const getSortIndicator = (column) =>
     sortColumn === column ? (sortDirection === "asc" ? " ▲" : " ▼") : "";
 
+ // NSE MARKET SOCKET 
+          const nseData = useMarketSocket();
+        const market = normalizeMarket(nseData);
 
      useEffect(() => {
            console.log("TradeTable:   " )
@@ -306,7 +314,40 @@ const getSortIndicator = (column) =>
           };
   return (
     <div className="overflow-x-auto w-full bg-zinc-100">
-       
+      <div className="max-w-7xl mx-auto space-y-4">{/* Header Section NSE based Market Socket */}
+              <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              NSE Market Indices 
+            </h1>
+          </div>
+            <div className="flex flex-wrap items-center gap-3">
+            <div className="relative group"> 
+              {nseData !==undefined ? (    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                  <MarketCard
+                    name="NIFTY 50"
+                    value={market.nifty?.last || market.nifty?.regularMarketPrice}
+                    change={market.nifty?.variation || market.nifty?.regularMarketChange}
+                  />
+
+                  <MarketCard
+                    name="BANK NIFTY"
+                    value={market.banknifty?.last || market.banknifty?.regularMarketPrice}
+                    change={market.banknifty?.variation || market.banknifty?.regularMarketChange}
+                  />
+
+                  <MarketCard
+                    name="SENSEX"
+                    value={market.sensex?.last || market.sensex?.regularMarketPrice}
+                    change={market.sensex?.variation || market.sensex?.regularMarketChange}
+                  />
+              </div>) : (<div>Loading...</div>)}
+            
+             </div>
+           </div>
+       </div>
         <div className="max-w-7xl mx-auto space-y-4">
 
            {/* Header Section */}

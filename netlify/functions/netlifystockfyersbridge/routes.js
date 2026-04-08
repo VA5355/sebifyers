@@ -508,7 +508,7 @@ router.get("/subscribe/kycsession", async function (req, res ) {
 
 });
  //fyerskycorder
- // Step 2 to start the Workflow session at client side using Next JS SSR that will mount the ComplyCube Web-SDK 
+ // Step 4 to start the Workflow session at client side using Next JS SSR that will mount the ComplyCube Web-SDK 
 
 router.get("/fyerskycorder", async function (req, res ) { 
 
@@ -572,6 +572,180 @@ router.get("/fyerskycorder", async function (req, res ) {
 
 });
 
+// ComplyCube KYC Post request                                                          ********* -------------------ComplyCube KYC Post request
+// --- Example Usage ---
+const newClient = {
+    "type": "person",
+    "email": "john.doe@example.com",
+    "mobile": "+12 345678910",
+    "telephone": "+12 345678910",
+    "joinedDate": "2020-01-01",
+    "personDetails": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "dob": "1990-01-01",
+        "nationality": "GB"
+    }
+};
+
+/**
+ * Creates a POST ComplyCube REQUEST with automatic retry logic.
+ * @param {request , response} queryParams - The query parameters typeOfEnity email firstName lastName dob  details  
+ */
+router.get("/subscribe/complycubeKycpost", async function (req, res ) { 
+
+   	let typeOfEnity = ''
+	let email  = ''
+	let firstName= '';
+	let lastName= '';
+	let dob= '';
+	try {
+	if( req.query !== null && req.query !== undefined ){
+		console.log("Subscribe comply cube KYC POST(/subscribe/complycubeKycpost)  QUERY PARAMS " +JSON.stringify(req.query))
+		var complyCubeJSON  = JSON.parse(JSON.stringify(req.query));
+		typeOfEnity = complyCubeJSON['typeOfEnity'];
+		  email =complyCubeJSON['email'];
+		  firstName =complyCubeJSON['firstName'];
+		  lastName =complyCubeJSON['lastName'];
+		 dob= complyCubeJSON['dob'];
+		  // convert to YYYY-MM-DD style 
+		  dob = convertToISO(dob);
+
+		 console.log(`typeOfEnity: ${typeOfEnity}  email : ${email}  firstName : ${firstName}  lastName : ${lastName}  dob:  ${dob} `);
+         let rigthNow= new Date();
+		 let joinDate  =  rigthNow.toISOString().slice(0, 10);
+		  await createComplyCubeClient({ 'type' : typeOfEnity , 'email': email , "mobile": "+91 7588230462",  "telephone": "+91 8459454855",  "joinedDate":joinDate ,
+			 "personDetails": { 'firstName': firstName, 'lastName' : lastName , 'dob' : dob ,  "nationality": "IN"} })
+			 .then(result => { console.log("Final Result:", result)
+						
+						res.send( result);
+				 
+			  } );
+ 
+
+	}
+	else if( req.params !== null && req.params !== undefined && req.params.length > 1){
+
+		console.log("Subscribe comply cube (/subscribe/complycubeKycpost) KYCPARAMS : "+ JSON.stringify(req.params))
+
+
+	}
+	else { 
+		 console.log("REDIRECT Subscribe comply cube (/subscribe/complycubeKycpost) from Fyers is with not PARAMTEREs , or could not PARSE THEM ")
+
+         if(res.data !== null && res.data !==undefined){
+		     typeOfEnity = res .data['typeOfEnity'];
+	    	  email = res .data['email'];
+	     	 firstName= res .data['firstName'];
+		///
+		// 
+	    }
+      }
+	  // setCORSHeaders( res )
+	  // res.send(JSON.stringify ({ data : 'Susbscribe Client person validation failed '}) ) ;
+	} catch (error) {
+			let ret =  {
+			statusCode: 500,
+			headers: {
+				"Access-Control-Allow-Origin": "*"
+			},
+			body: JSON.stringify({
+				error: "KYC  Status Fetch Failed ",
+				message: error.message
+			})
+    	  };
+		console.log(error)
+						//let wd1 = `NSE:${symbol}-EQ`;
+						//let ret = {  "symbol": wd1 , "status" : " Input error "+JSON.stringify(err) };
+						 setCORSHeaders( res );
+						res.send( JSON.stringify( ret));
+
+ 
+  }
+	//  res.send(JSON.stringify({"auth_code" :auth_code}))
+
+});
+
+/**
+ * Creates a client in ComplyCube with automatic retry logic.
+ * @param {Object} clientData - The person details and contact info.
+ */
+async function createComplyCubeClient(clientData) {
+    const API_KEY = complycubeKey ; //process.env.COMPLYCUBE_API_KEY; // Always use environment variables
+    const url = 'https://api.complycube.com/v1/clients';
+    
+    const MAX_RETRIES = 2;
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+            console.log(`🚀 Attempt ${attempt}: Registering client...`);
+            
+            const response = await axios.post(url, clientData, {
+                headers: {
+                    'Authorization': API_KEY,
+                    'Content-Type': 'application/json'
+                },
+                timeout: 10000 // 10 second timeout
+            });
+
+            console.log("✅ Client Created Successfully:", response.data.id);
+            return response.data;
+
+        } catch (error) {
+            lastError = error;
+            
+            // Check if it's a "Bad Request" (400) or "Unauthorized" (403)
+            // Usually, we don't retry 400/403 because the data or key won't change
+            if (error.response) {
+                const status = error.response.status;
+                console.error(`❌ Attempt ${attempt} failed with Status: ${status}`);
+                
+                if (status >= 400 && status < 500) {
+                    console.error("Stopping retries: Client-side error (4xx).");
+                    break; 
+                }
+            }
+
+            if (attempt < MAX_RETRIES) {
+                console.log(`⚠️ Retrying in 2 seconds...`);
+                await new Promise(res => setTimeout(res, 2000));
+            }
+        }
+    }
+
+    // Final Error Capture if all tries fail
+    return handleFinalError(lastError);
+}
+
+/**
+ * Captures and formats the specific API error response
+ */
+function handleFinalError(error) {
+    if (error.response) {
+        // The server responded with a status code outside the 2xx range
+        const { status, data } = error.response;
+        return {
+            success: false,
+            errorCode: status,
+            message: data.message || "ComplyCube API Error",
+            details: data.errors || data
+        };
+    } else if (error.request) {
+        // The request was made but no response was received
+        return { success: false, errorCode: 503, message: "Network Timeout - ComplyCube Unreachable" };
+    } else {
+        // Something happened in setting up the request
+        return { success: false, errorCode: 500, message: error.message };
+    }
+}
+
+
+
+
+
+
+// ComplyCube KYC Post request  ..........................................................***--------------------------ComplyCube KYC Post request
 
 //-----------------STEP1------------- FYERS REDIRECT --- 
 // Auth Code Redirect -------------
@@ -798,7 +972,7 @@ try {
 
 
    if (response === undefined) {
-       console.log("FETCH https://192.168.1.3:8443/recalculate-option-strikes  not okay ");
+       console.log("FETCH https://artilleryfeed.onrender.com/recalculate-option-strikes  not okay ");
 		  setCORSHeaders( res )
 		res.send("{ data: error }" );
     }
