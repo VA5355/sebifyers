@@ -6,7 +6,14 @@ import { TrendingUp, TrendingDown, AlertTriangle } from "lucide-react";
 import React from "react";
 import { StorageUtils } from '@/libs/cache';
 import { CommonConstants } from '@/utils/constants';
+import {API} from "@/libs/client"
 import nifty50 from "../tradeTicker/nifty-50";
+import axios from "axios";
+import { useSelector } from 'react-redux';
+import { selectRenderData, selectRenderSymbol, selectRenderPrice , selectIsRenderLoading } from "@/redux/slices/renderDotcomStockSlice"
+import { FYERSAPINSECSV ,FYERSAPITHREESECQUOTE , FYERSAPIORDERBOOKSURL ,  FYERSAPITICKERACCESTOKEN, FYERSAPICOMPLYCUBEURL,
+     FYERSAPIKYCORDER , FYERSAPISELLORDER , YAHOOCHARTURL} from '@/libs/client';
+
 type TickerItem = {
   symbol: string;
   price: number;
@@ -95,6 +102,7 @@ const getRandomPrice = (symbol: string): number => {
 
   return Math.floor((Math.random() * 1.5) * 5) + k;
 };
+//const StockCandleChart = ({ symbol = 'ETERNAL' }: Props) => {
 export default function StockCandleChart({ symbol = 'ETERNAL' }: Props) {
   const [candle, setCandle] = useState<Candle | null>(null);
   const [candleset, setCandleSet] = useState<Candle[] | null>([]);
@@ -103,8 +111,15 @@ export default function StockCandleChart({ symbol = 'ETERNAL' }: Props) {
                          [candleset]
                         );
   const [basePrice, setBasePrice] = useState (500);
+  const [lineData , setLineData] = useState({})
   const [isDummy, setIsDummy] = useState(false);
   const retryTimer = useRef<NodeJS.Timeout | null>(null);
+   // Efficiently retrieve data using the selectors defined in the slice
+      const renderData = useSelector(selectRenderData);
+      const renderSymbol = useSelector(selectRenderSymbol);
+      const renderPrice = useSelector(selectRenderPrice);
+      const isRenderLoading = useSelector(selectIsRenderLoading);
+
   const [actualSymbol , setActualSymbol ] = useState((symbol:any) => { console.log( " " + typeof(symbol)); 
        let stockChartSym = StorageUtils._retrieve(CommonConstants.companySymbolStockChart);
         let st = symbol;
@@ -121,8 +136,26 @@ export default function StockCandleChart({ symbol = 'ETERNAL' }: Props) {
                               });
                    let price = basePrice;
           if(foundT){
-             price = getRandomPrice(foundSym) ;   
-             setBasePrice (price);
+            if(renderData){
+
+                  setBasePrice (renderPrice);
+            setCandle({
+              open: Number(renderData?.open),
+              high: Number(renderData?.high),
+              low: Number(renderData?.low),
+              close: Number(renderData?.close),
+            })
+
+            }
+
+            else{
+                price = getRandomPrice(foundSym) ;   
+                          setBasePrice (price);
+
+            }
+
+
+          
           }
          
        }
@@ -152,7 +185,7 @@ const candleWidth = 8;
 const gap = 6;
 
   useEffect(() => {
-    fetchCandle();
+   // fetchCandle();
 
     // Auto-refresh every 15s
    // retryTimer.current = setInterval(fetchCandle, 15000);
@@ -195,26 +228,160 @@ const gap = 6;
         .toISOString()
         .split("T")[0];
 
-      const res = await fetch(
+     /* const res = await fetch(
         `http://localhost:3000/historical/cm/equity?symbol=${symbol}&series=[EQ]&from=${from}&to=${to}`,
         { signal: controller.signal }
       );
+        */
+       try { 
+         // Yahoo API for Intraday (Range: 1 day, Interval: 5 mins)
+       /* const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${actualSymbol}?range=1d&interval=5m`;
 
-      if (!res.ok) throw new Error("Backend error");
+        const yahooChart = await axios.get(yahooUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' } // Yahoo requires a User-Agent header
+        });
+          if (!yahooChart.status) throw new Error("Backend error");
+          const stockYahooChartData = await yahooChart.data ;
+           if(!stockYahooChartData.chart) throw new Error("Backend  Yahoo finance chart error");
+              console.log(" yahoo finance chart :: "+actualSymbol+" "+JSON.stringify(stockYahooChartData.chart))
+           */
+          const API = axios.create({
+            baseURL: 'https://192.168.1.6:8888/.netlify/functions/netlifystockfyersbridge/api',
+            timeout: 27000
+            });
+         API.interceptors.request.use((config) => {
+            console.log("Request:", {
+            url: config.url,
+            method: config.method,
+            data: config.data,
+            headers: config.headers,
+            });
+            return config;
+        });  
+        
+         /*   return res.json({
+            symbol,
+            ticker,
+            count: formattedData.length,
+            data: formattedData
+        });   
+        
+        OR    return res.status(statusCode).json({
+            error: statusCode === 404
+                ? "Stock not found"
+                : "Yahoo API failed"
+        });
+        
+        */
+          const yahooChart = await API.get('/fetchYahooChart', {
+                    params: { symbol: actualSymbol }
+                    });
 
-      const json = await res.json();
+            const stockYahooChartData = await yahooChart.data ;
 
-      const last = json.data?.at(-1);
-      if (!last) throw new Error("No data");
+           console.log("STOCK Candle Chart AXIOS Yahoodata  "+YAHOOCHARTURL+"/"+actualSymbol + " SUCCESS .......START "   )     
+           
+            console.log( JSON.stringify(stockYahooChartData))    
+                 
+             console.log("STOCK Candle Chart  AXIOS Yahoodata  "+YAHOOCHARTURL+"/"+actualSymbol + " SUCCESS ....... END "  )    
 
-      setCandle({
+            //const result =stockYahooChartData.chart.result[0];      
+            
+            setLineData(stockYahooChartData.data);
+                    const prices = stockYahooChartData.data.map((d:any) => d.price);
+
+                  const maxPrice = Math.max(...prices);
+                  const minPrice = Math.min(...prices);
+
+                    setBasePrice((maxPrice +minPrice )/2 )
+                  // scale functions
+                  const getX = (index: number) =>
+                    (index / (stockYahooChartData.data.length - 1)) * 300;
+
+                  const getY = (price: number) =>
+                    110 - ((price - minPrice) / (maxPrice - minPrice)) * 100;
+
+                  // generate points string
+                  const linePoints = stockYahooChartData.data
+                    .map((point:any, i:number) => `${getX(i)},${getY(point.price)}`)
+                    .join(" ");
+                     console.log("STOCK Candle Chart   linePoints  "+ JSON.stringify(linePoints));
+      //   const yahooChart = await API.get(YAHOOCHARTURL+"/"+symbol );
+      //      const stockYahooChartData = await yahooChart.data ;
+/* SAMPLE response 
+BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchangeName":"NSI","fullExchangeName":"NSE","instrumentType":"EQUITY",
+"firstTradeDate":1025495100,"regularMarketTime":1775815200,"hasPrePostMarketData":false,"gmtoffset":19800,"timezone":"IST",
+"exchangeTimezoneName":"Asia/Kolkata","regularMarketPrice":442.3,"fiftyTwoWeekHigh":473.45,"fiftyTwoWeekLow":285,"regularMarketDayHigh":447.45,
+"regularMarketDayLow":440.45,"regularMarketVolume":10833065,"longName":"Bharat Electronics Limited","shortName":"BHARAT ELECTRONICS LTD",
+"chartPreviousClose":439.75,"previousClose":439.75,"scale":3,"priceHint":2,"currentTradingPeriod":
+{"pre":{"timezone":"IST","start":1776051900,"end":1776051900,"gmtoffset":19800},"regular":{"timezone":"IST","start":1776051900,"end":1776074400,"gmtoffset":19800},
+"post":{"timezone":"IST","start":1776074400,"end":1776074400,"gmtoffset":19800}},"tradingPeriods":
+[[{"timezone":"IST","start":1775792700,"end":1775815200,"gmtoffset":19800}]],"dataGranularity":"5m","range":"1d",
+"validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp" 
+
+
+*/
+    
+
+     // const json = await res.json();
+           //  const last = json.data?.at(-1);
+     // if (!last) throw new Error("No data");
+     /*
+       const result =stockYahooChartData.chart.result[0];
+        
+        if (!result) {
+            return new Error("Backend  Yahoo finance chart No chart data found for this symbol."); //  res.status(404).json({ error: "No chart data found for this symbol." });
+        }
+        //setBasePrice(result.previousClose)
+             setCandle({
+        open: Number(result.previousClose),
+        high: Number(result.regularMarketDayHigh),
+        low: Number(result.regularMarketDayLow),
+        close: Number(result.previousClose),
+      });*/
+
+
+      setIsDummy(false);
+    }
+    catch(yherr){
+       /* renderData = 
+            companyName: string;
+    symbol: string;
+    sector: string;
+    latestPrice: number;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    week52High: number;
+    week52Low: number; */
+    /*  if(renderData) { 
+          setBasePrice(renderPrice)
+         
+        setCandle({
+          open: Number(renderData.open),
+          high: Number(renderData.high),
+          low: Number(renderData.low),
+          close: Number(renderData.close),
+        });
+
+
+      setIsDummy(false);
+      }
+            */
+      
+          
+
+     
+    }
+
+    /*  setCandle({
         open: Number(last.CH_OPENING_PRICE),
         high: Number(last.CH_TRADE_HIGH_PRICE),
         low: Number(last.CH_TRADE_LOW_PRICE),
         close: Number(last.CH_CLOSING_PRICE),
-      });
-
-      setIsDummy(false);
+      });*/
+       
     } catch (err) {
       console.warn("Using dummy candle for", symbol =='N/A'? 'ETERNAL' :symbol);
       setCandle(generateDummyCandle(actualSymbol ,basePrice ));
@@ -230,6 +397,58 @@ const gap = 6;
   if (!candle) return null;
 
   const isUp = candle.close >= candle.open;
+const LineChart = ({ data }: any) => {
+
+
+   useEffect(() => {
+     // we are calling the fetchCandle just to fail 
+     // only when the StorageUtils._retrieve(CommonConstants.companySymbolStockChart) is changed 
+     // this below should fails and re-generation of Candles happens 
+     fetchCandle();
+            
+        // we hope the render happens autpmatically and there is not need of any change in the grid.component where the symbol && StockCandleChart is 
+        // logic crafted here 
+        // the symbol change based on interval code os written above 
+    // Auto-refresh every 15s
+   // retryTimer.current = setInterval(fetchCandle, 15000);
+
+    return () => {
+      //   if (retryTimer.current) clearInterval(retryTimer.current);
+    };
+  }, [data]);
+
+
+
+  if (!data || data.length === 0) return null;
+
+  const prices = data.map((d: any) => d.price);
+
+  const maxPrice = Math.max(...prices);
+  const minPrice = Math.min(...prices);
+
+  const getX = (index: number) =>
+    (index / (data.length - 1)) * 300;
+
+  const getY = (price: number) =>
+    110 - ((price - minPrice) / (maxPrice - minPrice)) * 100;
+
+  const linePoints = data
+    .map((point: any, i: number) =>
+      `${getX(i)},${getY(point.price)}`
+    )
+    .join(" ");
+
+  return (
+    <svg viewBox="0 0 300 120" className="w-full h-32">
+      <polyline
+        fill="none"
+        stroke="#2563eb"
+        strokeWidth="2"
+        points={linePoints}
+      />
+    </svg>
+  );
+};
 
   return (
     <motion.div
@@ -261,8 +480,52 @@ const gap = 6;
         )}
       </div>
 
-      {/* Candle 
-      <svg viewBox="0 0 100 120" className="relative w-full h-32 z-10">
+      {/* Candle */}
+      { (candleset !==undefined && candleset !==null && candleset!.length > 0) ? (
+             <svg viewBox="0 0 140 120" className="relative w-full h-32 z-10">
+                  {candleset?.map((candle, i) => {
+                    const x = i * (candleWidth + gap) + 10;
+                    const isUp = candle.close >= candle.open;
+
+                      return (
+                        <g key={i}>
+                          {/* Wick */}
+                          <line
+                            x1={x + candleWidth / 2}
+                            x2={x + candleWidth / 2}
+                            y1={scaleset(candle.high)}
+                            y2={scaleset(candle.low)}
+                            stroke={isUp ? "#16a34a" : "#ef4444"}
+                            strokeWidth="2"
+                          />
+
+                          {/* Body */}
+                          <motion.rect
+                            initial={{ scaleY: 0 }}
+                            animate={{ scaleY: 1 }}
+                            transition={{ delay: i * 0.05 }}
+                            transformOrigin="center"
+                            x={x}
+                            width={candleWidth}
+                            y={scaleset(Math.max(candle.open, candle.close))}
+                            height={Math.max(
+                              2,
+                              Math.abs(scaleset(candle.open) - scaleset(candle.close))
+                            )}
+                            rx="2"
+                            fill={isUp ? "#16a34a" : "#ef4444"}
+                          />
+                        </g>
+                      );
+              })}
+            </svg>
+
+      ) : (
+
+          <LineChart data={lineData}/>
+
+      ) }
+      {/*    <svg viewBox="0 0 100 120" className="relative w-full h-32 z-10">
        
         <line
           x1="50"
@@ -282,44 +545,8 @@ const gap = 6;
           fill={isUp ? "#16a34a" : "#ef4444"}
           rx="2"
         />
-      </svg>*/}
-    <svg viewBox="0 0 140 120" className="relative w-full h-32 z-10">
-      {candleset?.map((candle, i) => {
-        const x = i * (candleWidth + gap) + 10;
-        const isUp = candle.close >= candle.open;
-
-          return (
-            <g key={i}>
-              {/* Wick */}
-              <line
-                x1={x + candleWidth / 2}
-                x2={x + candleWidth / 2}
-                y1={scaleset(candle.high)}
-                y2={scaleset(candle.low)}
-                stroke={isUp ? "#16a34a" : "#ef4444"}
-                strokeWidth="2"
-              />
-
-              {/* Body */}
-              <motion.rect
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                transition={{ delay: i * 0.05 }}
-                transformOrigin="center"
-                x={x}
-                width={candleWidth}
-                y={scaleset(Math.max(candle.open, candle.close))}
-                height={Math.max(
-                  2,
-                  Math.abs(scaleset(candle.open) - scaleset(candle.close))
-                )}
-                rx="2"
-                fill={isUp ? "#16a34a" : "#ef4444"}
-              />
-            </g>
-          );
-  })}
-</svg>
+      </svg> */}
+   
 
 
 
