@@ -277,7 +277,27 @@ const loserData = JSON.stringify(    [
         }
      ])
 const loserObjData= JSON.parse(loserData);
+const RoundOf = (num: number, roundTo: number): number=> {
+    return Number((num*1).toFixed(roundTo));
+};
 
+export interface Quote {
+    companyName: string;
+    symbol: string;
+    sector: string;
+    latestPrice: number;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    week52High: number;
+    week52Low: number;
+}
+
+export interface StockData {
+    date: string;
+    price: number;
+}
 export const CommonConstants = {
     chartDataKey: "Time Series (Daily)",
     closeDataKey: '4. close',
@@ -410,7 +430,8 @@ export const CommonConstants = {
       TRADE_LOGIN_URL:"https://api.icicidirect.com/apiuser/login?api_key=",
 
        niftySPOTINDEX : 'niftySPOTINDEX',
-       NIFTYOPTIONSTRIKES : 'NIFTYOPTIONSTRIKES'
+       NIFTYOPTIONSTRIKES : 'NIFTYOPTIONSTRIKES',
+       LASTSTOCKQUOTENSEYAHOO : 'LASTSTOCKQUOTENSEYAHOO'
     }
 
 /*  JSON.stringify( { "top_gainers":  otherData ,  "top_losers":loserData } )

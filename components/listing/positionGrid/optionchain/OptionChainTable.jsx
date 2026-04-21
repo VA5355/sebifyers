@@ -514,6 +514,7 @@ const mockStrikes = [ // this alsos is a configuration setting for change in eve
 function ExpiryFilter({ selectedExpiry, onExpiryChange, expiryOptions , dispatch , resetStrikeMap}) {
 
     const { isConnected ,sendSubscriptionRequest } = useWebSocket();
+      const niftyPriceExipryFilter = useSelector(selectSpotBySymbol("NIFTY-50"));
     // Active expiry dates updatedfrom the mockexpiryDates array below configurable 
    const [activeExpiryDates, setActiveExpiryDates] = useState([]);
     useEffect(() => {
@@ -767,12 +768,15 @@ function ExpiryFilter({ selectedExpiry, onExpiryChange, expiryOptions , dispatch
                       const strike = Number(sym.slice(11, -2)); // ✅ correct
 
                       if (!isNaN(strike)) {
-
+                        if(niftyPriceExipryFilter!==undefined){ 
                         // ✅ Proper near logic
-                        if (Math.abs(strike - niftyPrice) <= 300) {
+                        if (Math.abs(strike - niftyPriceExipryFilter) <= 300) {
                           isNearNiftySpot = true;
                         }
-
+                        }
+                        else {
+                              console.log(`Unable to DETECT NIFTY SPOT Exipry Filter on Change makeWebSocketChange `);
+                        }
                       }
                     }
                   });

@@ -1,0 +1,193 @@
+ {
+    "info": {
+        "symbol": "SHREECEM",
+        "companyName": "SHREE CEMENT LIMITED",
+        "industry": "Cement & Cement Products",
+        "activeSeries": [
+            "EQ"
+        ],
+        "debtSeries": [],
+        "isFNOSec": true,
+        "isCASec": false,
+        "isSLBSec": true,
+        "isDebtSec": false,
+        "isSuspended": false,
+        "tempSuspendedSeries": [],
+        "isETFSec": false,
+        "isDelisted": false,
+        "isin": "INE070A01015",
+        "slb_isin": "INE070A01015",
+        "listingDate": "1995-04-26",
+        "isMunicipalBond": false,
+        "isHybridSymbol": false,
+        "segment": "EQUITY",
+        "isTop10": false,
+        "identifier": "SHREECEMEQN"
+    },
+    "metadata": {
+        "series": "EQ",
+        "symbol": "SHREECEM",
+        "isin": "INE070A01015",
+        "status": "Listed",
+        "listingDate": "26-Apr-1995",
+        "industry": "Cement & Cement Products",
+        "lastUpdateTime": "17-Apr-2026 16:00:00",
+        "pdSectorPe": 50.44,
+        "pdSymbolPe": 50.44,
+        "pdSectorInd": "NIFTY NEXT 50",
+        "pdSectorIndAll": [
+            "NIFTY NEXT 50",
+            "NIFTY500 MULTICAP 50:25:25",
+            "NIFTY LARGEMIDCAP 250",
+            "NIFTY100 ESG",
+            "NIFTY100 ENHANCED ESG",
+            "NIFTY 100",
+            "NIFTY 200",
+            "NIFTY 500",
+            "NIFTY CEMENT",
+            "NIFTY COMMODITIES",
+            "NIFTY CORE HOUSING",
+            "NIFTY HOUSING",
+            "NIFTY INDIA FPI 150",
+            "NIFTY INDIA INFRASTRUCTURE & LOGISTICS",
+            "NIFTY INFRASTRUCTURE",
+            "NIFTY LOW VOLATILITY 50",
+            "NIFTY RURAL",
+            "NIFTY TOTAL MARKET",
+            "NIFTY100 ESG SECTOR LEADERS",
+            "NIFTY100 EQUAL WEIGHT",
+            "NIFTY100 LOW VOLATILITY 30",
+            "NIFTY500 EQUAL WEIGHT",
+            "NIFTY500 LARGEMIDSMALL EQUAL-CAP WEIGHTED",
+            "NIFTY ALPHA LOW-VOLATILITY 30",
+            "NIFTY ALPHA QUALITY LOW-VOLATILITY 30"
+        ]
+    },
+    "securityInfo": {
+        "boardStatus": "Main",
+        "tradingStatus": "Active",
+        "tradingSegment": "Normal Market",
+        "sessionNo": "-",
+        "slb": "Yes",
+        "classOfShare": "Equity",
+        "derivatives": "Yes",
+        "surveillance": {
+            "surv": null,
+            "desc": null
+        },
+        "faceValue": 10,
+        "issuedSize": 36080748
+    },
+    "sddDetails": {
+        "SDDAuditor": "-",
+        "SDDStatus": "-"
+    },
+    "currentMarketType": "NM",
+    "priceInfo": {
+        "lastPrice": 25300,
+        "change": 190,
+        "pChange": 0.7566706491437674,
+        "previousClose": 25110,
+        "open": 25110,
+        "close": 25290,
+        "vwap": 25254.37,
+        "stockIndClosePrice": 0,
+        "lowerCP": "22765.00",
+        "upperCP": "27815.00",
+        "pPriceBand": "No Band",
+        "basePrice": 25110,
+        "intraDayHighLow": {
+            "min": 25055,
+            "max": 25325,
+            "value": 25300
+        },
+        "weekHighLow": {
+            "min": 22550,
+            "minDate": "23-Mar-2026",
+            "max": 32490,
+            "maxDate": "23-Jul-2025",
+            "value": 25300
+        },
+        "iNavValue": null,
+        "checkINAV": false,
+        "tickSize": 5,
+        "ieq": ""
+    },
+    "industryInfo": {
+        "macro": "Commodities",
+        "sector": "Construction Materials",
+        "industry": "Cement & Cement Products",
+        "basicIndustry": "Cement & Cement Products"
+    },
+    "preOpenMarket": {
+        "preopen": [
+            {
+                "price": 24850,
+                "buyQty": 3,
+                "sellQty": 0
+            },
+            {
+                "price": 24900,
+                "buyQty": 28,
+                "sellQty": 0
+            },
+            {
+                "price": 24960,
+                "buyQty": 3,
+                "sellQty": 0
+            },
+            {
+                "price": 25000,
+                "buyQty": 1,
+                "sellQty": 0
+            },
+            {
+                "price": 25110,
+                "buyQty": 78,
+                "sellQty": 0,
+                "iep": true
+            },
+            {
+                "price": 25230,
+                "buyQty": 0,
+                "sellQty": 3
+            },
+            {
+                "price": 25250,
+                "buyQty": 0,
+                "sellQty": 3
+            },
+            {
+                "price": 25290,
+                "buyQty": 0,
+                "sellQty": 12
+            },
+            {
+                "price": 25295,
+                "buyQty": 0,
+                "sellQty": 2
+            },
+            {
+                "price": 25365,
+                "buyQty": 0,
+                "sellQty": 1
+            }
+        ],
+        "ato": {
+            "buy": 0,
+            "sell": 0
+        },
+        "IEP": 25110,
+        "totalTradedVolume": 45,
+        "finalPrice": 0,
+        "finalQuantity": 0,
+        "lastUpdateTime": "17-Apr-2026 09:07:33",
+        "totalBuyQuantity": 215,
+        "totalSellQuantity": 367,
+        "atoBuyQty": 0,
+        "atoSellQty": 0,
+        "Change": 0,
+        "perChange": 0,
+        "prevClose": 25110
+    }
+}

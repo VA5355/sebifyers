@@ -1,0 +1,38 @@
+  
+
+
+@media (max-width: 420px) {
+  .option-card {
+    min-width: 200px;
+  }
+  .mobile-margin-car { 
+   
+     margin-left: 20px  !important;
+    width: 90%  !important;
+    height: 91%  !important;
+  }
+    .mobile-margin-price { 
+    margin-left:5px !important; width: 50% !important;
+  }
+
+}
+
+.view_list {
+    width: 100%;
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.view_list li {
+    display: flex;
+    text-align: left;
+    justify-content: space-between
+}
+.view_list li span {
+    font-weight: 600
+}
+#view_title {
+    padding-top: 2rem;
+}
+/* title has-text-centered
+// are bulma css */

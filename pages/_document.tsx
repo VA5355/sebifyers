@@ -7,6 +7,7 @@ export default function Document() {
         {/* 🔹 External stylesheets (GLOBAL) */}
 
           <link rel="stylesheet" href="/css/globals.css" />
+          <link rel="stylesheet" href="bulma/css/bulma.min.css" />
         	 <link  type="text/css" rel="stylesheet" href="/bootcss/bootstrap.min.css"/>
         <link
           rel="stylesheet"

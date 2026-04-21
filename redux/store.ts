@@ -13,6 +13,8 @@ import tickerNiftySlice, { TickerNiftySliceProps } from './slices/tickerNiftySli
 import tickerSlice,{  TickerSliceProps } from './slices/tickerSlice';
 import webSocketSlice,{  WebSocketSliceProps } from './slices/webSocketSlice';
 import marketSlice,{  MarketSliceProps } from './slices/marketSlice';
+import timestampChartSlice,{  ChartState } from './slices/timestampChartSlice';
+import renderSlice,{  QuoteState } from './slices/renderDotcomStockSlice';
 
 import modalReducer, { createModalMiddleware } from '../components/common/service/ModalService';
 import modalGenReducer from './slices/modalGenSlice';
@@ -20,6 +22,8 @@ import loadingReducer from './slices/loadingSlice';
 import marketReducer from './slices/marketSlice';
 import indicesSlice,{  IndicesSliceProps } from '@/redux/slices/indicesSlice';
 import indicesReducer  from '@/redux/slices/indicesSlice';
+import timestampChartReducer  from '@/redux/slices/timestampChartSlice';
+import renderReducer  from '@/redux/slices/renderDotcomStockSlice';
 
 
 export interface GlobalState {
@@ -37,7 +41,9 @@ export interface GlobalState {
      ticker: TickerSliceProps,
      websocket:WebSocketSliceProps,
      market:MarketSliceProps,
-     indices: IndicesSliceProps
+     indices: IndicesSliceProps,
+     timestampChart: ChartState,
+     renderQuote:QuoteState
 }
 const modalMiddleware = createModalMiddleware({
         mapRejectedToModal: (action:any) => ({
@@ -65,7 +71,9 @@ export const store = configureStore({
          loader: loadingReducer,
          market: marketReducer,
          indexes:indicesSlice,
-         indices:indicesReducer
+         indices:indicesReducer,
+         timestampChart:timestampChartReducer,
+         render:renderReducer
 
 	},
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(modalMiddleware),

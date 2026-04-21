@@ -19,11 +19,19 @@ import { orderBookData } from '../positionGrid/orderBook.actions';
 import { StorageUtils } from '@/libs/cache';
 import { savePositionBook } from '@/redux/slices/positionSlice';
 import { savePositionStreamBook } from '@/redux/slices/positionSlice';
+
+import { selectRenderData, selectRenderSymbol, selectIsRenderLoading } from "@/redux/slices/renderDotcomStockSlice"
+
 import { CommonConstants } from '@/utils/constants';
-import StockCandleChart from "@/components/charts/StockCandleChart";
+import StockCandleChart   from "@/components/charts/StockCandleChart";
 import SubscriptionScreen from "@/components/listing/subscription/SubscriptionScreen";
 import GridCards from '@/app/GridCards';
-import './grid.css';
+import GridCardsFilpYahooChart  from '@/app/GridCardsFilpYahooChart';
+import GridCardsFilpYahooChartNoTabs  from '@/app/GridCardsFilpYahooChartNoTabs';
+import GridCardsFilpYahooChartNoTabsImproved  from '@/app/GridCardsFilpYahooChartNoTabsImproved';
+import {setTimestampChartData , selectIsChartLoading} from "@/redux/slices/timestampChartSlice"
+
+//import './grid.css';
 
 const StockGrid = () => {
     const gainers = useSelector((state: GlobalState) => state.stock.gainers)
@@ -33,6 +41,11 @@ const StockGrid = () => {
     const positionData = useSelector((state: GlobalState) => state.position.positionBook)
     const holdings = useSelector((state: GlobalState) => state.holding.holdingBook)
     const tab = useSelector((state: GlobalState) => state.misc.tab)
+
+      const renderData = useSelector(selectRenderData);
+      const renderSymbol = useSelector(selectRenderSymbol);
+
+
     const dispatch = useAppDispatch()
     const loader = useSelector((state: GlobalState) => state.misc.loader)
     const [positionOneFetch ,setPositionOneFetch ]= useState((  StorageUtils._retrieve(CommonConstants.fetchPositions).data ===  false  ? 1:0 )  );
@@ -109,7 +122,7 @@ const StockGrid = () => {
             }
            }*/
          handleCustomGridCols(tab)
-    }, [tab])
+    }, [tab,tickSym ])
 
     const handleFirstFetchPositions = () => {
         if(positionOneFetch <= 0){
@@ -176,8 +189,9 @@ const StockGrid = () => {
     return (
         <div> {/* sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-5  */}
             {/*<StockCard key={item.symbol} stock={item}/>*/} {/* <StockCard key={item.symbol ?? index} stock={item}/> */}
-
-            {  ( ( tab === "Educate") || (tab === "Observe" )  ?  <GridCards   /> : <></>) } 
+             {  ( ( tab === "Educate") ?  <GridCardsFilpYahooChartNoTabsImproved inRenderData={renderData} activeIndexIn={"chain"}  inSymbol={tickSym} /> : <></>) } 
+             
+            {  (  (tab === "Observe" )  ?  <GridCards   /> : <></>) } 
             <div
                 className={handleCustomGridCols(tab)}>
                 {

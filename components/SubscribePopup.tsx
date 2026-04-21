@@ -11,7 +11,8 @@ export const SubscribePopup = () => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-xl max-w-md text-center">
+      <div className="bg-white   p-5 md:p-6  rounded-2xl   shadow-xl   w-[90%] max-w-md  text-center">
+         {/**bg-white p-6 rounded-lg shadow-xl max-w-md text-center  */}
         <h2 className="text-xl font-bold mb-2">API Limit Reached</h2>
         <p className="mb-4">Please subscribe to access more stock data and remove limits.</p>
         <button onClick={() => dispatch(HIDE_SUBSCRIPTION_POPUP())}

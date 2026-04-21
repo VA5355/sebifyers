@@ -2,8 +2,8 @@
 
 //import fetch from "node-fetch";
 
-const NSE_URL = "https://scraper-api-eyiz.onrender.com/"; // https://artillery2feed.com/
-const NSE_Yahoo_URL = "https://nseyahooindices.onrender.com/"; // "https://localhost:10000/"
+const NSE_URL = "https://api-nse-india-vbmd.onrender.com/"; // https://artillery2feed.com/   https://scraper-api-eyiz.onrender.com/
+const NSE_Yahoo_URL = "https://niftyspot.onrender.com"; // "https://localhost:10000/"   https://nseyahooindices.onrender.com
 //const FYERS_URL = "https://localhost:9384/stream"; // // https://fyersfeed.onrender.com/
 const FYERS_URL = "https://onedinaar.com/.netlify/functions/netlifystockfyersticker/fyerslocallive"; // // https://fyersfeed.onrender.com/
 const FYERS_RECAL = "https://artilleryfeed.onrender.com/recalculate-option-strikes" ;  //9384  localhost:8443 this is for fyers stream indices no Option Chain publishing 

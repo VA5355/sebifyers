@@ -44,7 +44,8 @@ export default function Home() {
         <Menu />
         <DynamicGrid key={`grid-${isDarkMode}`} />
         
-          <div className="space-y-6 px-6 ml-[88px]">
+          <div className="space-y-6 px-3 md:px-6  ml-0 md:ml-[88px] ">
+             {/** space-y-6 px-6 ml-[88px] */}
               {/* Other content 
 
               {symbol ? (

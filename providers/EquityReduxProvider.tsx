@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
-import {AppDispatch, store} from '@/redux/store';
+import {AppDispatch, GlobalState, store} from '@/redux/store';
 import {Provider, useDispatch, useSelector} from 'react-redux';
-import { saveEquities } from '@/redux/slices/equitySlice';
+import { EquitySliceProps, saveEquities, updateEquity } from '@/redux/slices/equitySlice';
 import { StorageUtils } from '@/libs/cache';
 import { CommonConstants } from '@/utils/constants';
 import { FYERSAPINSECSV } from '@/libs/client';
@@ -12,7 +12,20 @@ const CustomContext = createContext<any>(null);
 export const EquityReduxProvider = ({children}: { children: React.ReactNode }) => {
    const [fyersQuery, setFyersQuery] = useState( '');
    // const [equityState, setEquityState] = useState ( );
-   const [equityState, setEquityState] = useState(() => ({
+   const equityStateNew = useSelector((state: GlobalState) => state.equity);
+
+    const [equityState, setEquityState] = useState<{
+            equity: EquitySliceProps;
+          }>(() => ({
+            equity: {
+              symbol: null,
+              name: null,
+              searchResults: null,
+              equities: { bestMatches: [] }
+            }
+          }));
+
+    /* const [equityState, setEquityState] = useState(() => ({
      ...store
     }));
 
@@ -21,7 +34,17 @@ export const EquityReduxProvider = ({children}: { children: React.ReactNode }) =
             ...prev,
             ...newData
           }));
-    } ;
+    } ; */
+          const updateEquitySlice = (equityData: Partial<EquitySliceProps>) => {
+        setEquityState(prev => ({
+          ...prev,
+          equity: {
+            ...prev.equity,
+            ...equityData
+          }
+        }));
+      };
+
      let mt:any[] = [];
        //  const bestMacthes = { "bestMatches" :mt };
       let bestMacthes = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
@@ -102,36 +125,56 @@ export const EquityReduxProvider = ({children}: { children: React.ReactNode }) =
      // Fetch CSV once
    useEffect(() => {
      const fetchCSV = async () => {
+      let linesStr  = ""; let lines1 :any = undefined;
       for (let endP = 0 ; endP < CSV_URL.length ; endP ++) { 
        try {
       
          const res = await fetch(CSV_URL[endP]);
          const text = await res.text();
-         const lines = text.split('\n').filter(Boolean);
+         let lines = text.split('\n').filter(Boolean);
+         console.log("Data fetched from the  "+CSV_URL[endP])
+         console.log("   lines  "+JSON.stringify(lines)) 
+         if( Array.isArray(lines)){
+            // ines  ["{\"statusCode\":200,\"headers\":{\"Access-Control-Allow-Origin\":\"*\",\"Content-Type\":\"text/csv\",\"Cache-Control\":\"public, max-age=300\"},
+            // \"body\":\"101000000 ........ "  ] ; 
+            let jsonEleme = JSON.parse(lines[0]);
+              linesStr = jsonEleme?.body;
+            if(linesStr !== "")
+                { 
+                  console.log("CSV_URL[endP] body  "+linesStr);
+                  lines1  = linesStr;
+                  lines1  = lines1.split('\n').filter(Boolean);
+                   if( Array.isArray(lines1)){
+                     console.log("CSV_URL[endP] equities array  "+JSON.stringify(lines1));
+
+                   }
+                }
+
+         }
           const bestMacthes1 = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
-          if(lines  !==undefined && Array.isArray(lines) ){  
-         const parsed = lines.map(line => {
+          if(lines1  !==undefined && lines1 !== "" && Array.isArray(lines1) ){  
+         const parsed = lines1.map(line => {
            //const [symbol, name, ...rest] = line.split(','); // modify based on CSV structure
-           const result = parseLine(line);
+           let result = parseLine(line);
            //console.log(result); 
            let kt =  Object.keys(result);
             let symbol ='';//Object(result)?.hasProperty["1. symbol"];
            let name  =''; //Object(result)?.hasProperty["2. name"];
            kt.forEach( k => {  //console.log("result ke "+kt); 
                   //console.log(`Key: ${k}, Value: ${result[k]}`);
-                 if(symbol == undefined){
+               //  if(symbol == undefined){
                    if(k==='1. symbol'  ){
                         symbol = result[k]
                    }
                     if(  k==='2. name' ){
                         name = result[k]
                    }
-                 }
+               //  }
            })                  
           
            if(result !=undefined)
               {  
-                
+                    console.log("PARSED FYERS result    "+JSON.stringify(result))
                 const stringMap: Record<string, string> = Object.fromEntries(
                   Object.entries(result).map(([key, value]) => [key, String(value)])
                       );
@@ -147,6 +190,35 @@ export const EquityReduxProvider = ({children}: { children: React.ReactNode }) =
               };
               return {  symbol, name };
            });
+         
+              if(parsed !== undefined){
+                   console.log("PARSED FYERS EQUITY   "+JSON.stringify(parsed))
+                  let equities : EquitySliceProps = {  symbol: null,
+                                    name: null,
+                                    searchResults: null,
+                                    equities: { bestMatches: parsed },} 
+                                                              
+                          //Call it like:
+                          dispatch(updateEquity({
+                            equities: {
+                              bestMatches: parsed
+                            }
+                          }));
+                             setCsvData(bestMacthes);
+                          dispatch(saveEquities(bestMacthes)); 
+                  // updateEquitySlice({ newData : { equity :  equities}}); // ✅ Save in context  { equity: parsed }
+                    /* { equity : {
+                        symbol:'any',
+                        name:'any',
+                        searchResults: 'any',
+                        equities: { bestMatches: any[] } | undefined;  // ✅ new
+                    } } */
+              }
+         
+          }
+          else {
+            console.log("Data fetched is empy  "+CSV_URL[endP])
+            // console.log("   lines  "+JSON.stringify(lines))
           }
            if(bestMacthes1["bestMatches"] !==undefined && Array.isArray(bestMacthes1["bestMatches"]) )
            {  
@@ -200,7 +272,7 @@ export const EquityReduxProvider = ({children}: { children: React.ReactNode }) =
 
 
     return (
-        <CustomContext.Provider value={{ equityState, updateEquityState }}>{children}</CustomContext.Provider>
+        <CustomContext.Provider value={{ equityState, updateEquitySlice }}>{children}</CustomContext.Provider>
     )
 }
 //export const useEquity = () => React.useContext(CustomContext);

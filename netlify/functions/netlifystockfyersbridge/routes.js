@@ -29,8 +29,9 @@ var complycubeKey = "test_TUIzVEN3Y2djeXdrU0ZEa1M6N2ZmZjY1ZjA5NzExYzk5NGZiNDk3Yj
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
 var redirectUrl  = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 var BASEREF  = "https://onedinaar.com"
-var MARKETSTATUS  ="https://scraper-api-eyiz.onrender.com"
-var MARKETSTATUS_RECALCULATE  ="https://artilleryfeed.onrender.com"
+var MARKETSTATUS  ="https://api-nse-india-vbmd.onrender.com";      //"https://scraper-api-eyiz.onrender.com"
+//var MARKETSTATUS_RECALCULATE  ="https://artilleryfeed.onrender.com"  feedsoptionsmain.onrender.com
+var MARKETSTATUS_RECALCULATE  ="https://feedsoptionsmain.onrender.com"  
 let cachedCSV = null;
 let lastFetchTime = 0;
 
@@ -41,6 +42,8 @@ fyers.setAppId(client_id)
 fyers.setRedirectUrl(redirectUrl)
 var authcode='';
 var global_auth_code ='';
+var global_fyers_sebi_access_token ='';
+var global_fyers_sebi_refresh_token ='';
 var recentUserAuthCode = '';
 var globalLogin = undefined;
 var globalKyc = undefined;
@@ -972,7 +975,8 @@ try {
 
 
    if (response === undefined) {
-       console.log("FETCH https://artilleryfeed.onrender.com/recalculate-option-strikes  not okay ");
+      // console.log("FETCH https://artilleryfeed.onrender.com/recalculate-option-strikes  not okay ");
+      console.log("FETCH https://feedsoptionsmain.onrender.com/recalculate-option-strikes  not okay ");
 		  setCORSHeaders( res )
 		res.send("{ data: error }" );
     }
@@ -1196,6 +1200,72 @@ router.get('/fyerstickerauthcode', async function (req,res) {
 
 
 	//}
+
+});
+router.get('/fyersgethistory', async function (req,res) {
+    let symbol = ''; let apikey = '';
+	let authcode =  global_auth_code;
+	if( req.query !== null && req.query !== undefined ){
+		console.log(" FYERS fyersgetquote QUERY PARAMS " +JSON.stringify(req.query))
+		var queryJSON  = JSON.parse(JSON.stringify(req.query));
+		symbol = queryJSON['symbol'];
+		  apikey =queryJSON['apikey'];
+		  authcode= queryJSON['auth_code'];
+		// global_auth_code= auth_code;
+		 console.log(`symbol : ${symbol}  code : ${apikey}  auth_code:  ${authcode} `);
+	}
+	
+	
+	if( symbol !==null && symbol !== undefined && symbol !== ''){
+		console.log("Symbol : "+symbol); 
+	  if( authcode !==null && authcode !== undefined && authcode !== ''){
+		console.log("FYERS Initiatied Successfully ") 
+		let fyersAccess= false;
+		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
+			if(response.s=='ok'){
+				fyers.setAccessToken(response.access_token)
+				console.log("FYERS Grants provided  ") 
+				if(fyersAPI !==null && fyersAPI !== undefined){
+					var appId       = client_id ;  //'7GSQW68AZ4-100' PROD APP ID  app_id recieved after creating app
+					fyersAPI.setAppId(appId)
+				//fyersAPI.setRedirectUrl("https://url.xyz")
+					fyersAPI.setAccessToken(response.access_token)
+				    const range_to = Math.floor(Date.now() / 1000);
+					const range_from = range_to - (86400 * 1); // 1 day back
+					var inp={
+						"symbol": `NSE:${symbol}-EQ`,
+						"resolution":"60",
+						"date_format":"1",
+						"range_from":  " "+range_from , //, "2025-05-30"
+						"range_to":  " "+range_to, // ,"2025-06-01"
+						"cont_flag":"1"
+					}
+					
+					console.log("✅ fyers Model api is initialised" );
+				
+					fyersAPI.getHistory(inp).then((response)=>{
+						console.log(response)
+						let wd = `NSE:${symbol}-EQ`;
+						let ret = {  "symbol": wd , "status" : "Data available" }
+						const output = transformCandlesToTimeSeries(response, symbol);
+						 console.log(JSON.stringify(output, null, 2));
+  
+							 setCORSHeaders( res );
+
+							res.send( JSON.stringify(output));
+					}).catch((err)=>{
+						console.log(err)
+						let wd1 = `NSE:${symbol}-EQ`;
+						let ret = {  "symbol": wd1 , "status" : " Input error "+JSON.stringify(err) };
+						 setCORSHeaders( res );
+						res.send( JSON.stringify( ret));
+					})
+				}	
+
+			}
+		});
+	}
+  }
 
 });
 // const fyers = require('extra-fyers');
@@ -1642,6 +1712,76 @@ router.get('/apinseindia', async function (req,res) {
 
 });
  */
+
+/*  EXTRA SEBI ACCESS TOKEN DAILY GENERATION CODE 
+----------------------------------------------------------------------------------
+Sample Success Response               
+----------------------------------------------------------------------------------          
+
+{
+  's': 'ok',
+  'code': 200,
+  'message': '',
+  'access_token': 'eyJ0eXAiOi***.eyJpc3MiOiJh***.HrSubihiFKXOpUOj_7***',
+  'refresh_token': 'eyJ0eXAiO***.eyJpc3MiOiJh***.67mXADDLrrleuEH_EE***'
+}
+*/
+async function extrSebiAccessTokenGenerationDailyCode () {
+	 // const FyersAPI = require("fyers-api-v3").fyersModel
+
+	if(fyersAPI !==null && fyersAPI !==undefined ){
+
+		// Set your APPID obtained from Fyers (replace "xxx-1xx" with your actual APPID)
+			fyersAPI.setAppId("JDK56F3KP5-200");
+	}
+	else {  
+			 const FyersAPI = require("fyers-api-v3").fyersModel
+			// Create a new instance of FyersAPI
+			fyersAPI = new FyersAPI()
+
+			// Set your APPID obtained from Fyers (replace "xxx-1xx" with your actual APPID)
+			fyersAPI.setAppId("JDK56F3KP5-200");
+		
+
+	}  //const FyersAPI = require("fyers-api-v3").fyersModel
+    if(fyersAPI !==null && fyersAPI !== undefined ){ 
+
+			// Set the RedirectURL where the authorization code will be sent after the user grants access
+			fyers.setRedirectUrl("https://trade.fyers.in/api-login/redirect-uri/index.html");
+
+			// Define the authorization code and secret key required for generating access token
+			const authcode = "eyJxxxx"; // Replace with the actual authorization code obtained from the user
+			const secretKey = "xxxxx"; // Replace with your secret key provided by Fyers
+			fyers.generate_access_token({ "secret_key": secretKey, "auth_code": auth_code }).then((response) => {
+				console.log('EXTRA SEBI ACCESS TOKEN DAILY GENERATED '+ getFormattedTimeKey());
+				global_fyers_sebi_access_token = response.access_token;
+				global_fyers_sebi_refresh_token = response.refresh_token;
+		      	console.log(response)
+
+				 
+			}).catch((error) => {
+					console.log(error)
+					console.log('EXTRA SEBI ACCESS TOKEN DAILY GENERATION CODE  ERROR  ')
+			           console.log('  fyers.generate_access_token   FAILED   ')
+			         //  console.log('  fyersAPI = new FyersAPI() ')
+
+			}) 
+
+	}
+	else {
+      
+			console.log('EXTRA SEBI ACCESS TOKEN DAILY GENERATION CODE  FAILED ')
+			console.log('   const FyersAPI = require("fyers-api-v3").fyersModel  ')
+			console.log('  fyersAPI = new FyersAPI() ')
+			console.log("  // Set your APPID obtained from Fyers  replace \"xxx-1xx\" with your actual APPID "+
+			" fyersAPI.setAppId( ....);   \n FAILED  ")
+
+
+	}
+
+
+
+}
 /**
  /netlify/functions/netlifystockfyersbridge/api/fyerscallback
 Purpose
@@ -1701,13 +1841,283 @@ router.get("/fyerscallback", async (req, res) => {
   }
 });
 
+/**
+ * Processes  request for SYMBOL QUOTE from YAHOO FINAANCE 
+ * @param {req, res} request , response  - The req , response objects .
+ 
+ * @returns {Promise<Object>} The API response object. Usually JSON , in case error resp.error 
+ */
+router.get('/fetchQuote', async function (req, res) {
+    try {
+        const { symbol } = req.query;
+
+        if (!symbol) {
+            return res.status(400).json({ error: "symbol is required" });
+        }
+
+        console.log("Fetching quote for:", symbol);
+
+        // ✅ Normalize symbol
+        const ticker = symbol.includes('.') ? symbol : `${symbol}.NS`;
+
+        // ✅ Yahoo Quote API
+        const quoteUrl = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price,summaryProfile,defaultKeyStatistics`;
+
+        const response = await axios.get(quoteUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+        });
+
+        const result = response.data?.quoteSummary?.result?.[0];
+
+        if (!result) {
+            return res.status(404).json({ error: "No quote data found" });
+        }
+
+        const price = result.price || {};
+        const profile = result.summaryProfile || {};
+        const stats = result.defaultKeyStatistics || {};
+
+        // ✅ Normalize response (THIS is what your frontend expects)
+        const formatted = {
+            companyName: price.longName || "-",
+            symbol: symbol.toUpperCase(),
+            sector: profile.sector || "-",
+
+            latestPrice: price.regularMarketPrice?.raw || 0,
+            open: price.regularMarketOpen?.raw || 0,
+            high: price.regularMarketDayHigh?.raw || 0,
+            low: price.regularMarketDayLow?.raw || 0,
+            close: price.regularMarketPreviousClose?.raw || 0,
+
+            week52High: stats["52WeekHigh"]?.raw || 0,
+            week52Low: stats["52WeekLow"]?.raw || 0
+        };
+
+        return res.json(formatted);
+
+    } catch (error) {
+       
+  
 
 
 
+        return res.status(500).json({
+            error: "Failed to fetch stock quote"
+        });
+    }
+});
+
+
+
+/**
+ * Processes a user request to the API.
+ * @param {req, res} request , response  - The req , response objects .
+ 
+ * @returns {Promise<Object>} The API response object. Usually JSON , in case error resp.error 
+ */
+
+router.get('/fetchYahooChart', async function (req, res) {
+    try {
+        const { symbol } = req.query;
+
+        console.log("Query Params:", req.query);
+
+        // ✅ Validate input
+        if (!symbol) {
+            return res.status(400).json({ error: "symbol query param is required" });
+        }
+
+        console.log("Request reached fetchYahooChart:", symbol);
+
+        // ✅ Normalize symbol
+        const ticker = symbol.includes('.') ? symbol : `${symbol}.NS`;
+
+        const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?range=1d&interval=5m`;
+
+        const response = await axios.get(yahooUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+        });
+
+        const result = response.data?.chart?.result?.[0];
+
+        if (!result) {
+            return res.status(404).json({ error: "No chart data found" });
+        }
+
+        const timestamps = result.timestamp || [];
+        const prices = result.indicators?.quote?.[0]?.close || [];
+
+        const formattedData = timestamps.map((ts, index) => ({
+            date: new Date(ts * 1000).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit'
+            }),
+            price: prices[index] ? Number(prices[index].toFixed(2)) : null
+        })).filter(item => item.price !== null);
+
+        return res.json({
+            symbol,
+            ticker,
+            count: formattedData.length,
+            data: formattedData
+        });
+
+    } catch (error) {
+        console.error("Yahoo Chart Error:", error.message);
+
+        const statusCode = error.response?.status || 500;
+
+        return res.status(statusCode).json({
+            error: statusCode === 404
+                ? "Stock not found"
+                : "Yahoo API failed"
+        });
+    }
+});
+
+
+
+
+/*
+router.get('/fetchYahooChart', async function (req,res) {
+
+
+    try {
+		let symbol='';
+		try {  
+         symbol = req.params;//req.params.symbol
+		console.log(" request reached fetchYahooChart/ "+symbol +"    ::: "+getFormattedTimeKey());
+        // Indian stocks need .NS suffix for Yahoo Finance (e.g., ICICIBANK.NS)
+        const ticker = symbol.includes('.') ? symbol : `${symbol}.NS`;
+         }
+		 catch(errrpara){
+
+
+		 }
+			if( req.query !== null && req.query !== undefined ){
+			}
+        // Yahoo API for Intraday (Range: 1 day, Interval: 5 mins)
+        const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?range=1d&interval=5m`;
+
+        const response = await axios.get(yahooUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' } // Yahoo requires a User-Agent header
+        });
+        console.log(" yahoo finance chart :: "+ticker+" "+JSON.stringify(response.data))
+        const result = response.data.chart.result[0];
+        
+        if (!result) {
+            return res.status(404).json({ error: "No chart data found for this symbol." });
+        }
+
+        const timestamps = result.timestamp;
+        const prices = result.indicators.quote[0].close;
+
+        // Map timestamps and prices into your StockData interface
+        const formattedData = timestamps.map((ts, index) => ({
+            // Convert UNIX timestamp to readable Time (HH:mm)
+            date: new Date(ts * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            price: prices[index] ? parseFloat(prices[index].toFixed(2)) : null
+        })).filter(item => item.price !== null); // Clean out nulls
+
+        res.json(formattedData);
+
+    } catch (error) {
+        console.error("Yahoo Chart Error:", error.message);
+        
+        // Detailed Exception Handling
+        const statusCode = error.response?.status || 500;
+        const errorMessage = statusCode === 404 
+            ? "Stock Symbol not found on Yahoo Finance." 
+            : "Failed to reach Yahoo Market Data.";
+
+        res.status(statusCode).json({ error: errorMessage });
+    }
+	  
+	  
+});
+*/
+async function fetchYahooIndex(symbol , name ) {
+  try {
+    const res = await axios.get(
+      `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=2m&range=1d`,
+      {
+        headers: {
+          "User-Agent": "Mozilla/5.0"
+        }
+      }
+    );
+
+    const meta = res.data?.chart?.result?.[0]?.meta;
+
+    const price = meta?.regularMarketPrice;
+    const prev = meta?.previousClose;
+
+       let extrated = {"key":"INDICES ELIGIBLE IN DERIVATIVES","index":name,"indexSymbol":name,"last": meta?.regularMarketPrice,"variation":meta?.regularMarketPrice - meta?.previousClose,
+  "percentChange": ((meta?.regularMarketPrice - meta?.previousClose) /
+          meta?.previousClose) *
+        100,"open":'',
+"high":meta?.regularMarketDayHigh,"low":meta?.regularMarketDayLow,"previousClose":meta?.previousClose,"yearHigh":'',"yearLow":'',"indicativeClose":0,"pe":"19.96","pb":"3.1","dy":"1.37",
+"declines":"26","advances":"24","unchanged":"0","perChange365d":-2.31,"perChange30d":-8.66,"date365dAgo":"26-Mar-2025","date30dAgo":"24-Feb-2026",
+"previousDay":"27-Mar-2026","oneWeekAgo":"20-Mar-2026","oneMonthAgoVal":25424.65,"oneWeekAgoVal":23114.5,"oneYearAgoVal":23486.85,
+"previousDayVal":22819.6,"chart365dPath":"","chart30dPath":"",
+"chartTodayPath":""}
+
+
+	    return extrated;
+
+
+   /* return {
+      name,
+      value: price,
+      change: price - prev,
+      percent: ((price - prev) / prev) * 100
+    };*/
+
+  } catch (err) {
+    console.log(`❌ ${name} fetch failed`);
+    return null;
+  }
+}
 
 // 
 //curl -H "Authorization:app_id:access_token" https://api-t1.fyers.in/api/v3/profile
 //curl -H "Authorization: app_id:access_token" POST 'https://api-t1.fyers.in/api/v3/logout'
+/*
+------------------------------------------------------------------------------------------------------------------------------------------
+Sample Success Response 
+------------------------------------------------------------------------------------------------------------------------------------------
+{
+"s": "ok",
+"code": 200,
+"d": [
+    {
+        "n": "NSE:ONGC-EQ",
+        "s": "ok",
+        "v": {
+            "ch": -0.35,
+            "chp": -0.28,
+            "lp": 123.6,
+            "spread": 0.05,
+            "ask": 123.65,
+            "bid": 123.6,
+            "open_price": 123.95,
+            "high_price": 126.6,
+            "low_price": 122.5,
+            "prev_close_price": 122.2,
+            "atp": 120.6
+            "volume": 14942959,
+            "short_name": "ONGC-EQ",
+            "exchange": "NSE",
+            "description": "NSE:ONGC-EQ",
+            "original_name": "NSE:ONGC-EQ",
+            "symbol": "NSE:ONGC-EQ",
+            "fyToken": "10100000003045",
+            "tt": "1623369600"
+        }
+    }
+   ]
+ }
+*/
 router.get('/fyersgetquote', async function (req,res) {
 
     let symbol = ''; let apikey = '';

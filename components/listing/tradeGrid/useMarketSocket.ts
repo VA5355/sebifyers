@@ -15,7 +15,7 @@ export const useMarketSocket = () => {
  const connect = () => {
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 
-    const ws = new WebSocket(`${protocol}://nseyahooindices.onrender.com`);
+    const ws = new WebSocket(`${protocol}://niftyspot.onrender.com`); // https://niftyspot.onrender.com  nseyahooindices.onrender.com
     wsRef.current = ws;
 
     setStatus("connecting");

@@ -1,6 +1,6 @@
 "use client";
 import {Inter} from 'next/font/google'
-import './globals.css'
+//import './globals.css'
 import {ReduxProvider} from '@/providers/ReduxProvider'
 import {Toaster} from 'react-hot-toast';
 import {useEffect} from 'react';

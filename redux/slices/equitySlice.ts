@@ -28,12 +28,19 @@ const equitySlice = createSlice({
          saveStockResults: (state, action) => {
             state.searchResults=action.payload
         },
+        updateEquity: (state, action: PayloadAction<Partial<EquitySliceProps>>) => {
+            return {
+                ...state,
+                ...action.payload
+            };
+            },
+
           saveEquities: (state, action: PayloadAction<{bestMatches: any [] } >) => {
                   state.equities = action.payload;
          },
     },
 })
 
-export const { saveSymbol, saveName ,saveStockResults ,saveEquities    } = equitySlice.actions;
+export const { saveSymbol, saveName ,saveStockResults ,saveEquities ,   updateEquity  } = equitySlice.actions;
 
 export default equitySlice.reducer;

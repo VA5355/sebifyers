@@ -1,11 +1,63 @@
-import React from 'react';
+import React , { useEffect, useState } from "react";
+ import {StorageUtils} from "@/libs/cache";
+import {CommonConstants} from "@/utils/constants";
 import { motion } from 'framer-motion';
 import { Shield, Zap, Star, ArrowUpRight } from 'lucide-react';
 import PositionSwipeHint from '@/app/PositionSwipeHint';
- 
+  import   useIsMobile   from "@/components/listing/tradeGrid/useIsMobile";
 import MarketStatusSlider from '@/app/MarketStatusSlider';
 import  './GridCards.css'
 const GridCards = () => {
+       const [companyName, setCompanyName]  = useState('');
+    const [symbol, setSymbol]  = useState('');
+    const [sector, setSector]  = useState('');
+    const [latestPrice, setLatestPrice]  = useState(0);
+    const [open, setOpen]  = useState(0);
+    const [high, setHigh]  = useState(0);
+    const [low, setLow]  = useState(0);
+    const [close, setClose]  = useState(0);
+    const [week52High, setWeek52High]  = useState(0);
+    const [week52Low, setWeek52Low]  = useState(0);
+
+           // CHECK MOBILE OR DESTOP
+           const isMobile = useIsMobile();
+        const [cacheLastQuote, setCacheLastQuote]  = useState( (lstQte  ) => {
+              let lastStockQuoteNseYahoo  =  StorageUtils._retrieve(CommonConstants.LASTSTOCKQUOTENSEYAHOO)
+                    /*  if(lastStockQuoteNseYahoo !==null && lastStockQuoteNseYahoo !== undefined ){
+                               let quoteData  = lastStockQuoteNseYahoo
+                               setCacheLastQuote(quoteData)
+                                console.log("ESCAPE the renderData from artillery or scraper , QUOTE from LOCAL STORAGE   "+JSON.stringify(quoteData))
+                                   let actualSymbol =  quoteData.meta?.symbol; 
+                               let stockSymbol =  quoteData.meta?.symbol;
+                         
+                       } */
+                      // .isValid && res1.data !== null &&  res1.data !== undefined
+                       if(lastStockQuoteNseYahoo.isValid && lastStockQuoteNseYahoo.data !== null &&  lastStockQuoteNseYahoo.data !== undefined ){
+                               let quoteData  = lastStockQuoteNseYahoo.data
+                               //setCacheLastQuote(quoteData)
+                                console.log("CHECK  isValid and data  QUOTE from LOCAL STORAGE   "+JSON.stringify(quoteData))
+                              setCompanyName(quoteData.meta?.companyName);
+                                 setSymbol(quoteData.meta?.symbol);
+                                 setSector(quoteData.meta?.sector);
+                                 setHigh(quoteData.meta?.high);
+                                 setLow(quoteData.meta?.low);
+                                 setOpen(quoteData.meta?.open);
+                                 setClose(quoteData.meta?.close);
+                                 setWeek52High(quoteData.meta?.week52High);
+                                 setWeek52Low(quoteData.meta?.week52Low);
+                                /* */
+                                   let actualSymbol =  quoteData.meta?.symbol; 
+                               let stockSymbol =  quoteData.meta?.symbol;
+                            lstQte = quoteData;
+                               return quoteData
+                         /* if(actualSymbol  !==undefined || renderData !== null ) {
+                           setLocalStoreSymbol(actualSymbol);
+                          }*/
+                       }else {
+                         return {};
+                       }
+     });
+   
   const cards = [
     {
       title: "Premium Slides",
@@ -30,12 +82,36 @@ const GridCards = () => {
       
      
   ];
+useEffect ( () => {
 
+       const timer = setTimeout(() => {
+                 const cached = StorageUtils._retrieve(CommonConstants.LASTSTOCKQUOTENSEYAHOO);
+        
+          if (cached.isValid && cached.data) {
+            //setCacheLastQuote(cached.data);
+            let quoteData = cached.data;
+              setCompanyName(quoteData.meta?.companyName);
+                                 setSymbol(quoteData.meta?.symbol);
+                                 setSector(quoteData.meta?.sector);
+                                 setHigh(quoteData.meta?.high);
+                                 setLow(quoteData.meta?.low);
+                                 setOpen(quoteData.meta?.open);
+                                 setClose(quoteData.meta?.close);
+                                 setWeek52High(quoteData.meta?.week52High);
+                                 setWeek52Low(quoteData.meta?.week52Low);
+                                
+          }
+    }, 300); // small UX delay
+
+    return () => clearTimeout(timer);
+      
+        
+  } , [cacheLastQuote] );
   return (  
     <div className="grid w-1/1 gap-4 mx-auto grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 2xl:grid-cols-1 justify-center"> 
     {/*min-h-screen bg-slate-50 p-2 flex items-center justify-center */}
       {/* 3-Column Grid Container  flex items-start justify-normal*/}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl w-full ml-24 z-[30] mobile-margin-car">
+      <div className={` grid grid-cols-1 md:grid-cols-5 gap-8 max-w-7xl w-full ${ isMobile ? 'mt-4 ml-6' : 'ml-24' }  z-[30] mobile-margin-car` }>
         {cards.map((card, index) => (
           <motion.div
             key={index}
@@ -94,7 +170,37 @@ const GridCards = () => {
             </div>
           </motion.div>
         ))}
+               
+
+              { cacheLastQuote  && (<div  className={`
+             group relative cursor-pointer
+              "md:col-span-1  "}
+             `}>
+                  <div style={{ marginTop: '20px' }}>
+                    <h1 id="view_title" className="font-bold mb-3  text-blue-600/80 group-hover:text-amber-600 title has-text-centered">
+                        Last visited Stock Update {companyName}
+                    </h1>
+                   {/*   <StockAreaChart data={data} />*/}
+                </div>
+
+                    <ul className="view_list">
+                        <li>Company Name: <span>{companyName ?? cacheLastQuote.meta?.companyName}</span></li>
+                        <li>Symbol: <span>{ symbol ?? cacheLastQuote.symbol}</span></li>
+                        <li>Sector: <span>{sector ?? cacheLastQuote.meta?.sector}</span></li>
+                        <li>Current Price: <span id="currPrice">₹ {latestPrice ?? cacheLastQuote.meta?.latestPrice}</span></li>
+                        <li>Open Price: <span>₹ {open ?? cacheLastQuote.meta?.open}</span></li> 
+                        <li>High Price: <span>₹ {high ?? cacheLastQuote.meta?.high}</span></li> 
+                        <li>Low Price: <span>₹ {low ?? cacheLastQuote.meta?.low}</span></li> 
+                        <li>Close Price: <span>₹ {close ?? cacheLastQuote.meta?.close}</span></li>
+                        <li>52 Week High: <span>₹ {week52High ?? cacheLastQuote.meta?.week52High}</span></li>
+                        <li>52 Week Low: <span>₹ {week52Low ?? cacheLastQuote.meta?.week52Low}</span></li>
+                    </ul>
+                </div>) } 
+
+
       </div>
+        
+
         <div className="grid grid-cols-1 md:grid-cols-1 gap-2 max-w-7xl w-full ml-24  mobile-margin-car">  
           <MarketStatusSlider />
          </div>

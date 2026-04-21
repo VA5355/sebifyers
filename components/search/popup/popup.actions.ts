@@ -133,6 +133,7 @@ export const fetchSearchResults = (_query: string, equities:any,  setTypes: Func
 
 
         } catch (error) {
+             // AS of Apr 10 2026 requested query like RELIANCE or ICICI BANK comes here
               console.log("second try alpha-vantage error  " +JSON.stringify(error));
              const res = await API.get('/', {params: {function: 'SYMBOL_SEARCH', keywords: _query, apikey: NEXT_PUBLIC_API_KEY }})
             if(res.data.bestMatches != null && res.data.bestMatches !== undefined) {

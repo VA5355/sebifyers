@@ -2,6 +2,7 @@
 import React, {useState} from 'react'
 import Chip from '../../common/textChip/chip.component'
 import {useDispatch, useSelector} from 'react-redux';
+ import   useIsMobile   from "@/components/listing/tradeGrid/useIsMobile";
 import {changeTab} from '@/redux/slices/miscSlice';
 import {disableLoader, enableLoader} from "@/redux/slices/miscSlice"
 import {API, FYERSAPI, UPSTOXAPI, ICICDIRECTAPI ,  FYERSAPILOGINURL, UPSTOXAPILOGINURL, TRADE_LOGIN_URL } from "@/libs/client"
@@ -31,6 +32,9 @@ const platformMapper = [
 const Menu = () => {
     const [sortType, setSortType] = useState('1')
     let globalUserCheck  :any = undefined;
+       // CHECK MOBILE OR DESTOP
+           const isMobile = useIsMobile();
+
     const [platformType, setPlatformType] = useState('1')
     const tab = useSelector((state: GlobalState) => state.misc.tab)
     const gainers = useSelector((state: GlobalState) => state.stock.gainers)
@@ -425,13 +429,16 @@ const Menu = () => {
 
     }
     return (
-        <div className='flex flex-wrap gap-2 bg-white dark:bg-black items-center justify-between w-11/12 mx-auto my-3'>
+        <div className='flex flex-wrap  items-center gap-2 justify-between  w-full px-3'>
+            {/** flex flex-wrap gap-2 bg-white dark:bg-black items-center justify-between w-11/12 mx-auto my-3 */}
             <select value={tab} onChange={(e) => {
                 
                 dispatch(changeTab(e.target.value))
                
             }}
-                    className='p-2 focus-visible:outline-none block md:hidden rounded-lg bg-greylight dark:bg-greydark text-gretdark dark:text-white '>
+                    className='p-2 text-sm rounded-lg w-full md:hidden  bg-gray-100 dark:bg-neutral-800 '>
+                        {/**  md:w-auto this causes like ears select boxes to appear at the edges  */}
+                        {/**p-2 focus-visible:outline-none block rounded-lg bg-greylight dark:bg-greydark text-gretdark dark:text-white  */}
                 <option value={'Educate'}>Educate</option>
                 <option value={'Observe'}> Observe</option>
                 <option value={'Trade'}>Trade</option>
@@ -440,19 +447,20 @@ const Menu = () => {
             </select>
 
 
-            <div className='hidden md:flex relative flex-wrap items-center justify-between'>
+            <div className='hidden  px-3 mx-12 md:flex relative flex-wrap items-center justify-between'>{/** bg-sky-500 hover:bg-sky-700 bg-brandblue */}
                 {
                     arr.map(item => {
                         return <button key={item.key} onClick={() => {
                             dispatch(changeTab(item.title))
-                        }} className={` mx-3 hover:scale-105 transition-all cursor-pointer toggle-tab`}>
-                            <h1 className='text-md text-black dark:text-white font-semibold'>{item.title}</h1>
-                        </button>
+                        }} className={` mx-3 hover:scale-105 active:text-green-400 rounded-lg transition-all py-1 cursor-pointer toggle-tab`}>
+                            <h1 className='text-md text-black dark:text-white  hover:text-blue-500  active:text-green-400 font-semibold'>{item.title}</h1>
+                        </button> 
                     })
                 }
-                <div
-                    className={`hidden md:block toggle-line ${tab === "Educate"  ? 'move-line' : tab === "Observe" ? 'move-line1' :  tab === "Trade" ? 'move-line2' :  tab === 'Position' ? 'move-2next' :  tab === 'Subscribe' ? 'move-line3' : ''}`}></div>
-            </div>
+                <div 
+                    className={`hidden ml-16 md:flex relative py-4 flex-wrap items-center toggle-line ${tab === "Educate"  ? 'move-line' : tab === "Observe" ? 'move-line1' :  tab === "Trade" ? 'move-line2' :  tab === 'Position' ? 'move-2next' :  tab === 'Subscribe' ? 'move-line3' : ''}`}></div>
+                  {/** hidden flex-wrap items-center justify-between */}
+                </div>
            {/* <div className='hidden md:flex flex-wrap items-center justify-between'>
                 {
                     sortMapper.map(item => {
@@ -482,13 +490,13 @@ const Menu = () => {
             </select>*/} {/* dark:text-white */}
         
 
-            <div className="hidden md:flex  flex-wrap   items-center  justify-between">
+            <div className={` ${isMobile ? '':'hidden' } md:flex  mr-6 flex-wrap   items-center  justify-between`}>
                  {/* 
                   <select className="p-2 rounded-lg bg-greylight dark:bg-greydark text-gretdark dark:text-white focus-visible:outline-none">
                   md:hidden
                  Alpha-Advantange or Fyers selection */}
               
-             </div>
+             
 
                   <select value={platformType} onChange={(e) => {
                                     if (e.target.value == '1') {
@@ -506,12 +514,13 @@ const Menu = () => {
                                     }
                                     setPlatformType(e.target.value)
                   }}  
-                    className='p-2 focus-visible:outline-none block  rounded-lg bg-greylight dark:bg-greydark text-gretdark  dark:active:text-green-700  '> {/* dark:text-white */}
+                    className='p-2 focus-visible:outline-none  rounded-lg bg-greylight dark:bg-greydark text-gray-900 dark:text-gray-100  dark:active:text-green-700  '> 
+                    {/* dark:text-white */}
                 <option value={1}>Alph-Vantage</option>
                 <option value={2}>Fyers</option>
                 <option value={3}>Upstox</option>
                  <option value={4}>Icicidirect</option>
-               </select>
+               </select></div>
         </div>
     )
 }

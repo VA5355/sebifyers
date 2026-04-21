@@ -44,6 +44,7 @@ const FYERSAPISELLORDER = 'https://onedinaar.com/.netlify/functions/netlifystock
 
 const FYERSAPIKYCORDER = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerskycorder'
 const FYERSAPICOMPLYCUBEURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/subscribe/complycubeKyc'
+const YAHOOCHARTURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fetchYahooChart'
 const FYERSAPICOMPLYCUBEURLPOST = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/subscribe/complycubeKycpost'
 
 
@@ -105,5 +106,5 @@ export { API , FYERSAPI ,UPSTOXAPI, ICICDIRECTAPI , FYERSAPILOGINURL , FYERSAPIN
   FYERSAPIMARKETFEEDRENDER , FYERSAPIMARKETCUSTOMFEED,FYERSAPIORDERSRENDER,FYERSAPIPOSITIONSRENDER,
   FYERSAPIPOSITIONBOOKURL, FYERSAPIMARKETFEEDRENDER_SOCKET,FYERSOPTIONCHAINWSSFEED,FYERSAPICOMPLYCUBEURL, FYERSAPICOMPLYCUBEURLPOST, FYERSAPIKYCORDER,
 
-  UPSTOXAPILOGINURL , TRADE_LOGIN_URL
+  UPSTOXAPILOGINURL , TRADE_LOGIN_URL , YAHOOCHARTURL
 };
