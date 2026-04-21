@@ -54,7 +54,7 @@ const FYERSAPIGETCQUOTE = 'https://onedinaar.com/.netlify/functions/netlifystock
 
 
 const FYERSAPITICKERURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetticker'
-const FYERSAPITHREESECQUOTE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetbsecequote'
+//const FYERSAPITHREESECQUOTE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetbsecequote'
 
 //const FYERSAPIMARKETFEEDRENDER = 'https://fyersmarketfeed.onrender.com/stream' // ?accessToken=
 const FYERSAPIMARKETFEEDRENDER_SOCKET = 'https://rendersocketio-k4d8.onrender.com'  // 'https://localhost:9584' // ?accessToken=  'http://localhost:5000/stream' 
