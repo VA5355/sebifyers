@@ -523,7 +523,7 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
                if(!fyersQuoteWorked ) {
                 
               const API = axios.create({
-                    baseURL:  `https://192.168.1.6:8888/.netlify/functions/netlifystockfyersbridge/api`,
+                    baseURL:  `https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api`,
                     timeout: 27000
                     });
                 API.interceptors.request.use((config) => {
@@ -686,7 +686,7 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
           // GET THe YAHOO CHART 
           //{params: {  "id" : _id,                     "mobileNumber":mobileNumber ,  lastName:lastName, dob:dob,  firstName: firstName,  email:email  ,typeOfEnity:typeOfEnity    }}
          const API = axios.create({
-            baseURL: 'https://192.168.1.6:8888/.netlify/functions/netlifystockfyersbridge/api',
+            baseURL: 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api',
             timeout: 27000
             });
          API.interceptors.request.use((config) => {

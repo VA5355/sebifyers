@@ -246,7 +246,7 @@ const gap = 6;
               console.log(" yahoo finance chart :: "+actualSymbol+" "+JSON.stringify(stockYahooChartData.chart))
            */
           const API = axios.create({
-            baseURL: 'https://192.168.1.6:8888/.netlify/functions/netlifystockfyersbridge/api',
+            baseURL: 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api',
             timeout: 27000
             });
          API.interceptors.request.use((config) => {
