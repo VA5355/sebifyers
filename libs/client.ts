@@ -64,7 +64,7 @@ const FYERSAPIMARKETFEEDRENDER = 'https://fyersbook.onrender.com/stream'    // t
 const FYERSAPIORDERSRENDER = 'http://fyersorders.onrender.com/stream' // ?accessToken=
 const FYERSAPIPOSITIONSRENDER = 'http://fyers-positions-socket-git.onrender.com/stream' // ?accessToken=
 const FYERSAPIMARKETCUSTOMFEED = 'https://fyersbook.onrender.com/stream' // ?accessToken=
-const FYERSOPTIONCHAINWSSFEED = "wss://artilleryfeed.onrender.com/"; //'wss://192.168.1.3:8443/';
+const FYERSOPTIONCHAINWSSFEED = "wss://feedsoptionsmain.onrender.com/"; //'wss://192.168.1.3:8443/';
 
 const FYERSAPITICKERACCESTOKEN = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersaccesstoken'
 const FYERSAPITICKERURLCLOSE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/close'

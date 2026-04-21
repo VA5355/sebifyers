@@ -30,7 +30,7 @@ var complycubeKey = "test_TUIzVEN3Y2djeXdrU0ZEa1M6N2ZmZjY1ZjA5NzExYzk5NGZiNDk3Yj
 var redirectUrl  = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
 var BASEREF  = "https://onedinaar.com"
 var MARKETSTATUS  ="https://api-nse-india-vbmd.onrender.com";      //"https://scraper-api-eyiz.onrender.com"
-//var MARKETSTATUS_RECALCULATE  ="https://artilleryfeed.onrender.com"  feedsoptionsmain.onrender.com
+//var MARKETSTATUS_RECALCULATE  ="https://feedsoptionsmain.onrender.com"  feedsoptionsmain.onrender.com
 var MARKETSTATUS_RECALCULATE  ="https://feedsoptionsmain.onrender.com"  
 let cachedCSV = null;
 let lastFetchTime = 0;
@@ -916,9 +916,9 @@ try {
 		  let authHeader = req.headers['Authorization'] ?? req.headers['authorization'];
 
 		  if(authHeader ===undefined){
-			  console.log("Authorization /authorization not set cannot proceed to artilleryfeed.onrender.com " );
+			  console.log("Authorization /authorization not set cannot proceed to feedsoptionsmain.onrender.com " );
 			  	totalexpiries = {
-							error: "Recalculate Nifty Option Authorization /authorization not set cannot proceed to artilleryfeed.onrender.com ",
+							error: "Recalculate Nifty Option Authorization /authorization not set cannot proceed to feedsoptionsmain.onrender.com ",
 							message: 'Authorization /authorization not set'
 						}
 				 let ret =  {
@@ -975,7 +975,7 @@ try {
 
 
    if (response === undefined) {
-      // console.log("FETCH https://artilleryfeed.onrender.com/recalculate-option-strikes  not okay ");
+      // console.log("FETCH https://feedsoptionsmain.onrender.com/recalculate-option-strikes  not okay ");
       console.log("FETCH https://feedsoptionsmain.onrender.com/recalculate-option-strikes  not okay ");
 		  setCORSHeaders( res )
 		res.send("{ data: error }" );

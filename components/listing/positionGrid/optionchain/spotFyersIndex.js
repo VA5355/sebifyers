@@ -6,7 +6,7 @@ const NSE_URL = "https://api-nse-india-vbmd.onrender.com/"; // https://artillery
 const NSE_Yahoo_URL = "https://niftyspot.onrender.com"; // "https://localhost:10000/"   https://nseyahooindices.onrender.com
 //const FYERS_URL = "https://localhost:9384/stream"; // // https://fyersfeed.onrender.com/
 const FYERS_URL = "https://onedinaar.com/.netlify/functions/netlifystockfyersticker/fyerslocallive"; // // https://fyersfeed.onrender.com/
-const FYERS_RECAL = "https://artilleryfeed.onrender.com/recalculate-option-strikes" ;  //9384  localhost:8443 this is for fyers stream indices no Option Chain publishing 
+const FYERS_RECAL = "https://feedsoptionsmain.onrender.com/recalculate-option-strikes" ;  //9384  localhost:8443 this is for fyers stream indices no Option Chain publishing 
 
 const FYERS_SYMBOL = "NSE:NIFTY50-INDEX";
 
