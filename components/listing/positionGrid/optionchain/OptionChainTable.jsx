@@ -2063,6 +2063,7 @@ fyersExpiryDateMapper.set('26A28', '26428'); // Apr 28, 2026
     fyersExpiryDateMapper.set('26413','260106');
   fyersExpiryDateMapper.set('26M05','26505');
     fyersExpiryDateMapper.set('26M12','26512');
+    fyersExpiryDateMapper.set('26M19','26519');
   fyersExpiryDateMapper.set('26M26','26526');
 
   for (const [symbol, data] of strikeMap) {
@@ -2527,6 +2528,11 @@ function extractStrike(symbol) {
            table.set('26A07','26407') 
             table.set('26A14','26414') 
              table.set('26A21','26421') 
+               table.set('26A28','26428') 
+                 table.set('26M05','26505') 
+                   table.set('26M12','26512') 
+                   table.set('26M19','26519') 
+                   table.set('26M26','26526') 
         console.log(`Selected or slided evt.row.strike : ${JSON.stringify(evt.row.expiry)}`); 
         console.log(`Order type evt.row.orderType : ${JSON.stringify(evt.row.orderType)}  schedueld: ${JSON.stringify(evt.row.scheduled)}`); 
 

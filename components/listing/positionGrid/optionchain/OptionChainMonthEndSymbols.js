@@ -90,6 +90,8 @@ const expiryMonthSymbols = [
   //30
       { expMonth: '26J30', symbol: "26JAN"  },
   { expMonth: '260130', symbol: "26JAN" },
+  { expMonth: '260428', symbol: "26APR" }, // NIFTY26APR23900CE
+  { expMonth: '26A28', symbol: "26APR" }, // NIFTY26APR23900CE
 
 { expMonth: '2026-01-30', symbol: "26JAN"  },
   
