@@ -15,6 +15,7 @@ import webSocketSlice,{  WebSocketSliceProps } from './slices/webSocketSlice';
 import marketSlice,{  MarketSliceProps } from './slices/marketSlice';
 import timestampChartSlice,{  ChartState } from './slices/timestampChartSlice';
 import renderSlice,{  QuoteState } from './slices/renderDotcomStockSlice';
+import paymentSlice,{  RazorPaymentSliceProps } from './slices/paymentSlice';
 
 import modalReducer, { createModalMiddleware } from '../components/common/service/ModalService';
 import modalGenReducer from './slices/modalGenSlice';
@@ -24,7 +25,7 @@ import indicesSlice,{  IndicesSliceProps } from '@/redux/slices/indicesSlice';
 import indicesReducer  from '@/redux/slices/indicesSlice';
 import timestampChartReducer  from '@/redux/slices/timestampChartSlice';
 import renderReducer  from '@/redux/slices/renderDotcomStockSlice';
-
+import paymentReducer  from './slices/paymentSlice';
 
 export interface GlobalState {
     stock: StockSliceProps;
@@ -43,7 +44,8 @@ export interface GlobalState {
      market:MarketSliceProps,
      indices: IndicesSliceProps,
      timestampChart: ChartState,
-     renderQuote:QuoteState
+     renderQuote:QuoteState,
+     razorpayment: RazorPaymentSliceProps
 }
 const modalMiddleware = createModalMiddleware({
         mapRejectedToModal: (action:any) => ({
@@ -73,7 +75,8 @@ export const store = configureStore({
          indexes:indicesSlice,
          indices:indicesReducer,
          timestampChart:timestampChartReducer,
-         render:renderReducer
+         render:renderReducer,
+         razorpay:paymentReducer
 
 	},
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(modalMiddleware),

@@ -251,7 +251,7 @@ const positionSlice = createSlice({
                   //  console.log(`savePositionTickerBook: ${JSON.stringify(state.positionTicker)}  `);
                   //   console.log(`state.positionBook: ${JSON.stringify(state.positionBook)}  `);
                  if (state.positionTicker !==null && state.positionTicker !==undefined) {
-                   let tickPrice =undefined; let newPostionArray = [];
+                   let tickPrice =undefined; let newPostionArray:any = [];
                    if(Array.isArray(state.positionTicker)){  
                         newPostionArray =   state.positionTicker; // { ltp, symbol, type }
                     }
@@ -259,7 +259,7 @@ const positionSlice = createSlice({
                     if( Array.isArray(state.positionBook)) { 
                         state.positionBook = state.positionBook.map(p => {
                       if(newPostionArray.length > 1 ){
-                            newPostionArray.map(newP => {
+                            newPostionArray.map((newP:any) => {
                             if ( newP.symbol.indexOf(p.symbol) > -1) {
                               //    console.log(`savePositionTickerBook: updating ${p.symbol} LTP to ${tickPrice.ltp}`);
                                   return { ...p, ltp: newP.ltp };

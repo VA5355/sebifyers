@@ -159,7 +159,7 @@ export const TradeReduxProvider = ({children}: { children: React.ReactNode }) =>
          const text = await res.text();
         // const lines = text.split('\n').filter(Boolean);
            const bestMacthes1 = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
-            let json;
+            let json :any;
             try {
             json = JSON.parse(text);
             console.log('Valid TRADE BOOK :', json);

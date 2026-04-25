@@ -72,6 +72,8 @@ const FYERSAPITICKERURLCLOSE = 'https://onedinaar.com/.netlify/functions/netlify
 const FYERSAPINSECSV = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetnsecsv'; 
 const BASEREF = 'https://onedinaar.com'; 
 
+const MARKETSPOTEQUITYENPOINT=  "https://feedsmain.onrender.com";//    "https://api-nse-india-vbmd.onrender.com";
+const MARKETSPOTEQUITYENPOINT1="https://api-nse-india-vbmd.onrender.com"; // `https://feedsmain.onrender.com/api`;
 
 const UPSTOXAPILOGINURL = 'https://onedinaar.com/.netlify/functions/netlifyupstoxbridge/api/upstoxauthcallback'
 const     TRADE_LOGIN_URL = "https://api.icicidirect.com/apiuser/login?api_key="
@@ -108,5 +110,5 @@ export { API , FYERSAPI ,UPSTOXAPI, ICICDIRECTAPI , FYERSAPILOGINURL , FYERSAPIN
   FYERSAPIMARKETFEEDRENDER , FYERSAPIMARKETCUSTOMFEED,FYERSAPIORDERSRENDER,FYERSAPIPOSITIONSRENDER,
   FYERSAPIPOSITIONBOOKURL, FYERSAPIMARKETFEEDRENDER_SOCKET,FYERSOPTIONCHAINWSSFEED,FYERSAPICOMPLYCUBEURL, FYERSAPICOMPLYCUBEURLPOST, FYERSAPIKYCORDER,
 
-  UPSTOXAPILOGINURL , TRADE_LOGIN_URL , YAHOOCHARTURL
+  UPSTOXAPILOGINURL , TRADE_LOGIN_URL , YAHOOCHARTURL , MARKETSPOTEQUITYENPOINT1, MARKETSPOTEQUITYENPOINT
 };

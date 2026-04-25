@@ -625,6 +625,9 @@ export const placeBuyOrder = (params = {}   ) => {
                                   status: 'loading', 
                                   message: 'Placing order...' 
                                 });
+                             // close the above Placing order ... before below order processing as it casuse time out and UI is stuck 
+                                     (spinnerIsAvailable ?   setTimeout(hideModal, 300): console.log("Spinner unavailavle to close ") ) ;  
+
                                const res = await API.get(FYERSAPIBUYORDER , {params: { "auth_code" : auth_code, "id" : _id,
                                        "symbol":sym1 ,  qty:qty, ltp:price,  price: price,  qty:qty  ,orderType:orderType   , scheduled:scheduled }});  //   "access_token" : acctoken ,
                               // Axios auto-parses JSON
@@ -640,7 +643,7 @@ export const placeBuyOrder = (params = {}   ) => {
                                   });*/
                                   
                                   // Auto-hide success after 3 seconds
-                                   // Auto-hide success after 3 seconds
+                                   // Auto-hide success after 3 seconds  in case above did not close 
                                       (spinnerIsAvailable ?   setTimeout(hideModal, 300): console.log("Spinner unavailavle to close ") ) ;
                                
                                 if (buyOrderJSON !==undefined) {

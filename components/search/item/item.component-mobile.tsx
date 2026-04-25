@@ -22,7 +22,7 @@ import {setTimestampChartData} from "@/redux/slices/timestampChartSlice"
 import {API} from "@/libs/client"
 import nifty50 from "../../tradeTicker/nifty-50";
 import { FYERSAPINSECSV ,FYERSAPITHREESECQUOTE , FYERSAPIORDERBOOKSURL ,  FYERSAPITICKERACCESTOKEN, FYERSAPICOMPLYCUBEURL,
-     FYERSAPIKYCORDER , FYERSAPISELLORDER , YAHOOCHARTURL} from '@/libs/client';
+     FYERSAPIKYCORDER , FYERSAPISELLORDER , YAHOOCHARTURL , MARKETSPOTEQUITYENPOINT1 ,MARKETSPOTEQUITYENPOINT} from '@/libs/client';
 import { fetchRenderSuccess, QuoteState } from '@/redux/slices/renderDotcomStockSlice';
 import TooltipLink from './TooltipLink';
 import feedsMainApiResponse from './feedsmain.onrender.com.api.res.json'
@@ -161,7 +161,7 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
                // 1. Fetch the data from your new Render API https://feedsmain.onrender.com
             // Note: Using the equity endpoint as you provided
              const API = axios.create({
-                    baseURL:  `https://api-nse-india-vbmd.onrender.com/api`,
+                    baseURL:  `${MARKETSPOTEQUITYENPOINT}/api`, //`https://api-nse-india-vbmd.onrender.com/api`
                     timeout: 27000
                     });
                 API.interceptors.request.use((config) => {
@@ -188,12 +188,12 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
                 return json;
 
             }else { 
-               console.log("Header searched stock could not be found in https://api-nse-india-vbmd.onrender.com NIFTY 50 ")
+               console.log(`Header searched stock could not be found in https://${MARKETSPOTEQUITYENPOINT} NIFTY 50 `)
            }     
 
         }
           else { 
-               console.log("Header searched stock could not be found in https://api-nse-india-vbmd.onrender.com and checked in NIFTY 50 ")
+               console.log(`Header searched stock could not be found in https://${MARKETSPOTEQUITYENPOINT} and checked in NIFTY 50 `)
            }      
            // const response = await  placeMockOrder(req , res);  // axios.get(url);
             
@@ -242,7 +242,7 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
 
                    
               const API = axios.create({
-                    baseURL:  `https://feedsmain.onrender.com/api`,
+                    baseURL:  `${MARKETSPOTEQUITYENPOINT1}/api`,   //`https://feedsmain.onrender.com/api`
                     timeout: 27000
                     });
                 API.interceptors.request.use((config) => {
@@ -306,7 +306,7 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
         
 
         } catch (err) {
-            console.error("Chart https://feedsmain.onrender.com/api/equity fetch error", err);
+            console.error(`Chart ${MARKETSPOTEQUITYENPOINT1}/api/equity fetch error`, err);
             const json =   scraperFetchSymnol(symbol);
               setSymbolQuote(symbol, json)
 

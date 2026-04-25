@@ -29,6 +29,7 @@ export default function RootLayout({
         <html lang="en" className=''>
         <title>Store Notify Stocks</title>
         <link rel="icon" href="/favicon.ico" sizes="any"/>
+           <script async src="https://pay.google.com/gp/p/js/pay.js"></script>
         <body className={inter.className}>
         <ReduxProvider>
             <EquityReduxProvider>

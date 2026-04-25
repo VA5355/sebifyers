@@ -1,0 +1,76 @@
+
+.razorbutton 
+ 
+ {
+    background: #072654;
+    border-color: #072654;
+}
+
+.razorbutton  {
+    position: relative;
+    display: inline-block;
+    min-width: 60px;
+    height: 20px;
+    padding: 0;
+    border-radius: 3px;
+    text-align: center;
+    font-style: italic;
+    font-family: Muli, helvetica, sans-serif;
+    font-display: swap;
+    overflow: hidden;
+    border: 1px solid transparent;
+    outline: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+}
+.PaymentButton.svelte-ekc7fv.svelte-ekc7fv
+ 
+ {
+    position: relative;
+    display: inline-block;
+    min-width: 160px;
+    height: 40px;
+    padding: 0;
+    border-radius: 3px;
+    text-align: center;
+    font-style: italic;
+    font-family: Muli, helvetica, sans-serif;
+    font-display: swap;
+    overflow: hidden;
+    border: 1px solid transparent;
+    outline: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+}
+
+.PaymentButton--dark.svelte-ekc7fv.svelte-ekc7fv {
+    color: #fff;
+}
+
+.PaymentButton--rzpTheme.svelte-ekc7fv .PaymentButton-contents.svelte-ekc7fv
+ 
+ {
+    padding-left: 60px;
+}
+
+ 
+.PaymentButton-contents.svelte-ekc7fv.svelte-ekc7fv {
+    padding: 4px 28px 4px 44px;
+    margin: 1px 0;
+}
+
+
+.PaymentButton-text.svelte-ekc7fv.svelte-ekc7fv
+ 
+ {
+    display: block;
+    min-height: 18px;
+    line-height: 18px;
+    font-size: 14px;
+    font-weight: 800;
+    opacity: 1;
+    text-transform: initial;
+}
+

@@ -1,0 +1,76 @@
+
+//Option 2 (Dynamic load before payment)
+
+//Modify your hook:
+
+const loadRazorpayScript = async () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+
+    document.body.appendChild(script);
+  });
+};
+
+
+
+//🧩 3. Razorpay Hook (clean reusable logic)
+export const useRazorpay = () => {
+ // const openRazorpay = (order: any, key: string, dispatch: any) => {
+  const openRazorpay = async (order, key, dispatch) => {
+
+  const isLoaded = await loadRazorpayScript();
+
+  if (!isLoaded) {
+   // alert("Razorpay SDK failed to load");
+   console.log("Razorpay SDK failed to load");
+    return;
+  }
+
+
+    const options = {
+      key,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Store Notify",
+      description: "Payment",
+      order_id: order.id,
+
+      handler: function (response) {
+        dispatch({
+          type: "payment/paymentSuccess",
+          payload: response,
+        });
+      },
+
+      prefill: {
+        name: "Customer",
+        email: "admin@storenotify.in",
+        contact: "9999999999",
+      },
+
+      theme: { color: "#3399cc" },
+    };
+
+    const rzp = new (window).Razorpay(options);
+
+    rzp.on("payment.failed", function (response) {
+      dispatch({
+        type: "payment/paymentFailure",
+        payload: response.error,
+      });
+    });
+
+    rzp.open();
+  };
+
+  return { openRazorpay };
+};
+///________________________________________

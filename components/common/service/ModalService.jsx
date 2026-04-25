@@ -22,7 +22,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, Minus, Plus } from "lucide-react";
-import {  Clock, Zap, Shield, Info } from 'lucide-react';
+import {  Clock, Zap, Shield, Info, Receipt, IndianRupee } from 'lucide-react';
 // --------------------
 // modalSlice (RTK)
 // --------------------
@@ -61,7 +61,40 @@ let exitpositondata ={
 
 
 }
+let razorpayorder = {
+   orderType : "",   // razor or gpaydirect (by scanning )
+   amt:   "" , // "1",
+  
 
+    cur: "" , // "INR",
+   recpt: "" , //  "razor_receipt_2026-03-04 18:04:44  ",
+    n1:"en-IN",
+   n2:"Life time subscription virtual tradning @onedinaar.com  ",
+   show : true,
+    amount: '',
+    amount_due: '',
+   amount_paid: '', 
+   created_at : '', 
+   currency : '', 
+   id: '', 
+   notes : { 
+     key1 : "",
+     key2 : "", 
+
+   }, 
+   offer_id : '', 
+   receipt: '', 
+   status : '', 
+
+
+}
+/*  razorpayorder payload 
+  {"modalType":"razorpayorder","amount":100,"amount_due":100,"amount_paid":0,"attempts":0,"created_at":1777050156,
+  "currency":"INR","entity":"order","id":"order_ShPBlTnKBJzY5h","notes":{"key1":"en-IN","key2":"Life time subscription virtual tradning @onedinaar.com  "},
+  "offer_id":null,"receipt":"razor_receipt_2026-03-05 22:27:28  ","status":"created"}
+
+
+  */
 export const modalSlice = createSlice({
   name: "modal",
   initialState,
@@ -74,6 +107,9 @@ export const modalSlice = createSlice({
       state.type = type;
       state.payload = payload;
       state.onConfirm = onConfirm;
+      console.log(`ModalService showModal :: payload  ${JSON.stringify(payload)}`)
+
+
       if(payload !==undefined && payload  !==null ){
         //check type is  = existposition 
           let modalType = (payload["modalType"] !==null &&  payload["modalType"] !==undefined ) ? payload["modalType"] :  null;
@@ -118,6 +154,22 @@ export const modalSlice = createSlice({
           exitpositondata.dispatchSellSelected =  payload["dispatchSellSelected"]
               globalposition = exitpositondata;
          }
+          console.log(`ModalService showModal :: modalType  ${JSON.stringify(modalType)}`)
+         // Model Type is RazorPay Order 
+         if(modalType !== null && modalType !== undefined && modalType === "razorpayorder") {
+                razorpayorder.amount =  payload["amount"];
+                razorpayorder.amount_due =  payload["amount_due"];
+                razorpayorder.amount_paid =  payload["amount_paid"];
+                razorpayorder.created_at =  payload["created_at"];
+                razorpayorder.currency =  payload["currency"];
+                razorpayorder.id =  payload["id"];
+                razorpayorder.notes =  payload["notes"];
+                razorpayorder.offer_id =  payload["offer_id"];
+                razorpayorder.receipt =  payload["receipt"];
+                razorpayorder.status =  payload["status"];
+                  razorpayorder.show = true;
+
+          }
            
       }
     },
@@ -392,12 +444,141 @@ const sheet = {
 
     )
   }
+const razorPayDialog = ({ razorpayorder, setShowModal }) => {
+  if (!razorpayorder) return null;
+   console.log( ` `)
+   console.log( ` `)
+   console.log( ` razorPayDialog   ${JSON.stringify(razorpayorder)}`)
+  const isSuccess =
+    razorpayorder.status === "paid" ||  razorpayorder.status === "created" || 
+    razorpayorder.status === "captured";
 
+  return (
+    <AnimatePresence>
+      {razorpayorder?.show && (
+        <motion.div
+          variants={backdrop}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end md:items-center justify-center"
+          onClick={() => setShowModal(false)}
+        >
+          <motion.div
+            variants={sheet}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            onClick={(e) => { e.stopPropagation(); razorpayorder.show = false; } }
+            className="bg-white w-full md:w-[380px] rounded-t-2xl md:rounded-2xl shadow-2xl overflow-hidden"
+          >
+            {/* Header */}
+            <div className="px-4 py-3 border-b flex items-center justify-between bg-slate-50">
+              <div className="flex items-center gap-2">
+                <Receipt size={18} className="text-indigo-500" />
+                <h2 className="text-sm font-bold text-gray-800">
+                  Payment Receipt
+                </h2>
+              </div>
+
+              <button
+                onClick={() => { setShowModal(false); 
+                              razorpayorder.show = false; }
+                }
+                className="p-1 hover:bg-gray-200 rounded-full"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-4 space-y-4 text-sm">
+
+              {/* Status */}
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">Status</span>
+                <span
+                  className={`flex items-center gap-1 font-semibold ${
+                    isSuccess ? "text-green-600" : "text-orange-500"
+                  }`}
+                >
+                  {isSuccess ? <CheckCircle size={16} /> : <Clock size={16} />}
+                  {razorpayorder.status || "Pending"}
+                </span>
+              </div>
+
+              {/* Amount */}
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">Amount</span>
+                <span className="font-bold text-lg flex items-center gap-1">
+                  <IndianRupee size={16} />
+                  {(razorpayorder.amount / 100).toFixed(2)}
+                </span>
+              </div>
+
+              {/* Receipt */}
+              <div className="flex justify-between">
+                <span className="text-gray-500">Receipt</span>
+                <span className="font-mono text-xs text-gray-700">
+                  {razorpayorder.receipt}
+                </span>
+              </div>
+
+              {/* Order ID */}
+              <div className="flex justify-between">
+                <span className="text-gray-500">Order ID</span>
+                <span className="font-mono text-xs text-gray-700 truncate max-w-[180px] text-right">
+                  {razorpayorder.id}
+                </span>
+              </div>
+
+              {/* Description */}
+              <div className="flex justify-between">
+                <span className="text-gray-500">Description</span>
+                <span className="text-xs text-gray-700 text-right max-w-[180px]">
+                  {razorpayorder.notes?.key2}
+                </span>
+              </div>
+
+              {/* Date */}
+              <div className="flex justify-between">
+                <span className="text-gray-500">Created</span>
+                <span className="text-xs text-gray-700">
+                  {new Date(razorpayorder.created_at * 1000).toLocaleString()}
+                </span>
+              </div>
+
+              {/* Divider */}
+              <div className="border-t pt-3 flex justify-between font-semibold">
+                <span>Total Paid</span>
+                <span className="flex items-center gap-1">
+                  <IndianRupee size={14} />
+                  {(razorpayorder.amount_paid / 100).toFixed(2)}
+                </span>
+              </div>
+
+              {/* Footer Button */}
+              <button
+                onClick={() => { setShowModal(false); 
+                              razorpayorder.show = false; }}
+                className="w-full mt-2 py-2 rounded-lg bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition"
+              >
+                Done
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
   return (  <>
      
       {   (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='exitposition'   ? ( sellPositionDialog(modal.payload)  )  : (
+             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog(modal.payload, (isS) => { razorpayorder.show = isS;
 
+              })) : (
              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
   {/* Backdrop */}
   <div className="absolute inset-0 bg-black/50" onClick={close} />
@@ -445,7 +626,7 @@ const sheet = {
   </div>
 </div>
 
-    )  } 
+    ))  } 
    </>
   );
 }

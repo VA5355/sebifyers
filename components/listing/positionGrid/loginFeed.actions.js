@@ -347,7 +347,7 @@ export const startEventSource = (connectionStatus,tickerMap, onFeed) => {
                // MAY CANCEL the EVENT SOURCE also here 
                stopEventSource(); // dummy for BAD Gateway issue
               //acctoken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiJQNjdSSkFTMU02IiwidXVpZCI6ImVjMGQxMDQ3MmU0OTQwNGI5ZjkxZWFhOTFiOWEyMjIzIiwiaXBBZGRyIjoiIiwibm9uY2UiOiIiLCJzY29wZSI6IiIsImRpc3BsYXlfbmFtZSI6IlhWMzEzNjAiLCJvbXMiOiJLMSIsImhzbV9rZXkiOiJlOGZmYWE3MzAyNTFkNTRjN2I5MmQ4NWU2M2JmNjY4OWRkNzYzZGExYzNmZjEyNTUxODhlMmJiMiIsImlzRGRwaUVuYWJsZWQiOiJOIiwiaXNNdGZFbmFibGVkIjoiTiIsImF1ZCI6IltcImQ6MVwiLFwiZDoyXCIsXCJ4OjBcIixcIng6MVwiLFwieDoyXCJdIiwiZXhwIjoxNzc0MDA1MjM5LCJpYXQiOjE3NzM5NzUyMzksImlzcyI6ImFwaS5sb2dpbi5meWVycy5pbiIsIm5iZiI6MTc3Mzk3NTIzOSwic3ViIjoiYXV0aF9jb2RlIn0.-Oy47s3_cm60VGeH5QOfELy1PXEIyOY-P0VZzWV9nNM'
-              // return ;
+               return ;
              }
 
          const params = new URLSearchParams({

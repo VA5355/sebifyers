@@ -298,6 +298,56 @@ export interface StockData {
     date: string;
     price: number;
 }
+
+export function isNullOrUndefined   (value: any | null | undefined): value is null | undefined    {
+    return value === null || value === undefined;
+  }
+ export  function generateRandomString(length: number): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
+
+/**
+ * Recursively merges properties from obj to variable.
+ * @param {Object} obj - source object
+ * @param {Object} variable - target object
+ * @returns {void}
+ * @example
+ * objCombine({
+ *   a: { b: 1, c: 2 },
+ *   d: { e: 3 }
+ * }, {});
+ * // result: { a: { b: 1, c: 2 }, d: { e: 3 } }
+ */
+
+  export function  objCombine(obj:any, variable:any) {
+    for (let key of Object.keys(obj)) {
+      if (!variable[key]) variable[key] = {};
+  
+      for (let innerKey of Object.keys(obj[key]))
+        variable[key][innerKey] = obj[key][innerKey];
+    }
+    return variable
+  }
+
+export  const environment = { 
+      production: false,
+        backend: { 
+        baseURL:  'https://storenotify.in/.netlify/functions/netlifyproxygoogleauth',
+    
+        site:'http://localhost:4200/',
+        logoutSpring: 'https://5j3c1fv094.execute-api.us-east-1.amazonaws.com/pro',
+        razorPay:'https://rzp.io/rzp/i4dVeCt',
+        razorpayKey: 'rzp_test_2853QGpWUiQAri' , //'rzp_test_stNGdMn4H9FjoR',
+         razorpaySecret: 'X6WVCVKSrAkQS3EBAmkNNagW'
+      },
+
+}
+
 export const CommonConstants = {
     chartDataKey: "Time Series (Daily)",
     closeDataKey: '4. close',

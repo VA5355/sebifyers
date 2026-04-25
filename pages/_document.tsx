@@ -37,7 +37,7 @@ export default function Document() {
           href="https://assets.fyers.in/fy_notifications/css/2.0/notify.min.css"
         />
          <link rel="preload" as="font" href="/css/text-security-disc.woff" type="font/woff" crossOrigin="anonymous"/> 
-
+         <script async src="https://pay.google.com/gp/p/js/pay.js"></script>
       </Head>
 
       <body>

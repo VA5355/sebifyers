@@ -146,7 +146,7 @@ export const getHoldingData = (_id: string | string[]) => {
                          const text = await res.data ;
                         // const lines = text.split('\n').filter(Boolean);
                            const bestMacthes1 = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
-                            let json;
+                            let json :any ;
                             try {
                             json = JSON.parse(text);
                             console.log('Valid HOLDINGS BOOK :', json);

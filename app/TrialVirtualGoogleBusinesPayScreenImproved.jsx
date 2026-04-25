@@ -8,7 +8,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QrCode, ShieldCheck, AlertCircle, ArrowRight, X, Clock } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-
+import GPayButton from './GPayButton';
+import GPayButtonRazor from './GPayButtonRazor';
+import RazorPayButton from './RazorPayButton';
+import PaymentComponent from './PaymentComponent';
 const TrialVirtualGoogleBusinesPayScreenImproved = ({ amount, orderId, onClose }) => {
   const [showDesktopQR, setShowDesktopQR] = useState(false);
   const [timeLeft, setTimeLeft] = useState(180); // 3 minutes in seconds
@@ -56,6 +59,19 @@ const TrialVirtualGoogleBusinesPayScreenImproved = ({ amount, orderId, onClose }
     window.location.href = upiLink;
   }
 };
+ function     getTimeSeriesFormattedTimeKey()  {
+  const now = new Date();
+  const year = now.getFullYear().toString().padStart(2, '0');
+  const month = now.getMonth().toString().padStart(2, '0');
+  const day = now.getDay().toString().padStart(2, '0');
+  const hour = now.getHours().toString().padStart(2, '0');
+  let min5 = now.getMinutes() ;
+       min5 = min5  - 5;
+  const min = min5.toString().padStart(2, '0');
+  const sec = now.getSeconds().toString().padStart(2, '0');
+  const ms = now.getMilliseconds().toString().padStart(3, '0');
+  return `${year}-${month}-${day} ${hour}:${min}:${sec}`;
+}
 
   const handlePaymentClick = (e) => {
     // Check if user is on Desktop (simple check)
@@ -139,6 +155,22 @@ const TrialVirtualGoogleBusinesPayScreenImproved = ({ amount, orderId, onClose }
           >
             Pay with Any UPI App <ArrowRight size={20} />
           </motion.a>
+         {/* 
+            <PaymentComponent amount={amount} currency="USD" onToken={ async (token )=> { 
+                    console.log(" PaymentComponent "+ JSON.stringify(token))
+          }}/>  */}
+          <RazorPayButton amount={1} currency="INR" receipt ={`razor_receipt_${getTimeSeriesFormattedTimeKey()}  `} description ="Life time subscription virtual tradning @onedinaar.com  "   onToken={ async (token )=> { 
+                    console.log("gpay token generated "+ JSON.stringify(token))
+                    onClose();
+                    
+          }}/>
+        
+         {/* <GPayButton amount={1} currency="INR" onToken={ async (token )=> { 
+                    console.log("gpay token generated "+ JSON.stringify(token))
+          }}/> */}
+           {/*   <GPayButtonRazor  amount={amount} currency="INR" onToken={ async (token )=> { 
+                    console.log("GPayButtonRazor  "+ JSON.stringify(token))
+          }} />*/}
 
           <div className="flex items-center justify-center gap-2 text-green-600 font-bold text-[10px] uppercase tracking-wider">
             <ShieldCheck size={16} />

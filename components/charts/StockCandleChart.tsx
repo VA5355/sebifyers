@@ -206,7 +206,10 @@ const gap = 6;
      // only when the StorageUtils._retrieve(CommonConstants.companySymbolStockChart) is changed 
      // this below should fails and re-generation of Candles happens 
 
-     fetchCandle();
+    // fetchCandle();
+
+   
+            
         // we hope the render happens autpmatically and there is not need of any change in the grid.component where the symbol && StockCandleChart is 
         // logic crafted here 
         // the symbol change based on interval code os written above 
@@ -504,7 +507,7 @@ const LineChart = ({ data }: any) => {
                             initial={{ scaleY: 0 }}
                             animate={{ scaleY: 1 }}
                             transition={{ delay: i * 0.05 }}
-                            transformOrigin="center"
+                           // transformOrigin="center"
                             x={x}
                             width={candleWidth}
                             y={scaleset(Math.max(candle.open, candle.close))}
