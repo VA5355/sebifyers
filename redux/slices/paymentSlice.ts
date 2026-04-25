@@ -1,7 +1,7 @@
 //🧩 1. Redux Slice (paymentSlice.ts)
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { RAZORORDERANDPAYMENTURL } from '@/libs/client';
 export const createOrder = createAsyncThunk(
   "payment/createOrder",
   async (payload: any, { rejectWithValue }) => {
@@ -9,7 +9,7 @@ export const createOrder = createAsyncThunk(
       const baseUrl =
         window.location.hostname === "localhost"
           ? "http://localhost:8888"
-          : "https://192.168.1.5:8888";
+          : RAZORORDERANDPAYMENTURL;
             // https://onedinaar.com
       const res = await axios.get(
         `${baseUrl}/.netlify/functions/netlifyproxyrazorpayment`,
