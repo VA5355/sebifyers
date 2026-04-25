@@ -445,7 +445,7 @@ const sheet = {
     )
   }
 const razorPayDialog = ({ razorpayorder, setShowModal }) => {
-  if (!razorpayorder) return null;
+//  if (!razorpayorder) return null;
    console.log( ` `)
    console.log( ` `)
    console.log( ` razorPayDialog   ${JSON.stringify(razorpayorder)}`)
@@ -552,8 +552,8 @@ const razorPayDialog = ({ razorpayorder, setShowModal }) => {
               <div className="border-t pt-3 flex justify-between font-semibold">
                 <span>Total Paid</span>
                 <span className="flex items-center gap-1">
-                  <IndianRupee size={14} />
-                  {(razorpayorder.amount_paid / 100).toFixed(2)}
+                  <IndianRupee size={14} />   {/** this razorpayorder.amount_paid could be divisoin by 0  */}
+                  {(razorpayorder.amount / 100).toFixed(2)}
                 </span>
               </div>
 

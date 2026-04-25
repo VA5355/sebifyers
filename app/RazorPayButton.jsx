@@ -52,7 +52,7 @@ const RazorPayButton = ({amount = "2499.00", currency="INR " ,receipt ,descripti
 
     // ✅ Only now open Razorpay
     await openRazorpay(order, `rzp_test_${keyRazor}`, dispatch).then( comp => {
-           let razorPayOrder = { modalType : "razorpayorder" , ...order}
+           let razorPayOrder = { show: true, modalType : "razorpayorder" , ...order}
             // razorPayOrder = { ...razorPayOrder , order };
             //, type:'info', payload : razorPayOrder
             console.log(`razorPayOrder ${JSON.stringify(razorPayOrder)} `)
