@@ -2528,7 +2528,7 @@ function extractStrike(symbol) {
            table.set('26A07','26407') 
             table.set('26A14','26414') 
              table.set('26A21','26421') 
-               table.set('26A28','26428') 
+               table.set('26A28','26APR') 
                  table.set('26M05','26505') 
                    table.set('26M12','26512') 
                    table.set('26M19','26519') 
