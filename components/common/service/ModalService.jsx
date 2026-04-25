@@ -18,6 +18,7 @@
 */
 
 import React from "react";
+import { useEffect, useRef, useState } from "react";
 import { createSlice } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
@@ -224,7 +225,7 @@ export function createModalMiddleware(options = {}) {
 export function ModalRoot() {
   const dispatch = useDispatch();
   const modal = useSelector((s) => s.modal || {});
-
+  const [razorpayorder , setRazorpayorder] = useState(modal.payload)
   if (!modal.visible) return null;
 
   const isError = modal.type === "error";
@@ -576,7 +577,7 @@ const razorPayDialog = ({ razorpayorder, setShowModal }) => {
   return (  <>
      
       {   (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='exitposition'   ? ( sellPositionDialog(modal.payload)  )  : (
-             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog(modal.payload, (isS) => { razorpayorder.show = isS;
+             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog(razorpayorder, (isS) => { razorpayorder.show = isS;
 
               })) : (
              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
