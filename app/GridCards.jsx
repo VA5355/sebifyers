@@ -96,7 +96,23 @@ const showPaymentModal = ( payAmount , orderGenId, customerKyc) => {
    setIsTrialGooglePayOpen(true); // trigger the professional google pay  form
            
 }
+const handleKYCSuccess = (data) => {
+  setIsKYCOpen(false);
+  // Now trigger the Payment QR Modal you designed earlier
+  let gOrderId  =  `VT_${Date.now()}`;
+  let amt = 2499;
+  showPaymentModal({
+    amount: amt,
+    orderId: gOrderId,
+    customer: data
+  });
+  setGpayOrderId(gOrderId)
+  setGpayAmount(amt)
+  setGpayCustomer(data)
 
+
+
+};
  const closeTrialGooglePayScreen = () => {
     //setIsKYCOpen(true); // First, trigger the professional KYC form
     //reset all the pay variables 
@@ -195,11 +211,11 @@ useEffect ( () => {
           </motion.div>
         ))}
                
-
-              { cacheLastQuote  && (<div  className={`
-             group relative cursor-pointer
-              "md:col-span-1  "}
-             `}>
+        <div  className={`
+                    group relative cursor-pointer
+                      "md:col-span-1  "}
+                    `}>
+              { cacheLastQuote  && (<>
                   <div style={{ marginTop: '20px' }}>
                     <h1 id="view_title" className="font-bold mb-3  text-blue-600/80 group-hover:text-amber-600 title has-text-centered">
                         Last visited Stock Update {companyName}
@@ -219,8 +235,8 @@ useEffect ( () => {
                         <li>52 Week High: <span>₹ {week52High ?? cacheLastQuote.meta?.week52High}</span></li>
                         <li>52 Week Low: <span>₹ {week52Low ?? cacheLastQuote.meta?.week52Low}</span></li>
                     </ul>
-                </div>) } 
-                     {/* // 👈 THIS IS THE MAGIC */}
+              </> ) } 
+              {/* // 👈 THIS IS THE MAGIC */}
                 <div className={` col-span-1   flex flex-col   ${isMobile ? "gap-6 mt-12 py-4": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
 
                   {/* CTA bg-white rounded-2xl shadow-sm p-4  sm:mb-4 flex flex-col items-center text-center
@@ -248,6 +264,12 @@ useEffect ( () => {
                 </motion.div>
 
                </div>
+
+
+
+
+         </div>
+                  
                          { isKYCOpen && (<RefinedKYCModalImproved 
                       isOpen={isKYCOpen} 
                       onClose={() => setIsKYCOpen(false)} 
