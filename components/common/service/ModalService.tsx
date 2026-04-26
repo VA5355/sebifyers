@@ -286,7 +286,8 @@ export function ModalRoot() {
   const modal = useSelector((s:any) => s.modal || {}); 
   const modalpayload = useSelector((s:any) => s.modalpayload || {}); 
   const [razorpayorder , setRazorpayorder] = useState(modal.payload ??  modalpayload.payload)
-  const setShoFunct = (ise:any ) => {razorpayorder.show = ise };
+  const [razorReceipt , showRazorReceipt]= useState(true)
+  const dialogRazor = (ise:any ) => {  showRazorReceipt (false)};
   if (!modal.visible) return null;
 
   const isError = modal.type === "error";
@@ -518,7 +519,7 @@ const razorPayDialog = (razorpayorder :any  , setShowModal: any) => {
 
   return (
     <AnimatePresence>
-      {razorpayorder?.show && (
+      {razorpayorder?.show && razorReceipt && (
         <motion.div
           variants={backdrop}
           initial="hidden"
@@ -532,7 +533,7 @@ const razorPayDialog = (razorpayorder :any  , setShowModal: any) => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            onClick={(e) => { e.stopPropagation(); razorpayorder.show = false; } }
+            onClick={(e) => { e.stopPropagation(); /*razorpayorder.show = false;*/ } }
             className="bg-white w-full md:w-[380px] rounded-t-2xl md:rounded-2xl shadow-2xl overflow-hidden"
           >
             {/* Header */}
@@ -546,7 +547,7 @@ const razorPayDialog = (razorpayorder :any  , setShowModal: any) => {
 
               <button
                 onClick={() => { setShowModal(false); 
-                              razorpayorder.show = false; }
+                             /*razorpayorder.show = false;*/}
                 }
                 className="p-1 hover:bg-gray-200 rounded-full"
               >
@@ -623,7 +624,7 @@ const razorPayDialog = (razorpayorder :any  , setShowModal: any) => {
               {/* Footer Button */}
               <button
                 onClick={() => { setShowModal(false); 
-                              razorpayorder.show = false; }}
+                            /*razorpayorder.show = false;*/ }}
                 className="w-full mt-2 py-2 rounded-lg bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition"
               >
                 Done
@@ -639,7 +640,7 @@ const razorPayDialog = (razorpayorder :any  , setShowModal: any) => {
   return (  <>
      
       {   (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='exitposition'   ? ( sellPositionDialog(modal.payload)  )  : (
-             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog(modal.payload ??  modalpayload.payload,  setShoFunct)) : (
+             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog(modal.payload ??  modalpayload.payload,  dialogRazor)) : (
              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
   {/* Backdrop */}
   <div className="absolute inset-0 bg-black/50" onClick={close} />
