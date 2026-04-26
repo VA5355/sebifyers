@@ -639,7 +639,7 @@ const razorPayDialog = (razorpayorder :any  , setShowModal: any) => {
   return (  <>
      
       {   (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='exitposition'   ? ( sellPositionDialog(modal.payload)  )  : (
-             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog( modal.payload,  setShoFunct)) : (
+             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog(modal.payload ??  modalpayload.payload,  setShoFunct)) : (
              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
   {/* Backdrop */}
   <div className="absolute inset-0 bg-black/50" onClick={close} />
