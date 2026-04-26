@@ -16,6 +16,8 @@ import marketSlice,{  MarketSliceProps } from './slices/marketSlice';
 import timestampChartSlice,{  ChartState } from './slices/timestampChartSlice';
 import renderSlice,{  QuoteState } from './slices/renderDotcomStockSlice';
 import paymentSlice,{  RazorPaymentSliceProps } from './slices/paymentSlice';
+import {    ModalSliceProps } from '../components/common/service/ModalService';
+import   modelSlice      from '../components/common/service/ModalService';
 
 import modalReducer, { createModalMiddleware } from '../components/common/service/ModalService';
 import modalGenReducer from './slices/modalGenSlice';
@@ -45,7 +47,8 @@ export interface GlobalState {
      indices: IndicesSliceProps,
      timestampChart: ChartState,
      renderQuote:QuoteState,
-     razorpayment: RazorPaymentSliceProps
+     razorpayment: RazorPaymentSliceProps,
+     modalpayload: ModalSliceProps
 }
 const modalMiddleware = createModalMiddleware({
         mapRejectedToModal: (action:any) => ({
@@ -68,6 +71,7 @@ export const store = configureStore({
         banknifty:tickerBankNiftySlice,
         ticker:tickerSlice,
         websocket: webSocketSlice, // <-- THIS makes state.websocket available
+        modalpayload: modelSlice, // <-- THIS makes razororderslice  available
          modal: modalReducer ,
          modalpop : modalGenReducer,
          loader: loadingReducer,
