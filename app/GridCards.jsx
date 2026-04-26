@@ -7,6 +7,8 @@ import PositionSwipeHint from '@/app/PositionSwipeHint';
   import   useIsMobile   from "@/components/listing/tradeGrid/useIsMobile";
 import MarketStatusSlider from '@/app/MarketStatusSlider';
 import  './GridCards.css'
+import  RefinedKYCModalImproved  from '@/app/RefinedKYCModalImproved';
+import  TrialVirtualGoogleBusinesPayScreenImproved  from '@/app/TrialVirtualGoogleBusinesPayScreenImproved';
 const GridCards = () => {
        const [companyName, setCompanyName]  = useState('');
     const [symbol, setSymbol]  = useState('');
@@ -18,7 +20,11 @@ const GridCards = () => {
     const [close, setClose]  = useState(0);
     const [week52High, setWeek52High]  = useState(0);
     const [week52Low, setWeek52Low]  = useState(0);
-
+const [isKYCOpen, setIsKYCOpen] = useState(false);
+const [isTrialGooglePayOpen, setIsTrialGooglePayOpen] = useState(false);
+ const [gpayamount, setGpayAmount] = useState(0);
+  const [gpayOrderId, setGpayOrderId] = useState(null);
+   const [gpayCustomer, setGpayCustomer] = useState(null);
            // CHECK MOBILE OR DESTOP
            const isMobile = useIsMobile();
         const [cacheLastQuote, setCacheLastQuote]  = useState( (lstQte  ) => {
@@ -82,6 +88,24 @@ const GridCards = () => {
       
      
   ];
+ const preparePaymentScreen = () => {
+  setIsKYCOpen(true); // First, trigger the professional KYC form
+};
+
+const showPaymentModal = ( payAmount , orderGenId, customerKyc) => { 
+   setIsTrialGooglePayOpen(true); // trigger the professional google pay  form
+           
+}
+
+ const closeTrialGooglePayScreen = () => {
+    //setIsKYCOpen(true); // First, trigger the professional KYC form
+    //reset all the pay variables 
+    setGpayAmount(0);
+    setGpayOrderId(0);
+    setGpayCustomer(null);
+    setIsTrialGooglePayOpen(false); // trigger the professional google pay  form
+};
+
 useEffect ( () => {
 
        const timer = setTimeout(() => {
@@ -196,8 +220,46 @@ useEffect ( () => {
                         <li>52 Week Low: <span>₹ {week52Low ?? cacheLastQuote.meta?.week52Low}</span></li>
                     </ul>
                 </div>) } 
+                     {/* // 👈 THIS IS THE MAGIC */}
+                <div className={` col-span-1   flex flex-col   ${isMobile ? "gap-6 mt-12 py-4": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
 
+                  {/* CTA bg-white rounded-2xl shadow-sm p-4  sm:mb-4 flex flex-col items-center text-center
+                  below is desktop stick behavior */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`bg-white rounded-2xl shadow-sm p-4 sm:p-5    ${isMobile ? "  mt-12 py-4": ""}  flex flex-col items-center text-center    sticky lg:top-4 " `} 
+                >
+                  <span className="bg-brandblue text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-2 "> {/* text-sm sm:text-base font-semibold rounded-lg px-3 py-2*/}
+                    Try Virtual Trading
+                  </span>
 
+                  <button 
+                    onClick={preparePaymentScreen}
+                    className="mt-3 w-full bg-brandgreenlight hover:bg-white border border-transparent hover:border-brandgreen transition rounded-full py-2 flex items-center justify-center gap-2"
+                  >
+                    <span className="text-brandgreen text-xs  sm:text-sm  font-bold">
+                      Trial with Fyers
+                    </span>
+                    <span className="bg-brandblue px-2 py-1 text-white text-xs  sm:text-sm  rounded-md">
+                      Rates
+                    </span>
+                  </button>
+                </motion.div>
+
+               </div>
+                         { isKYCOpen && (<RefinedKYCModalImproved 
+                      isOpen={isKYCOpen} 
+                      onClose={() => setIsKYCOpen(false)} 
+                      onProceed={handleKYCSuccess} 
+                    /> )}        
+                    
+                     { isTrialGooglePayOpen && (  <TrialVirtualGoogleBusinesPayScreenImproved 
+                      amount={gpayamount} 
+                      orderId={gpayOrderId} 
+                      onClose={() => closeTrialGooglePayScreen(false)} 
+                       
+                    />) }    
       </div>
         
 
