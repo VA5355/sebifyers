@@ -283,8 +283,9 @@ export function createModalMiddleware(options : any = {}) {
 
 export function ModalRoot() {
   const dispatch = useDispatch();
-  const modal = useSelector((s:any) => s.modal || {});
-  const [razorpayorder , setRazorpayorder] = useState(modal.payload)
+  const modal = useSelector((s:any) => s.modal || {}); 
+  const modalpayload = useSelector((s:any) => s.modalpayload || {}); 
+  const [razorpayorder , setRazorpayorder] = useState(modal.payload ??  modalpayload.payload)
   const setShoFunct = (ise:any ) => {razorpayorder.show = ise };
   if (!modal.visible) return null;
 
@@ -638,7 +639,7 @@ const razorPayDialog = (razorpayorder :any  , setShowModal: any) => {
   return (  <>
      
       {   (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='exitposition'   ? ( sellPositionDialog(modal.payload)  )  : (
-             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog(razorpayorder,  setShoFunct)) : (
+             (modal.payload  !== undefined  && modal.payload  !== null ) &&  modal.payload?.modalType==='razorpayorder'  ? (razorPayDialog( modal.payload,  setShoFunct)) : (
              <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
   {/* Backdrop */}
   <div className="absolute inset-0 bg-black/50" onClick={close} />
