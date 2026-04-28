@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RAZORORDERANDPAYMENTURL } from '@/libs/client';
+import { GlobalState } from '../store';
 export const createOrder = createAsyncThunk(
   "payment/createOrder",
   async (payload: any, { rejectWithValue }) => {
@@ -77,5 +78,13 @@ const paymentSlice = createSlice({
 
 export const { paymentSuccess, paymentFailure, resetPayment } =
   paymentSlice.actions;
+
+// --- SELECTORS ---
+
+/** * Selects the raw payment data .
+ * Useful for creating virtual user sccount components.
+ */
+export const selectPaymentData = (state: GlobalState) => state.razorpayment;
+
 
 export default paymentSlice.reducer;
