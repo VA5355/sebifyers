@@ -314,6 +314,86 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
             setLoadingChart(false);
         }
     };
+    const setSymbolFromFyers = ( symbol: any , data:any) => {
+                let emptyQuote :any =   {
+                                    "ch": 0,
+                                    "chp": 0,
+                                    "lp": 0,
+                                    "spread": 0.05,
+                                    "ask": 0,
+                                    "bid": 0,
+                                    "open_price": 0,
+                                    "high_price": 0,
+                                    "low_price": 0,
+                                    "prev_close_price": 0,
+                                    "atp": 0,
+                                    "volume": 14942959,
+                                    "short_name": "NOT-FOUND",
+                                    "exchange": "NSE",
+                                    "description": "NSE:NOT-FOUND",
+                                    "original_name": "NSE:ONOT-FOUND",
+                                    "symbol": "NSE:NOT-FOUND",
+                                    "fyToken": "1XXXXXXXXXX045",
+                                    "tt": "1623369600"
+                               };
+                  /*  {
+                        "s": "ok",
+                        "code": 200,
+                        "d": [
+                            {
+                                "n": "NSE:ONGC-EQ",
+                                "s": "ok",
+                                "v": {
+                                    "ch": -0.35,
+                                    "chp": -0.28,
+                                    "lp": 123.6,
+                                    "spread": 0.05,
+                                    "ask": 123.65,
+                                    "bid": 123.6,
+                                    "open_price": 123.95,
+                                    "high_price": 126.6,
+                                    "low_price": 122.5,
+                                    "prev_close_price": 122.2,
+                                    "atp": 120.6
+                                    "volume": 14942959,
+                                    "short_name": "ONGC-EQ",
+                                    "exchange": "NSE",
+                                    "description": "NSE:ONGC-EQ",
+                                    "original_name": "NSE:ONGC-EQ",
+                                    "symbol": "NSE:ONGC-EQ",
+                                    "fyToken": "10100000003045",
+                                    "tt": "1623369600"
+                                }
+                            }
+                        ]
+                        }*/
+                           
+                             let quote = (data.d  && Array.isArray(data.d) && (data.d.length > 0) ? data.d[0].v : emptyQuote);
+                         const formatted = {
+                            companyName: quote.short_name,
+                            symbol: symbol.toUpperCase(),
+                            sector: quote.sector || "N/A",
+    
+                            latestPrice: quote.lp,
+                            open: quote.open_price,
+                            high: quote.high_price,
+                            low: quote.low_price,
+                            close: quote.prev_close_price,
+    
+                            week52High: 0,
+                            week52Low: 0
+                            };
+                             setFormattedQuote(formatted)
+                            let t : QuoteState = {
+                                loading:false, error:'', symbol:formatted.symbol  , meta: formatted, price:formatted.latestPrice
+                            }
+                            // THIS IS not working as of now 
+                           // dispatch(fetchRenderSuccess(    t  ))
+                           dispatch(fetchRenderSuccess( { symbol: t.symbol! , meta: t.meta }      ))
+                            // store in local sotrage 
+                            StorageUtils._save(CommonConstants.LASTSTOCKQUOTENSEYAHOO, t);            
+                            setFyersQuoteWorked(true);
+    }
     const setSymbolQuote = (symbol: string , json : any ) => {
 
            if(json !==null && json !== undefined) {
@@ -830,7 +910,7 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                     }
                    // '/fyersgetquote' 
                  // let res =     await FYERSAPI.get('/fyersquicklogin', {params: {auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
-                  let res =     await Promise.resolve({
+                  let res :any=     await Promise.resolve({
                                     data:     {
                                       /*status: "ok",
                                       source: "mock",
@@ -868,6 +948,22 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                             },
                                     }  } 
                                   });
+                  if(auth_code  !== null && auth_code !== undefined) {           
+                      console.log(`CHECK FYERS ACCESS_TOKEN GRANTED for READ ACCES for THE STOCK QUOTE ::::  ${sy}`)     
+                            res =     await FYERSAPI.get('/fyersgetquote', {params: {auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
+                             if (!res.status) {
+                                   console.log(` ${FYERSAPI.getUri} call to FYERS GET QUOTE `)
+                                   console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)
+
+                                   console.log(` FYERS ACCESS_TOKEN GRANTED NO HTTP error: ${res.status}`);
+                                   
+                              } // check {"FYERS": "FYERS ACCESS FAILED "} is the response then also FYERS ACCESS_TOKEN GRANTED NO
+                              else {
+                                
+
+                              }
+                  
+                     } 
                   //           await FYERSAPI.get('/apinseindia', {params: {auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
                   //  popupCenter(FYERSAPILOGINURL, "Fyers Signin")
 
@@ -964,7 +1060,59 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                             
                           }
                           else {
-                             console.log( "/fyersquicklogin symbol  "+sy+" failed ")
+                            if(stock["FYRES"] !== null && stock["FYERS"] !== undefined)
+                                {  console.log(' Fyers getquote failed '); 
+                                  console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)
+                                   console.log(` fyers.generate_access_token DID NOT GENERATED ACCESS_TOKEN `);
+                                } 
+                            else {  console.log('  FYERS ACCESS_TOKEN GRANTED  working ');
+
+                                       setSymbolFromFyers(sy,stock)       
+                                  console.log('  FYERS GET QUOTE   working ');
+                            }
+                             /* parse this   structure 
+                                    {"FYERS": "FYERS PROFILE CALL FAILED "}
+                                    {"FYERS": "FYERS PROFILE CALL NO REACH "}
+                                    {"FYERS": "FYERS ACCESS FAILED "}
+                                    {"FYERS": " AUTH CODE INVALID "}
+                                    {"FYERS": " SYMBOL INVALID "}
+                               or 
+                                {
+                                    "s": "ok",
+                                    "code": 200,
+                                    "d": [
+                                        {
+                                            "n": "NSE:ONGC-EQ",
+                                            "s": "ok",
+                                            "v": {
+                                                "ch": -0.35,
+                                                "chp": -0.28,
+                                                "lp": 123.6,
+                                                "spread": 0.05,
+                                                "ask": 123.65,
+                                                "bid": 123.6,
+                                                "open_price": 123.95,
+                                                "high_price": 126.6,
+                                                "low_price": 122.5,
+                                                "prev_close_price": 122.2,
+                                                "atp": 120.6
+                                                "volume": 14942959,
+                                                "short_name": "ONGC-EQ",
+                                                "exchange": "NSE",
+                                                "description": "NSE:ONGC-EQ",
+                                                "original_name": "NSE:ONGC-EQ",
+                                                "symbol": "NSE:ONGC-EQ",
+                                                "fyToken": "10100000003045",
+                                                "tt": "1623369600"
+                                            }
+                                        }
+                                    ]
+                                    }
+                             
+                             
+                             */
+                       
+                             //console.log( "/fyersquicklogin symbol  "+sy+" failed ")
                           }
                        //   let ticker = stock;
                          //  console.log( "stock "+JSON.stringify(stock))
