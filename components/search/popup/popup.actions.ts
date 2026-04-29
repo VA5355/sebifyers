@@ -83,20 +83,7 @@ import { FYERSAPINSECSV } from '@/libs/client';
 
 
 export const fetchSearchResults = (_query: string, equities:any,  setTypes: Function, setLoading: Function, _recentSearches: any) => {
-    const [localMatches, setLocalMatches] = useState<any[]>([]);
-        const [equityState, setEquityState] = useState<{
-                  equity: EquitySliceProps;
-                }>(() => ({
-                  equity: {
-                    symbol: null,
-                    name: null,
-                    searchResults: null,
-                    equities: { bestMatches: [] }
-                  } 
-                       }));
-      const [matches, setMatches] = useState<any>( ); //typeof bestMacthe
-     
-      const [csvData, setCsvData] = useState<any>( );
+  
   /*  const [fyersQuery, setFyersQuery] = useState(_query ?? '');
   const [matches, setMatches] = useState<{ symbol: string; name: string }[]>([]);
   const [csvData, setCsvData] = useState<{ symbol: string; name: string }[]>([]);
@@ -188,7 +175,20 @@ export const fetchSearchResults = (_query: string, equities:any,  setTypes: Func
      }
     }
     return async (dispatch: Function) => {
-
+       const [localMatches, setLocalMatches] = useState<any[]>([]);
+        const [equityState, setEquityState] = useState<{
+                  equity: EquitySliceProps;
+                }>(() => ({
+                  equity: {
+                    symbol: null,
+                    name: null,
+                    searchResults: null,
+                    equities: { bestMatches: [] }
+                  } 
+                       }));
+      const [matches, setMatches] = useState<any>( ); //typeof bestMacthe
+     
+      const [csvData, setCsvData] = useState<any>( );
         const CSV_URL  =   FYERSAPINSECSV ; 
              let mt:any[] = [];
                 let bestMacthes = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
