@@ -133,19 +133,48 @@ const loadCSVOnce = async (dispatch:Function, _query :any, equities: any, setTyp
             console.log("Data fetched from the  "+FYERSAPINSECSV)
             console.log("   lines  "+JSON.stringify(lines)) 
             if( Array.isArray(lines)){
+                  
+                  let jsonEleme :any = undefined;
+                    try { 
+                     
+                      jsonEleme = JSON.parse(lines[0]);
+                      linesStr = jsonEleme?.body; 
+                      if(linesStr !== "")
+                        { 
+                          console.log("CSV_URL  body  "+linesStr);
+                          lines1  = linesStr;
+                          lines1  = lines1.split('\n').filter(Boolean);
+                            if( Array.isArray(lines1)){
+                              console.log("CSV_UR  equities array  "+JSON.stringify(lines1));
+        
+                            }
+                        }
+                    }
+                    catch(ere:any ){
+                          console.log(" lines array has no body   "+JSON.stringify(ere));
+                      try { 
+                            jsonEleme = lines;
+                          
+                             linesStr = jsonEleme
+                             console.log("count the enteries in CSV  "+ linesStr.length);
+                              let randomIdx  = Math.floor(Math.random() * linesStr.length) ; 
+                              console.log(" random index "+ randomIdx);
+                              console.log("linesStr["+randomIdx+"]  "+linesStr[randomIdx]);
+                              let splitPipe = linesStr[randomIdx];
+                                let pipTest =    splitPipe.split('|').filter(Boolean);
+                                  console.log(" pipTest part 1 " +pipTest[0].length )
+                                  console.log(" pipTest part2 " +pipTest[1].length )
+                                  
+                               lines1  = linesStr;
+                      }   
+                        catch(ere1:any ){
+                          console.log(" lines array  pipe test failed for random index    "+JSON.stringify(ere1));
+                      
 
-                  let jsonEleme = JSON.parse(lines[0]);
-                linesStr = jsonEleme?.body;
-              if(linesStr !== "")
-                  { 
-                    console.log("CSV_URL  body  "+linesStr);
-                    lines1  = linesStr;
-                    lines1  = lines1.split('\n').filter(Boolean);
-                      if( Array.isArray(lines1)){
-                        console.log("CSV_UR  equities array  "+JSON.stringify(lines1));
-  
-                      }
-                  }
+                       }
+                    }
+              
+             
   
               }
                   const bestMacthes1 = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
