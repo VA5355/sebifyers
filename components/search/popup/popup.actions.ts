@@ -84,19 +84,157 @@ import { FYERSAPINSECSV } from '@/libs/client';
 // 🔥 GLOBAL CACHE (outside function)
 let NSE_CACHE: any[] = [];
 let NSE_LOADED = false;
-
+ let linesStr  = ""; let lines1 :any = undefined;
+/*
+interface  Equity: {
+                  equity: EquitySliceProps;
+                }  = {
+                  equity: {
+                    symbol: null,
+                    name: null,
+                    searchResults: null,
+                    equities: { bestMatches: [] }
+                  } 
+                       };*/
+let  equity :  {
+                  equity: EquitySliceProps;
+                }  = {
+                  equity: {
+                    symbol: null,
+                    name: null,
+                    searchResults: null,
+                    equities: { bestMatches: [] }
+                  } 
+                       }
+const setEquityState  = (eq: {
+                  equity: EquitySliceProps;
+                } ) => {  equity = eq}; 
+    let mt:any[] = [];
+                let bestMacthes = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
+              const updateEquitySlice = (equityData: Partial<EquitySliceProps>) => {
+                  /*  setEquityState((prev:{
+                  equity: EquitySliceProps
+                }) => ({
+                    ...prev,
+                    equity: {
+                      ...prev.equity,
+                      ...equityData
+                    }
+                  }));*/
+                };
 //Load CSV Once (No React state)
-const loadCSVOnce = async () => {
+const loadCSVOnce = async (dispatch:Function, _query :any) => {
   if (NSE_LOADED) return NSE_CACHE;
+         try {
+            const res = await fetch(FYERSAPINSECSV);
+            const text = await res.text();
+  // const text = await res.text();
+            let lines = text.split('\n').filter(Boolean);
+            console.log("Data fetched from the  "+FYERSAPINSECSV)
+            console.log("   lines  "+JSON.stringify(lines)) 
+            if( Array.isArray(lines)){
 
-  const res = await fetch(FYERSAPINSECSV);
-  const text = await res.text();
+                  let jsonEleme = JSON.parse(lines[0]);
+                linesStr = jsonEleme?.body;
+              if(linesStr !== "")
+                  { 
+                    console.log("CSV_URL  body  "+linesStr);
+                    lines1  = linesStr;
+                    lines1  = lines1.split('\n').filter(Boolean);
+                      if( Array.isArray(lines1)){
+                        console.log("CSV_UR  equities array  "+JSON.stringify(lines1));
+  
+                      }
+                  }
+  
+              }
+                  const bestMacthes1 = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
+                  if(lines1  !==undefined && lines1 !== "" && Array.isArray(lines1) ){  
+                             const parsed = lines1.map(line => {
+                               //const [symbol, name, ...rest] = line.split(','); // modify based on CSV structure
+                               let result = parseLine(line);
+                               //console.log(result); 
+                               let kt =  Object.keys(result);
+                                let symbol ='';//Object(result)?.hasProperty["1. symbol"];
+                               let name  =''; //Object(result)?.hasProperty["2. name"];
+                               kt.forEach( k => {  //console.log("result ke "+kt); 
+                                      //console.log(`Key: ${k}, Value: ${result[k]}`);
+                                   //  if(symbol == undefined){
+                                       if(k==='1. symbol'  ){
+                                            symbol = result[k]
+                                       }
+                                        if(  k==='2. name' ){
+                                            name = result[k]
+                                       }
+                                   //  }
+                               })                  
+                              
+                               if(result !=undefined)
+                                  {  
+                                        console.log("PARSED FYERS result    "+JSON.stringify(result))
+                                    const stringMap: Record<string, string> = Object.fromEntries(
+                                      Object.entries(result).map(([key, value]) => [key, String(value)])
+                                          );
+                                     if (!Object.isExtensible(bestMacthes1.bestMatches)) {
+                                        console.warn("bestMatches array is frozen — recreating");
+                                        bestMacthes1.bestMatches = [...bestMacthes1.bestMatches]; // force new clone
+                                      }
+                    
+                                   bestMacthes1.bestMatches.push(stringMap); // ✅ safe now
+                                //  setLocalMatches(prev => [...prev, stringMap]); // ✅ state-based update
+                                
+                                       //bestMacthes["bestMatches"].push( stringMap)
+                                  };
+                                  return {  symbol, name };
+                               }); // lines1.map 
+                             
+                                  if(parsed !== undefined){
+                                       console.log("PARSED FYERS EQUITY   "+JSON.stringify(parsed))
+                                      let equities : EquitySliceProps = {  symbol: null,
+                                                        name: null,
+                                                        searchResults: null,
+                                                        equities: { bestMatches: parsed },} 
+                                                                                  
+                                              //Call it like:
+                                              dispatch(updateEquity({
+                                                equities: {
+                                                  bestMatches: parsed
+                                                }
+                                              }));
+                                               //  setCsvData(bestMacthes);
+                                              dispatch(saveEquities(bestMacthes)); 
+                                        updateEquitySlice(     equities  ); // ✅ Save in context  { equity: parsed }
+                                        researchAfterNseCMFetch(dispatch);
+                                           console.log(`SEARCH QUERY ${_query}  re-searched in NSE_CM `);
+                                        /* { equity : {
+                                            symbol:'any',
+                                            name:'any',
+                                            searchResults: 'any',
+                                            equities: { bestMatches: any[] } | undefined;  // ✅ new
+                                        } } */
+                                  }
+                                  else {
+                                         console.log(`SEARCH QUERY ${_query} COULD not be searched in NSE_CM `);
+                                          console.log(` parsing of  NSE_CM.csv could not BUILD parsed equities ... `);
+                                  }
+                             
+                              }
+                  else {
+                    console.log("Data fetched is empy  "+FYERSAPINSECSV )
+                    // console.log("   lines  "+JSON.stringify(lines))
+                  }
 
-  let json = JSON.parse(text);
-  let lines = json.body.split('\n').filter(Boolean);
+            //  let json = JSON.parse(text);
+           //  lines = json.body.split('\n').filter(Boolean);
 
-  NSE_CACHE = lines.map((line:any) => parseLine(line));
-  NSE_LOADED = true;
+            NSE_CACHE = lines.map((line:any) => parseLine(line));
+            NSE_LOADED = true;
+           }
+    catch (err) {
+    //console.error("CSV fetch error:", err);
+        console.log("CSV fetch error:", err);
+    }
+
 
   console.log("✅ CSV Loaded once:", NSE_CACHE.length);
 
@@ -133,7 +271,7 @@ export const fetchSearchResults = (_query: string, equities: any, setTypes: Func
         }
 
         // ✅ 2. Load CSV (once)
-        const csvData = await loadCSVOnce();
+        const csvData = await loadCSVOnce(dispatch, _query);
 
         // ✅ 3. Search locally
         const results = searchFromCSV(_query);
