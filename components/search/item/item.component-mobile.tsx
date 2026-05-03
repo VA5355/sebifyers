@@ -1060,12 +1060,12 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                             
                           }
                           else {
-                            if(stock["FYRES"] !== null && stock["FYERS"] !== undefined)
+                            if(stock !== undefined && stock["FYRES"] !== null && stock["FYERS"] !== undefined)
                                 {  console.log(' Fyers getquote failed '); 
                                   console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)
                                    console.log(` fyers.generate_access_token DID NOT GENERATED ACCESS_TOKEN `);
                                 } 
-                            else {  console.log('  FYERS ACCESS_TOKEN GRANTED  working ');
+                            else if(stock !== undefined ) {  console.log('  FYERS ACCESS_TOKEN GRANTED  working ');
 
                                        setSymbolFromFyers(sy,stock)       
                                   console.log('  FYERS GET QUOTE   working ');
