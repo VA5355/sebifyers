@@ -81,8 +81,94 @@ import { FYERSAPINSECSV } from '@/libs/client';
               ...matchScore  };
    };
 
+// 🔥 GLOBAL CACHE (outside function)
+let NSE_CACHE: any[] = [];
+let NSE_LOADED = false;
 
-export const fetchSearchResults = (_query: string, equities:any,  setTypes: Function, setLoading: Function, _recentSearches: any) => {
+//Load CSV Once (No React state)
+const loadCSVOnce = async () => {
+  if (NSE_LOADED) return NSE_CACHE;
+
+  const res = await fetch(FYERSAPINSECSV);
+  const text = await res.text();
+
+  let json = JSON.parse(text);
+  let lines = json.body.split('\n').filter(Boolean);
+
+  NSE_CACHE = lines.map((line:any) => parseLine(line));
+  NSE_LOADED = true;
+
+  console.log("✅ CSV Loaded once:", NSE_CACHE.length);
+
+  return NSE_CACHE;
+};
+//Search Function (PURE FUNCTION)
+const searchFromCSV = (query: string) => {
+  const q = query.toUpperCase();
+
+  return NSE_CACHE.filter((item: any) =>
+    item["1. symbol"]?.includes(q) ||
+    item["2. name"]?.includes(q)
+  ).slice(0, 20);
+};
+//Clean Action (NO STATE)
+export const fetchSearchResults = (_query: string, equities: any, setTypes: Function, setLoading: Function, _recentSearches: any) => {
+  return async (dispatch: Function) => {
+
+    try {
+      setLoading(true);
+
+      let tokenauth = StorageUtils._retrieve(CommonConstants.fyersToken);
+
+      if (tokenauth.isValid) {
+
+        // ✅ 1. Try existing equities
+        if (equities?.bestMatches?.length) {
+          const filtered = equities.bestMatches.filter((item: any) =>
+            item["2. name"]?.toUpperCase().includes(_query.toUpperCase())
+          );
+
+          dispatch(saveResults(filtered));
+          return;
+        }
+
+        // ✅ 2. Load CSV (once)
+        const csvData = await loadCSVOnce();
+
+        // ✅ 3. Search locally
+        const results = searchFromCSV(_query);
+
+        dispatch(saveResults(results));
+
+        const uniqueTypes = Array.from(new Set(results.map((i: any) => i["3. type"])));
+        setTypes(['All', ...uniqueTypes]);
+
+      } else {
+        // ✅ 4. Fallback → AlphaVantage
+        const res = await API.get('/', {
+          params: {
+            function: 'SYMBOL_SEARCH',
+            keywords: _query,
+            apikey: NEXT_PUBLIC_API_KEY
+          }
+        });
+
+        dispatch(saveResults(res.data.bestMatches));
+
+        const uniqueTypes = Array.from(new Set(res.data.bestMatches.map((i: any) => i["3. type"])));
+        setTypes(['All', ...uniqueTypes]);
+      }
+
+    } catch (err) {
+      console.error("Search error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+};
+
+
+export const fetchSearchResultsold = (_query: string, equities:any,  setTypes: Function, setLoading: Function, _recentSearches: any) => {
   
   /*  const [fyersQuery, setFyersQuery] = useState(_query ?? '');
   const [matches, setMatches] = useState<{ symbol: string; name: string }[]>([]);

@@ -1206,7 +1206,7 @@ router.get('/fyersgethistory', async function (req,res) {
     let symbol = ''; let apikey = '';
 	let authcode =  global_auth_code;
 	if( req.query !== null && req.query !== undefined ){
-		console.log(" FYERS fyersgetquote QUERY PARAMS " +JSON.stringify(req.query))
+		console.log(" FYERS fyersgethistory QUERY PARAMS " +JSON.stringify(req.query))
 		var queryJSON  = JSON.parse(JSON.stringify(req.query));
 		symbol = queryJSON['symbol'];
 		  apikey =queryJSON['apikey'];
