@@ -123,7 +123,7 @@ const setEquityState  = (eq: {
                   }));*/
                 };
 //Load CSV Once (No React state)
-const loadCSVOnce = async (dispatch:Function, _query :any) => {
+const loadCSVOnce = async (dispatch:Function, _query :any, equities: any, setTypes: Function, setLoading: Function, _recentSearches: any) => {
   if (NSE_LOADED) return NSE_CACHE;
          try {
             const res = await fetch(FYERSAPINSECSV);
@@ -204,7 +204,7 @@ const loadCSVOnce = async (dispatch:Function, _query :any) => {
                                                //  setCsvData(bestMacthes);
                                               dispatch(saveEquities(bestMacthes)); 
                                         updateEquitySlice(     equities  ); // ✅ Save in context  { equity: parsed }
-                                        researchAfterNseCMFetch(dispatch);
+                                       researchAfterNseCMFetch(dispatch,_query,  equities, setTypes, _recentSearches);
                                            console.log(`SEARCH QUERY ${_query}  re-searched in NSE_CM `);
                                         /* { equity : {
                                             symbol:'any',
@@ -271,7 +271,7 @@ export const fetchSearchResults = (_query: string, equities: any, setTypes: Func
         }
 
         // ✅ 2. Load CSV (once)
-        const csvData = await loadCSVOnce(dispatch, _query);
+        const csvData = await loadCSVOnce(dispatch, _query, equities, setTypes, setLoading, _recentSearches);
 
         // ✅ 3. Search locally
         const results = searchFromCSV(_query);
@@ -305,7 +305,56 @@ export const fetchSearchResults = (_query: string, equities: any, setTypes: Func
   };
 };
 
+   const researchAfterNseCMFetch = (dispatch:Function,_query: string, equities:any,setTypes: Function, _recentSearches: any) => { 
+            console.log("equities "+JSON.stringify(equities));
+                 console.log("_query "+JSON.stringify(_query));
+                 let nsesym = `NSE:${_query.toUpperCase()}`;
+                  console.log(" searching in euities for  "+JSON.stringify(nsesym));
+                  if(equities !==undefined && equities.bestMatches !== null && equities.bestMatches !== undefined){
+                const uniqueTypes: Array<string> = Array.from(new Set(equities.bestMatches.map((item: any) =>  item['3. type']
+                 )));
+                const uniqueSearches: Array<string> = Array.from(new Set(equities.bestMatches.map((item: any) => {
+                   if (item['2. name'].indexOf(_query.toUpperCase()) > -1 ) {
+                     console.log(" item['2. name'] "+JSON.stringify(item['2. name'])+ "_query "+JSON.stringify(_query.toUpperCase()));
+                      return item;
+                   }  
+                    } 
+                 )));
+                const uniqueTypesArr = ['All', ...uniqueTypes]
+                 console.log(" fyers uniqueTypesArr "+JSON.stringify(uniqueTypesArr));
+                 
+                let  uniqS = uniqueSearches.filter(
+                     (s) => s && typeof s === 'object' && Object.values(s).every(v => v != null)
+                  );
+                  console.log(" uniqueSearches "+JSON.stringify(uniqS));
+              // not needed as equities already in the global state.
+                 //dispatch(saveStockResults(uniqueSearches))
+                  dispatch(saveResults(uniqS))
+                //dispatch(saveRecentSearches(uniqS))
+                 setTypes([...uniqueTypesArr])
+                if (_recentSearches) {
+                  //  console.log("_recentSearches "+JSON.stringify(_recentSearches))
+                    if (_recentSearches.includes(_query)) {   return  }  
+                    dispatch(saveRecentSearches([..._recentSearches, _query]));
+                    StorageUtils._save(CommonConstants.recentSearchesKey, [..._recentSearches, _query])
+                } else {
+                    if( uniqueSearches !== null && uniqueSearches !=undefined) {
+                       //console.log("set recentSearches == uniqueSearches "+JSON.stringify(uniqS));
+                         dispatch(saveRecentSearches([_query]));
+                    }
+                    else  if( uniqueTypes !== null && uniqueTypes !=undefined) {
+                     // console.log(" fyers set recentSearches ==  uniqueTypesArr "+JSON.stringify(uniqueTypesArr));
+                         dispatch(saveRecentSearches([_query]));
+                    }
+                    else {
+                    
+                      
+                    }
+                   
+                }       
 
+     }
+    }
 export const fetchSearchResultsold = (_query: string, equities:any,  setTypes: Function, setLoading: Function, _recentSearches: any) => {
   
   /*  const [fyersQuery, setFyersQuery] = useState(_query ?? '');
