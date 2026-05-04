@@ -1220,9 +1220,9 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                          prepareChart(chartData);
                                          if(selecData !==undefined){
                                               dispatch(saveSelectedCard({ ...selecData, ticker:symbol }));
-                                              console.log("view button formatted Quote '  "+JSON.stringify(selecData));
+                                              console.log("mobile view button formatted Quote '  "+JSON.stringify(selecData));
                                                  
-                                                router.push(`/`);
+                                                router.push(`/`); onSelect(); 
                                          }
                                        
                                           
@@ -1232,9 +1232,9 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                            symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol;  
                                         prepareChart(chartData);   if(selecData !==undefined){
                                               dispatch(saveSelectedCard({ ...selecData, ticker:symbol }));
-                                              console.log("view button formatted Quote '  "+JSON.stringify(selecData));
+                                              console.log("desktop view button formatted Quote '  "+JSON.stringify(selecData));
                                                  
-                                                router.push(`/`);
+                                                router.push(`/`); onSelect();
                                          }} 
                             
                                     }  }  className={`   text-xs font-medium
