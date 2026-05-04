@@ -1189,14 +1189,53 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                         {loadingChart ? (
                              <p className="text-xs text-gray-500 dark:text-gray-400">   Loading...</p>
                         ) : (
-                             <button  onClick={() => { if(isMobile ) { 
+                             <button  onClick={() => {
+                                            let selecData:any  = undefined;
+                                         if(formattedQuote !==undefined){
+                                            /** companyName: json.info.companyName,
+                                                symbol: json.info.symbol,
+                                                sector: json.industryInfo?.sector,
+                                                latestPrice: json.priceInfo.lastPrice,
+                                                open: json.priceInfo.open,
+                                                high: json.priceInfo.intraDayHighLow?.max,
+                                                low: json.priceInfo.intraDayHighLow?.min,
+                                                close: json.priceInfo.close,
+                                                week52High: json.priceInfo.weekHighLow?.max,
+                                                week52Low: json.priceInfo.weekHighLow?.min, */
+                                                   selecData = {
+                                                    symbol:formattedQuote.companyName,
+                                                    ticker: formattedQuote.symbol,
+                                                    volume: 0,
+                                                    price: formattedQuote.latestPrice,
+                                                    change_amount: formattedQuote.latestPrice - formattedQuote.open,
+                                                    change_percentage: ((formattedQuote.latestPrice - formattedQuote.open)/formattedQuote.open)*100 ,
+                                                    exchange: ''
+                                                }
+                                               
+                                         }
+                                        if(isMobile ) { 
                                         let symbol = item['1. symbol'];
                                            symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol; 
                                          fetchYahooQuote(symbol);
                                          prepareChart(chartData);
-                                           router.push(`/`);
+                                         if(selecData !==undefined){
+                                              dispatch(saveSelectedCard({ ...selecData, ticker:symbol }));
+                                              console.log("view button formatted Quote '  "+JSON.stringify(selecData));
+                                                 
+                                                router.push(`/`);
+                                         }
+                                       
+                                          
                                                     }
-                                      else  { prepareChart(chartData);   router.push(`/`);} 
+                                      else  { 
+                                         let symbol = item['1. symbol'];
+                                           symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol;  
+                                        prepareChart(chartData);   if(selecData !==undefined){
+                                              dispatch(saveSelectedCard({ ...selecData, ticker:symbol }));
+                                              console.log("view button formatted Quote '  "+JSON.stringify(selecData));
+                                                 
+                                                router.push(`/`);
+                                         }} 
                             
                                     }  }  className={`   text-xs font-medium
                                                 px-3 py-1
