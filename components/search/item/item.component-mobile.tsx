@@ -1143,6 +1143,8 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                                let symbol = item['1. symbol'];
                                    symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol; 
                                 fetchYahooQuote(symbol)
+                                // re try    
+                                 fetchChart(symbol);
                                            }}/>
                     {/*    <button  onClick={() =>  {  
                             let symbol = item['1. symbol'];
@@ -1202,7 +1204,10 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                                 close: json.priceInfo.close,
                                                 week52High: json.priceInfo.weekHighLow?.max,
                                                 week52Low: json.priceInfo.weekHighLow?.min, */
-                                                   selecData = {
+                                                 let symbolSec = item['1. symbol'];
+                                                    symbolSec = symbolSec.includes('.') ? symbolSec.split('.')[0] : symbolSec; 
+                                                 fetchChart(symbolSec);
+                                                 setTimeout( () => {   selecData = {
                                                     symbol:formattedQuote.companyName,
                                                     ticker: formattedQuote.symbol,
                                                     volume: 0,
@@ -1210,7 +1215,8 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                                     change_amount: formattedQuote.latestPrice - formattedQuote.open,
                                                     change_percentage: ((formattedQuote.latestPrice - formattedQuote.open)/formattedQuote.open)*100 ,
                                                     exchange: ''
-                                                }
+                                                }}, 1000)
+                                                 
                                                
                                          }
                                         if(isMobile ) { 
