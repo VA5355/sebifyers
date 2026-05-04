@@ -1194,8 +1194,9 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                            symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol; 
                                          fetchYahooQuote(symbol);
                                          prepareChart(chartData);
+                                           router.push(`/`);
                                                     }
-                                      else  { prepareChart(chartData); } 
+                                      else  { prepareChart(chartData);   router.push(`/`);} 
                             
                                     }  }  className={`   text-xs font-medium
                                                 px-3 py-1
