@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
  import   useIsMobile   from "@/components/listing/tradeGrid/useIsMobile";
 import {changeTab} from '@/redux/slices/miscSlice';
 import {disableLoader, enableLoader} from "@/redux/slices/miscSlice"
-import {API, FYERSAPI, UPSTOXAPI, ICICDIRECTAPI ,  FYERSAPILOGINURL, UPSTOXAPILOGINURL, TRADE_LOGIN_URL } from "@/libs/client"
+import {API, FYERSAPI, UPSTOXAPI, ICICDIRECTAPI ,  FYERSAPILOGINURL, UPSTOXAPILOGINURL, TRADE_LOGIN_URL ,FYERSAUTHORISEURL } from "@/libs/client"
 import {GlobalState} from '@/redux/store';
 import {saveActivelyTraded, saveGainers, saveLosers} from '@/redux/slices/stockSlice';
 import { platform } from 'os';
@@ -182,6 +182,41 @@ const Menu = () => {
         }
         return logd;
     }
+    const processAuth = async () => {
+        const params = new URLSearchParams(window.location.search);
+        const authCode = params.get("auth_code");
+        if (!authCode) {         console.error("menu component processAuth :::  No auth code");        return;      }
+        sessionStorage.setItem("fyers_auth_code", authCode );
+        try {  const res = await fetch( `${FYERSAUTHORISEURL}/generate-token`,
+            {  method: "POST",  headers: {  "Content-Type": "application/json" }, body: JSON.stringify({ auth_code: authCode  })
+            } );
+          const tokenData = await res.json();
+          console.log(tokenData);
+          console.log('menu component processAuth :::  processAuth worked Access Token availalbe ');
+          localStorage.setItem("fyers_access_token",tokenData.access_token);
+          localStorage.setItem("fyers_refresh_token",tokenData.refresh_token || "");
+          localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+        // navigate("/dashboard");
+        } catch (err) {   console.log ('menu component processAuth :::  process Auth error :: ' + JSON.stringify(err));
+          //setError('process Auth error :: ' + JSON.stringify(err))
+        }
+      };
+    const authLocalFyers = async () => {
+             try {
+           const res = await fetch(
+            `${FYERSAUTHORISEURL}/generate-auth-url`
+          );
+            const data = await res.json();
+             console.log('python generated auth url for LOCAL authorization ' );
+             console.log('  ' +data.auth_url);
+          return data.auth_url;
+
+        } catch (err) {
+             console.error(err);
+        }
+    }
+
+
     const logByPlatform = () => {
         // check platform type is alpha-vantage or fyers
         // currentPlatform
@@ -200,7 +235,36 @@ const Menu = () => {
                         let res :any = undefined;
                      if (!checkUserLogged()) { 
                       //let res =  await FYERSAPI.get('/fyerscallback' )
-                        res =   popupCenter(FYERSAPILOGINURL, "Fyers Signin")
+                             await processAuth();
+                         (async () =>  {
+                                let pythonAuthUrl = await authLocalFyers();   
+                                console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                                                console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                                                console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                                                console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                                                console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                                                console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                                                    console.log('pythonAuthUrl  '+pythonAuthUrl);
+                                                    console.log('pythonAuthUrl  '+pythonAuthUrl);
+                                                    console.log('pythonAuthUrl  '+pythonAuthUrl);
+                                                    console.log('pythonAuthUrl  '+pythonAuthUrl);
+                                                    console.log('pythonAuthUrl  '+pythonAuthUrl);
+                                /* window.location.assign(
+                                    "https://api-t1.fyers.in/api/v3/generate-authcode?" +
+                                    params.toString()
+                                );*/
+                              //  window.location.assign(pythonAuthUrl );
+                            if( pythonAuthUrl !== undefined && pythonAuthUrl !==''){
+                                 res =   popupCenter(pythonAuthUrl, "Fyers Signin python generated url ")
+                            }
+                            else {
+                                 res =   popupCenter(FYERSAPILOGINURL, "Fyers Signin")
+                            }
+                            })();
+
+
+
+                       
                       }
                       else {
                         res = true;
@@ -232,7 +296,12 @@ const Menu = () => {
                      },5000);
                      // NOTE the globalUserCheck in the Storage and regularly clear it when user authenticated 
                         StorageUtils._save(CommonConstants.globalUserCheck, globalUserCheck)
-           
+                       result.then((fyerslogres:any ) => { 
+                         console.log("fyerLoginProm result   "+JSON.stringify(fyerslogres));
+
+                       }).catch((fyerslogerr:any) => { 
+                         console.log("fyerLoginProm error  "+JSON.stringify(fyerslogerr));
+                       })
                    // const res = StorageUtils._retrieve(CommonConstants.fyersToken );
                     
                 } catch (error) {

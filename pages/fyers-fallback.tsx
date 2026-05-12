@@ -1,11 +1,12 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import Script from "next/script";
 import { StorageUtils } from '@/libs/cache';
 import { CommonConstants } from '@/utils/constants';
+import { FYERSAUTHORISEURL } from "@/libs/client"
 type Props = {
   auth_code: string;
   code: string;
@@ -43,10 +44,38 @@ function isValidJwtStructure(token: unknown): boolean {
 export default function FyersFallback(props: Props) {
   const { auth_code, code, s, state, triggerredirectpython } = props;
    let isAuthenticate = false; 
+   const [error, setError] = useState<string | null>(null);
+  const [fyersAccessToken, setFyersAccessToken] = useState<string | null>(null);
+  const [fyersRefreshToken, setFyersRefreshToken] = useState<string | null>(null);
+
+   const processAuth = async () => {
+        const params = new URLSearchParams(window.location.search);
+        const authCode = params.get("auth_code");
+        if (!authCode) {         console.error("No auth code");        return;      }
+        sessionStorage.setItem("fyers_auth_code", authCode );
+        try {  const res = await fetch( `${FYERSAUTHORISEURL}/generate-token`,
+            {  method: "POST",  headers: {  "Content-Type": "application/json" }, body: JSON.stringify({ auth_code: authCode  })
+            } );
+          const tokenData = await res.json();
+          console.log(tokenData);
+          console.log('processAuth worked Access Token availalbe ');
+          localStorage.setItem("fyers_access_token",tokenData.access_token);
+          setFyersAccessToken(tokenData.access_token);
+
+          localStorage.setItem("fyers_refresh_token",tokenData.refresh_token || "");
+          setFyersRefreshToken(tokenData.refresh_token)
+          localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+        // navigate("/dashboard");
+        } catch (err) {   console.log ('process Auth error :: ' + JSON.stringify(err));
+          setError('process Auth error :: ' + JSON.stringify(err))
+        }
+      };
   useEffect(() => {
 
       if (typeof window === "undefined") return;
     try {
+
+       processAuth();
       if (!auth_code) {
         window.location.replace("/fyers-auth");
         return;
@@ -163,7 +192,7 @@ export default function FyersFallback(props: Props) {
           
               <h1  className="text-2xl font-bold mt-4 text-brandgreen--800">FYERS LOGGED IN</h1>
 
-              {auth_code ?  (
+              {auth_code ?  (<> 
                        <motion.button
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
@@ -173,6 +202,11 @@ export default function FyersFallback(props: Props) {
               <strong>  Authenticated </strong>
                      <ArrowRight className="w-5 h-5" />
                      </motion.button>
+
+                  {fyersAccessToken !==undefined && fyersAccessToken !==null ? (
+                      <strong>  App authorisation Issue success </strong>
+                  ):(<strong>  App authorisation Issue token not generate </strong>)}
+                  </>
               ) : (
                 <p className="text-brandgreen mt-4">
                   Authentication failed. Please retry.   <motion.button

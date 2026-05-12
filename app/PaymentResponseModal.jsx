@@ -63,6 +63,12 @@ const PaymentResponseModal = () => {
     // Clean URL after closing
     router.replace("/customeronboard");
   };
+  const handleAccount = () => {
+    setOpen(false);
+
+    // Clean URL after closing
+    router.push(`/customeronboard/${data?.razorpay_order_id}`);
+  };
 
   if (!open || !data) return null;
 
@@ -120,6 +126,12 @@ const PaymentResponseModal = () => {
               className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
             >
               Done
+            </button>
+            <button
+              onClick={handleAccount}
+              className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+            >
+              Create Account
             </button>
           </div>
         </motion.div>

@@ -574,6 +574,10 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
 
 
                  fetchAuthToken().then(async aces_token   => { 
+                          if (aces_token === undefined || aces_token ===null){
+                                                     aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                                           StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
+                                                   }
                        await  fetchSymbolQuote(aces_token);
                             console.log("FYERS SYMBOLE QUOTE WORKED ")
                      });
@@ -1060,6 +1064,27 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                             
                           }
                           else {
+                            // check data apart from data["Meta Data"]
+                            let stockFyersCheck = data;
+                            console.log(`data['d']  ==> ${JSON.stringify(data["d"])}`);
+
+                            let dataD = data["d"];
+                            let dataN = dataD !==undefined ? (Array.isArray(dataD) ? dataD[0]: {}  )  : undefined;
+                            
+                            let dataV = dataN !==undefined ? dataN["v"]: undefined;
+                            if(dataN !==undefined){
+                                  console.log(`dataN['n']  ==> ${JSON.stringify(dataN)}`);
+                            }
+                            if(dataV !==undefined){
+                                console.log(`dataV['v']  ==> ${JSON.stringify(dataV)}`);
+                            }
+                            let fyersToken =  dataV !==undefined ? dataV["fyToken"]: undefined;
+                                console.log(`fyersToken  ==> ${JSON.stringify(fyersToken)}`);
+                             let descript = dataV !==undefined ? dataV["description"]: undefined;
+                                     console.log(`descript  ==> ${JSON.stringify(descript)}`);
+                            let fyersOkay =fyersToken !==undefined ?  (descript !== undefined ? (descript.indexOf(sy) > -1 ): false ) : false;
+
+                           
                             if(stock !== undefined && stock["FYRES"] !== null && stock["FYERS"] !== undefined)
                                 {  console.log(' Fyers getquote failed '); 
                                   console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)
@@ -1069,6 +1094,11 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
 
                                        setSymbolFromFyers(sy,stock)       
                                   console.log('  FYERS GET QUOTE   working ');
+                            }
+                            else if(fyersOkay){
+                                         setSymbolFromFyers(sy,stockFyersCheck);       onSelect(); /** clear the search query  */
+                                  console.log(`  FYERS GET QUOTE   working verified with ${descript} and ${fyersToken}`);
+
                             }
                              /* parse this   structure 
                                     {"FYERS": "FYERS PROFILE CALL FAILED "}

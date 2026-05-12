@@ -141,3 +141,4 @@ const RefinedVirtualAccountModalImproved = ({ isOpen, onClose, onConfirm }) => {
     </AnimatePresence>
   );
 };
+export default RefinedVirtualAccountModalImproved;

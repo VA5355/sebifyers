@@ -8,23 +8,25 @@ interface FyersCallbackProps {
   secret_key?: string;
   code?: string;
   s?: string;
+  task?: string;
 }
 
 const FyersCallback: NextPage<FyersCallbackProps> = ({
-  client_id,
+  client_id,task
 }) => {
 
   useEffect(() => {
 
     if (!client_id) return;
 
-    const redirectURI = `${window.location.origin}/fyersauthcode`;
+   // const redirectURI = `${window.location.origin}/fyersauthcode`;
+    const redirectURI = `${window.location.origin}`;
 
     const passOver =
       `client_id=${client_id}` +
       `&redirect_uri=${encodeURIComponent(redirectURI)}` +
       `&response_type=code` +
-      `&state=sample_state`;
+      `&state=sample_state&task=${task}`;
 
     const fyersURL =
       `https://api-t1.fyers.in/api/v3/generate-authcode?${passOver}`;
@@ -66,7 +68,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     lastlogin,
     secret_key,
     code,
-    s
+    s,
+    task
   } = context.query;
 
   return {
@@ -76,7 +79,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       lastlogin: lastlogin || null,
       secret_key: secret_key || null,
       code: code || null,
-      s: s || null
+      s: s || null,
+      task: task || null
     }
   };
 };

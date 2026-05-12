@@ -11,7 +11,7 @@ import {
 import Script from "next/script";
 import { StorageUtils } from '@/libs/cache';
 import { CommonConstants } from '@/utils/constants';
-
+import {FYERSAUTHORISEURL } from "@/libs/client"
 type Props = {
   clientId: string;
   redirectUri: string;
@@ -48,8 +48,56 @@ export default function FyersAuth({ clientId, redirectUri }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [showRelogin, setShowRelogin] = useState(false);
 const [loading, setLoading] = useState(true);
+  const processAuth = async () => {
+        const params = new URLSearchParams(window.location.search);
+        const authCode = params.get("auth_code");
+        if (!authCode) {         console.error("No auth code");        return;      }
+        sessionStorage.setItem("fyers_auth_code", authCode );
+        try {  const res = await fetch( `${FYERSAUTHORISEURL}/generate-token`,
+            {  method: "POST",  headers: {  "Content-Type": "application/json" }, body: JSON.stringify({ auth_code: authCode  })
+            } );
+          const tokenData = await res.json();
+          console.log(tokenData);
+          console.log('processAuth worked Access Token availalbe ');
+          localStorage.setItem("fyers_access_token",tokenData.access_token);
+          localStorage.setItem("fyers_refresh_token",tokenData.refresh_token || "");
+          localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+        // navigate("/dashboard");
+        } catch (err) {   console.log ('process Auth error :: ' + JSON.stringify(err));
+          setError('process Auth error :: ' + JSON.stringify(err))
+        }
+      };
+
+
+  // on component mount / onload
+  useEffect(() => {
+    processAuth();
+      (async () =>  {
+         let pythonAuthUrl = await authLocalFyers();   
+          console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                            console.log('pythonAuthUrl  '+pythonAuthUrl);
+                             console.log('pythonAuthUrl  '+pythonAuthUrl);
+                            console.log('pythonAuthUrl  '+pythonAuthUrl);
+                             console.log('pythonAuthUrl  '+pythonAuthUrl);
+                            console.log('pythonAuthUrl  '+pythonAuthUrl);
+         /* window.location.assign(
+            "https://api-t1.fyers.in/api/v3/generate-authcode?" +
+              params.toString()
+          );*/
+          window.location.assign(pythonAuthUrl );
+
+      })();
+  }, [error]);
+
   useEffect(() => {
     try {
+    
+         processAuth();
       if (!clientId || !redirectUri) {
         setError("Configuration error. Please try later.");
             setLoading(false);
@@ -79,7 +127,13 @@ const [loading, setLoading] = useState(true);
         window.location.replace("/fyers-fallback");
         return;
       }
-
+     const params = new URLSearchParams({
+        client_id: clientId,
+        redirect_uri: redirectUri,
+        response_type: "code",
+        state: "sample_state",
+      });
+    
       // 🔴 Attempted before but no token → stop loop
       if (attempted && !token) {
         setShowRelogin(true); setLoading(false);
@@ -89,23 +143,31 @@ const [loading, setLoading] = useState(true);
       // 🟢 First-time OAuth initiation
       localStorage.setItem("fyers-auth-attempted", "true");
 
-      const params = new URLSearchParams({
-        client_id: clientId,
-        redirect_uri: redirectUri,
-        response_type: "code",
-        state: "sample_state",
-      });
-
-      window.location.assign(
-        "https://api-t1.fyers.in/api/v3/generate-authcode?" +
-          params.toString()
-      );
+    
+     
     } catch (e) {
       console.error("FYERS auth error:", e);
       setError("Unexpected error. Please try again.");  setLoading(false);
     }
   }, [clientId, redirectUri]);
 
+  const authLocalFyers = async () => {
+             try {
+
+          const res = await fetch(
+            `${FYERSAUTHORISEURL}/generate-auth-url`
+          );
+           
+          const data = await res.json();
+             console.log('python generated auth url for LOCAL authorization ' );
+             console.log('  ' +data.auth_url);
+          return data.auth_url;
+
+        } catch (err) {
+             console.error(err);
+        }
+
+  }
   const handleRelogin = () => {
     try {
       localStorage.removeItem("fyers-auth-attempted");

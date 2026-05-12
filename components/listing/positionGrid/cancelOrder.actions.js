@@ -559,6 +559,10 @@ export const placeQuickCancelOrder = (params = {} ) => {
                       //  }// FOR LOOP 
                       }
                      fetchAuthToken().then(async aces_token   => { 
+                          if (aces_token === undefined || aces_token ===null){
+                            aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                  StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
+                          }
                          await  fetchCANCELORDERStatus(aces_token);
 
 
@@ -842,6 +846,10 @@ export const placeCancelOrder = (_id ) => {
                    } //FOR LOOP 
                   }
                     fetchAuthToken().then(async aces_token   => { 
+                       if (aces_token === undefined || aces_token ===null){
+                            aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                  StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
+                          }
                        await  fetchCANCELORDERStatus(aces_token);
 
 

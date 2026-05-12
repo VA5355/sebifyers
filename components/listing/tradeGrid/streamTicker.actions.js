@@ -547,6 +547,10 @@ export const getSensexTickerData = (_id ) => {
 
                      fetchAuthToken().then(acToken => {
                         console.log("Ticker access token fetched ")
+                         if (acToken === undefined || acToken ===null){
+                            acToken =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                  StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
+                          }
                          fetchTickerBook(acToken);
 
                      })

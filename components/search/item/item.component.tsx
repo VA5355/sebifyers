@@ -493,6 +493,10 @@ const SearchCard = ({ item, onSelect }: any) => {
 
 
                  fetchAuthToken().then(async aces_token   => { 
+                         if (aces_token === undefined || aces_token ===null){
+                                                    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                                          StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
+                                                  }
                        await  fetchSymbolQuote(aces_token);
                             console.log("FYERS SYMBOLE QUOTE WORKED ")
                      });

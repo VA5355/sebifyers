@@ -1,4 +1,8 @@
 import { GetServerSideProps } from "next";
+import { useEffect } from "react";
+import { StorageUtils } from '@/libs/cache';
+import { CommonConstants } from '@/utils/constants';
+import { FYERSAUTHORISEURL } from "@/libs/client"
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { AlertTriangle, RotateCcw } from "lucide-react";
@@ -39,6 +43,112 @@ function isValidJwtStructure(token: unknown): boolean {
 export default function FyersError({ clientId, redirectUri }: Props) {
   const router = useRouter();
   const { reason } = router.query;
+  useEffect(() => {
+  /*  try {
+         console.log('FyersError passed server paramters  ');
+         console.log(`   clientId :::   ${clientId}  `);
+         console.log(`   clientId :::   ${clientId}  `);
+         console.log(`   clientId :::   ${clientId}  `);
+         console.log(`   clientId :::   ${clientId}  `);
+         console.log(`   clientId :::   ${clientId}  `);
+         console.log(`   redirectUri :::  ${redirectUri} `);
+         console.log(`   redirectUri :::  ${redirectUri} `);
+         console.log(`   redirectUri :::  ${redirectUri} `);
+         console.log(`   redirectUri :::  ${redirectUri} `);
+         console.log(`   redirectUri :::  ${redirectUri} `);
+         console.log(`   redirectUri :::  ${redirectUri} `);
+
+      const processAuth = async () => {
+        const params = new URLSearchParams(window.location.search);
+        const authCode = params.get("auth_code");
+        if (!authCode) {         console.error("No auth code");        return;      }
+        sessionStorage.setItem("fyers_auth_code", authCode );
+        try {  const res = await fetch( `${FYERSAUTHORISEURL}/generate-token`,
+            {  method: "POST",  headers: {  "Content-Type": "application/json" }, body: JSON.stringify({ auth_code: authCode  })
+            } );
+          const tokenData = await res.json();
+          console.log(tokenData);
+          console.log('processAuth worked Access Token availalbe ');
+          localStorage.setItem("fyers_access_token",tokenData.access_token);
+          localStorage.setItem("fyers_refresh_token",tokenData.refresh_token || "");
+          localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+        // navigate("/dashboard");
+        } catch (err) {   console.log ('process Auth error :: ' + JSON.stringify(err));
+        }
+      };
+         processAuth();
+      if (!clientId || !redirectUri) {
+          console.log("Configuration error. Please try later.");
+           // setLoading(false);
+        return;
+      }
+
+      const attempted = localStorage.getItem("fyers-auth-attempted");
+     //const token = localStorage.getItem("fyersToken");
+      const token =    StorageUtils._retrieve(CommonConstants.fyersToken);
+
+      // ✅ Already authenticated → go to fallback
+      if (token) {
+          if (
+              token?.isValid &&
+              token?.data &&
+              typeof token.data.auth_code === "string" &&
+              isValidJwtStructure(token.data.auth_code)
+        ) {
+            let  auth_code = token.data.auth_code;
+          console.log("Valid JWT structure detected");
+        } else {
+          console.warn("Invalid or garbage auth_code received");
+        }
+        
+        window.location.replace("/fyers-fallback");
+        return;
+      }
+     const params = new URLSearchParams({
+        client_id: clientId,
+        redirect_uri: redirectUri,
+        response_type: "code",
+        state: "sample_state",
+      });
+      (async () =>  {
+         let pythonAuthUrl = await authLocalFyers();   
+
+       
+          window.location.assign(pythonAuthUrl );
+
+      })();
+ 
+     
+    } catch (e) {
+      console.error("FYERS auth error:", e);
+     
+    }*/
+  }, []);
+  /* window.location.assign(
+            "https://api-t1.fyers.in/api/v3/generate-authcode?" +
+              params.toString()
+          );*/
+
+    const authLocalFyers = async () => {
+             try {
+
+          const res = await fetch(
+            `${FYERSAUTHORISEURL}/generate-auth-url`
+          );
+           
+          const data = await res.json();
+             console.log('python generated auth url for LOCAL authorization ' );
+             console.log('  ' +data.auth_url);
+          return data.auth_url;
+
+        } catch (err) {
+             console.error(err);
+              console.log(' fyers ERROR TSX FAILED authLocalFyers ' );
+               console.log('fyers ERROR TSX FAILED authLocalFyers ' );
+
+        }
+
+  }
 
   return (
       <>
@@ -90,10 +200,26 @@ export default function FyersError({ clientId, redirectUri }: Props) {
                        <motion.button
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
-                      onClick={() => {  
-                        
-                             const params = new URLSearchParams({
-                      client_id: clientId,
+                      onClick={async () => {  
+
+                          let pythonAuthUrl = await authLocalFyers();   
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                           console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
+                            console.log('pythonAuthUrl  '+pythonAuthUrl);
+                             console.log('pythonAuthUrl  '+pythonAuthUrl);
+                            console.log('pythonAuthUrl  '+pythonAuthUrl);
+                             console.log('pythonAuthUrl  '+pythonAuthUrl);
+                            console.log('pythonAuthUrl  '+pythonAuthUrl);
+
+                          window.location.assign(pythonAuthUrl );
+                          /*
+                          const params = new URLSearchParams({
+                            client_id: clientId,
+                           
                       redirect_uri: redirectUri,
                       response_type: "code",
                       state: "sample_state",
@@ -102,7 +228,7 @@ export default function FyersError({ clientId, redirectUri }: Props) {
                           window.location.assign(
                             "https://api-t1.fyers.in/api/v3/generate-authcode?" +
                               params.toString()
-                          );
+                          ); */
                       }
                       }
                       className="mt-6 w-full flex items-center justify-center gap-2 bg-brandgreen-600 hover:bg-brandgreen-700 text-brandgreen py-3 rounded-xl font-bold"

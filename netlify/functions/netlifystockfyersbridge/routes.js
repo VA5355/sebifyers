@@ -1790,10 +1790,14 @@ Parse query safely
 Redirect once to /fyers-auth
 No rendering, no OAuth retry here
  */
+/**
+ * 
+  extract task parameter with default value generate 
+ */
 
 router.get("/fyerscallback", async (req, res) => {
   try {
-    const { auth_code = "", code = "", s = "", state = "" } = req.query || {};
+    const { auth_code = "", code = "", s = "", state = "", task ="generate" } = req.query || {};
 
   // 🟢 FIRST TIME (clean URL)
     if (!auth_code) {
@@ -1812,6 +1816,7 @@ router.get("/fyerscallback", async (req, res) => {
       code: code || "",
       s: s || "",
       state: state || "",
+	   task: task || "generate",
     });
 
 
