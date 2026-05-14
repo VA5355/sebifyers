@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         {/* 🔹 External stylesheets (GLOBAL) */}
-
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
           <link rel="stylesheet" href="/css/globals.css" />
           <link rel="stylesheet" href="bulma/css/bulma.min.css" />
         	 <link  type="text/css" rel="stylesheet" href="/bootcss/bootstrap.min.css"/>
@@ -17,10 +17,10 @@ export default function Document() {
         <link rel="stylesheet" href="/css/uploadaddhar.css" />
         <link rel="stylesheet" href="/css/style_new.css" />
 
-        <link
+       {/**   <link
           rel="stylesheet"
           href="https://login.fyers.in/new-sso/16.3/fyers-ui.css"
-        />
+        />*/}
 
         <link
           rel="stylesheet"

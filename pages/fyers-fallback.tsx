@@ -4,9 +4,48 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import Script from "next/script";
-import { StorageUtils } from '@/libs/cache';
-import { CommonConstants } from '@/utils/constants';
-import { FYERSAUTHORISEURL } from "@/libs/client"
+import { useSelector } from "react-redux";
+import dynamic from "next/dynamic";
+
+const Header = dynamic(
+  () => import("@/app/HeaderStatic"),
+  { ssr: false }
+);
+
+const TradeTickerBar = dynamic(
+  () => import("@/app/TradeTickerStatic"),
+  { ssr: false }
+);
+
+const Menu = dynamic(
+  () => import("@/app/MenuStatic"),
+  { ssr: false }
+);
+const ScreenLoader = dynamic(
+  () =>
+    import(
+      "@/app/ScreenLoaderStatic"
+    ),
+  { ssr: false }
+);
+
+const SubscribePopup = dynamic(
+  () =>
+    import("@/app/SubscribePopupStatic"),
+  { ssr: false }
+);
+
+
+import { GlobalState } from "@/redux/store";
+// import   useIsMobile   from "@/components/listing/tradeGrid/useIsMobile";
+import { StorageUtils } from "@/libs/cache";
+import { CommonConstants } from "@/utils/constants";
+
+import {
+  FYERSAUTHORISEURL,
+  FYERSMODALCALLBAKURL,
+} from "@/libs/client";
+
 type Props = {
   auth_code: string;
   code: string;
@@ -14,236 +53,429 @@ type Props = {
   state: string;
   triggerredirectpython: string;
 };
-function isValidJwtStructure(token: unknown): boolean {
-  if (typeof token !== "string") return false;
 
-  const parts = token.split(".");
-  if (parts.length !== 3) return false;
+export default function FyersFallback(props: Props) {
+  const {
+    auth_code,
+    code,
+    s,
+    state,
+    triggerredirectpython,
+  } = props;
+const [mounted, setMounted] = useState(false);
+ // const isMobile = useIsMobile();
+   const [isMobile, setIsMobile] = useState(false);
 
-  try {
-    const [header, payload] = parts;
+  /*const isDarkMode = useSelector(
+    (state: GlobalState) => state.misc.isDarkMode
+  );*/
 
-    const decode = (str: string) =>
-      JSON.parse(
-        decodeURIComponent(
-          atob(str.replace(/-/g, "+").replace(/_/g, "/"))
-            .split("")
-            .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-            .join("")
-        )
+  const [error, setError] = useState<string | null>(null);
+
+  const [fyersAccessToken, setFyersAccessToken] =
+    useState<string | null>(null);
+
+  const [fyersRefreshToken, setFyersRefreshToken] =
+    useState<string | null>(null);
+
+  const processAuth = async () => {
+    const params = new URLSearchParams(window.location.search);
+
+    const authCode = params.get("auth_code");
+
+    if (!authCode) {
+      console.error("No auth code");
+      return;
+    }
+
+    sessionStorage.setItem(
+      "fyers_auth_code",
+      authCode
+    );
+
+    try {
+      const res = await fetch(
+        `${FYERSAUTHORISEURL}/generate-token`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            auth_code: authCode,
+          }),
+        }
       );
 
-    decode(header);
-    decode(payload);
+      const tokenData = await res.json();
 
-    return true;
-  } catch {
-    return false;
-  }
-}
-export default function FyersFallback(props: Props) {
-  const { auth_code, code, s, state, triggerredirectpython } = props;
-   let isAuthenticate = false; 
-   const [error, setError] = useState<string | null>(null);
-  const [fyersAccessToken, setFyersAccessToken] = useState<string | null>(null);
-  const [fyersRefreshToken, setFyersRefreshToken] = useState<string | null>(null);
+      console.log(
+        "processAuth worked Access Token available"
+      );
 
-   const processAuth = async () => {
-        const params = new URLSearchParams(window.location.search);
-        const authCode = params.get("auth_code");
-        if (!authCode) {         console.error("No auth code");        return;      }
-        sessionStorage.setItem("fyers_auth_code", authCode );
-        try {  const res = await fetch( `${FYERSAUTHORISEURL}/generate-token`,
-            {  method: "POST",  headers: {  "Content-Type": "application/json" }, body: JSON.stringify({ auth_code: authCode  })
-            } );
-          const tokenData = await res.json();
-          console.log(tokenData);
-          console.log('processAuth worked Access Token availalbe ');
-          localStorage.setItem("fyers_access_token",tokenData.access_token);
-          setFyersAccessToken(tokenData.access_token);
+      localStorage.setItem(
+        "fyers_access_token",
+        tokenData.access_token
+      );
 
-          localStorage.setItem("fyers_refresh_token",tokenData.refresh_token || "");
-          setFyersRefreshToken(tokenData.refresh_token)
-          localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
-        // navigate("/dashboard");
-        } catch (err) {   console.log ('process Auth error :: ' + JSON.stringify(err));
-          setError('process Auth error :: ' + JSON.stringify(err))
-        }
-      };
+      setFyersAccessToken(
+        tokenData.access_token
+      );
+
+      localStorage.setItem(
+        "fyers_refresh_token",
+        tokenData.refresh_token || ""
+      );
+
+      setFyersRefreshToken(
+        tokenData.refresh_token
+      );
+
+      localStorage.setItem(
+        "fyers_token_data",
+        JSON.stringify(tokenData)
+      );
+    } catch (err) {
+      console.log(
+        "process Auth error :: " +
+          JSON.stringify(err)
+      );
+
+      setError(
+        "process Auth error :: " +
+          JSON.stringify(err)
+      );
+    }
+  };
+useEffect(() => {
+   setMounted(true);
+}, []);
   useEffect(() => {
+    if (typeof window === "undefined") return;
+      const handleDeviceDetection = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobile = /iphone|ipad|ipod|android|blackberry|windows phone/g.test(userAgent);
+      const isTablet = /(ipad|tablet|playbook|silk)|(android(?!.*mobile))/g.test(userAgent);
 
-      if (typeof window === "undefined") return;
+      if (isMobile) {
+        setIsMobile(true);
+      } else if (isTablet) {
+      // setDevice('Tablet');
+       setIsMobile(false);
+      } else {
+        //setDevice('Desktop');
+        setIsMobile(false);
+      }
+    };
+
+    handleDeviceDetection();
+    window.addEventListener('resize', handleDeviceDetection);
+
+ 
     try {
+      processAuth();
 
-       processAuth();
+     //  processAuth();
       if (!auth_code) {
         window.location.replace("/fyers-auth");
         return;
       }
-      let code_split =    auth_code.split(".");   // isValidJwtStructure(auth_code)
-       code_split.length ==3 ;
-   //   if( code_split.length ==3){  
-        let data = {
-         // value: {
-            auth_code,
-            code,
-            s,
-            ttl: Date.now(),
-         // }
-        
-        };
-    
-    
+
+      const data = {
+        auth_code,
+        code,
+        s,
+        ttl: Date.now(),
+      };
+
       localStorage.setItem(
         "fyersToken",
-        JSON.stringify({
-       //   value: {
-            auth_code,
-            code,
-            s,
-            ttl: Date.now(),
-        //  },
-        })
-      ); 
-         // Optional: keep your utility, but ONLY on client
-        try {
-          StorageUtils?._save?.(CommonConstants.fyersToken, data
-            //{
-            //isValid: true,
-            //data: data,
-          //  }
+        JSON.stringify(data)
+      );
+
+      try {
+        StorageUtils?._save?.(
+          CommonConstants.fyersToken,
+          data
         );
-        } catch (e) {
-          console.warn("StorageUtils failed, localStorage already set");
-        }
+      } catch (e) {
+        console.warn(
+          "StorageUtils failed, localStorage already set"
+        );
+      }
 
-
-
-
-     // }
-
-
-
-      // Reset attempt flag after success
-      localStorage.removeItem("fyers-auth-attempted");
+      localStorage.removeItem(
+        "fyers-auth-attempted"
+      );
     } catch (e) {
-      console.error("Token storage failed:", e);
+      console.error(
+        "Token storage failed:",
+        e
+      );
     }
-  }, []); // auth_code, code, s]  no ned change in this values , every time this usefect must be called 
+       return () => {
+      window.removeEventListener('resize', handleDeviceDetection);
+    };
+
+
+
+  }, []);
 
   const handleAuthenticated = () => {
     try {
-      if (triggerredirectpython === "true") {
+      if (
+        triggerredirectpython === "true"
+      ) {
         if (state === "python_test") {
-          window.location.assign(  //localhost:9384
+          window.location.assign(
             `https://localhost:9384/redirect?auth_code=${auth_code}&state=python_test`
           );
-        } else if (state === "python_state") {
-          window.location.assign(   ////localhost:9384
+        } else if (
+          state === "python_state"
+        ) {
+          window.location.assign(
             `https://localhost:9384/redirect-start?auth_code=${auth_code}&state=python`
           );
-        } else if (state === "python_order_state") {
+        } else if (
+          state === "python_order_state"
+        ) {
           window.location.assign(
             `https://localhost:5002/redirect-start?auth_code=${auth_code}&state=python_order`
           );
         }
       } else {
-        window.close();
+        window.location.assign(
+          FYERSMODALCALLBAKURL
+        );
       }
     } catch {
       alert("Redirection failed.");
     }
   };
+      if (!mounted) return null;
+
 
   return (
     <>
       <Head>
-        <title>FYERS Logged In</title>
+        <title>
+          FYERS Authentication Success
+        </title>
+      </Head>
 
-              </Head>
-           <Script
-            src="/js/bootstrap.min.js"
-             
-            strategy="afterInteractive"
-          />
-                 <Script
-          src="https://assets.fyers.in/Lib/intlTelInput.min.js"
-          strategy="afterInteractive"
-        />
-           <Script
-            src="https://trade.fyers.in/Prod/1.2/fyers-widget.min.js"
-            strategy="afterInteractive"
-          />
-          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50 px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center"
-        >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring" }}
-            className="flex justify-center"
-          >
-            <CheckCircle className="w-16 h-16 text-brandgreen-500" />
-          </motion.div>
-          
-              <h1  className="text-2xl font-bold mt-4 text-brandgreen--800">FYERS LOGGED IN</h1>
+      <Script
+        src="/js/bootstrap.min.js"
+        strategy="afterInteractive"
+      />
 
-              {auth_code ?  (<> 
-                       <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                  onClick={handleAuthenticated}
-                   className="mt-6 w-full flex items-center justify-center gap-2 bg-brandgreen-600 hover:bg-brandgreen-700 font-bold  py-3 rounded-xl text-brandgreen"
-                    >
-              <strong>  Authenticated </strong>
-                     <ArrowRight className="w-5 h-5" />
-                     </motion.button>
+      <Script
+        src="https://assets.fyers.in/Lib/intlTelInput.min.js"
+        strategy="afterInteractive"
+      />
 
-                  {fyersAccessToken !==undefined && fyersAccessToken !==null ? (
-                      <strong>  App authorisation Issue success </strong>
-                  ):(<strong>  App authorisation Issue token not generate </strong>)}
-                  </>
-              ) : (
-                <p className="text-brandgreen mt-4">
-                  Authentication failed. Please retry.   <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                       onClick={() => window.close()}
-                       className="mt-6 w-full flex items-center justify-center gap-2 bg-brandgreen-600 hover:bg-brandgreen-700 font-bold  py-3 rounded-xl text-brandgreen"
-                    >
-                           <strong>  OK</strong>
-                    
-                     </motion.button>
-                       
+      <Script
+        src="https://trade.fyers.in/Prod/1.2/fyers-widget.min.js"
+        strategy="afterInteractive"
+      />
+        {/** `${
+          isDarkMode ? "dark" : ""
+        }` */}
+      <div
+        className={''}
+      >
+        <div className="bg-white dark:bg-black min-h-screen">
+         {/**<ScreenLoader />  */} 
+
+          {/* SAME HEADER */}
+          <Header />
+
+          {/* SAME TICKER */}
+          <TradeTickerBar />
+
+          {/* OPTIONAL MENU */}
+          <Menu />
+
+          {/* AUTH CARD */}
+          <div className="px-3 md:px-6 py-8 md:ml-[88px]">
+            <div className="flex items-center justify-center">
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  scale: 0.9,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                transition={{
+                  duration: 0.4,
+                }}
+                className="
+                  w-full
+                  max-w-xl
+                  rounded-2xl
+                  border
+                  border-gray-200
+                  dark:border-neutral-800
+                  bg-white
+                  dark:bg-neutral-900
+                  shadow-xl
+                  p-8
+                  text-center
+                "
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{
+                    delay: 0.2,
+                    type: "spring",
+                  }}
+                  className="flex justify-center"
+                >
+                  <CheckCircle
+                    className="
+                      w-16
+                      h-16
+                      text-green-500
+                    "
+                  />
+                </motion.div>
+
+                <h1
+                  className="
+                    text-2xl
+                    font-bold
+                    mt-4
+                    text-black
+                    dark:text-white
+                  "
+                >
+                  FYERS LOGIN UPDATE
+                </h1>
+
+                <p
+                  className="
+                    text-sm
+                    mt-3
+                    text-gray-500
+                    dark:text-gray-400
+                  "
+                >
+                  Authentication  Status 
                 </p>
-              )}
-            </motion.div>
+
+                {auth_code ? (
+                  <>
+                    <motion.button
+                      whileHover={{
+                        scale: 1.03,
+                      }}
+                      whileTap={{
+                        scale: 0.97,
+                      }}
+                      onClick={
+                        handleAuthenticated
+                      }
+                      className={` 
+                        mt-6
+                        w-full
+                        flex
+                        items-center
+                        justify-center
+                        gap-2
+                       btn-primary ${isMobile  ? 'btn-sm':'btn-lg'}
+                        text-white
+                        text-sm
+                        md:text-base
+                        font-semibold
+                        rounded-lg
+                        px-4
+                        py-4
+                      `}
+                    >
+                      Continue
+                      <ArrowRight className="w-5 h-5" />
+                    </motion.button>
+
+                    <div className="mt-4">
+                      {fyersAccessToken ? (
+                        <p className="text-green-500 font-bold badge-info w-75 p-3 text-sm">
+                          App authorization
+                          successful
+                        </p>
+                      ) : (
+                        <p className="text-yellow-500  font-bold  badge-danger  w-75 p-3 text-sm">
+                          Token generation
+                          pending...
+                        </p>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div className="mt-6">
+                    <p className="text-red-500 font-bold  badge-danger  w-75 p-3 ">
+                      Authentication failed.
+                    </p>
+
+                    <motion.button
+                      whileHover={{
+                        scale: 1.03,
+                      }}
+                      whileTap={{
+                        scale: 0.97,
+                      }}
+                      onClick={
+                        handleAuthenticated
+                      }
+                      className="
+                        mt-6
+                        w-full
+                        btn-primary 
+                        text-white
+                        rounded-lg
+                        px-4
+                        py-3
+                        font-semibold
+                      "
+                    >
+                      Retry
+                    </motion.button>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </div>
+
+         {/** <SubscribePopup /> */} 
+        </div>
       </div>
     </>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  if (!query.auth_code) {
+export const getServerSideProps: GetServerSideProps =
+  async ({ query }) => {
+    if (!query.auth_code) {
+      return {
+        redirect: {
+          destination:
+            "/fyers-error?reason=missing_auth_code",
+          permanent: false,
+        },
+      };
+    }
+
     return {
-      redirect: {
-        destination: "/fyers-error?reason=missing_auth_code",
-        permanent: false,
+      props: {
+        auth_code:
+          query.auth_code ?? "",
+        code: query.code ?? "",
+        s: query.s ?? "",
+        state: query.state ?? "",
+        triggerredirectpython:
+          query.triggerredirectpython ??
+          "false",
       },
     };
-  }
-
-  return {
-    props: {
-      auth_code: query.auth_code ?? "",
-      code: query.code ?? "",
-      s: query.s ?? "",
-      state: query.state ?? "",
-      triggerredirectpython: query.triggerredirectpython ?? "false",
-    },
   };
-};

@@ -5,13 +5,17 @@ import {useDispatch, useSelector} from 'react-redux';
  import   useIsMobile   from "@/components/listing/tradeGrid/useIsMobile";
 import {changeTab} from '@/redux/slices/miscSlice';
 import {disableLoader, enableLoader} from "@/redux/slices/miscSlice"
-import {API, FYERSAPI, UPSTOXAPI, ICICDIRECTAPI ,  FYERSAPILOGINURL, UPSTOXAPILOGINURL, TRADE_LOGIN_URL ,FYERSAUTHORISEURL } from "@/libs/client"
+import {API, FYERSAPI, UPSTOXAPI, ICICDIRECTAPI ,  FYERSAPILOGINURL, UPSTOXAPILOGINURL, TRADE_LOGIN_URL ,FYERSAUTHORISEURL ,
+      FYERSAPIURL, FYERSMODALCALLBAKURL
+} from "@/libs/client"
 import {GlobalState} from '@/redux/store';
 import {saveActivelyTraded, saveGainers, saveLosers} from '@/redux/slices/stockSlice';
 import { platform } from 'os';
 import { StorageUtils } from '@/libs/cache';
 import { CommonConstants } from '@/utils/constants';
 import { AnyNode } from 'postcss';
+import BrokerAuthModalImproved from '@/app/BrokerAuthModalImproved';
+import BrokerAuthModal from '@/app/BrokerAuthModal';
 
 const arr = [
     {key: 1, title: "Educate"},
@@ -34,6 +38,10 @@ const Menu = () => {
     let globalUserCheck  :any = undefined;
        // CHECK MOBILE OR DESTOP
            const isMobile = useIsMobile();
+   const [showBrokerModal, setShowBrokerModal] = useState(false);
+   const [brokerAuthUrl, setBrokerAuthUrl] = useState("");
+    const [openBrokerModal, setOpenBrokerModal] =
+    useState(false);
 
     const [platformType, setPlatformType] = useState('1')
     const tab = useSelector((state: GlobalState) => state.misc.tab)
@@ -43,6 +51,57 @@ const Menu = () => {
     const currentPlatform = useSelector((state: GlobalState) => state.misc.platformType)
     //const currentPlatform = useSelector((state: GlobalState) => state.misc.platformType)
     const dispatch = useDispatch();
+
+
+    // =====================================================
+  // SUCCESS CALLBACK
+  // =====================================================
+
+  const handleBrokerSuccess = (
+    authCode: string | null
+  ) => {
+    console.log(
+      "✅ Broker authentication successful"
+    );
+
+    console.log("Auth Code:", authCode);
+
+    // -----------------------------------------
+    // SAVE TOKEN / CALL BACKEND
+    // -----------------------------------------
+
+    if (authCode) {
+      localStorage.setItem(
+        "BROKER_AUTH_CODE",
+        authCode
+      );
+
+      /*
+        Example API call
+
+        fetch("/api/broker/verify", {
+          method: "POST",
+          body: JSON.stringify({
+            code: authCode
+          })
+        })
+      */
+    }
+
+    // Close modal after success
+    setOpenBrokerModal(false);
+  };
+
+  // =====================================================
+  // ERROR CALLBACK
+  // =====================================================
+
+  const handleBrokerError = (error: string) => {
+    console.error(
+      "❌ Broker authentication failed:",
+      error
+    );
+  };
 
     const popupCenter = (url:any, title:any) => {
         const dualScreenLeft = window.screenLeft ?? window.screenX;
@@ -177,6 +236,17 @@ const Menu = () => {
             if (auth_code&& auth_code !== null && auth_code !== undefined) {
                 console.log("User is Authorized ");
                 logd = true;
+                // check for access toekn 
+                 let aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                if (aces_token !== undefined || aces_token ==null){
+                     //   setShowBrokerModal(false)                      
+                    StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
+                    }
+                else{
+                     logd = false;
+                    //    setShowBrokerModal(true)     
+                }
+
             }
 
         }
@@ -255,10 +325,14 @@ const Menu = () => {
                                 );*/
                               //  window.location.assign(pythonAuthUrl );
                             if( pythonAuthUrl !== undefined && pythonAuthUrl !==''){
-                                 res =   popupCenter(pythonAuthUrl, "Fyers Signin python generated url ")
+                                // res =   popupCenter(pythonAuthUrl, "Fyers Signin python generated url ")
+                                 setBrokerAuthUrl(pythonAuthUrl);
+                                    setShowBrokerModal(true); setOpenBrokerModal(true);
                             }
                             else {
-                                 res =   popupCenter(FYERSAPILOGINURL, "Fyers Signin")
+                               //  res =   popupCenter(FYERSAPILOGINURL, "Fyers Signin")
+                                 setBrokerAuthUrl(FYERSAPILOGINURL);
+                                    setShowBrokerModal(true);setOpenBrokerModal(true);
                             }
                             })();
 
@@ -287,6 +361,15 @@ const Menu = () => {
                             let auth_code = res.data['auth_code'];
                             if (auth_code&& auth_code !== null && auth_code !== undefined) {
                                 console.log("User is Authorized ");
+                                   let aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                     console.log(`Authorization for app  ${JSON.stringify(aces_token)} `);
+                                if (aces_token.isValid &&  aces_token.data !== null  && aces_token.data !== undefined   ){
+                                      setShowBrokerModal(false)      ;setOpenBrokerModal(false);                
+                                    StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
+                                    }
+                                else{   console.log("Authorization for app pending , user not authorised  ");
+                                       setShowBrokerModal(true);     setOpenBrokerModal(true);        
+                                }
                                clearInterval(globalUserCheck);
                             }
                             else{
@@ -345,7 +428,9 @@ const Menu = () => {
                         let res :any = undefined;
                      if (!checkUserLogged()) { 
                       //let res =  await FYERSAPI.get('/fyerscallback' )
-                        res =   popupCenter(UPSTOXAPILOGINURL, "Upstox Signin")
+                       // res =   popupCenter(UPSTOXAPILOGINURL, "Upstox Signin")
+                         setBrokerAuthUrl(UPSTOXAPILOGINURL);
+                                    setShowBrokerModal(true);setOpenBrokerModal(true);
                       }
                       else {
                         res = true;
@@ -432,7 +517,10 @@ const Menu = () => {
                         let res :any = undefined;
                      if (!checkUserLogged()) { 
                       //let res =  await FYERSAPI.get('/fyerscallback' )
-                        res =   popupCenter(TRADE_LOGIN_URL+tradekey, "IciciDirect Signin")
+                      //  res =   popupCenter(TRADE_LOGIN_URL+tradekey, "IciciDirect Signin")
+                            setBrokerAuthUrl(TRADE_LOGIN_URL+tradekey);
+                                    setShowBrokerModal(true);setOpenBrokerModal(true);
+
                       }
                       else {
                         res = true;
@@ -589,7 +677,24 @@ const Menu = () => {
                 <option value={2}>Fyers</option>
                 <option value={3}>Upstox</option>
                  <option value={4}>Icicidirect</option>
-               </select></div>
+               </select>
+                {/**   ${FYERSMODALCALLBAKURL}/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify` */}
+               </div>
+                   <BrokerAuthModal  isOpen={showBrokerModal}
+                    authUrl={brokerAuthUrl}
+                    onClose={() => setShowBrokerModal(false)}
+                    />
+                
+                {/*  <BrokerAuthModalImproved
+                isOpen={openBrokerModal}
+                brokerName="Fyers"
+                authEndpoint={FYERSAPIURL}
+                redirectUri={ brokerAuthUrl}
+                onClose={() => setOpenBrokerModal(false)}
+                onSuccess={handleBrokerSuccess}
+                onError={handleBrokerError}
+         /> */}
+
         </div>
     )
 }

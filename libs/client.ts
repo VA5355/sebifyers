@@ -35,6 +35,10 @@ const ICICDIRECTAPI = axios.create({
 //const FYERSAPILOGINURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerscallback'
 const FYERSAPILOGINURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyerscallback'
 const FYERSAUTHORISEURL = 'https://fyers-auto-register-onedinaar.onrender.com'  // render.com url   'http://192.168.1.3:5000'
+
+const FYERSAPIURL = 'https://api-t1.fyers.in/api/v3/generate-authcode'
+const FYERSMODALCALLBAKURL = 'https://onedinaar.com'
+
 const FYERSAPITRADEBOOKURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgettradebook'
 const FYERSAPIPOSITIONBOOKURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetpositionbook'
 const FYERSAPIHOLDINGSURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersgetholdings'
@@ -113,5 +117,5 @@ export { API , FYERSAPI ,UPSTOXAPI, ICICDIRECTAPI , FYERSAPILOGINURL , FYERSAPIN
   FYERSAPIPOSITIONBOOKURL, FYERSAPIMARKETFEEDRENDER_SOCKET,FYERSOPTIONCHAINWSSFEED,FYERSAPICOMPLYCUBEURL, FYERSAPICOMPLYCUBEURLPOST, FYERSAPIKYCORDER,
 
   UPSTOXAPILOGINURL , TRADE_LOGIN_URL , YAHOOCHARTURL , MARKETSPOTEQUITYENPOINT1, MARKETSPOTEQUITYENPOINT, RAZORORDERANDPAYMENTURL,
-  FYERSAUTHORISEURL
+  FYERSAUTHORISEURL, FYERSAPIURL, FYERSMODALCALLBAKURL
 };

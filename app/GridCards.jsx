@@ -13,6 +13,7 @@ import  RefinedVirtualAccountModalImproved  from '@/app/RefinedVirtualAccountMod
 import  TrialVirtualGoogleBusinesPayScreenImproved  from '@/app/TrialVirtualGoogleBusinesPayScreenImproved';
 import { useSelector } from 'react-redux';
 import { selectPaymentData } from "@/redux/slices/paymentSlice"
+import EventGridCards from "./EventGridCards";
 const GridCards = () => {
        const [companyName, setCompanyName]  = useState('');
     const [symbol, setSymbol]  = useState('');
@@ -34,6 +35,47 @@ const GridCards = () => {
 
            // CHECK MOBILE OR DESTOP
            const isMobile = useIsMobile();
+        // CHECK LOGGED IN TOKEN TYPE 
+        const [brokersLogged , setBrokersLogged ]  = useState ([]);
+        const [loggedInBroker , setLoggedInBroker ] = useState ( (broker) => { 
+                let logged = false;
+
+                Object.keys(localStorage).forEach(key => {
+                      if(key.indexOf('fyers') > -1 ){
+                        let fKey = undefined; 
+                        try { 
+                            console.log("storage key "+key);
+                            fKey =  StorageUtils._retrieve(key);
+                              console.log("storage value  "+JSON.stringify(fKey));
+                            if (fKey !==undefined && fKey !==null &&  fKey.isValid) {
+                              setBrokersLogged( bks => {  bks.push("FYERS");  return bks;} );
+                              logged = true;
+                            };
+                        }
+                        catch(ere ){
+                            console.log("local storage parsing errors can ignore");
+                             if (fKey !==undefined && fKey !==null  ) {
+                            //  setBrokersLogged( bks => {  bks.push("FYERS"); } );
+                              logged = true;
+                            };
+                        }
+                        
+                            
+
+
+                      }
+                    
+                    });
+                      return logged;
+        })  
+        const  [isBrokerFyers , setIsBrokerFyers] = useState(fy => { 
+                 return  brokersLogged.filter(bk => bk.indexOf("FYERS")>-1).size >0 ;
+
+        } )
+         const  [isBrokerIcici , setIsBrokerIcici] = useState(fy => { 
+                 return  brokersLogged.filter(bk => bk.indexOf("ICICI")>-1).size >0 ;
+
+        } )
         const [cacheLastQuote, setCacheLastQuote]  = useState( (lstQte  ) => {
               let lastStockQuoteNseYahoo  =  StorageUtils._retrieve(CommonConstants.LASTSTOCKQUOTENSEYAHOO)
                     /*  if(lastStockQuoteNseYahoo !==null && lastStockQuoteNseYahoo !== undefined ){
@@ -92,7 +134,16 @@ const GridCards = () => {
       desc: "Exclusive access to platinum tier features and priority golden-glove reporting support.",
       icon: <Star className="w-6 h-6 text-blue-500" />,
     },
-      
+      {
+      title: "Last Visted",
+      desc: "  ",
+      icon: <Shield className="w-6 h-6 text-blue-600" />,
+    },   
+     {
+      title: " ",
+      desc: "  ",
+      icon: <Shield className="w-6 h-6 text-blue-600" />,
+    },   
      
   ];
  const preparePaymentScreen = () => {
@@ -232,10 +283,10 @@ useEffect ( () => {
         
   } , [cacheLastQuote] );
   return (  
-    <div className="grid w-1/1 gap-4 mx-auto grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 2xl:grid-cols-1 justify-center"> 
+    <div className="grid w-1/1 gap-2 mx-auto grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 2xl:grid-cols-1 justify-center"> 
     {/*min-h-screen bg-slate-50 p-2 flex items-center justify-center */}
-      {/* 3-Column Grid Container  flex items-start justify-normal*/}
-      <div className={` grid grid-cols-1 md:grid-cols-5 gap-8 max-w-7xl w-full ${ isMobile ? 'mt-4 ml-6' : 'ml-24' }  z-[30] mobile-margin-car` }>
+      {/* 3-Column Grid Container  flex items-start justify-normal gap-6*/}
+      <div className={` grid grid-cols-1 md:grid-cols-8  max-w-8xl w-full ${ isMobile ? 'mt-4 ml-6' : 'ml-12' }  z-[30] mobile-margin-car` }>
         {cards.map((card, index) => (
           <motion.div
             key={index}
@@ -244,26 +295,150 @@ useEffect ( () => {
             transition={{ delay: index * 0.1 }}
             whileHover={{ y: -8, scale: 1.02 }}
             className={`
-             group relative cursor-pointer
-            ${index === 3 ? "md:col-span-1 md:col-start-4" : ""}
+             group relative cursor-pointer ${index !== 3 || index !== 4  || index !== 5  ? "w-[290px] ml-1 pl-1 " : ""}
+            ${index === 3 ||  index === 4 || index === 5 ? "" : ""}
              `}
           >
-            {/* The "Blueish Gold" Shadow Effect */}
+            {/*upper md:col-span-1 md:col-start-5  The "Blueish Gold" Shadow Effect */}
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-amber-500/20 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
             
             {/* The Main Card */}
             <div className={`
                 relative bg-white p-8 rounded-3xl border border-blue-50/50
-                flex flex-col h-full
+                flex flex-col h-full ${index !== 3 || index !== 4  || index !== 5  ? "w-[250px] ml-2" : ""}
                 ${index === 3 ? "min-h-[420px] bg-gradient-to-b from-white to-blue-50/40" : ""}
                 shadow-[0_20px_50px_-12px_rgba(30,58,138,0.1),0_10px_30px_-10px_rgba(217,119,6,0.15)]
                 group-hover:shadow-[0_30px_60px_-12px_rgba(30,58,138,0.2),0_15px_40px_-10px_rgba(217,119,6,0.25)]
                 transition-all duration-300
               `}>
-              { ( index === 3 ?  (
+              { ( index === 3   ?  (
                        <PositionSwipeHint />
                 ) :  
-                
+                 ( index === 4   ?  (
+                    <>
+                         { cacheLastQuote  && (<>
+                            <div style={{ marginTop: '20px' }}>
+                              <h1 id="view_title" className="font-bold mb-3  text-blue-600/80 group-hover:text-amber-600 title has-text-centered">
+                                  Last visited Stock Update {companyName}
+                              </h1>
+                            {/*   <StockAreaChart data={data} />*/}
+                          </div>
+
+                          <ul className="view_list">
+                              <li>Company Name: <span>{companyName ?? cacheLastQuote.meta?.companyName}</span></li>
+                              <li>Symbol: <span>{ symbol ?? cacheLastQuote.symbol}</span></li>
+                              <li>Sector: <span>{sector ?? cacheLastQuote.meta?.sector}</span></li>
+                              <li>Current Price: <span id="currPrice">₹ {latestPrice ?? cacheLastQuote.meta?.latestPrice}</span></li>
+                              <li>Open Price: <span>₹ {open ?? cacheLastQuote.meta?.open}</span></li> 
+                              <li>High Price: <span>₹ {high ?? cacheLastQuote.meta?.high}</span></li> 
+                              <li>Low Price: <span>₹ {low ?? cacheLastQuote.meta?.low}</span></li> 
+                              <li>Close Price: <span>₹ {close ?? cacheLastQuote.meta?.close}</span></li>
+                              <li>52 Week High: <span>₹ {week52High ?? cacheLastQuote.meta?.week52High}</span></li>
+                              <li>52 Week Low: <span>₹ {week52Low ?? cacheLastQuote.meta?.week52Low}</span></li>
+                          </ul>
+                       </> ) } 
+                      { (paymentData && paymentData.order)  ? (<>  
+                          <div className={` col-span-1   flex flex-col   ${isMobile ? "gap-6 mt-12 py-4": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
+
+                          {/* CTA bg-white rounded-2xl shadow-sm p-4  sm:mb-4 flex flex-col items-center text-center
+                          below is desktop stick behavior */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className={`bg-white rounded-2xl shadow-sm p-4 sm:p-5    ${isMobile ? "  mt-12 py-4": ""}  flex flex-col items-center text-center    sticky lg:top-4 " `} 
+                        >
+                          <span className="bg-brandblue text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-2 "> {/* text-sm sm:text-base font-semibold rounded-lg px-3 py-2*/}
+                          Payment Received !! 
+                          </span>
+
+                          <button 
+                            onClick={prepareVirtualAccountScreen}
+                            className="mt-3 w-full bg-brandgreenlight hover:bg-white border border-transparent hover:border-brandgreen transition rounded-full py-2 flex items-center justify-center gap-2"
+                          >
+                            <span className="text-brandgreen text-xs  sm:text-sm  font-bold">
+                              Create User 
+                            </span>
+                            <span className="bg-brandblue px-2 py-1 text-white text-xs  sm:text-sm  rounded-md">
+                              Virtual Account
+                            </span>
+                          </button>
+                        </motion.div>
+
+                      </div>
+
+                        </>) :  (<> 
+                      {/* // 👈 THIS IS THE MAGIC */}
+                        <div className={` col-span-1   flex flex-col   ${isMobile ? "gap-6 mt-12 py-4": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
+
+                          {/* CTA bg-white rounded-2xl shadow-sm p-4  sm:mb-4 flex flex-col items-center text-center
+                          below is desktop stick behavior */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className={`bg-white rounded-2xl shadow-sm p-4 sm:p-5    ${isMobile ? "  mt-12 py-4": ""}  flex flex-col items-center text-center    sticky lg:top-4 " `} 
+                        >
+                          <span className="bg-brandblue text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-2 "> {/* text-sm sm:text-base font-semibold rounded-lg px-3 py-2*/}
+                            Try Virtual Trading
+                          </span>
+
+                          <button 
+                            onClick={preparePaymentScreen}
+                            className="mt-3 w-full bg-brandgreenlight hover:bg-white border border-transparent hover:border-brandgreen transition rounded-full py-2 flex items-center justify-center gap-2"
+                          >
+                            <span className="text-brandgreen text-xs  sm:text-sm  font-bold">
+                              Trial with Fyers
+                            </span>
+                            <span className="bg-brandblue px-2 py-1 text-white text-xs  sm:text-sm  rounded-md">
+                              Rates
+                            </span>
+                          </button>
+                        </motion.div>
+
+                      </div> </>)}
+
+                    
+                    </>
+
+                 ) :
+                  ( index === 5   ?  (
+                    <>
+                        {/* // 👈 THIS IS THE MAGIC */}
+                        <div className={` col-span-1   flex flex-col   ${isMobile ? "gap-6 mt-12 py-4": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
+
+                          {/* CTA bg-white rounded-2xl shadow-sm p-4  sm:mb-4 flex flex-col items-center text-center
+                          below is desktop stick behavior */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className={`bg-white rounded-2xl shadow-sm p-4 sm:p-5    ${isMobile ? "  mt-12 py-4": ""}  flex flex-col items-center text-center    sticky lg:top-4 " `} 
+                        >
+                          { loggedInBroker ? (<>
+                             {/*  { isBrokerFyers ? (<>
+                              <span className="bg-brandblue text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-4 mb-4">  
+                          Logged in with Fyers
+                          </span>
+                              </> ): (<></> ) }
+
+                               {  isBrokerIcici ? (<>
+                              <span className="bg-brandblue text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-4 mb-4">  
+                          Logged in with ICICI
+                          </span>
+                              </> ): (<></> ) } */}
+                           <span className="bg-gradient-to-r   from-orange-500   via-amber-400   to-yellow-300  text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-4 mb-4"> {/* text-sm sm:text-base font-semibold rounded-lg px-3 py-2*/}
+                          Logged in with Broker
+                          </span>
+                          </>) : ( <span className="bg-brandblue text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-4 mb-4"> {/* text-sm sm:text-base font-semibold rounded-lg px-3 py-2*/}
+                          Login with Broker
+                          </span>) }
+                         
+                          <EventGridCards brokers={brokersLogged}/>
+                        
+                        </motion.div>
+
+                      </div>
+                    </>
+
+                 ) :
                  ( <>
 
                     {/* Icon Section */}
@@ -278,7 +453,12 @@ useEffect ( () => {
                     <p className="text-slate-500 leading-relaxed mb-6">
                       {card.desc}
                     </p>
-                </>))}
+                </>)
+                
+               ) 
+              )
+             )
+            }
 
               
 
@@ -297,89 +477,17 @@ useEffect ( () => {
                
         <div  className={`
                     group relative cursor-pointer
-                      "md:col-span-1  "}
+                      "md:col-span-2  "}
                     `}>
-              { cacheLastQuote  && (<>
-                  <div style={{ marginTop: '20px' }}>
-                    <h1 id="view_title" className="font-bold mb-3  text-blue-600/80 group-hover:text-amber-600 title has-text-centered">
-                        Last visited Stock Update {companyName}
-                    </h1>
-                   {/*   <StockAreaChart data={data} />*/}
-                </div>
+         
+           <div  className={`
+            group relative cursor-pointer
+              "md:col-span-1  "}
+            `}>
+               
 
-                    <ul className="view_list">
-                        <li>Company Name: <span>{companyName ?? cacheLastQuote.meta?.companyName}</span></li>
-                        <li>Symbol: <span>{ symbol ?? cacheLastQuote.symbol}</span></li>
-                        <li>Sector: <span>{sector ?? cacheLastQuote.meta?.sector}</span></li>
-                        <li>Current Price: <span id="currPrice">₹ {latestPrice ?? cacheLastQuote.meta?.latestPrice}</span></li>
-                        <li>Open Price: <span>₹ {open ?? cacheLastQuote.meta?.open}</span></li> 
-                        <li>High Price: <span>₹ {high ?? cacheLastQuote.meta?.high}</span></li> 
-                        <li>Low Price: <span>₹ {low ?? cacheLastQuote.meta?.low}</span></li> 
-                        <li>Close Price: <span>₹ {close ?? cacheLastQuote.meta?.close}</span></li>
-                        <li>52 Week High: <span>₹ {week52High ?? cacheLastQuote.meta?.week52High}</span></li>
-                        <li>52 Week Low: <span>₹ {week52Low ?? cacheLastQuote.meta?.week52Low}</span></li>
-                    </ul>
-              </> ) } 
-               { (paymentData && paymentData.order)  ? (<>  
-                   <div className={` col-span-1   flex flex-col   ${isMobile ? "gap-6 mt-12 py-4": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
-
-                  {/* CTA bg-white rounded-2xl shadow-sm p-4  sm:mb-4 flex flex-col items-center text-center
-                  below is desktop stick behavior */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`bg-white rounded-2xl shadow-sm p-4 sm:p-5    ${isMobile ? "  mt-12 py-4": ""}  flex flex-col items-center text-center    sticky lg:top-4 " `} 
-                >
-                  <span className="bg-brandblue text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-2 "> {/* text-sm sm:text-base font-semibold rounded-lg px-3 py-2*/}
-                   Payment Received !! 
-                  </span>
-
-                  <button 
-                    onClick={prepareVirtualAccountScreen}
-                    className="mt-3 w-full bg-brandgreenlight hover:bg-white border border-transparent hover:border-brandgreen transition rounded-full py-2 flex items-center justify-center gap-2"
-                  >
-                    <span className="text-brandgreen text-xs  sm:text-sm  font-bold">
-                      Create User 
-                    </span>
-                    <span className="bg-brandblue px-2 py-1 text-white text-xs  sm:text-sm  rounded-md">
-                      Virtual Account
-                    </span>
-                  </button>
-                </motion.div>
-
-               </div>
-
-                </>) :  (<> 
-              {/* // 👈 THIS IS THE MAGIC */}
-                <div className={` col-span-1   flex flex-col   ${isMobile ? "gap-6 mt-12 py-4": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
-
-                  {/* CTA bg-white rounded-2xl shadow-sm p-4  sm:mb-4 flex flex-col items-center text-center
-                  below is desktop stick behavior */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`bg-white rounded-2xl shadow-sm p-4 sm:p-5    ${isMobile ? "  mt-12 py-4": ""}  flex flex-col items-center text-center    sticky lg:top-4 " `} 
-                >
-                  <span className="bg-brandblue text-white   text-xs sm:text-sm md:text-base  font-semibold rounded-lg px-3 py-2 "> {/* text-sm sm:text-base font-semibold rounded-lg px-3 py-2*/}
-                    Try Virtual Trading
-                  </span>
-
-                  <button 
-                    onClick={preparePaymentScreen}
-                    className="mt-3 w-full bg-brandgreenlight hover:bg-white border border-transparent hover:border-brandgreen transition rounded-full py-2 flex items-center justify-center gap-2"
-                  >
-                    <span className="text-brandgreen text-xs  sm:text-sm  font-bold">
-                      Trial with Fyers
-                    </span>
-                    <span className="bg-brandblue px-2 py-1 text-white text-xs  sm:text-sm  rounded-md">
-                      Rates
-                    </span>
-                  </button>
-                </motion.div>
-
-               </div> </>)}
-
-
+          </div>
+              
 
 
          </div>
