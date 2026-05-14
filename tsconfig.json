@@ -40,6 +40,9 @@
     "providers/ModalProvider.jsx",
     "app/company/[slug]/page.jsx",
     "app/GPayButton.jsx"
-],
-  "exclude": ["node_modules"]
+  ],
+  "exclude": [
+    "node_modules",
+    "screens"
+  ]
 }

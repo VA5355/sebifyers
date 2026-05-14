@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         {/* 🔹 External stylesheets (GLOBAL) */}
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+{/*<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>*/}
           <link rel="stylesheet" href="/css/globals.css" />
           <link rel="stylesheet" href="bulma/css/bulma.min.css" />
         	 <link  type="text/css" rel="stylesheet" href="/bootcss/bootstrap.min.css"/>

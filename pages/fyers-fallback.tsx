@@ -267,7 +267,30 @@ useEffect(() => {
         src="/js/bootstrap.min.js"
         strategy="afterInteractive"
       />
-
+       <Script
+        src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"
+        strategy="afterInteractive"
+      />
+       <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/4.1.13/lib.min.js"
+        strategy="afterInteractive"
+      />
+       <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/4.1.13/colors.min.js"
+        strategy="afterInteractive"
+      />
+       <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/4.1.13/default-theme.min.js"
+        strategy="afterInteractive"
+      />
+       <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/4.1.13/flatten-color-palette.min.js"
+        strategy="afterInteractive"
+      />
+       <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/4.1.13/plugin.min.js"
+        strategy="afterInteractive"
+      />
       <Script
         src="https://assets.fyers.in/Lib/intlTelInput.min.js"
         strategy="afterInteractive"

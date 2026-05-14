@@ -10,6 +10,7 @@ const nextConfig = {
       ignored: [
         '**/node_modules/**',
         '**/.git/**',
+        '**/screens/**',
         'C:/hiberfil.sys',
         'C:/pagefile.sys',
         'C:/swapfile.sys',
