@@ -14,6 +14,35 @@ import  TrialVirtualGoogleBusinesPayScreenImproved  from '@/app/TrialVirtualGoog
 import { useSelector } from 'react-redux';
 import { selectPaymentData } from "@/redux/slices/paymentSlice"
 import EventGridCards from "./EventGridCards";
+
+function isValidJwtStructure(token )  {
+  if (typeof token !== "string") return false;
+
+  const parts = token.split(".");
+  if (parts.length !== 3) return false;
+
+  try {
+    const [header, payload] = parts;
+
+    const decode = (str ) =>
+      JSON.parse(
+        decodeURIComponent(
+          atob(str.replace(/-/g, "+").replace(/_/g, "/"))
+            .split("")
+            .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
+        )
+      );
+
+    decode(header);
+    decode(payload);
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 const GridCards = () => {
        const [companyName, setCompanyName]  = useState('');
     const [symbol, setSymbol]  = useState('');
@@ -58,8 +87,8 @@ const GridCards = () => {
                         }
                         catch(ere ){
                             console.log("local storage parsing errors can ignore");
-                             if (fKey !==undefined && fKey !==null  ) {
-                            //  setBrokersLogged( bks => {  bks.push("FYERS"); } );
+                             if (fKey !==undefined && fKey !==null  && isValidJwtStructure(fKey)) {
+                              setBrokersLogged( bks => {  bks.push(listBrkKey.key); } );
                               logged = true;
                             };
                         }
