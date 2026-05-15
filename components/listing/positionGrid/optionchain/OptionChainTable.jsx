@@ -72,9 +72,15 @@ import { selectSpotBySymbol } from '@/redux/selectors/webSockSelector';
              tableGlobalExipryMapper.set('2026-04-14','26A14' )
              tableGlobalExipryMapper.set('2026-04-21','26A21')
              tableGlobalExipryMapper.set('2026-04-28','26A28' )
-
-
-
+                tableGlobalExipryMapper.set('2026-05-19','26M19' )
+              tableGlobalExipryMapper.set('2026-05-26','26M26' )
+               tableGlobalExipryMapper.set('26M26','2026-05-26' )
+tableGlobalExipryMapper.set('2026-06-02','26J02' )
+tableGlobalExipryMapper.set('2026-06-09','26J09' )
+tableGlobalExipryMapper.set('2026-06-16','26J16' )
+tableGlobalExipryMapper.set('2026-06-23','26J23' )
+tableGlobalExipryMapper.set('2026-06-30','26J30' )
+tableGlobalExipryMapper.set('26J30','2026-06-30' )
 
       
 // --- Mocking External Dependencies for Runnable Demo ---
@@ -491,6 +497,7 @@ const mockExpiryDates = [  //this is a configuration setting to be set every cha
     '2026-04-21',
     '2026-04-28' ,
      '2026-05-05' ,
+        '2026-05-19' ,
      '2026-05-26' ,
        '2026-06-30' ,
        '2026-09-29' ,

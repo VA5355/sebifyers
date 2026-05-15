@@ -700,6 +700,49 @@ const expirySymbols = [
   { id: "402580021", symbol: "NIFTY26A2826400CE", k: 90 },
   { id: "402580022", symbol: "NIFTY26A2826400PE", k: 95 },
 
+  // MAY SERIES 
+    //19
+      { id: "402580023", symbol: "NIFTY26M1923300CE", k: 12 },
+  { id: "402580024", symbol: "NIFTY26M1923300PE", k: 18 },
+
+{ id: "402580025", symbol: "NIFTY26M1923400CE", k: 12 },
+  { id: "402580026", symbol: "NIFTY26M1923400PE", k: 18 },
+
+    { id: "402580027", symbol: "NIFTY26M1923500CE", k: 13 },
+  { id: "402580028", symbol: "NIFTY26M1923500PE", k: 23 },
+     { id: "402580029", symbol: "NIFTY26M1923600CE", k: 15 },
+  { id: "402580030", symbol: "NIFTY26M1923600PE", k: 21 },
+   { id: "402580031", symbol: "NIFTY26M1923700CE", k: 44 },
+  { id: "402580032", symbol: "NIFTY26M1923700PE", k: 11 },
+
+   { id: "402580033", symbol: "NIFTY26M1923800CE", k: 54 },
+  { id: "402580034", symbol: "NIFTY26M1923800PE", k: 62 },
+
+    { id: "402580035", symbol: "NIFTY26M1923900CE", k: 44 },
+  { id: "402580036", symbol: "NIFTY26M1923900PE", k: 11 },
+
+   //26 
+   { id: "402580037", symbol: "NIFTY26M2623300CE", k: 12 },
+  { id: "402580038", symbol: "NIFTY26M2623300PE", k: 18 },
+
+{ id: "402580039", symbol: "NIFTY26M2623400CE", k: 12 },
+  { id: "402580040", symbol: "NIFTY26M2623400PE", k: 18 },
+
+    { id: "402580041", symbol: "NIFTY26M2623500CE", k: 13 },
+  { id: "402580042", symbol: "NIFTY26M2623500PE", k: 23 },
+     { id: "402580043", symbol: "NIFTY26M2623600CE", k: 15 },
+  { id: "402580044", symbol: "NIFTY26M2623600PE", k: 21 },
+   { id: "402580045", symbol: "NIFTY26M2623700CE", k: 44 },
+  { id: "402580046", symbol: "NIFTY26M2623700PE", k: 11 },
+
+   { id: "402580047", symbol: "NIFTY26M2623800CE", k: 54 },
+  { id: "402580048", symbol: "NIFTY26M2623800PE", k: 62 },
+
+    { id: "402580049", symbol: "NIFTY26M2623900CE", k: 44 },
+  { id: "402580050", symbol: "NIFTY26M2623900PE", k: 11 },
+
+
+
 
   /*
    search and replace usign regex in EM Editoe 
@@ -739,6 +782,15 @@ const expirySymbols = [
   tableGlobalExipryMapper.set('26J20', '2026-01-20')
     tableGlobalExipryMapper.set('26J27', '2026-01-27')
 
+     tableGlobalExipryMapper.set('2026-05-19','26M19' )
+              tableGlobalExipryMapper.set('2026-05-26','26M26' )
+               tableGlobalExipryMapper.set('26M26','2026-05-26' )
+tableGlobalExipryMapper.set('2026-06-02','26J02' )
+tableGlobalExipryMapper.set('2026-06-09','26J09' )
+tableGlobalExipryMapper.set('2026-06-16','26J16' )
+tableGlobalExipryMapper.set('2026-06-23','26J23' )
+tableGlobalExipryMapper.set('2026-06-30','26J30' )
+tableGlobalExipryMapper.set('26J30','2026-06-30' )
 
 export function generateOptionChain({
   spot,
