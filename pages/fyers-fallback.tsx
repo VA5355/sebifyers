@@ -53,7 +53,33 @@ type Props = {
   state: string;
   triggerredirectpython: string;
 };
+function isValidJwtStructure(token: unknown): boolean {
+  if (typeof token !== "string") return false;
 
+  const parts = token.split(".");
+  if (parts.length !== 3) return false;
+
+  try {
+    const [header, payload] = parts;
+
+    const decode = (str: string) =>
+      JSON.parse(
+        decodeURIComponent(
+          atob(str.replace(/-/g, "+").replace(/_/g, "/"))
+            .split("")
+            .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
+        )
+      );
+
+    decode(header);
+    decode(payload);
+
+    return true;
+  } catch {
+    return false;
+  }
+}
 export default function FyersFallback(props: Props) {
   const {
     auth_code,
@@ -109,7 +135,7 @@ const [mounted, setMounted] = useState(false);
 
       const tokenData = await res.json();
 
-      console.log(
+     /* console.log(
         "processAuth worked Access Token available"
       );
 
@@ -135,6 +161,38 @@ const [mounted, setMounted] = useState(false);
         "fyers_token_data",
         JSON.stringify(tokenData)
       );
+      */
+        if(tokenData !== undefined && tokenData.access_token !== undefined && tokenData.refresh_token !== undefined ){
+
+           if( isValidJwtStructure(tokenData.access_token) && isValidJwtStructure(tokenData.refresh_token)){
+                 localStorage.setItem("fyers_access_token",tokenData.access_token);
+                   localStorage.setItem("fyers_refresh_token",tokenData.refresh_token  );
+                     localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+                     console.log('menu component processAuth :::  processAuth worked Access Token availalbe ');
+           }
+           /*
+             if( tokenData.access_token !== '' ){
+               
+             }
+             if( tokenData.refresh_token !== '' ){
+                 
+             }
+             if( tokenData.refresh_token !== '' && tokenData.access_token !== ''){
+                  
+             }*/
+           
+          }
+        
+
+
+
+
+
+
+
+
+
+
     } catch (err) {
       console.log(
         "process Auth error :: " +

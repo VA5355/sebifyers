@@ -33,6 +33,35 @@ const platformMapper = [
     {key: 1, title: "Alpha-Vantage"},
     {key: 2, title: "Fyers"},
 ]
+
+function isValidJwtStructure(token: unknown): boolean {
+  if (typeof token !== "string") return false;
+
+  const parts = token.split(".");
+  if (parts.length !== 3) return false;
+
+  try {
+    const [header, payload] = parts;
+
+    const decode = (str: string) =>
+      JSON.parse(
+        decodeURIComponent(
+          atob(str.replace(/-/g, "+").replace(/_/g, "/"))
+            .split("")
+            .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
+        )
+      );
+
+    decode(header);
+    decode(payload);
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 const Menu = () => {
     const [sortType, setSortType] = useState('1')
     let globalUserCheck  :any = undefined;
@@ -261,11 +290,29 @@ const Menu = () => {
             {  method: "POST",  headers: {  "Content-Type": "application/json" }, body: JSON.stringify({ auth_code: authCode  })
             } );
           const tokenData = await res.json();
-          console.log(tokenData);
-          console.log('menu component processAuth :::  processAuth worked Access Token availalbe ');
-          localStorage.setItem("fyers_access_token",tokenData.access_token);
-          localStorage.setItem("fyers_refresh_token",tokenData.refresh_token || "");
-          localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+         // console.log(tokenData);
+              if( isValidJwtStructure(tokenData.access_token) && isValidJwtStructure(tokenData.refresh_token)){
+                 localStorage.setItem("fyers_access_token",tokenData.access_token);
+                   localStorage.setItem("fyers_refresh_token",tokenData.refresh_token  );
+                     localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+                     console.log('menu component processAuth :::  processAuth worked Access Token availalbe ');
+           }
+         /* if(tokenData !== undefined && tokenData.access_token !== undefined && tokenData.access_token !== null ){
+             if( tokenData.access_token !== '' ){
+                  localStorage.setItem("fyers_access_token",tokenData.access_token);
+             }
+             if( tokenData.refresh_token !== '' ){
+                   localStorage.setItem("fyers_refresh_token",tokenData.refresh_token  );
+             }
+             if( tokenData.refresh_token !== '' && tokenData.access_token !== ''){
+                    localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+                     console.log('menu component processAuth :::  processAuth worked Access Token availalbe ');
+             }
+           
+          }*/
+        
+        
+          
         // navigate("/dashboard");
         } catch (err) {   console.log ('menu component processAuth :::  process Auth error :: ' + JSON.stringify(err));
           //setError('process Auth error :: ' + JSON.stringify(err))

@@ -57,11 +57,27 @@ const [loading, setLoading] = useState(true);
             {  method: "POST",  headers: {  "Content-Type": "application/json" }, body: JSON.stringify({ auth_code: authCode  })
             } );
           const tokenData = await res.json();
-          console.log(tokenData);
+          /*console.log(tokenData);
           console.log('processAuth worked Access Token availalbe ');
           localStorage.setItem("fyers_access_token",tokenData.access_token);
           localStorage.setItem("fyers_refresh_token",tokenData.refresh_token || "");
-          localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+          localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));*/
+              if(tokenData !== undefined && tokenData.access_token !== undefined && tokenData.access_token !== null ){
+             if( tokenData.access_token !== '' ){
+                  localStorage.setItem("fyers_access_token",tokenData.access_token);
+             }
+             if( tokenData.refresh_token !== '' ){
+                   localStorage.setItem("fyers_refresh_token",tokenData.refresh_token  );
+             }
+             if( tokenData.refresh_token !== '' && tokenData.access_token !== ''){
+                    localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
+                     console.log('menu component processAuth :::  processAuth worked Access Token availalbe ');
+             }
+           
+          }
+        
+
+
         // navigate("/dashboard");
         } catch (err) {   console.log ('process Auth error :: ' + JSON.stringify(err));
           setError('process Auth error :: ' + JSON.stringify(err))
