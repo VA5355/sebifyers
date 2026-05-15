@@ -396,7 +396,7 @@ const Menu = () => {
                     }) ;
                     const result = Promise.all([    fyerLoginProm()]);
                      // run a interval to check the fyersToken 
-                    globalUserCheck  =  setInterval( async() => {
+                    globalUserCheck  =  setTimeout( async() => {
 
                         
                         let result =   await FYERSAPI.get('/fyersgloballogin' )
@@ -419,12 +419,14 @@ const Menu = () => {
                                        setShowBrokerModal(true);     setOpenBrokerModal(true);        
                                 }
                                clearInterval(globalUserCheck);
+                            
                             }
                             else{
                                 console.log("User is awaiting authorization ");
+                                globalUserCheck = setInterval( () => { globalUserCheck() }, 5000);
                             }
                         }
-                     },5000);
+                     },100);
                      // NOTE the globalUserCheck in the Storage and regularly clear it when user authenticated 
                         StorageUtils._save(CommonConstants.globalUserCheck, globalUserCheck)
                        result.then((fyerslogres:any ) => { 

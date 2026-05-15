@@ -32,23 +32,27 @@ const GridCards = () => {
   const [gpayOrderId, setGpayOrderId] = useState(null);
    const [gpayCustomer, setGpayCustomer] = useState(null);
   const paymentData = useSelector( selectPaymentData);
-
+  //[ { broker:'FYERS',  key:"fyers_access_token" } .. ] 
+  const  brokerAccessTokenList     = CommonConstants.brokerAccessTokenKeys;
            // CHECK MOBILE OR DESTOP
            const isMobile = useIsMobile();
         // CHECK LOGGED IN TOKEN TYPE 
         const [brokersLogged , setBrokersLogged ]  = useState ([]);
         const [loggedInBroker , setLoggedInBroker ] = useState ( (broker) => { 
                 let logged = false;
+                 brokerAccessTokenList.forEach(listBrkKey => {
 
                 Object.keys(localStorage).forEach(key => {
-                      if(key.indexOf('fyers') > -1 ){
+                    
+                  if(listBrkKey.key.toUpperCase() === key.toUpperCase()) { 
+                      if(key.indexOf(listBrkKey.key) > -1 ){
                         let fKey = undefined; 
                         try { 
                             console.log("storage key "+key);
                             fKey =  StorageUtils._retrieve(key);
-                              console.log("storage value  "+JSON.stringify(fKey));
+                            //  console.log("storage value  "+JSON.stringify(fKey));
                             if (fKey !==undefined && fKey !==null &&  fKey.isValid) {
-                              setBrokersLogged( bks => {  bks.push("FYERS");  return bks;} );
+                              setBrokersLogged( bks => {  bks.push(listBrkKey.key);  return bks;} );
                               logged = true;
                             };
                         }
@@ -59,13 +63,12 @@ const GridCards = () => {
                               logged = true;
                             };
                         }
-                        
-                            
-
-
+                   
+                        }
                       }
                     
                     });
+              });          
                       return logged;
         })  
         const  [isBrokerFyers , setIsBrokerFyers] = useState(fy => { 

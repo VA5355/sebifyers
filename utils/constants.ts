@@ -483,7 +483,8 @@ export const CommonConstants = {
 
        niftySPOTINDEX : 'niftySPOTINDEX',
        NIFTYOPTIONSTRIKES : 'NIFTYOPTIONSTRIKES',
-       LASTSTOCKQUOTENSEYAHOO : 'LASTSTOCKQUOTENSEYAHOO'
+       LASTSTOCKQUOTENSEYAHOO : 'LASTSTOCKQUOTENSEYAHOO',
+       brokerAccessTokenKeys: [ { broker:'FYERS',  key:"fyers_access_token" } , { broker:'ICICI',  key:"icici_access_token" }] // this way there could be Upstox , Zeroda etc. 
     }
 
 /*  JSON.stringify( { "top_gainers":  otherData ,  "top_losers":loserData } )
