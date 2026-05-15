@@ -305,7 +305,7 @@ const Menu = () => {
                         let res :any = undefined;
                      if (!checkUserLogged()) { 
                       //let res =  await FYERSAPI.get('/fyerscallback' )
-                             await processAuth();
+                         
                          (async () =>  {
                                 let pythonAuthUrl = await authLocalFyers();   
                                 console.log('FYERS-ERROR TSX pythonAuthUrl  '+pythonAuthUrl);
@@ -335,7 +335,8 @@ const Menu = () => {
                                     setShowBrokerModal(true);setOpenBrokerModal(true);
                             }
                             })();
-
+                            // CHECK for GENERATE TOKEN causing delay is Modal display for first time Fyers Broker select in the Menu Component
+                                await processAuth();    
 
 
                        

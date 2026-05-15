@@ -26,7 +26,8 @@ const HeaderStatic = () => {
       {/* Static Search Bar */}
       <div className="w-full md:w-auto px-3 pb-2">
         <div className="flex-1 mx-2 md:mx-4">
-          <div className="flex items-center bg-gray-100 dark:bg-neutral-800 rounded-full px-3 py-2 md:px-4 md:py-2 w-full min-w-[250px]">
+          {/* dark:bg-neutral-800  mobile display turns black */}
+          <div className="flex items-center bg-gray-100  rounded-full px-3 py-2 md:px-4 md:py-2 w-full min-w-[250px]">
             <SearchNormal className="text-gray-500 mr-2" size={16} />
 
             {/* STATIC INPUT */}
