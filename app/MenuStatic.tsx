@@ -10,8 +10,8 @@ const MenuStatic = () => {
       {/* Mobile Select dark:bg-neutral-800  below causes mobile black */}
       <select
         defaultValue="Educate"
-        className="p-2 text-sm rounded-lg w-full md:hidden bg-gray-100  text-black dark:text-white"
-      >
+        className="p-2 text-sm rounded-lg w-full md:hidden bg-gray-100  text-black"
+      > {/*  dark:text-white  above causes mobile black */}
         <option value="Educate">Educate</option>
         <option value="Observe">Observe</option>
         <option value="Trade">Trade</option>
@@ -32,8 +32,8 @@ const MenuStatic = () => {
           <button
             key={index}
             className="mx-3 hover:scale-105 rounded-lg transition-all py-1 cursor-pointer"
-          >
-            <h1 className="text-md  h5 fw-bold text-black dark:text-white hover:text-blue-500 font-semibold">
+          >  {/*   dark:text-white above causes mobile black */}
+            <h1 className="text-md  h5 fw-bold text-black  hover:text-blue-500 font-semibold">
               {item}
             </h1>
           </button>
@@ -45,9 +45,10 @@ const MenuStatic = () => {
 
       {/* Platform Select dark:bg-neutral-800 below causes mobile black */}
       <div className="md:flex mr-6 flex-wrap items-center justify-between">
+         {/* dark:text-gray-100 above causes mobile black */}
         <select
           defaultValue="1"
-          className="p-2 focus-visible:outline-none rounded-lg bg-gray-100  text-gray-900 dark:text-gray-100"
+          className="p-2 focus-visible:outline-none rounded-lg bg-gray-100  text-gray-900 "
         >
           <option value="1">Alpha-Vantage</option>
           <option value="2">Fyers</option>

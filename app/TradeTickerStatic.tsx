@@ -38,8 +38,8 @@ const tickerData = [
 
 const TradeTickerStatic = () => {
   return (
-    <div className="flex-wrap gap-2 relative px-3 ml-6 md:ml-[88px] mr-6 md:mr-[80px] overflow-hidden bg-gray-100 dark:bg-neutral-900 border-y border-gray-200 dark:border-neutral-800">
-      
+    <div className="flex-wrap gap-2 relative px-3 ml-6 md:ml-[88px] mr-6 md:mr-[80px] overflow-hidden bg-gray-100  border-y border-gray-200 dark:border-neutral-800">
+           {/* dark:bg-black dark:bg-neutral-900 above causes mobile black */}
       <motion.div
         className="w-full flex gap-4 py-2 px-4 whitespace-nowrap"
         animate={{ x: ["0%", "-50%"] }}
@@ -56,8 +56,8 @@ const TradeTickerStatic = () => {
           return (
             <div
               key={index}
-              className="flex items-center gap-2 text-sm font-medium text-gray-800 dark:text-gray-100"
-            >
+              className="flex items-center gap-2 text-sm font-medium text-gray-800"
+            >     {/* dark:bg-black  dark:text-gray-100 above causes mobile black */}
               <span
                 className="font-semibold cursor-pointer"
                 title={item.companyname}
