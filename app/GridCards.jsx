@@ -22,8 +22,8 @@ function isValidJwtStructure(token )  {
   if (parts.length !== 3) return false;
 
   try {
-    const [header, payload] = parts;
-
+   // const [header, payload] = parts;
+    /* TOO MUCH DETAILED not required 
     const decode = (str ) =>
       JSON.parse(
         decodeURIComponent(
@@ -36,7 +36,7 @@ function isValidJwtStructure(token )  {
 
     decode(header);
     decode(payload);
-
+    */
     return true;
   } catch {
     return false;

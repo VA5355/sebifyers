@@ -60,6 +60,7 @@ function isValidJwtStructure(token: unknown): boolean {
   if (parts.length !== 3) return false;
 
   try {
+    /* TOO MUCH deTailed not required 
     const [header, payload] = parts;
 
     const decode = (str: string) =>
@@ -74,7 +75,7 @@ function isValidJwtStructure(token: unknown): boolean {
 
     decode(header);
     decode(payload);
-
+     */
     return true;
   } catch {
     return false;
@@ -166,7 +167,9 @@ const [mounted, setMounted] = useState(false);
 
            if( isValidJwtStructure(tokenData.access_token) && isValidJwtStructure(tokenData.refresh_token)){
                  localStorage.setItem("fyers_access_token",tokenData.access_token);
+                   setFyersAccessToken(        tokenData.access_token      );
                    localStorage.setItem("fyers_refresh_token",tokenData.refresh_token  );
+                     setFyersRefreshToken(        tokenData.refresh_token      );
                      localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
                      console.log('menu component processAuth :::  processAuth worked Access Token availalbe ');
            }

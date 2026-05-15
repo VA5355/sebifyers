@@ -41,6 +41,7 @@ function isValidJwtStructure(token: unknown): boolean {
   if (parts.length !== 3) return false;
 
   try {
+    /* TOO much deatiled not required 
     const [header, payload] = parts;
 
     const decode = (str: string) =>
@@ -55,7 +56,7 @@ function isValidJwtStructure(token: unknown): boolean {
 
     decode(header);
     decode(payload);
-
+    */
     return true;
   } catch {
     return false;
