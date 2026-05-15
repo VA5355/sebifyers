@@ -81,14 +81,14 @@ const GridCards = () => {
                             fKey =  StorageUtils._retrieve(key);
                             //  console.log("storage value  "+JSON.stringify(fKey));
                             if (fKey !==undefined && fKey !==null &&  fKey.isValid) {
-                              setBrokersLogged( bks => {  bks.push(listBrkKey.key);  return bks;} );
+                              setBrokersLogged( bks => {  bks.push(listBrkKey.broker);  return bks;} );
                               logged = true;
                             };
                         }
                         catch(ere ){
                             console.log("local storage parsing errors can ignore");
-                             if (fKey !==undefined && fKey !==null  && isValidJwtStructure(fKey)) {
-                              setBrokersLogged( bks => {  bks.push(listBrkKey.key); } );
+                             if (fKey !==undefined && fKey !==null   ) {
+                              setBrokersLogged( bks => {  bks.push(listBrkKey.broker); } );
                               logged = true;
                             };
                         }
