@@ -89,7 +89,7 @@ const GridCards = () => {
                             console.log("local storage parsing errors can ignore");
                               fKey =  localStorage.getItem(key);
                              if (fKey !==undefined && fKey !==null   ) {
-                              setBrokersLogged( bks => {  bks.push(listBrkKey.broker); } );
+                              setBrokersLogged( bks => {  bks.push(listBrkKey.broker); return bks;} );
                               logged = true;
                             };
                         }
