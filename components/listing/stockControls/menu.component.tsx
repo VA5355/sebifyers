@@ -426,7 +426,7 @@ const Menu = () => {
                                 }
                                clearInterval(globalUserCheck);
                                // close the start authorization  ... modal  on broker drop down select as it casuse time out and UI is stuck 
-                                     (spinnerIsAvailable ?   setTimeout( () => { hideModal 
+                                     (spinnerIsAvailable ?   setTimeout( () => { hideModal() 
                                          spinnerIsAvailable =false;
                                      } , 300): console.log("Spinner unavailavle to close ") ) ; 
                             
