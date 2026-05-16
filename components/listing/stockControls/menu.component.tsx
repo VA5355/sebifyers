@@ -377,6 +377,10 @@ const Menu = () => {
                                     params.toString()
                                 );*/
                               //  window.location.assign(pythonAuthUrl );
+                               // close the start authorization  ... modal  on broker drop down select as it casuse time out and UI is stuck 
+                                     (spinnerIsAvailable ?   setTimeout( () => { hideModal() 
+                                         spinnerIsAvailable =false;
+                                     } , 300): console.log("Spinner unavailavle to close ") ) ; 
                             if( pythonAuthUrl !== undefined && pythonAuthUrl !==''){
                                 // res =   popupCenter(pythonAuthUrl, "Fyers Signin python generated url ")
                                  setBrokerAuthUrl(pythonAuthUrl);
@@ -425,10 +429,7 @@ const Menu = () => {
                                        setShowBrokerModal(true);     setOpenBrokerModal(true);        
                                 }
                                clearInterval(globalUserCheck);
-                               // close the start authorization  ... modal  on broker drop down select as it casuse time out and UI is stuck 
-                                     (spinnerIsAvailable ?   setTimeout( () => { hideModal() 
-                                         spinnerIsAvailable =false;
-                                     } , 300): console.log("Spinner unavailavle to close ") ) ; 
+                              
                             
                             }
                             else{
