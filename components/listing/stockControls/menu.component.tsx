@@ -16,6 +16,7 @@ import { CommonConstants } from '@/utils/constants';
 import { AnyNode } from 'postcss';
 import BrokerAuthModalImproved from '@/app/BrokerAuthModalImproved';
 import BrokerAuthModal from '@/app/BrokerAuthModal';
+  import { useModal } from '@/providers/ModalProvider';
 
 const arr = [
     {key: 1, title: "Educate"},
@@ -72,7 +73,7 @@ const Menu = () => {
    const [brokerAuthUrl, setBrokerAuthUrl] = useState("");
     const [openBrokerModal, setOpenBrokerModal] =
     useState(false);
-
+      const { showFramerModal, hideModal } = useModal();
     const [platformType, setPlatformType] = useState('1')
     const tab = useSelector((state: GlobalState) => state.misc.tab)
     const gainers = useSelector((state: GlobalState) => state.stock.gainers)
@@ -81,7 +82,7 @@ const Menu = () => {
     const currentPlatform = useSelector((state: GlobalState) => state.misc.platformType)
     //const currentPlatform = useSelector((state: GlobalState) => state.misc.platformType)
     const dispatch = useDispatch();
-
+    let spinnerIsAvailable = false;
 
     // =====================================================
   // SUCCESS CALLBACK
@@ -259,6 +260,7 @@ const Menu = () => {
     const checkUserLogged = () => { 
                  // IFF Logged in cehck
         let logd = false;
+        try {
          const res1 = StorageUtils._retrieve(CommonConstants.fyersToken);
         if (res1.isValid && res1.data !== null &&  res1.data !== undefined && res1.data !== undefined) {
             
@@ -268,7 +270,7 @@ const Menu = () => {
                 logd = true;
                 // check for access toekn 
                  let aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
-                if (aces_token !== undefined || aces_token ==null){
+                if (aces_token !== undefined && aces_token !==null){
                      //   setShowBrokerModal(false)                      
                     StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
                     }
@@ -276,9 +278,12 @@ const Menu = () => {
                      logd = false;
                     //    setShowBrokerModal(true)     
                 }
-
-            }
-
+             }
+         } 
+        }
+        catch(userr){
+                    console.log("authorisation check error can ignore  ");
+                    logd = false;
         }
         return logd;
     }
@@ -420,6 +425,10 @@ const Menu = () => {
                                        setShowBrokerModal(true);     setOpenBrokerModal(true);        
                                 }
                                clearInterval(globalUserCheck);
+                               // close the start authorization  ... modal  on broker drop down select as it casuse time out and UI is stuck 
+                                     (spinnerIsAvailable ?   setTimeout( () => { hideModal 
+                                         spinnerIsAvailable =false;
+                                     } , 300): console.log("Spinner unavailavle to close ") ) ; 
                             
                             }
                             else{
@@ -710,6 +719,11 @@ const Menu = () => {
                                     if (e.target.value == '1') {
                                         console.log(" selected " + e.target.value)
                                     } else if (e.target.value == '2') {
+                                          showFramerModal({ 
+                                         status: 'loading', 
+                                          message: `starting authorization ...` 
+                                          }); 
+                                        spinnerIsAvailable = true;
                                         logByPlatform()
                                         console.log(" selected " + e.target.value)
                                     } else if (e.target.value == '3') {
