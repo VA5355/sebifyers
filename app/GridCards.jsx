@@ -328,7 +328,8 @@ useEffect ( () => {
             transition={{ delay: index * 0.1 }}
             whileHover={{ y: -8, scale: 1.02 }}
             className={`
-             group relative cursor-pointer ${index !== 3 || index !== 4  || index !== 5  ? "w-[290px] ml-1 pl-1 " : ""}
+             group relative cursor-pointer ${index !== 3   || index !== 4  ? "w-[290px] ml-1 pl-1 " : ""}
+             ${ index === 5 ? " ml-12 pl-1":''}
             ${index === 3 ||  index === 4 || index === 5 ? "" : ""}
              `}
           >
@@ -338,7 +339,8 @@ useEffect ( () => {
             {/* The Main Card */}
             <div className={`
                 relative bg-white p-8 rounded-3xl border border-blue-50/50
-                flex flex-col h-full ${index !== 3 || index !== 4  || index !== 5  ? "w-[250px] ml-2" : ""}
+                flex flex-col h-full ${index !== 3 || index !== 4 || index !== 5  ? "w-[250px] ml-2" : ""}
+                ${index === 5  ? "w-[250px] ml-12" : ""}
                 ${index === 3 ? "min-h-[420px] bg-gradient-to-b from-white to-blue-50/40" : ""}
                 shadow-[0_20px_50px_-12px_rgba(30,58,138,0.1),0_10px_30px_-10px_rgba(217,119,6,0.15)]
                 group-hover:shadow-[0_30px_60px_-12px_rgba(30,58,138,0.2),0_15px_40px_-10px_rgba(217,119,6,0.25)]
