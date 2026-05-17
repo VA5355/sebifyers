@@ -45,7 +45,7 @@ const Header = () => {
                 <div className="flex-1 mx-2 md:mx-4">
                     <div className=" flex items-center bg-gray-100 dark:bg-neutral-800 rounded-full px-3 py-2 md:px-4 md:py-2 w-full ">
                         <SearchNormal className="text-gray-500 mr-2" size={16} />
-                        <input value={query} onChange={(e) => setQuery(e.target.value)} type="text"  placeholder="Search stocks..."
+                        <input id="deskTopHeaderQuery" value={query} onChange={(e) => setQuery(e.target.value)} type="text"  placeholder="Search stocks..."
                          className="bg-transparent text-sm md:text-xs w-full focus:outline-none "/>
                     </div>
                     {query !== '' && ( <SearchResults setQuery={setQuery} query={query} />  )}
@@ -81,7 +81,7 @@ const Header = () => {
                             <div
                                 className='ml-auto bg-greylight border-2  dark:bg-greydark flex items-center border-brandgreen justify-start py-1 md:py-1 px-2 md:px-4 rounded-lg w-11/12 mx-auto'>
                                 <SearchNormal className='text-gray-500 dark:text-white mr-2' size={17}/>
-                                <input onChange={(e) => {setQuery(e.target.value);  setOpen(false) } } type="text"
+                                <input id="mobileHeaderQuery" onChange={(e) => {setQuery(e.target.value);  setOpen(false) } } type="text"
                                        placeholder="search e.g, tencent, tesco"
                                        className='bg-transparent text-gray-500 text-sm dark:text-white py-1 focus-visible:outline-none'/>
                             </div> {/*<SearchResults setQuery={(val: string) => setQuery(val)} query={query}/> : null} */} 

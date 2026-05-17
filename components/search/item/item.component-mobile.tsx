@@ -1258,7 +1258,12 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                               dispatch(saveSelectedCard({ ...selecData, ticker:symbol }));
                                               console.log("mobile view button formatted Quote '  "+JSON.stringify(selecData));
                                                  
-                                                router.push(`/`); onSelect(); 
+                                                router.push(`/`); 
+                                                  let headerInput =   (document.getElementById("mobileHeaderQuery") as HTMLInputElement); //.value! = '';
+                                                 if(headerInput !==undefined ){
+                                                    headerInput.value = '';
+                                                 }
+                                                onSelect(); 
                                          }
                                        
                                           
@@ -1270,7 +1275,12 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                               dispatch(saveSelectedCard({ ...selecData, ticker:symbol }));
                                               console.log("desktop view button formatted Quote '  "+JSON.stringify(selecData));
                                                  
-                                                router.push(`/`); onSelect();
+                                                router.push(`/`);
+                                                 let headerInput =   (document.getElementById("deskTopHeaderQuery") as HTMLInputElement); //.value! = '';
+                                                 if(headerInput !==undefined ){
+                                                    headerInput.value = '';
+                                                 }
+                                                onSelect();
                                          }} 
                             
                                     }  }  className={`   text-xs font-medium
