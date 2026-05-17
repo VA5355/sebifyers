@@ -953,6 +953,7 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                     }  } 
                                   });
                   if(auth_code  !== null && auth_code !== undefined) {           
+                     if (auth_code !== '') {
                       console.log(`CHECK FYERS ACCESS_TOKEN GRANTED for READ ACCES for THE STOCK QUOTE ::::  ${sy}`)     
                             res =     await FYERSAPI.get('/fyersgetquote', {params: {auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
                              if (!res.status) {
@@ -966,6 +967,7 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                 
 
                               }
+                      }
                   
                      } 
                   //           await FYERSAPI.get('/apinseindia', {params: {auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
@@ -999,6 +1001,11 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                            dispatch(saveSelectedCard({ ...stock, ticker:ticker }));
                            //  router.push(`/company/${ticker}`);
                            router.push(`/`);
+                            let headerInput =   (document.getElementById("deskTopHeaderQuery") as HTMLInputElement); //.value! = '';
+                               if(headerInput !==undefined ){
+                                        headerInput.value = '';
+                                 console.log('fyers quote cleared header search query ')
+                                  }
                             onSelect();
                          //  dispatch(saveSelectedCard(data))
                        }
@@ -1056,6 +1063,11 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                              console.log("quoteData FYERSAPI.get('/fyersgetquote'  "+JSON.stringify(quoteData));
                              // router.push(`/company/${ticker}`);
                              router.push(`/`);
+                             let headerInput =   (document.getElementById("deskTopHeaderQuery") as HTMLInputElement); //.value! = '';
+                               if(headerInput !==undefined ){
+                                        headerInput.value = '';
+                                 console.log('alpha vantage cleared header search query ')
+                                  }
                                onSelect();
                             }
                             else {
