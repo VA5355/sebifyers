@@ -235,12 +235,12 @@ const hasChart = chartData?.length > 0;
                     {hasChart ? (
                       <> 
                         {/* <div className="flex flex-col lg:flex-row gap-4  space-y-12"> */} 
-                          <div className=" flex flex-col justify-center grid grid-cols-1 lg:grid-cols-3   gap-4 sm:gap-6">
+                     <div className=" flex flex-col justify-center grid grid-cols-1 lg:grid-cols-3   gap-4 sm:gap-6">
 
                       {/* LEFT: CHART SECTION w-full lg:w-2/3 space-y-4 
                       <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4"> 
                         */}
-                        <div className="  col-span-1 lg:col-span-2   flex flex-col gap-4">
+                        <div className="  col-span-1 lg:col-span-1   flex flex-col gap-4">
 
                           <StockCandleChart symbol={finalSymbol} />
 
@@ -261,7 +261,7 @@ const hasChart = chartData?.length > 0;
                         <div className="w-full lg:w-1/3 flex flex-col gap-4">
                            <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4">*/}
                            {/* // 👈 THIS IS THE MAGIC */}
-                           <div className={` col-span-1   flex flex-col   ${isMobile ? "gap-6 mt-12 py-4": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
+                           <div className={` col-span-1   flex flex-col   py-8 pt-12 sm:pt-12 lg:pt-12  mt-12 sm:mt-12 lg:mt-12 ${isMobile ? "gap-6 mt-12 pt-12 py-8": "gap-4"}   mt-6 sm:mt-8 lg:mt-0`}     >
 
                              {/* CTA bg-white rounded-2xl shadow-sm p-4  sm:mb-4 flex flex-col items-center text-center
                               below is desktop stick behavior */}
