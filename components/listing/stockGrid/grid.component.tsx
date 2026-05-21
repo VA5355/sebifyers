@@ -30,6 +30,7 @@ import GridCardsFilpYahooChart  from '@/app/GridCardsFilpYahooChart';
 import GridCardsFilpYahooChartNoTabs  from '@/app/GridCardsFilpYahooChartNoTabs';
 import GridCardsFilpYahooChartNoTabsImproved  from '@/app/GridCardsFilpYahooChartNoTabsImproved';
 import {setTimestampChartData , selectIsChartLoading} from "@/redux/slices/timestampChartSlice"
+import RefinedVirtualAccountModalImproved from '@/app/RefinedVirtualAccountModalImproved';
 
 //import './grid.css';
 
@@ -258,7 +259,11 @@ const StockGrid = () => {
                            <>    </> 
                      ) : tab === "Subscribe"  ? (  
                              <SubscriptionScreen/>   
-                     ) :  <>    </> 
+                     ) :   tab === "Virtual Account"  ? (  
+                             <RefinedVirtualAccountModalImproved isOpen={true} onClose={undefined} onConfirm={undefined}/>   
+                     ) :  
+                   
+                     <>    </> 
                 }
 
               

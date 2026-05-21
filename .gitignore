@@ -50,3 +50,5 @@ next-env.d.ts
 
 # Local dist folder
 dist
+netlify/functions/netlifyproxyemailer/node_modules
+

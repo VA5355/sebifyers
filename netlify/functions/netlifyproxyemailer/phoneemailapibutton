@@ -1,0 +1,24 @@
+<div class="pe_signin_button" data-client-id="16556166482019923439"><script src="https://www.phone.email/sign_in_button_v1.js" async></script></div>
+<script>
+    function phoneEmailListener(userObj){
+        var user_json_url = userObj.user_json_url;
+        
+        // You can submit your form here or redirect user to post login dashboard page
+        // Send user_json_url to your backend to retrieve user info (i.e. country code and phone number) from this URL.
+        alert('Phone Verification Successfull !!\nPlease fetch authenticated country code and phone number from following JSON file URL.\n '+user_json_url+'');
+    }
+</script> 
+
+
+<div class="pe_verify_email" data-client-id="16556166482019923439"><script src="https://www.phone.email/verify_email_v1.js" async></script></div> 
+<script>
+    function phoneEmailReceiver(userObj){
+        var user_json_url = userObj.user_json_url;
+        
+        // You can submit your form here or redirect user to post login dashboard page
+        // Send user_json_url to your backend to retrieve user info (i.e. email id) from this URL.
+        alert('Email Verification Successfull !!\nPlease fetch authenticated email id from following JSON file URL.\n '+user_json_url+'');
+    }
+</script>
+
+https://bootboxjs.com/documentation.html  

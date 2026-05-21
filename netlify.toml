@@ -37,10 +37,79 @@ for = "/api/*"
   # Directory with serverless functions, including background
   # functions, to deploy. This is an absolute path relative to the 
   # base directory, which is the root by default (/).
+  included_files = ["public/*.html"]
   directory = "netlify/functions/"
   node_bundler = "esbuild"
-  external_node_modules =[ "extra-fyers" ,"fyers-api-v3" ]
-
+  external_node_modules =[ "extra-fyers" ,"fyers-api-v3" ,"@types/gapi", "express",
+    "@types/gapi.auth2", 
+    "@types/node" ,
+     "@types/imap" ,
+    "@types/imapflow" ,
+    "@types/mailparser" ,
+    "@types/nodemailer" ,
+    "@types/nodemailer-smtp-transport" ,
+    "@types/jsonwebtoken" ,
+    "@types/node-localstorage" ,
+         
+    "@types/passport-google-oauth20" ,
+    "@types/server-destroy" ,
+  
+    
+    "aws-crt" ,
+    "axios",
+    "axios-cookiejar-support" ,
+    "bs58" , "express",
+    "buffer" ,
+    "class-transformer" ,
+    "dotenv" ,
+    "fast-two-sms" ,
+    "gapi-script" ,
+    "google-auth-library" ,
+    "googleapis" ,
+    "imap" ,
+    "is-ci" ,
+    "jsonwebtoken" ,
+    "jwt-decode" ,
+    "mailparser" ,
+    "ng-recaptcha" ,
+    "node-localstorage" ,
+    "nodemailer" ,
+    "nodemailer-smtp-transport", 
+    "open" ,
+    "otplib" ,
+    "passport" ,
+    "passport-google-oauth20" ,
+    "rand-token" ,
+    "reflect-metadata" ,
+    "rxjs" ,
+    "server-destroy" ,
+    "serverless-http" ,
+    "store2" ,
+    "tough-cookie" ,
+    "tslib" ,
+    "twilio" ,
+    "unirest" ,
+    "url" ,
+    "webpack-bundle-analyzer" ,
+    "zone.js" ]
+[functions."netlifyproxyemailer"]
+  external_node_modules = [ "@google-cloud/local-auth","@sendgrid/mail",
+    "axios",
+    "dotenv",
+    "express",
+    "googleapis",
+    "imap",
+    "imapflow",
+    "mailparser",
+    "nodemailer",
+    "nodemailer-smtp-transport",
+    "store2",
+    "@types/imap",
+    "@types/imapflow",
+    "@types/mailparser",
+    "@types/nodemailer",
+    "@types/nodemailer-smtp-transport"  ]
+  node_bundler = "esbuild"
 [[edge_functions]]
 function = "netlifystockedgestream"
 path = "/fyersticker"

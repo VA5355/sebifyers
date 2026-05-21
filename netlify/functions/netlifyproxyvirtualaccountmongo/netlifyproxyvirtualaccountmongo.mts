@@ -25,6 +25,9 @@ import { isNullOrUndefined } from '../../../utils/constants';
 //import { razorpay } from "@lib/razorpay"
 import Razorpay from 'razorpay';
 import { Buffer } from "buffer";
+import { User } from './user';
+import { Money } from './models';
+import axios from 'axios';
 
 //declare const Buffer;
 let localSite = 'localhost:8000';
@@ -43,8 +46,7 @@ export default async (request: Request, context: Context) => {
     let      razorpaySecret= 'X6WVCVKSrAkQS3EBAmkNNagW';
     var instance = new Razorpay({ key_id:  razorpayKey, key_secret:razorpaySecret});
   
-
-    if (request.method === "POST" || request.method === "GET") {
+  if (request.method === "POST" || request.method === "GET") {
              
               let callingSite =request.headers.get("Referer")
     let userAgentCase1 = request.headers.get("user-agent") || "";
@@ -52,23 +54,91 @@ export default async (request: Request, context: Context) => {
         let isMobileCase1 = /iPhone|iPad|iPod|Android/i.test(userAgentCase1);
         ourDomainPage = getOurDomainPage(callingSite,isMobileCase1)
 
-    if (!request.body || Object.keys(request.body).length === 0) {
-          console.log("  Request body is empty" );
-          console.log(" callingSite or request.headers.get('Referer') "+callingSite );
-           console.log("ourDomainPage ::  "+ourDomainPage );
-          (!isNullOrUndefined(instance)?   console.log("Razorpay instance PRESENT ::  "  ) :   console.log("Razorpay instance ABSENT  ::  " )   )
+    /** TRY GET  
+   PAYLOAD RECEIVED 
+  const payload = {
+      name: "OneDinaar Trader",
+      email: credentials.vId, // Mapping Virtual ID to the email field
+      password: credentials.vPass,
+      userSalt: credentials.salt,
+      underlyingOrderId: order.id
+    };
+    */
 
-          isEmptyFetchAllPayRequest = true;
-    }   
-
-    const subject = url.searchParams.get('name') || 'World'
-    let amt =                  url.searchParams.get('amount') ; //|| 5000
-    let cur =               url.searchParams.get('currency'); // || 'INR'
-    let recpt =  url.searchParams.get('receipt') || 'receipt'+random
-    let n1  =                url.searchParams.get('location') || 'Pune '+random
-    let n2  =             url.searchParams.get('description') || 'Store Notify Subscription '
+      let name = url.searchParams.get('name')?? undefined;
+    let email =                  url.searchParams.get('email') ?? undefined; //|| 5000
+    let password =               url.searchParams.get('password') ?? undefined; // || 'INR'
+    let userSalt =  (url.searchParams.get('userSalt') ) ?? undefined ;// || 'receipt'+random
+    let underlyingOrderId  =                url.searchParams.get('underlyingOrderId') ?? undefined ; //   || 'Pune '+random
+   // let n2  =             url.searchParams.get('description') ?? undefined ;//|| 'Store Notify Subscription '
      
-      console.log("searchParams ::  "+JSON.stringify({ amt , cur , recpt,n1 , n2 }) );
+
+
+let parsedBody: any = null;
+
+try {
+    const contentType = request.headers.get("content-type") || "";
+
+    if (contentType.includes("application/json")) {
+        parsedBody = await request.json();
+    } else if (contentType.includes("application/x-www-form-urlencoded")) {
+        const formData = await request.formData();
+
+        parsedBody = Object.fromEntries(formData.entries());
+    } else {
+        const rawText = await request.text();
+
+        if (rawText) {
+            parsedBody = rawText;
+        }
+    }
+
+    console.log("Parsed Request Body:", parsedBody);
+
+    if (
+        parsedBody === null ||
+        parsedBody === undefined ||
+        (typeof parsedBody === "object" &&
+            Object.keys(parsedBody).length === 0)
+    ) {
+        console.log("Request body is empty");
+
+        isEmptyFetchAllPayRequest = true;
+    }
+
+} catch (err) {
+
+    console.log("Body parse failed:", err);
+
+    isEmptyFetchAllPayRequest = true;
+}
+ if( parsedBody!==undefined && parsedBody !== null ){
+
+  //    Then Access Data Like
+  //payload {"name":"OneDinaar Trader","email":"VT_6MZrKstVKXFCrS_20260402",
+  // "password":"SrCFXKVtsKrZM62047161805","userSalt":"2047161805","underlyingOrderId":"order_SrCFXKVtsKrZM6"}
+    console.log(`request body ${JSON.stringify(parsedBody)} `  );
+   // console.log(parsedBody.currency);
+   name = parsedBody.name;
+   email = parsedBody.email+'@onedinaar.com';
+   password = parsedBody.password;
+   userSalt = parsedBody.userSalt;
+   underlyingOrderId = parsedBody.underlyingOrderId;
+
+ }
+
+/* PAYLOAD RECEIVED 
+  const payload = {
+      name: "OneDinaar Trader",
+      email: credentials.vId, // Mapping Virtual ID to the email field
+      password: credentials.vPass,
+      userSalt: credentials.salt,
+      underlyingOrderId: order.id
+    };
+
+*/
+  
+      console.log("searchParams ::  "+JSON.stringify({ name , email , password,userSalt , underlyingOrderId }) );
 
 
   /**    USUAL RESPONSE 
@@ -85,8 +155,87 @@ Response with status 500 in 10626 ms.
   
    * 
    */
-   if (!isNullOrUndefined(amt) && !isNullOrUndefined(cur) && !isNullOrUndefined(recpt)  ) {
-     const amountInPaise = Number(amt) *100;
+   if (!isNullOrUndefined(name) && !isNullOrUndefined(email) && !isNullOrUndefined(password)  && !isNullOrUndefined(userSalt) && !isNullOrUndefined(underlyingOrderId)  ) {
+
+    let confirmActivationData = {
+      name: name,
+      email: email, // Mapping Virtual ID to the email field
+      password: password,
+      userSalt:userSalt,
+      underlyingOrderId:underlyingOrderId
+    };
+
+     // Forwarding to your Node.js backend signup endpoint
+    //const response = await axios.post('https://your-node-backend.com/signup', confirmActivationData);
+     let user: any = new User(confirmActivationData);
+
+    // SAVE USER
+    await user.save();
+
+    // INITIAL VIRTUAL MONEY
+    let initialMoney = new Money({
+        money: 10000,
+        _creator: user._id
+    });
+
+    console.log(
+      `initial Money allocated in Mongo DB ${JSON.stringify(initialMoney)}`
+    );
+
+    await initialMoney.save();
+
+    // AUTH TOKEN
+    let authToken = await user.generateAuthToken();
+
+    console.log(
+      `user generated Auth Token Mongo DB ${JSON.stringify(authToken)}`
+    );
+
+    console.log(
+      `user registered in Mongo DB ${JSON.stringify(user)}`
+    );
+
+    console.log(
+      `user token ${JSON.stringify(authToken)}`
+    );
+
+    // VERY IMPORTANT
+    // RETURN DIRECTLY FROM MAIN FUNCTION
+    return new Response(
+        JSON.stringify({
+            success: true,
+            user,
+            token: authToken,
+            message: "Virtual account activated successfully"
+        }),
+        {
+            status: 200,
+            headers: {
+                "x-auth": authToken,
+                "Content-Type": "application/json",
+
+                "Access-Control-Allow-Origin": "*",
+
+                "Access-Control-Allow-Methods":
+                    "POST, GET, OPTIONS",
+
+                "Access-Control-Allow-Headers":
+                    "Origin, X-Requested-With, x-auth, Content-Type, Accept"
+            }
+        }
+    );
+
+
+
+
+ /*
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(response.data),
+    };*/
+
+    /* const amountInPaise = Number(amt) *100;
      const safeAmount = Math.max(100, Number(amt) * 100);
      console.log("Razor pay considers  rupee 1 as 100 so the amount from user ")
      console.log("  user amt "+amt+ " ==>  "+safeAmount);
@@ -106,11 +255,11 @@ Response with status 500 in 10626 ms.
           'Access-Control-Allow-Methods': 'POST, GET, PATCH, DELETE, OPTIONS',
           'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
         }
-      })
+      })*/
     } // AMT and CURRENCY REQUIRED 
     else {
         
-         console.log("UNABLE to create RAZOR ORDER insuficuent params   "+JSON.stringify({ amt , cur , recpt,n1 , n2 }) );
+         console.log("UNABLE to create Virtual Account  insuficuent params   "+JSON.stringify({  name , email , password,userSalt , underlyingOrderId }) );
     }
     /*
           The from and to fields in the request must be valid UNIX timestamps in seconds.
@@ -120,7 +269,7 @@ Response with status 500 in 10626 ms.
             const toDate = Math.floor(new Date().getTime() / 1000); // now
    
     */
-
+/*
 
     if (![...url.searchParams].length && request.method === "GET" && isEmptyFetchAllPayRequest ) {
             console.log(" GET request with not query parameters for payments list and no request body .");
@@ -337,7 +486,8 @@ Response with status 500 in 10626 ms.
       }
   }
 
- }
+   */
+ } // request.method === "POST" || request.method === "GET"
   else if (request.method === "OPTIONS") {
     const res = new Response();
 
@@ -363,7 +513,7 @@ Response with status 500 in 10626 ms.
   
    
   } catch (error:any) {
-      console.log('Error occured either creation of order or response generaton :');
+      console.log('Error occured either creation of virtual account  or response generaton :');
       console.log(' detais can be noted from error ::: '+JSON.stringify(error ));
       
 

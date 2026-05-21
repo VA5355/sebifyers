@@ -1,0 +1,33 @@
+{
+  "name": "storenotify-onedinaar-emailer",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "googleapis": "^105.0.0",
+    "imap": "^0.8.19",
+    "imapflow": "^1.0.172",
+    "mailparser": "^3.7.2",
+    "nodemailer": "^6.9.16",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "store2": "^2.14.4",
+    "@sendgrid/mail":"latest"
+  },
+  "devDependencies": {
+    "@types/imap": "^0.8.42",
+    "@types/imapflow": "^1.0.19",
+    "@types/mailparser": "^3.4.5",
+    "@types/nodemailer": "^6.4.17",
+    "@types/nodemailer-smtp-transport": "^2.7.8"
+  }
+}

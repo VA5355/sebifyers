@@ -298,6 +298,33 @@ export interface StockData {
     date: string;
     price: number;
 }
+export function isValidJwtStructure(token:any )  {
+  if (typeof token !== "string") return false;
+
+  const parts = token.split(".");
+  if (parts.length !== 3) return false;
+
+  try {
+   // const [header, payload] = parts;
+    /* TOO MUCH DETAILED not required 
+    const decode = (str ) =>
+      JSON.parse(
+        decodeURIComponent(
+          atob(str.replace(/-/g, "+").replace(/_/g, "/"))
+            .split("")
+            .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
+        )
+      );
+
+    decode(header);
+    decode(payload);
+    */
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export function isNullOrUndefined   (value: any | null | undefined): value is null | undefined    {
     return value === null || value === undefined;
@@ -345,7 +372,22 @@ export  const environment = {
         razorpayKey: 'rzp_test_2853QGpWUiQAri' , //'rzp_test_stNGdMn4H9FjoR',
          razorpaySecret: 'X6WVCVKSrAkQS3EBAmkNNagW'
       },
-
+       mongodbbackend : {
+       // CONNECTION_URL: "mongodb+srv://fairvinay:Bench_123@cluster0.9ke4d.mongodb.net/?retryWrites=true&w=majority",
+        CONNECTION_URL: "mongodb+srv://fairvinay:Bench_123@cluster0.9ke4d.mongodb.net/wall-street?retryWrites=true&w=majority",
+        DATABASE_NAME: "test"
+        
+    },
+        netlifyBackend : { 
+        urlLogin : '/api/v1/user/login', 
+        urlRegister:'/api/v1/user/register',
+        urlVerify : '/api/mail' , // '/api/v1/user/email',
+        urlPhoneVerify: '/api/phone',
+        urlTelegramVerify: '/api/auth/telegram/phonelogin',
+        urlTelegramCode: '/api/auth/telegram/phonecode',
+        fastsmscode: '/fastsmscode' ,  // fastsmscode
+     verifytwiliosmscode:  '/verifytwiliosmscode'
+    },
 }
 
 export const CommonConstants = {

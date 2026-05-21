@@ -28,6 +28,8 @@ import {  Clock, Zap, Shield, Info, Receipt, IndianRupee } from 'lucide-react';
 // --------------------
 // modalSlice (RTK)
 // --------------------
+// usually shoould not include service propogation from Modals as they stall session and can cause breaks 
+import {changeTab} from '@/redux/slices/miscSlice';
 
 export interface ExitPositonSliceProps {
     showSymbolModal : "",
@@ -293,6 +295,7 @@ export function ModalRoot() {
   const isError = modal.type === "error";
   const isExitPosition = modal.type=== "exitposition";
   const isQuitOrder = modal.type=== "quitorder";
+  const MENUVIRTUALACCOUNT = 'Virtual Account'
 
   const close = () => dispatch(hideModal());
     const backdrop = {
@@ -623,11 +626,14 @@ const razorPayDialog = (razorpayorder :any  , setShowModal: any) => {
 
               {/* Footer Button */}
               <button
-                onClick={() => { setShowModal(false); 
+                onClick={() => {
+                    // this shall change the menu tab before this dialog is close 
+                       dispatch(changeTab(MENUVIRTUALACCOUNT))
+                   setShowModal(false); 
                             /*razorpayorder.show = false;*/ }}
                 className="w-full mt-2 py-2 rounded-lg bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition"
               >
-                Done
+                  Proceed Virtual Account 
               </button>
             </div>
           </motion.div>

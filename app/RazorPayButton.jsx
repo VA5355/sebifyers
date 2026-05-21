@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "@/redux/slices/paymentSlice";
 //import { RootState } from "@/redux/store";
 import { useRazorpay } from "@/redux/hooks/useRazorpay";
+ import { useModal } from '@/providers/ModalProvider';
 import { showModal as modalShow, showError } from '@/components/common/service/ModalService';
+ import {StorageUtils} from "@/libs/cache";
+import {CommonConstants, isNullOrUndefined} from "@/utils/constants";
 
 const RazorPayButton = ({amount = "2499.00", currency="INR " ,receipt ,description,  onToken}) => {
   const dispatch = useDispatch();
@@ -13,6 +16,10 @@ const RazorPayButton = ({amount = "2499.00", currency="INR " ,receipt ,descripti
   const { order, loading } = useSelector(
     (state) => state.razorpay
   );
+   const { showFramerModal, hideModal } = useModal();
+
+   let spinnerIsAvailable = false;
+
 
   const { openRazorpay } = useRazorpay();
 
@@ -26,8 +33,16 @@ const RazorPayButton = ({amount = "2499.00", currency="INR " ,receipt ,descripti
       location: "en-IN",
       description: description,
     };
+  showFramerModal({ 
+              status: 'loading', 
+              message: ` Razor Pay... ` 
+              }); 
+            spinnerIsAvailable = true;
 
     const res = await dispatch(createOrder(payload));
+               (spinnerIsAvailable ?   setTimeout( () => { hideModal() 
+                                         spinnerIsAvailable =false;
+                                     } , 1000): console.log("Spinner unavailavle to close ") ) ; 
 
     if (res.payload) {
 
@@ -55,7 +70,38 @@ const RazorPayButton = ({amount = "2499.00", currency="INR " ,receipt ,descripti
            let razorPayOrder = { show: true, modalType : "razorpayorder" , ...order}
             // razorPayOrder = { ...razorPayOrder , order };
             //, type:'info', payload : razorPayOrder
+        /*
+          razorpayorder = {
+          orderType : "",   // razor or gpaydirect (by scanning )
+          amt:   "" , // "1",
+          
+
+            cur: "" , // "INR",
+          recpt: "" , //  "razor_receipt_2026-03-04 18:04:44  ",
+            n1:"en-IN",
+          n2:"Life time subscription virtual tradning @onedinaar.com  ",
+          show : true,
+            amount: '',
+            amount_due: '',
+          amount_paid: '', 
+          created_at : '', 
+          currency : '', 
+          id: '', 
+          notes : { 
+            key1 : "",
+            key2 : "", 
+
+          }, 
+          offer_id : '', 
+          receipt: '', 
+          status : '', 
+
+
+        }
+        */
             console.log(`razorPayOrder ${JSON.stringify(razorPayOrder)} `)
+            StorageUtils._save('razorpayorder_recent',razorPayOrder);
+
           dispatch(modalShow({title: 'Payment Order', message: `Your Order is proceesed :: ${order.id} ` ,payload : razorPayOrder} ));
            onToken?.(order)
     }).catch(perr => {
