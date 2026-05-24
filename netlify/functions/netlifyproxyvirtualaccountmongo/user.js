@@ -11,7 +11,7 @@ const bcrypt = require('bcryptjs');
 
 
 
-await connectMongo();
+//await connectMongo();
 
 let UserSchema = new mongoose.Schema({
     name: { type: String, required: true, minlength: 3 },

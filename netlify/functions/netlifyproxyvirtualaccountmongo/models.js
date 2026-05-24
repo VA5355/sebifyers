@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-await connectMongo();
+//await connectMongo();
 
 const Schema = mongoose.Schema;
 
