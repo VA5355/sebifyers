@@ -94,7 +94,11 @@ for = "/api/*"
     "zone.js" ]
 #[functions."netlifyproxyemailer"]
 [functions."*"]
-  external_node_modules = [ "@google-cloud/local-auth","@sendgrid/mail","mongoose",
+  external_node_modules = [ "@google-cloud/local-auth","@sendgrid/mail","mongoose","jsonwebtoken",
+    "lodash",
+    "bcryptjs",
+    
+    "@google-cloud/local-auth", 
     "axios",
     "dotenv",
     "express",
