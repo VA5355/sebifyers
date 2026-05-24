@@ -63,5 +63,5 @@ export async function connectMongo() {
     throw err;
   }
 }
-
-export { mongoose };
+export {mongoose };
+export default    mongoose ;

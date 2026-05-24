@@ -92,8 +92,9 @@ for = "/api/*"
     "url" ,
     "webpack-bundle-analyzer" ,
     "zone.js" ]
-[functions."netlifyproxyemailer"]
-  external_node_modules = [ "@google-cloud/local-auth","@sendgrid/mail",
+#[functions."netlifyproxyemailer"]
+[functions."*"]
+  external_node_modules = [ "@google-cloud/local-auth","@sendgrid/mail","mongoose",
     "axios",
     "dotenv",
     "express",

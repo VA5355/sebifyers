@@ -25,7 +25,7 @@ import { isNullOrUndefined } from '../../../utils/constants';
 //import { razorpay } from "@lib/razorpay"
 import Razorpay from 'razorpay';
 import { Buffer } from "buffer";
-import { User } from './user';
+import {  user as User }   from './user';
 import { Money } from './models';
 import axios from 'axios';
 

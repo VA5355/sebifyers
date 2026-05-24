@@ -146,9 +146,14 @@ const [sendingInvite, setSendingInvite] = useState(false);
 
         /*          FAILURE        */
         if (!result.success) {
+            if(result.error !==undefined && result.message !==undefined){ 
             console.error(result.error);
               dispatch(modalShow({ title: 'Virtual Account Status', message: `${result.message ||  result.error || 'Virtual Account Activation Failed...'} `, }  ));
-              /*showFramerModal({ 
+             } 
+             else {
+               dispatch(modalShow({ title: 'Virtual Account Status', message: ` 'Virtual Account Unexpected Error, Re-try from start.'} `, }  ));
+             }
+             /*showFramerModal({ 
               status: 'Virtual Account ', 
               message: `${result.message ||  result.error || 'Virtual Account Activation Failed...'} ` 
               }); 

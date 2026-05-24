@@ -20,8 +20,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "env.d.ts",

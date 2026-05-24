@@ -234,6 +234,10 @@ export const modalSlice = createSlice({
           }
            
       }
+      else {
+        // hideModal() ;
+        showError(({ title: 'Some Error ', message: 'Payment Success, Please reach out support team sales-man@storenotify.in' }))
+      }
     },
     showError(state, action) {
       const { title = "Error", message = "An error occurred.", payload = null } = action.payload || {};

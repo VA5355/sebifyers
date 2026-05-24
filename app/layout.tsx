@@ -1,6 +1,6 @@
 "use client";
 import {Inter} from 'next/font/google'
-//import './globals.css'
+import './globals.css'
 import {ReduxProvider} from '@/providers/ReduxProvider'
 import {Toaster} from 'react-hot-toast';
 import {useEffect} from 'react';
@@ -23,6 +23,25 @@ export default function RootLayout({
 }) {
 
     useEffect(() => {
+
+        var head = document.getElementsByTagName('HEAD')[0];
+
+    // Create new link Element 
+    var link = document.createElement('link'); 
+
+        // set the attributes for link element  
+        link.rel = 'stylesheet';  
+    
+        link.type = 'text/css'; 
+    
+        link.href = 'global.css';  
+
+        // Append link element to HTML head 
+        head.appendChild(link);  
+
+
+
+
         addInterceptor(API)
     }, [])
     return (

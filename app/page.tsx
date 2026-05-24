@@ -4,21 +4,63 @@ import { ScreenLoader } from '@/components/loader/screenLoader/loader.component'
 import Menu from '@/components/listing/stockControls/menu.component';
 import { GlobalState } from '@/redux/store';
 import { useSelector } from 'react-redux';
+import { useSearchParams, useRouter } from "next/navigation";
 import dynamic from 'next/dynamic';
 import { SubscribePopup } from '@/components/SubscribePopup'
 import TradeTickerBar from "@/components/tradeTicker/tradeTickerBar.component";
 import StockCandleChart from "@/components/charts/StockCandleChart";
 import PositionSwipeHint from './PositionSwipeHint';
+
+import FirstLandingPage from "./virtual-account/FirstLandingPageNew";
+import SecondGetStartedPage from "./virtual-account/SecondGetStartedPageNew";
+
 const DynamicGrid = dynamic(() => import('../components/listing/stockGrid/grid.component'), {
   loading: () => <p>Loading...</p>,
 })
 
 
 export default function Home() {
+  const searchParams = useSearchParams();
+
+const invite = searchParams!.get("invite");
+
+const step = searchParams!.get("step");
+const router = useRouter();
   const isDarkMode = useSelector((state: GlobalState) => state.misc.isDarkMode)
     const selected = useSelector(
     (state: GlobalState) => state.stock.selectedCard
   );
+
+
+/**
+ * EMAIL INVITE FLOW
+ */
+
+if (invite === "virtual-account") {
+
+  /**
+   * SECOND PAGE
+   */
+  if (step === "login") {
+    return <SecondGetStartedPage />;
+  }
+
+  /**
+   * FIRST PAGE
+   */
+  return (
+    <FirstLandingPage
+      onGetStarted={() => {
+        router.push(
+          "/?invite=virtual-account&step=login"
+        );
+      }}
+    />
+  );
+}
+
+
+
   const rawTicker = selected?.ticker;
   const ticker =
   typeof rawTicker === "string"

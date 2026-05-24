@@ -1,9 +1,17 @@
-const {mongoose} = require('./mongoose-setup');
+//import { mongoose } from './mongoose-setup';
+import  mongoose, { connectMongo } from './mongoose-setup.mjs';
 //const uniqueValidator = require('mongoose-unique-validator');
 //const validator = require('validator');
+//import { sign, verify } from 'jsonwebtoken';
+//import { pick } from 'lodash';
+//import { compare, genSalt, hash as _hash } from 'bcryptjs';
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
+
+
+
+await connectMongo();
 
 let UserSchema = new mongoose.Schema({
     name: { type: String, required: true, minlength: 3 },
@@ -36,14 +44,15 @@ let UserSchema = new mongoose.Schema({
 UserSchema.methods.toJSON = function () {
     let user = this;
     let userObject = user.toObject();
-    return _.pick(userObject, ['_id', 'email', 'name', 'underlyingOrderId', 'activationDate']);
-    //return _.pick(userObject, ['_id', 'email', 'name']);
+   // return pick(userObject, ['_id', 'email', 'name', 'underlyingOrderId', 'activationDate']);
+    return _.pick(userObject, ['_id', 'email', 'name']);
 };
 
 UserSchema.methods.generateAuthToken = function () {
     let user = this;
     let access = 'auth';
-    let token = jwt.sign({_id: user._id.toHexString(), access}, process.env.SALT).toString();
+       let token = jwt.sign({_id: user._id.toHexString(), access}, process.env.SALT).toString();
+    //let token = sign({_id: user._id.toHexString(), access}, process.env.SALT).toString();
 
     user.tokens = user.tokens.concat([{access, token}]);
 
@@ -75,7 +84,8 @@ UserSchema.statics.findByToken = function (token) {
         console.log("UserSchema.statics.findByToken  ")
         console.log("process.env.SALT  "+process.env.SALT)
 
-        decoded = jwt.verify(token, process.env.SALT);
+      //  decoded = verify(token, process.env.SALT);
+              decoded = jwt.verify(token, process.env.SALT);
     } catch (e) {
         return Promise.reject();
     }
@@ -100,6 +110,7 @@ UserSchema.statics.findByCredentials = function (email, password) {
         return new Promise((resolve, reject) => {
         // Use bcrypt.compare to compare password and user.password
             bcrypt.compare(password, user.password, (err, res) => {
+         //   compare(password, user.password, (err, res) => {
                 if (res) {
                     resolve(user);
                 } else {
@@ -115,8 +126,10 @@ UserSchema.pre('save', function (next) {
     console.log("UserSchema.pre "+JSON.stringify(user) )
 
     if (user.isModified('password')) {
-        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(user.password, salt, (err, hash) => {
+      //  genSalt(10, (err, salt) => {
+       //     _hash(user.password, salt, (err, hash) => {
                 user.password = hash;
                 next();
             });
@@ -137,5 +150,5 @@ UserSchema.pre('save', function (next) {
 //UserSchema.plugin(uniqueValidator)
 
 let User = mongoose.model('User', UserSchema);
-
-module.exports = { User }
+export const user = User;
+export default { User }

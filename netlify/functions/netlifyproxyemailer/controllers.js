@@ -6,14 +6,14 @@ const nodemailer = require("nodemailer");
  const smtpTransport  = require('nodemailer-smtp-transport');
 const CONSTANTS = require("./constants");
 const { google } = require("googleapis");
-const    welcomeOptions  = require('./mailworker/WelcomeSupportTemplate')
+const    welcomeOptions  = require('./mailworker/WelcomeSupportOnedinaarTemplate')
 const    welcomeInviteOptions  = require('./mailworker/WelcomeInviteTemplate')
 const rt = require("./provate");
 const store  = require( "store2");
 const sgMail = require('@sendgrid/mail');
 const mailboxemails = require("./mail-box-verify-delivery").default
 require("dotenv").config();
-const welcomeEmailTemplate  = require("./mailworker/welcomesendgrid");
+const welcomeEmailTemplate  = require("./mailworker/welcomeonedinaarsendgrid");
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -291,7 +291,8 @@ async function writeEmail(req, res) {
      { 
         try {
              //let paswd  = 'For it @ 123'.replace(/ /g, '');
-             let paswd  = 'qjpb obon oqvi hbbe'.replace(/ /g, '');
+             let gpone = process.env.GAPPPASSLATEST;
+             let paswd  = gpone.replace(/ /g, '');
              var transporter = nodemailer.createTransport(smtpTransport({
               service: 'gmail',
               host: 'smtp.gmail.com', 
@@ -306,13 +307,23 @@ async function writeEmail(req, res) {
             user = user_email.substring(0, user_email.indexOf("@"));
            }
            let welText =   welcomeOptions.mailOptions .html
+            let iser = { 
+                                    username: user,
+                                    email:user_email,
+                                    password: ''
+                                              
+                                }
+            if(welText.indexOf("Onedinaar") > -1 ) {
+
+               welText= welcomeOptions.getInjected(iser);
+            }
            welText = welText.replace("(StoreUser)",user);
             console.log("check html template included or not "+welText);
            let   th = JSON.stringify(store.get('welcomeEmailTemplate'));
              let  strTH =welText.replace("(StoreUser)",user);
             strTH  = strTH.replace("\r\n", "");
             const mailOptions = {
-              ...CONSTANTS.mailoptions,
+              ...CONSTANTS.mailonedinaaroptions,
               html: strTH,
               headers: {
                   'Content-Type': 'text/html; charset=UTF-8'
@@ -413,10 +424,20 @@ function sendMailer (kte  , iser)   {
     // Initialize API key once (cold start safe)
     console.log("API KEY "+kte);
     //sgMail.setApiKey('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');
-    sgMail.setApiKey('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');
+    let key  =process.env.SENDGRIDKEY
+
+    sgMail.setApiKey(key);
     let templateIDLocal = templateID;
 
-      const html = welcomeEmailTemplate
+      let html = welcomeEmailTemplate.welcomeEmailTemplate;
+      // CHECK TEMPLATE is Onedinaar
+      if(html.indexOf('Onedinaar') >-1){
+            html = html.replace("{{username}}", iser.username );
+            html = html.replace("{{{unsubscribe}}}", "https://onedinaar.com");
+            html = html.replace("{{{unsubscribe_preferences}}}", "https://onedinaar.com");
+            html = html.replace("{{resetUrl}}", "https://onedinaar.com/?invite=virtual-account");
+
+      }
       /*.replace(
     'href=""',
     `href="${actionUrl}"`
@@ -564,7 +585,7 @@ async function writeEmailFromInput(req, res) {
             host: 'smtp.gmail.com', 
             auth:  {    // https://myaccount.google.com/apppasswords
                 user: 'fairvinay@gmail.com',
-                pass: 'nvac dkkd eqjn nesk'
+                pass: process.env.GAPPPASSONE
               }
           })); 
          CONSTANTS.mailinviteoptions.to=user_email//'admin-sales@storenotify.in'
@@ -670,7 +691,7 @@ async function sendMail(req, res) {
       host: 'smtp.gmail.com',
       auth: {
         user: 'fairvinay@gmail.com',
-        pass: 'River5idelift@'
+        pass: process.env.GMAILPWD
       }
     }));
     
@@ -684,7 +705,8 @@ async function sendMail(req, res) {
         type: 'OAuth2',
         user: 'fairvinay@gmail.com',
         //fairvinay
-        serviceClient:"396135579027-b4gvu1u72l9lhhvov29eild52emov1ak.apps.googleusercontent.com",
+        serviceClient:process.env.GMAILSERVICECLIENT,
+        //"39613  5579027-b4gvu1u72l9 lhhvov29eil d52emov1ak.apps.googleusercontent.com"
         privateKey: rt.privateKey,
         //vvanvekar
         //serviceClient: '396732087280-6b7n6c9u4egr6vqdhaed5i43drjn9klq.apps.googleusercontent.com',
@@ -694,7 +716,7 @@ async function sendMail(req, res) {
         // vvanvekar
         //clientSecret: "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",
         //refreshToken: "1//04mIe3u9LGWBKCgYIARAAGAQSNwF-L9IryeQg2CjkmRwnpmbJKoyNoR_9K7hOpzFdN80019XynRIBQ2VxozuN22XRo--HwWNIi3c",
-        accessToken: "ya29.a0ARW5m75Lvs1dWHGQOWFuGWYuvaQdch5e9V2_95WCTh3eMItf2DYrQuM9gPkgZk9PwdyiNdh_Q54fP_4NQG0j4z7ZoJmCbUvmMqj6jt4ferOPcnNqbR8vkcoy2oHIuk1s1rXvRASyo5vIoyswMXavKslqjdvFe86SlGgtE4ScaCgYKAWISARMSFQHGX2MieOBd1DmfgKAMBqzFR2CLFA0175", 
+        accessToken: process.env.GACCESSTOKEN, 
 
  
          expires: 1484314697598

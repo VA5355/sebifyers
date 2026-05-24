@@ -13,6 +13,18 @@ const auth = {
   refreshToken: process.env.REFRESH_TOKEN,
 };
 
+const mailonedinaaroptions = {
+  from: "admin-sales@storenotify.in",
+  to: "viraatmailbo321@gmail.com",
+  // cc: "support@neo.space",
+  subject: `Onedinaar Onboard ${nDate}` ,
+  dsn: {
+    id: 'Registeration Failed for',
+    return: 'headers',
+    notify: ['failure', 'delay'],
+    recipient: 'fairvinay@gmail.com'
+}
+};
 const mailoptions = {
   from: "admin-sales@storenotify.in",
   to: "viraatmailbo321@gmail.com",
@@ -42,6 +54,7 @@ const mailinviteoptions = {
 module.exports = {
   auth,
   mailoptions,
+  mailonedinaaroptions,
   mailinviteoptions
 };
 
