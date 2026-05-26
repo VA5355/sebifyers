@@ -1,32 +1,23 @@
-/*import { Context } from '@netlify/functions'
-
-export default (request: Request, context: Context) => {
-  try {
-    const url = new URL(request.url)
-    const subject = url.searchParams.get('name') || 'World'
-
-    return new Response(`Hello ${subject}`)
-  } catch (error) {
-    return new Response(error.toString(), {
-      status: 500,
-    })
-  }
-}
-*/
-/** 
- in case the import { Buffer } from "buffer"; does not work 
- /// <reference types="node" />
-
- */
-//import { Context } from '@netlify/functions'
-//import { environment } from 'src/environment/environment';
+ 
+//const path = require('path');
+//const fs = require('fs');
+//const express = require("express");
+import express  from "express";
+// Capital ServerlessHttp is fine small serverless not work '
+//const ServerlessHttp = require('serverless-http');
+import serverless from 'serverless-http';
+//const app = require('./app');
+import routes from './routes';
+//const routes = require('./routes').default
 import { environment } from '../../../utils/constants'; //import { CommonConstants, Quote } from '@/utils/constants';
 import { isNullOrUndefined } from '../../../utils/constants';
 //import { razorpay } from "@lib/razorpay"
 import Razorpay from 'razorpay';
 import { Buffer } from "buffer";
-import {  user as User }   from './user';
-import { Money } from './models';
+ import {  user as User }   from './user.mjs';
+//import './user.js';
+import { Money } from './models.mjs';
+//import  './models.js';
 import axios from 'axios';
 import  mongoose, { connectMongo } from './mongoose-setup.mjs';
 //declare const Buffer;
@@ -64,8 +55,14 @@ app.get("/.netlify/functions/netlifyproxyvirtualaccountmongo/", async (req, res)
   res.send("Welcome to user registeraton in Mongo DB  with NodeJS");
 });
 
-const handler2 =  ServerlessHttp(app) ;
-
+const handler2 =  serverless(app) ;
+/* THIS CAUSE the FUNCTION TO CRASH 
+const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => {
+        reject(new Error("SERVER_BUSY"));
+    }, 20000);
+});
+*/
 const handler= async (event,context) => {
   var path = "";
       let min = 230;
@@ -86,7 +83,8 @@ const handler= async (event,context) => {
     path = event.rawUrl != undefined ? event.rawUrl : "/";
     console.log("path " + JSON.stringify(path));
     let checkQueryString = path.split("?")
-    const routes = require('./routes')
+     let  routes = require('./routes').default
+    let dbRoutes = undefined;
     if (event.method === "POST") {
      // const res = context.json({ message: 'you posted!' });
        console.log("event method POST ");
@@ -95,14 +93,33 @@ const handler= async (event,context) => {
     }
     
     if(app !==null && app !==undefined) { 
-     await connectMongo();
-
+    let mongoose =  await connectMongo();
+    let db = undefined;
+    if(mongoose === undefined || mongoose ===null){
+      mongoose =  await connectMongo();
+      db = mongoose.createConnection(process.env.MONGOWALLSTREETURL);
+      console.log('mongoose connection created using  mongoose.createConnection')
+    }
+    // Pass the connection object as a parameter here
+     if(db !==undefined && db !== null){
+          dbRoutes = require('./routes')(db);
+            console.log(' passed mongoose connection  to routes ')
+     }
+      
       console.log("App is created "+app)
        console.log("App routes " +JSON.stringify(app.routes))
        app.use(express.json());
       app.use(express.urlencoded({ extended: true }));
       //let routes = routes1(app);
-      app.use("/.netlify/functions/netlifyproxyvirtualaccountmongo/api", routes);
+      if(dbRoutes !== undefined && dbRoutes !== null ){
+         app.use("/.netlify/functions/netlifyproxyvirtualaccountmongo/api", dbRoutes);
+        
+           console.log('  routes now contain the same connection ')
+      }
+      else {
+        app.use("/.netlify/functions/netlifyproxyvirtualaccountmongo/api", routes);
+
+      }
       //app.use("/api",routes )
       //process.env.PORT
       /*app.listen(5112, () => {
@@ -400,3 +417,6 @@ const encodeJsonToHeader = (jsonData)  => {
 
   return `${day}/${month}/${year}`;
 }
+ //module.exports = { handler }
+ export {handler };
+ export default    handler ;

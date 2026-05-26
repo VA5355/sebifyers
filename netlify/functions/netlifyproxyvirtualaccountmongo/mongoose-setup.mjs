@@ -45,7 +45,11 @@ export async function connectMongo() {
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(url, {
-      bufferCommands: false,
+  bufferCommands: false,
+  serverSelectionTimeoutMS: 8000,
+  socketTimeoutMS: 10000,
+  connectTimeoutMS: 10000,
+  maxPoolSize: 5,
     });
   }
 

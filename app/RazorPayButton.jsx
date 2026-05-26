@@ -129,10 +129,10 @@ const RazorPayButton = ({amount = "2499.00", currency="INR " ,receipt ,descripti
       disabled={loading}
     > {/** bg-green-600 */}
 
-<svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="svelte-ekc7fv">
- <path d="M7.077 6.476l-.988 3.569 5.65-3.589-3.695 13.54 3.752.004 5.457-20L7.077 6.476z" fill="#fff" class="svelte-ekc7fv">
+<svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="svelte-ekc7fv">
+ <path d="M7.077 6.476l-.988 3.569 5.65-3.589-3.695 13.54 3.752.004 5.457-20L7.077 6.476z" fill="#fff" className="svelte-ekc7fv">
   </path>
-   <path d="M1.455 14.308L0 20h7.202L10.149 8.42l-8.694 5.887z" fill="#fff" class="svelte-ekc7fv"></path>
+   <path d="M1.455 14.308L0 20h7.202L10.149 8.42l-8.694 5.887z" fill="#fff" className="svelte-ekc7fv"></path>
    </svg> 
     
 
@@ -140,9 +140,9 @@ const RazorPayButton = ({amount = "2499.00", currency="INR " ,receipt ,descripti
 
       {loading ? "Processing..." : "Pay Razor"}
 
-        <div class="PaymentButton-contents svelte-ekc7fv">
-     <span class="PaymentButton-text svelte-ekc7fv">TipStore</span>
-      <div class="PaymentButton-securedBy svelte-ekc7fv">Secured by Razorpay</div>
+        <div className="PaymentButton-contents svelte-ekc7fv">
+     <span className="PaymentButton-text svelte-ekc7fv">TipStore</span>
+      <div className="PaymentButton-securedBy svelte-ekc7fv">Secured by Razorpay</div>
       
       </div>
     </button>

@@ -11,7 +11,7 @@ import { activateVirtualAccount } from '../redux/slices/virtualAccountSlice';
 import {
   saveVirtualCredentials , loadVirtualCredentials
 } from "@/utils/virtualAccountStorage";
-import { showModal as modalShow, showError } from '@/components/common/service/ModalService';
+import { showModal, showError } from '@/components/common/service/ModalService';
  import { useModal } from '@/providers/ModalProvider';
  import {StorageUtils} from "@/libs/cache";
 import {CommonConstants, isNullOrUndefined,environment} from "@/utils/constants";
@@ -145,14 +145,30 @@ const [sendingInvite, setSendingInvite] = useState(false);
                                      } , 300): console.log("Spinner unavailavle to close ") ) ; 
 
         /*          FAILURE        */
+           let payload = {modalType :'normal' }
         if (!result.success) {
-            if(result.error !==undefined && result.message !==undefined){ 
-            console.error(result.error);
-              dispatch(modalShow({ title: 'Virtual Account Status', message: `${result.message ||  result.error || 'Virtual Account Activation Failed...'} `, }  ));
-             } 
-             else {
-               dispatch(modalShow({ title: 'Virtual Account Status', message: ` 'Virtual Account Unexpected Error, Re-try from start.'} `, }  ));
+            setIsModalOpen(false);
+            setVirtualAccountDone(false)
+              if(result.error !==undefined && result.message !==undefined){ 
+              console.error(result.error);
+           
+              dispatch(showModal({ title: 'Virtual Account Status', message: `${result.message ||  result.error || 'Virtual Account Activation Failed...'} `,payload  }  ));
+              //   dispatch(changeTab(MENUEDUCATE));
+               
+            } 
+             else if(result.error !==undefined) {
+                console.log(`server error ${JSON.stringify(result.error)} `);
+              //  let subText = typeof result.error === 'string' ? result.error.substring(0,"TimeoutError".length+1): 'taking time to process ';
+               dispatch(showModal({ title: 'Virtual Account Status', message: ` Re-try from start. ${JSON.stringify(result.error)}  `, payload}  ));
              }
+             else  {
+             //   console.log(`complete error ${JSON.stringify(result.error)} `);
+
+               dispatch(showModal({ title: 'Virtual Account Status', message: ` 'Virtual Account Unexpected Error, Re-try from start.' `, payload}  ));
+               //  dispatch(changeTab(MENUEDUCATE));
+              
+             }
+            router.push(`/`);
              /*showFramerModal({ 
               status: 'Virtual Account ', 
               message: `${result.message ||  result.error || 'Virtual Account Activation Failed...'} ` 
@@ -210,7 +226,7 @@ const [sendingInvite, setSendingInvite] = useState(false);
   const sendTradingInvite = async () => {
     if (!inviteEmail || !inviteEmail.includes("@")) {
        // alert("Please enter valid email");
-        dispatch(modalShow({ title: 'Invite Email', message: `Virtual Account Activation Needs a valid Email Address `, }  ));
+        dispatch(showModal({ title: 'Invite Email', message: `Virtual Account Activation Needs a valid Email Address `, }  ));
         return;
     }
 
@@ -262,11 +278,11 @@ const [sendingInvite, setSendingInvite] = useState(false);
                                      } , 300): console.log("Spinner unavailavle to close ") ) ; 
               if (result.success) {
 
-                  dispatch(modalShow({title: 'Invite Email Status ', message: "Invite sent successfully" }  ));
+                  dispatch(showModal({title: 'Invite Email Status ', message: "Invite sent successfully" }  ));
 
               } else {
 
-                 dispatch(modalShow({title: 'Invite Email Status ', message:result.message}  ));
+                 dispatch(showModal({title: 'Invite Email Status ', message:result.message}  ));
               }
 
           // await   this.http.post( netlifyUrl, pos,{withCredentials: true, 'headers':headers , observe: 'response'});
@@ -279,7 +295,7 @@ const [sendingInvite, setSendingInvite] = useState(false);
 
     } catch (err) {
         console.log(err);
-          dispatch(modalShow({ title: 'Invite Email Status ', message: `Some error reported with Email Address please contact sales-man@storenotify.in with details `, }  ));
+          dispatch(showModal({ title: 'Invite Email Status ', message: `Some error reported with Email Address please contact sales-man@storenotify.in with details `, }  ));
         //alert("Failed to send invite");
     } finally {
         setSendingInvite(false);
@@ -303,8 +319,8 @@ const [sendingInvite, setSendingInvite] = useState(false);
               </motion.div>
               <h2 className="text-2xl font-bold">Payment data unavailable !</h2>
               <p className="text-orange-500 font-bold text-sm mt-1">Your virtual trading account could not be created </p>
-               {/* OK  BUTTON */}
-               <div className="p-8 space-y-6 items-center justify-center">
+               {/* OK  BUTTON  w-64 space-y-1 mx-auto flex items-center justify-center mt-6 */}
+               <div className=" w-64 space-y-1 mx-auto p-8 space-y-6 items-center justify-center">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

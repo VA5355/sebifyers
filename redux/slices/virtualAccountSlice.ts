@@ -34,7 +34,13 @@ export const activateVirtualAccount = createAsyncThunk(
       );
       return res.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Activation failed");
+     // return rejectWithValue(err.response?.data || "Activation failed");
+       if( err?.response?.data?.code === "SERVER_BUSY") {
+          return rejectWithValue(err?.response?.data?.message ||
+          "Server registrations are currently at peak. Please retry after some time.");
+       }
+       else 
+         return rejectWithValue( "Server issues. Please retry after some time.");
     }
   }
 );

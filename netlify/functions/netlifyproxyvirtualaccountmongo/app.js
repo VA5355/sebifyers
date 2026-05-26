@@ -1,10 +1,10 @@
-const express = require("express");
-const routes = require('./routes')
+import express, { json, urlencoded } from "express";
+import routes from './routes';
 require("dotenv").config();
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
  //let routes = routes1(app);
 app.use("/api",routes )
  //process.env.PORT
@@ -17,7 +17,7 @@ app.get("/", async (req, res) => {
   res.send("Onedinaar user registeration for MongoDB  with NodeJS");
 });
 
-module.exports = app
+export default app
 
 /**
  curl   http://localhost:8000/api/mail/write -H 'Content-Type:application/json'  -d "{\"email\":\"aadflaereg@gmail.com\"}"

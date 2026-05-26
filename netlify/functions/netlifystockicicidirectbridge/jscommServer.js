@@ -491,7 +491,7 @@ function CompareDate(Date1, Date2, alerttext) {
 CompareValue =  function (objValue1, objValue2, CompareType, alerttext) {
     var _v1 = parseFloat($(objValue1).val());
     var _v2 = parseFloat($(objValue2).val());
-    if (_v1 == NaN || Number.isNaN(_v2)) { return true; }
+    if (Number.isNaN(_v1)  || Number.isNaN(_v2)) { return true; }
     var msg = '';
     if (alerttext == undefined || alerttext == '') {
         msg = $(objValue2).attr('fieldname') + ' cannot be greater than or equal to ' + $(objValue1).attr('fieldname');

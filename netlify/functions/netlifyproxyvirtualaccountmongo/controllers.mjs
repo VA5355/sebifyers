@@ -1,6 +1,7 @@
-const axios = require("axios");
-const path = require('path');
-const fs = require('fs');
+//const axios = require("axios");
+import axios from 'axios';
+//const path = require('path');
+//const fs = require('fs');
 //const { generateConfig } = require("./utils");
 //const nodemailer = require("nodemailer");
 // const smtpTransport  = require('nodemailer-smtp-transport');
@@ -14,11 +15,11 @@ const fs = require('fs');
 //const mailboxemails = require("./mail-box-verify-delivery").default
 import  mongoose, { connectMongo } from './mongoose-setup.mjs';
 import { Buffer } from "buffer";
-import {  user as User }   from './user';
-import { Money } from './models';
+import {  user as User }   from './user.mjs';
+import { Money } from './models.mjs';
 
-
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
 let nDeliveryDate = '' 
 let nDeliveryDateUS =  '';
@@ -108,7 +109,84 @@ function finishStopping() {
  // stopVerificationCallback();
   stopVerificationCallback = null;
 } 
-async function register(req, res) { 
+/* THIS CAUSES NETLFIY CRASH 
+const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => {
+        reject(new Error("SERVER_BUSY"));
+    }, 20000);
+});
+*/
+async function registerUser(payload , dbConnection ) {
+
+   const {
+      name,
+      email,
+      password,
+          userSalt ,
+    underlyingOrderId 
+   } = payload;
+   // let User = undefined;
+ 
+            let email1 = email+'@onedinaar.com';
+
+             
+                let confirmActivationData = {
+                  name: name,
+                  email: email1, // Mapping Virtual ID to the email field
+                  password: password,
+                  userSalt:userSalt,
+                  underlyingOrderId:underlyingOrderId
+                };
+                
+                 // Forwarding to your Node.js backend signup endpoint
+                //const response = await axios.post('https://your-node-backend.com/signup', confirmActivationData);
+                 let user  = new User(confirmActivationData);
+            
+                // SAVE USER
+                await user.save();
+            
+                // INITIAL VIRTUAL MONEY
+                let initialMoney = new Money({
+                    money: 10000,
+                    _creator: user._id
+                });
+            
+                console.log(
+                  `initial Money allocated in Mongo DB ${JSON.stringify(initialMoney)}`
+                );
+            
+                await initialMoney.save();
+            
+                // AUTH TOKEN
+                let authToken = await user.generateAuthToken();
+            
+                console.log(
+                  `user generated Auth Token Mongo DB ${JSON.stringify(authToken)}`
+                );
+            
+                console.log(
+                  `user registered in Mongo DB ${JSON.stringify(user)}`
+                );
+            
+                console.log(
+                  `user token ${JSON.stringify(authToken)}`
+                );
+            
+                // VERY IMPORTANT
+                // RETURN DIRECTLY FROM MAIN FUNCTION
+                //setCORSHeaders( res )
+                  const data = {
+                        success: true,
+                        user,
+                        token: authToken,
+                        message: "Virtual account activated successfully"
+                    }
+                    return data;
+          
+            
+     
+}
+async function register(req, res, dbConnection) { 
     let   name = req.body.email;
     let   email = req.body.email;
  
@@ -121,12 +199,21 @@ async function register(req, res) {
     console.log("email ", email)
     console.log("userSalt ", userSalt)
     console.log("underlyingOrderId ", underlyingOrderId);
-
-    setCORSHeaders( res )
+    let User = undefined;
+    //setCORSHeaders( res )
      if( email!==undefined && email !==null &&  email!=='null')
      { 
         try {
+           if(dbConnection === underlyingOrderId || dbConnection === null){
              await connectMongo();
+           }
+            else {
+              console.log("connection from router available ")
+              console.log("createing user model ")
+              // Use the specific connection to get a model 
+              // import {  user as User }   from './user.mjs';
+                 User = dbConnection.model('User', require('./user.mjs'));
+            }
 
              email = email+'@onedinaar.com';
 
@@ -139,7 +226,7 @@ async function register(req, res) {
                   userSalt:userSalt,
                   underlyingOrderId:underlyingOrderId
                 };
-            
+                
                  // Forwarding to your Node.js backend signup endpoint
                 //const response = await axios.post('https://your-node-backend.com/signup', confirmActivationData);
                  let user  = new User(confirmActivationData);
@@ -222,9 +309,9 @@ async function register(req, res) {
             
             } catch(erre){
                  console.log('Error occured either creation of virtual account  or response generaton :');
-                  console.log(' detais can be noted from error ::: '+JSON.stringify(error ));
+                  console.log(' detais can be noted from error ::: '+JSON.stringify(erre ));
                     setCORSHeaders( res )
-		            res.send(JSON.stringify(error));
+		            res.send(JSON.stringify(erre));
 
                 //works only in .mts 
                /* 
@@ -241,14 +328,18 @@ async function register(req, res) {
 }
 
 
+export {register , registerUser  };
 
+export default    register ;
+//export default   {  register } 
 
+/*
 
 module.exports =   {
- /* getUser,
+  getUser,
   sendMail,
   getDrafts,
-  readMail,*/
+  readMail, 
   register,
  // writeEmailFromInput
-};
+};*/
