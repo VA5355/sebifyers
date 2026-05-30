@@ -328,7 +328,17 @@ const [sendingInvite, setSendingInvite] = useState(false);
                   className="w-[150px] py-4 bg-blue-500 text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-200"
               >
                Go Home
-              </motion.button></div>
+              </motion.button>
+                 <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => { router.push("/email-invite");}}
+                  className="w-[150px] py-4 bg-blue-500 text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-200"
+                   
+              >
+              Get Free Email Invite
+              </motion.button>
+              </div>
             </div>
   </AnimatePresence>) ;
    const inputStyle =
