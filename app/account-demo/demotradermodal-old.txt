@@ -1,0 +1,240 @@
+
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Trophy,
+  Mail,
+  TrendingUp,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { useState } from "react";
+
+interface DemoTradeModalProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+
+const brokers = [
+  {
+    name: "FYERS",
+    logo: "/fyers.svg",  // /brokers
+    color: "from-violet-500 to-purple-600",
+  },
+  {
+    name: "Upstox",
+    logo: "/upstox.svg",  ///brokers
+    color: "from-pink-500 to-rose-500",
+  },
+  {
+    name: "ICICI Direct",
+    logo: "/icici.svg",  ///brokers
+    color: "from-orange-500 to-red-500",
+  },
+];
+
+
+export default function DemoTradeModal({
+  open,
+  onClose,
+}: DemoTradeModalProps) {
+  const [index, setIndex] = useState(0);
+
+  return (
+    <AnimatePresence>
+
+      {open && (
+
+        <>
+          <motion.div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.9,
+              y: 40,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.95,
+            }}
+            className="
+              fixed
+              z-50
+              top-1/2
+              left-1/2
+              -translate-x-1/2
+              -translate-y-1/2
+              w-[95%]
+              max-w-3xl
+              rounded-3xl
+              bg-white
+              shadow-2xl
+              p-6
+            "
+          ></motion.div>
+           <div className="flex justify-between items-start">
+
+                <div>
+                    <h2 className="text-3xl font-bold">
+                    Start Trading Risk-Free
+                    </h2>
+
+                    <p className="text-gray-500 mt-2">
+                    You're viewing a demo chart.
+                    Choose how you'd like to continue.
+                    </p>
+                </div>
+
+                <button onClick={onClose}>
+                    <X />
+                </button>
+
+                </div>
+                <div className="grid md:grid-cols-2 gap-4 mt-8">
+
+  <motion.button
+    whileHover={{ y: -5 }}
+    whileTap={{ scale: 0.98 }}
+    className="
+      rounded-2xl
+      border
+      p-6
+      text-left
+      hover:shadow-xl
+      transition
+    "
+  >
+    <Trophy className="w-10 h-10 text-emerald-600" />
+
+    <h3 className="font-semibold mt-4">
+      Trade with Virtual Account
+    </h3>
+
+    <p className="text-gray-500 text-sm mt-2">
+      Practice trading using ₹10,00,000
+      virtual capital.
+    </p>
+  </motion.button>
+
+  <motion.button
+    whileHover={{ y: -5 }}
+    whileTap={{ scale: 0.98 }}
+    className="
+      rounded-2xl
+      border
+      p-6
+      text-left
+      hover:shadow-xl
+      transition
+    "
+  >
+    <Mail className="w-10 h-10 text-blue-600" />
+
+    <h3 className="font-semibold mt-4">
+      Get Email Invite
+    </h3>
+
+    <p className="text-gray-500 text-sm mt-2">
+      Receive access details directly
+      in your inbox.
+    </p>
+  </motion.button>
+
+</div>
+ <div className="mt-8">
+
+  <div className="flex items-center justify-between">
+
+    <h3 className="font-semibold text-lg">
+      Open Live Trading Account
+    </h3>
+
+    <div className="flex gap-2">
+      <button
+        onClick={() =>
+          setIndex(
+            (index - 1 + brokers.length)
+            % brokers.length
+          )
+        }
+      >
+        <ChevronLeft />
+      </button>
+
+      <button
+        onClick={() =>
+          setIndex(
+            (index + 1)
+            % brokers.length
+          )
+        }
+      >
+        <ChevronRight />
+      </button>
+    </div>
+
+  </div>
+
+  <motion.div
+    key={index}
+    initial={{
+      opacity: 0,
+      x: 100,
+    }}
+    animate={{
+      opacity: 1,
+      x: 0,
+    }}
+    className={`
+      mt-4
+      rounded-3xl
+      text-white
+      p-8
+      bg-gradient-to-r
+      ${brokers[index].color}
+    `}
+  >
+
+    <TrendingUp className="w-12 h-12" />
+
+    <h4 className="text-2xl font-bold mt-4">
+      {brokers[index].name}
+    </h4>
+
+    <p className="mt-2 opacity-90">
+      Open a live account and trade
+      directly in markets.
+    </p>
+
+    <button
+      className="
+        mt-6
+        bg-white
+        text-black
+        rounded-xl
+        px-6
+        py-3
+      "
+    >
+      Open Account
+    </button>
+
+  </motion.div>
+
+</div></>)}
+ </AnimatePresence>)
+}
