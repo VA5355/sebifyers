@@ -5,31 +5,32 @@ import React ,  { useEffect } from 'react';
  import dynamic from "next/dynamic";
 export default function ApexCoreChart() {
  useEffect(() => {
-    let controller: any;
-
-    async function loadChart() {
-      // Dynamically import browser-only libs
-      const ApexCharts = (await import("apexcharts")).default;
-     // const ApexStock = (await import(*  from 'apexstock')).default;
-      const ApexStock =  dynamic(
-        () => { return (import (  'apexstock')); } , 
-        { ssr: false }
-      );
-
-      // Inject your controller AFTER DOM exists
-      controller = new (window as any).StockChartController(
-        ApexCharts,
-        ApexStock
-      );
-      controller.initChart();
-    }
-
-    loadChart();
-
-    return () => {
-      controller?.stockChart?.destroy();
-    };
-  }, []);
+     let controller: any;
+ 
+     async function loadChart() {
+       // Dynamically import browser-only libs
+       console.log('loading apex charts is in process ... ')
+      // const ApexCharts = (await import("apexcharts")).default;
+     // const ApexStock = (await import(  'apexstock')).default;
+      /* const ApexStock =  dynamic(
+         () => { return (import (  'apexstock')); } , 
+         { ssr: false }
+       ); */
+ 
+       // Inject your controller AFTER DOM exists window as any).
+       /*controller = new StockChartController(
+         ApexCharts,
+         ApexStock
+       );
+       controller.initChart();*/
+     }
+ 
+     loadChart();
+ 
+    /* return () => {
+       controller?.stockChart?.destroy();
+     };*/
+   }, []);
 return (
     <div className="flex min-h-screen items-start justify-start bg-zinc-50 font-sans dark:bg-black">
    
