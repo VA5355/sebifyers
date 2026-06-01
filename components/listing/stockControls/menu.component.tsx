@@ -24,6 +24,7 @@ const arr = [
     {key: 3, title: "Trade"},
     {key: 4, title: "Position"},
      {key: 5, title: "Subscribe"},
+     {key: 6, title: "Account Demo"},
 ]
 const sortMapper = [
     {key: 1, title: "Sort by percentage"},
@@ -662,10 +663,11 @@ const Menu = () => {
                 <option value={'Trade'}>Trade</option>
                  <option value={'Position'} >Position</option>
                    <option value={'Subscribe'} >Subscribe</option>
+                   <option value={'Account Demo'} >Account Demo</option>
             </select>
 
 
-            <div className='hidden  px-3 mx-12 md:flex relative flex-wrap items-center justify-between'>{/** bg-sky-500 hover:bg-sky-700 bg-brandblue */}
+            <div className={`hidden  px-3 mx-12 md:flex relative flex-wrap items-center justify-between  ${tab === 'Account Demo' ? 'text-[10px]' :''}`}>{/** bg-sky-500 hover:bg-sky-700 bg-brandblue */}
                 {
                     arr.map(item => {
                         return <button key={item.key} onClick={() => {
@@ -678,7 +680,7 @@ const Menu = () => {
                 <div 
                     className={`hidden ml-16 md:flex relative py-4 flex-wrap items-center toggle-line ${tab === "Educate"  ? 'move-line' : tab === "Observe" 
                     ? 'move-line1' :  tab === "Trade" ? 'move-line2' :  tab === 'Position' ? 'move-2next' :  tab === 'Subscribe' ? 'move-line3' :  
-                     tab === 'Virtual Account' ? 'move-line4' :''  }`}></div>
+                     tab === 'Virtual Account' ? 'move-line4'    :    tab === 'Account Demo' ? 'move-line4' :''}`}></div>
                   {/** hidden flex-wrap items-center justify-between */}
                 </div>
            {/* <div className='hidden md:flex flex-wrap items-center justify-between'>

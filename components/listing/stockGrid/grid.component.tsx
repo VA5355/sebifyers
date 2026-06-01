@@ -31,6 +31,7 @@ import GridCardsFilpYahooChartNoTabs  from '@/app/GridCardsFilpYahooChartNoTabs'
 import GridCardsFilpYahooChartNoTabsImproved  from '@/app/GridCardsFilpYahooChartNoTabsImproved';
 import {setTimestampChartData , selectIsChartLoading} from "@/redux/slices/timestampChartSlice"
 import RefinedVirtualAccountModalImproved from '@/app/RefinedVirtualAccountModalImproved';
+import AccountDemo from '@/app/account-demo/account-demo';
 
 //import './grid.css';
 
@@ -46,7 +47,7 @@ const StockGrid = () => {
       const renderData = useSelector(selectRenderData);
       const renderSymbol = useSelector(selectRenderSymbol);
 
-
+     const defaultSlug  = Promise.resolve({ slug : "Demo Stock" } )
     const dispatch = useAppDispatch()
     const loader = useSelector((state: GlobalState) => state.misc.loader)
     const [positionOneFetch ,setPositionOneFetch ]= useState((  StorageUtils._retrieve(CommonConstants.fetchPositions).data ===  false  ? 1:0 )  );
@@ -261,6 +262,8 @@ const StockGrid = () => {
                              <SubscriptionScreen/>   
                      ) :   tab === "Virtual Account"  ? (  
                              <RefinedVirtualAccountModalImproved isOpen={true} onClose={undefined} onConfirm={undefined}/>   
+                     ) :  tab === "Account Demo"  ? (  
+                             <AccountDemo params= {defaultSlug} />   
                      ) :  
                    
                      <>    </> 
