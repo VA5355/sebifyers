@@ -35,7 +35,7 @@ html, body {
 .move-2next{
   left: 235px;
   width: 170px;
-
+  background-color: #fff;
 }
 
 .loader-overlay{
