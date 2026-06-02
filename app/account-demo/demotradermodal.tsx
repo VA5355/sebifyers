@@ -78,7 +78,21 @@ export default function DemoTradeModal({
             exit={{ opacity: 0 }}
           />
 
-          {/* Modal */}
+          {/* Modal    fixed
+              z-[60]
+              left-1/2
+              top-1/2
+              -translate-x-1/2
+              -translate-y-1/2
+              w-[95vw]
+              max-w-4xl
+              max-h-[90vh]
+              overflow-y-auto
+              rounded-3xl
+              bg-white
+              shadow-2xl
+              p-5
+              md:p-8*/}
           <motion.div
             initial={{
               opacity: 0,
@@ -98,28 +112,16 @@ export default function DemoTradeModal({
             transition={{
               duration: 0.25,
             }}
-            className="
-              fixed
-              z-[60]
-              left-1/2
-              top-1/2
-              -translate-x-1/2
-              -translate-y-1/2
-              w-[95vw]
-              max-w-4xl
-              max-h-[90vh]
-              overflow-y-auto
-              rounded-3xl
-              bg-white
-              shadow-2xl
-              p-5
-              md:p-8
-            "
+            className="fixed   inset-0  z-[60]  flex  items-center  justify-center  p-3  md:p-6       "
           >
-            {/* Header */}
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
+            <div  className=" w-full  max-w-4xl max-h-[92vh] overflow-y-auto   overflow-x-hidden rounded-3xl bg-white shadow-2xl p-4 md:p-8  "
+>
+            <div  className=" w-full  sm:max-w-4xl max-h-[92vh] overflow-y-auto   overflow-x-hidden rounded-t-3xl sm:rounded-3xl bg-white   "
+>
+            {/* Header flex items-start justify-between gap-4*/}
+            <div className="flex flex-row items-start justify-between gap-2">
+              <div> {/** text-2xl md:text-3xl font-bold text-slate-900  */}
+                <h2 className="text-xl md:text-3xl font-bold leading-tight ">
                   Start Trading Risk-Free
                 </h2>
 
@@ -143,7 +145,7 @@ export default function DemoTradeModal({
             </div>
 
             {/* Options */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4 gap-4 mt-8">
               {/* Virtual Account */}
               <motion.button
                 whileHover={{
@@ -255,7 +257,7 @@ export default function DemoTradeModal({
                 </div>
               </div>
 
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="wait"> {/**  min-h-[240px] */}
                 <motion.div
                   key={brokers[index].name}
                   initial={{
@@ -279,7 +281,7 @@ export default function DemoTradeModal({
                     p-6
                     md:p-8
                     text-white
-                    min-h-[240px]
+                   min-h-[180px] md:min-h-[240px]
                     bg-gradient-to-r
                     ${brokers[index].color}
                     flex
@@ -288,17 +290,17 @@ export default function DemoTradeModal({
                   `}
                 >
                   <div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4"> {/** h-12 w-auto*/}
                       <img
                         src={brokers[index].logo}
                         alt={brokers[index].name}
-                        className="h-12 w-auto bg-white rounded-lg p-2"
+                        className="h-8 md:h-12 w-auto bg-white rounded-lg p-2"
                       />
 
                       <TrendingUp className="w-10 h-10" />
                     </div>
-
-                    <h4 className="text-2xl md:text-3xl font-bold mt-5">
+                      {/** text-2xl md:text-3xl */}
+                    <h4 className="text-xl md:text-3xl font-bold mt-5">
                       {brokers[index].name}
                     </h4>
 
@@ -325,6 +327,8 @@ export default function DemoTradeModal({
                   </button>
                 </motion.div>
               </AnimatePresence>
+            </div>
+            </div>
             </div>
           </motion.div>
         </>
