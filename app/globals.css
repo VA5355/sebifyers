@@ -17,16 +17,16 @@ html, body {
   transition: .3s ease-in-out;
 }
 .move-line{
-  left: 20px;
+  left: 20px;  background-color: #fff;
 }
 .move-line1{
-  left: 130px;
+  left: 130px;  background-color: #fff;
 }
 .move-line2{
-  left: 235px;
+  left: 235px;  background-color: #fff;
 }
 .move-line3{
-  left: 365px;
+  left: 365px;  background-color: #fff;
 }
 .move-line4{
   left: 475px;

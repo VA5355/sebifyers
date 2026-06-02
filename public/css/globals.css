@@ -19,10 +19,10 @@ html, body {
   transition: .3s ease-in-out;
 }
 .move-line{
-  left: 120px;
+  left: 120px;  background-color: #fff;
 }
 .move-line2{
-  left: 235px;
+  left: 235px;  background-color: #fff;
 }
 .move-line3{
   left: 365px;
