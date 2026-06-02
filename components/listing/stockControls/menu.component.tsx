@@ -678,9 +678,9 @@ const Menu = () => {
                     })
                 }
                 <div 
-                    className={`hidden ml-16 md:flex relative py-4 flex-wrap items-center toggle-line ${tab === "Educate"  ? 'move-line' : tab === "Observe" 
-                    ? 'move-line1' :  tab === "Trade" ? 'move-line2' :  tab === 'Position' ? 'move-2next' :  tab === 'Subscribe' ? 'move-line3' :  
-                     tab === 'Virtual Account' ? 'move-line4'    :    tab === 'Account Demo' ? 'move-line4' :''}`}></div>
+                    className={`hidden ml-16 md:flex relative flex-wrap items-center toggle-line ${tab === "Educate"  ? 'move-line  py-1' : tab === "Observe" 
+                    ? 'move-line1  py-1' :  tab === "Trade" ? 'move-line2  py-1'  :  tab === 'Position' ? 'move-2next  py-1' :  tab === 'Subscribe' ? 'move-line3  py-1' :  
+                     tab === 'Virtual Account' ? 'move-line4  py-4'    :    tab === 'Account Demo' ? 'move-line4  py-4' :''}`}></div>
                   {/** hidden flex-wrap items-center justify-between */}
                 </div>
            {/* <div className='hidden md:flex flex-wrap items-center justify-between'>

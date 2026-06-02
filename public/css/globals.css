@@ -22,7 +22,7 @@ html, body {
   left: 120px;  background-color: #fff;
 }
 .move-line2{
-  left: 235px;  background-color: #fff;
+  left: 235px;  background-color: #f4f4f5;
 }
 .move-line3{
   left: 365px;
@@ -33,7 +33,7 @@ html, body {
 .move-2next{
   left: 235px;
   width: 170px;
-  background-color: #fff;
+  background-color: #f4f4f5;
 }
 
 .loader-overlay{
