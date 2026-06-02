@@ -1,51 +1,54 @@
 
-const express = require('express');
-const fyersExtra = require('extra-fyers');
-const  queue =  require('./tokenQueue.js');
-const  alphaTimeSeries =  require('./alphaadvantage-candle-series.js');
-const  alphaT =  require('./alphaTimeSeries.js');
+import express, { json, urlencoded } from "express";
+//const fyersExtra = require('extra-fyers');
+import queue from "./tokenQueue.js";
+//const  alphaTimeSeries =  require('./alphaadvantage-candle-series.js');
+import alphaTimeSeries from "./alphaadvantage-candle-series.js";
+//const  alphaT =  require('./alphaTimeSeries.js');
+import alphaT from "./alphaTimeSeries.js";
 const router  = express.Router()
-var fs  = require('fs');
-var path = require('path');
-var ejs = require('ejs');
-//var fyersV3= require("fyers-api-v3");
-var fyersV3= undefined;
-const ism = require('@zero65tech/indian-stock-market');
+import fs from "node:fs";
+import path from "node:path";
+import ejs from "ejs";
+import fyersV3 from "fyers-api-v3";
+//import ism from "@zero65tech/indian-stock-market";
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+import specialdays from './special-days.json' with { type: 'json' };
+//import holidays from './holidays.json' assert { type: 'json' };
+//import holidays from './holidays.json' with { type: 'json' };
+import holidays from '@zero65tech/indian-stock-market/src/build/holidays.json' with { type: 'json' };
+//const ism = require('@zero65tech/indian-stock-market');
+//import ism from "@zero65tech/indian-stock-market";
+const ism =  undefined; //await import('@zero65tech/indian-stock-market');
 const FyersSocket = undefined; // require("fyers-api-v3").fyersDataSocket  this causing NETLIFY CRASH  HSM_Package/hslib.js issue
 import { ComplyCube } from "@complycube/api";
 
-//const FyersAPI =fyersV3.fyersModel
-const FyersAPI = undefined ; // fyersV3.fyersModel
+import dotenv from "dotenv";
+dotenv.config();
 
-//var fyersAPI = new FyersAPI()
-var fyersAPI = undefined; // new FyersAPI()
-//var fyersModel= fyersV3.fyersModel
-var fyersModel= undefined;
+const FyersAPI =fyersV3.fyersModel
+
+var fyersAPI = new FyersAPI()
+var fyersModel= fyersV3.fyersModel
  // var fyersAPI =  new fyersModel({"path":"./","enableLogging":true}); // new require("fyers-api-v3").fyersModel();
 	// var fyersAPI = new FyersAPI()
 //var client_id= "7GSQW68AZ4-100"
-var client_id= "JDK56F3KP5-200"; // "7GSQW68AZ4-100" ; // PROD 
-var secret_key = "G75gMipThUCNWpLA"; 		 // "MGY8LRIY0M"; // PROD 
-var complycubeKey = "test_TUIzVEN3Y2djeXdrU0ZEa1M6N2ZmZjY1ZjA5NzExYzk5NGZiNDk3YjJmMjRlOWUQDgwqVE-6aMBLYLbQv6i5N5y7bC5SajqSjHPzt8UJUqbZ8a==";
+var client_id= "TRLV2A6GPL-100"; // "7GSQW68AZ4-100" ; // PROD 
+var secret_key = "V72MPISUJC"; 		 // "MGY8LRIY0M"; // PROD
+var complycubeKey = "test_TUIzVEN3Y2djeXdrU0ZEa1M6N2ZmZjY1ZjA5NzExYzk5NGZiNDk3YjJmMjRlOWU1Njk1OTE2ZjBjZDhkZmEyNDAxY2MyMjg2MWQ2YjY5YTZlOQ==";
 // sand box key https://portal.complycube.com/developers/key
 // test_TUIzVEN3Y2djeXdrU0ZEa1M6N2ZmZjY1ZjA5NzExYzk5NGZiNDk3YjJmMjRlOWUQDgwqVE-6aMBLYLbQv6i5N5y7bC5SajqSjHPzt8UJUqbZ8a==
-
 //var redirectUrl  = "https://192.168.1.8:56322/fyersauthcodeverify"
-var redirectUrl  = "https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
-var BASEREF  = "https://onedinaar.com"
-var MARKETSTATUS  ="https://api-nse-india-vbmd.onrender.com";      //"https://scraper-api-eyiz.onrender.com"
-//var MARKETSTATUS_RECALCULATE  ="https://feedsoptionsmain.onrender.com"  feedsoptionsmain.onrender.com
-var MARKETSTATUS_RECALCULATE  ="https://feedsoptionsmain.onrender.com"  
-let cachedCSV = null;
-let lastFetchTime = 0;
-
+var redirectUrl  = "https://192.168.1.7:8888/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
+var BASEREF  = "http://192.168.1.5:8888"
+var MARKETSTATUS  ="http://192.168.1.7:3065"
+var MARKETSTATUS_RECALCULATE  ="https://192.168.1.4:8443"
 //var redirectUrl  = "https://store-stocks.netlify.app/.netlify/functions/netlifystockfyersbridge/api/fyersauthcodeverify"
-var fyers= (fyersModel !==undefined && fyersModel !==null) ?  new fyersModel({"path":"./","enableLogging":true}) : undefined;
-if(fyers !==undefined && fyers !== null){ 
+var fyers= new fyersModel({"path":"./","enableLogging":true})
 fyers.setAppId(client_id)
 
 fyers.setRedirectUrl(redirectUrl)
-}
 var authcode='';
 var global_auth_code ='';
 var global_fyers_sebi_access_token ='';
@@ -56,7 +59,7 @@ var globalKyc = undefined;
 let iterateObject = function*(obj) {
 	for (let k in obj) yield [ k, obj[k] ];
   };
-var URL= (fyers !==undefined && fyers !== null) ? fyers.generateAuthCode() : undefined;
+var URL=fyers.generateAuthCode()
 	//use url to generate auth code
 		console.log("FYERS URL " , URL) 
 
@@ -436,10 +439,10 @@ router.get("/subscribe/complycubeKyc", async function (req, res ) {
 	else { 
 		 console.log("REDIRECT from Fyers is with not PARAMTEREs , or could not PARSE THEM ")
 
-	if(res.data !== null && res.data !==undefined){
-		typeOfEnity = res .data['typeOfEnity'];
-		  email = res .data['email'];
-		 firstName= res .data['firstName'];
+         if(res.data !== null && res.data !==undefined){
+		     typeOfEnity = res .data['typeOfEnity'];
+	    	  email = res .data['email'];
+	     	 firstName= res .data['firstName'];
 		///
 		// 
 	    }
@@ -468,7 +471,7 @@ router.get("/subscribe/complycubeKyc", async function (req, res ) {
 	//  res.send(JSON.stringify({"auth_code" :auth_code}))
 
 });
-// Step2 webhook for session started  https://192.168.1.3:8888/.netlify/functions/netlifystockfyersbridge/api/subscribe/kycsession
+// Step 3 webhook for session started  https://192.168.1.7:8888/.netlify/functions/netlifystockfyersbridge/api/subscribe/kycsession
 // https://onedinaar.com/.netlify/functions/netlifystockfyersbridge/api/subscribe/kycsession
 // d9c08b2faaf5dc8d688802a32a5c0dbb 
 router.get("/subscribe/kycsession", async function (req, res ) { 
@@ -539,7 +542,6 @@ router.get("/fyerskycorder", async function (req, res ) {
 		 clientId= complyCubeJSON['clientId'];
 		 token= complyCubeJSON['token'];
 
-		 //console.log(`typeOfEnity: ${typeOfEnity}  email : ${email}  firstName : ${firstName}  lastName : ${lastName}  dob:  ${dob} `);
 
 		 console.log(`typeOfEnity: ${typeOfEnity}  email : ${email}  firstName : ${firstName}  lastName : ${lastName}  dob:  ${dob}  clientId : ${clientId}  token:  ${token}`);
 		 if (clientId !== undefined  && clientId !== null && token !==undefined && token !==null) {
@@ -827,11 +829,11 @@ router.get('/fyersgetaccess', async function (req,res) {
 
 
 // PROCEED market status 
-// just return status from the http://192.168.1.6:3065
+// just return status from the http://192.168.1.5:3065
 
 router.get('/fyersgetmarketstatus', async function (req,res) {
 // PROCEED market status 
-// just return status from the http://192.168.1.6:3065
+// just return status from the http://192.168.1.5:3065
 
 try {
      
@@ -842,7 +844,7 @@ try {
 
 
     if (response === undefined) {
-       console.log("FETCH http://192.168.1.6:3065  not okay ");
+       console.log("FETCH http://192.168.1.5:3065  not okay ");
 		  setCORSHeaders( res )
 		res.send("{ data: error }" );
     }
@@ -911,7 +913,7 @@ try {
 
 router.get('/fyersniftyoptionrecalculate', async function (req,res) {
 // PROCEED recalculate-option-strikes
-// just return status from the https://192.168.1.3:8443/recalculate-option-strikes
+// just return status from the https://192.168.1.4:8443/recalculate-option-strikes
 
 try {
 	   let totalexpiries = undefined;
@@ -922,9 +924,9 @@ try {
 		  let authHeader = req.headers['Authorization'] ?? req.headers['authorization'];
 
 		  if(authHeader ===undefined){
-			  console.log("Authorization /authorization not set cannot proceed to feedsoptionsmain.onrender.com " );
+			  console.log("Authorization /authorization not set cannot proceed to artilleryfeed.onrender.com " );
 			  	totalexpiries = {
-							error: "Recalculate Nifty Option Authorization /authorization not set cannot proceed to feedsoptionsmain.onrender.com ",
+							error: "Recalculate Nifty Option Authorization /authorization not set cannot proceed to artilleryfeed.onrender.com ",
 							message: 'Authorization /authorization not set'
 						}
 				 let ret =  {
@@ -981,8 +983,7 @@ try {
 
 
    if (response === undefined) {
-      // console.log("FETCH https://feedsoptionsmain.onrender.com/recalculate-option-strikes  not okay ");
-      console.log("FETCH https://feedsoptionsmain.onrender.com/recalculate-option-strikes  not okay ");
+       console.log("FETCH https://192.168.1.4:8443/recalculate-option-strikes  not okay ");
 		  setCORSHeaders( res )
 		res.send("{ data: error }" );
     }
@@ -1040,43 +1041,20 @@ try {
 
 
 
-router.get('/fyersgetnsecsv', async function (req, res) {
-  try {
-    const now = Date.now();
 
-    if (cachedCSV && (now - lastFetchTime < 300000)) {
-      return res.send(cachedCSV);
-    }
-
-    const response = await fetch("https://onedinaar.com/NSE_CM.csv");
-    const csvText = await response.text();
-
-    cachedCSV = csvText;
-    lastFetchTime = now;
-
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-Type", "text/csv");
-
-    return res.send(csvText);
-
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
 
 
 // PROCEED NSE CSV file access using function  
 // just return the csv text 
-  /*const response = await fetch(
-        BASEREF +  "/NSE_CM.csv"
-    );*/
-/*
+
 router.get('/fyersgetnsecsv', async function (req,res) {
 // PROCEED NSE CSV file access using function  
 // just return the csv text 
 
 try {
-  
+    /*const response = await fetch(
+        BASEREF +  "/NSE_CM.csv"
+    );*/
 	 // Netlify exposes public folder at site root
     const filePath = path.join(process.cwd(), "public", "NSE_CM.csv");
 
@@ -1084,7 +1062,7 @@ try {
 
 
     if (csvText === undefined) {
-       console.log("FETCH https://onedinaar.com/NSE_CM.csv   not okay ");
+       console.log("FETCH https://successrate.netlify.app/NSE_CM.csv   not okay ");
 		  setCORSHeaders( res )
 		res.send("{ data: error }" );
     }
@@ -1133,7 +1111,7 @@ try {
 
   }
 
-}); */
+});
 router.get('/fyersgetaccessauthcode', async function (req,res) {
 
 	let s = ''
@@ -1227,9 +1205,6 @@ router.get('/fyersgethistory', async function (req,res) {
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
 		console.log("FYERS Initiatied Successfully ") 
 		let fyersAccess= false;
-		if(fyers !==undefined && fyers !==null){
-			
-		
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				fyers.setAccessToken(response.access_token)
@@ -1273,26 +1248,6 @@ router.get('/fyersgethistory', async function (req,res) {
 
 			}
 		});
-	   }
-	   else {
-			let ret =  {
-			statusCode: 500,
-			headers: {
-				"Access-Control-Allow-Origin": "*"
-			},
-			body: JSON.stringify({
-				error: "Fyers API unavailable",
-				message: "Fyers API unavailable",
-			})
-			};
-		//console.log(error)
-						//let wd1 = `NSE:${symbol}-EQ`;
-						//let ret = {  "symbol": wd1 , "status" : " Input error "+JSON.stringify(err) };
-						 setCORSHeaders( res );
-						res.send( JSON.stringify( ret));
-
-	   }
-
 	}
   }
 
@@ -1511,7 +1466,7 @@ router.get('/apinseindia', async function (req,res) {
 		var data = {  "SessionToken": session_token,    "AppKey": "7`xZ6=v63s37L227e214j454mFN#h5Q4"};
 		var config = {
 			method: 'get',
-			url: "http://localhost:3065/api/equity/"+symbol,
+			url: "http://192.168.1.5:3065/api/equity/"+symbol,
 			headers: { 'Content-Type': 'application/json' },
 			data : data
 		};
@@ -1756,7 +1711,6 @@ Sample Success Response
 }
 */
 async function extrSebiAccessTokenGenerationDailyCode () {
-	 // const FyersAPI = require("fyers-api-v3").fyersModel
 
 	if(fyersAPI !==null && fyersAPI !==undefined ){
 
@@ -1764,12 +1718,12 @@ async function extrSebiAccessTokenGenerationDailyCode () {
 			fyersAPI.setAppId("JDK56F3KP5-200");
 	}
 	else {  
-		//	 const FyersAPI = require("fyers-api-v3").fyersModel
+			 const FyersAPI = require("fyers-api-v3").fyersModel
 			// Create a new instance of FyersAPI
-		//	fyersAPI = new FyersAPI()
+			fyersAPI = new FyersAPI()
 
 			// Set your APPID obtained from Fyers (replace "xxx-1xx" with your actual APPID)
-		//	fyersAPI.setAppId("JDK56F3KP5-200");
+			fyersAPI.setAppId("JDK56F3KP5-200");
 		
 
 	}  //const FyersAPI = require("fyers-api-v3").fyersModel
@@ -2117,6 +2071,21 @@ async function fetchYahooIndex(symbol , name ) {
 //curl -H "Authorization:app_id:access_token" https://api-t1.fyers.in/api/v3/profile
 //curl -H "Authorization: app_id:access_token" POST 'https://api-t1.fyers.in/api/v3/logout'
 /*
+const FyersAPI = require("fyers-api-v3").fyersModel
+
+var fyers = new FyersAPI()
+fyers.setAppId("QCxxxx57-1xx")
+fyers.setRedirectUrl("https://url.xyz")
+fyers.setAccessToken("eyjb....")
+
+var inp=["NSE:SBIN-EQ","NSE:TCS-EQ"]
+
+fyers.getQuotes(inp).then((response) => {
+    console.log(response)
+}).catch((error) => {
+    console.log(error)
+})
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 Sample Success Response 
 ------------------------------------------------------------------------------------------------------------------------------------------
@@ -3696,5 +3665,5 @@ async function handledFyersRedirectAuthCode(authcode, req , res ){
 	 }
 	
 }  
-
-module.exports = router;
+export default { router }
+//module.exports = router;

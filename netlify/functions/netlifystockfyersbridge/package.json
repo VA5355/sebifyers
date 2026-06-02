@@ -1,0 +1,41 @@
+{
+  "name": "netlify-fyers-bridge",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
+    "@netlify/functions": "^3.1.10",
+    "@netlify/plugin-nextjs": "^5.11.2",
+    "@sendgrid/mail": "latest",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fyers-api-v3": "^1.4.1",
+    "googleapis": "^105.0.0",
+    "https": "^1.0.0",
+    "imap": "^0.8.19",
+    "imapflow": "^1.0.172",
+    "jsonwebtoken": "^8.4.0",
+    "mailparser": "^3.7.2",
+    "nodemailer": "^6.9.16",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "serverless-http": "^3.2.0",
+    "socket.io-client": "^4.8.3",
+    "store2": "^2.14.4"
+  },
+  "devDependencies": {
+    "@types/imap": "^0.8.42",
+    "@types/imapflow": "^1.0.19",
+    "@types/mailparser": "^3.4.5",
+    "@types/nodemailer": "^6.4.17",
+    "@types/nodemailer-smtp-transport": "^2.7.8",
+    "patch-package": "^8.0.1"
+  }
+}
