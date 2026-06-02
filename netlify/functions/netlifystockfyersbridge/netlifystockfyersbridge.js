@@ -14,15 +14,17 @@
 */
 // Docs on event and context https://docs.netlify.com/functions/build/#code-your-function-2
 //import express, {Router} from 'express'
-const path = require('path');
-const fs = require('fs');
-const express = require("express");
+import fs from "node:fs";
+import path from "node:path";
+//import ejs from "ejs";
+import express, { json, urlencoded } from "express";
 // Capital ServerlessHttp is fine small serverless not work '
 const ServerlessHttp = require('serverless-http');
 //const app = require('./app');
 const routes = require('./routes')
-require("dotenv").config();
-const store  = require( "store2"); 
+import dotenv from "dotenv";
+dotenv.config();
+//const store  = require( "store2"); 
 // var fyersModel= require("fyers-api-v3").fyersModel
 var client_id=  process.env.FYERS_CLIENT_ID;  // "TRLV2A6GPL-100"
 var client_secret=  process.env.FYERS_SECRET_KEY;  // "TRLV2A6GPL-100"
