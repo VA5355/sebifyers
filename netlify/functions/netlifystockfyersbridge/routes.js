@@ -13,7 +13,8 @@ var fyersV3= undefined;
 const ism = require('@zero65tech/indian-stock-market');
 const FyersSocket = undefined; // require("fyers-api-v3").fyersDataSocket  this causing NETLIFY CRASH  HSM_Package/hslib.js issue
 import { ComplyCube } from "@complycube/api";
-
+import {CommonConstants} from "@/utils/constants";
+import {isNullOrUndefined } from "@/utils/constants";
 //const FyersAPI =fyersV3.fyersModel
 const FyersAPI = undefined ; // fyersV3.fyersModel
 
@@ -1328,105 +1329,112 @@ router.get('/fyersquicklogin', async function (req,res) {
 	 if( authcode !==null && authcode !== undefined && authcode !== ''){
 			console.log("Authcode : "+authcode);
 		var accessToken = authcode;  // access_token recieved after login
-		var api = new fyersExtra.Api(appId, accessToken);   // "MGY8LRIY0M", PROD 
-	  fyers.generate_access_token({"client_id":client_id,"secret_key": secret_key,
-			"auth_code":authcode})
-		.then(async (response)=>{
-		if(response.s=='ok'){
-				accessToken = response.access_token;
-				console.log("Fyers access_token "+accessToken);
-				console.log("FYERS Grants provided  ") 
-				api = new fyersExtra.Api(appId, accessToken);
-				const x = {
-					fromDate: new Date("2025-05-30T09:15:00"),
-					toDate: new Date("2025-06-01T15:30:00")
-				};
-				var marketRequest =   {
-					symbol: `NSE:${symbol}-EQ`,
-					resolution: resolution,
-					//date_format: "1",
-					//range_from: range_from,
-					//range_to: range_to,
-					//range_from: "2025-05-30 09:15",
-					//range_to: "2025-06-01 15:30",
-					//range_from: new Date("2025-05-30T09:15:00"), // ✅ Date object
-					//range_to: new Date("2025-06-01T15:30:00"),   // ✅ Date object
-					//range_from: '1717200000', // UNIX timestamp (seconds) — FROM
-					//range_to: '1717286400',   // UNIX timestamp (seconds) — TO
-					//range_from: Math.floor(x.fromDate.getTime() / 1000),
-					//range_to: Math.floor(x.toDate.getTime() / 1000),
-					fromDate: Math.floor(x.fromDate.getTime() / 1000),
-					/** Indicating the end date of records. */
-						toDate:  Math.floor(x.toDate.getTime() / 1000),
-					continuous: true
-					//cont_flag: cont_flag
-			    }
-	             console.log(" FYERS Market Request " +JSON.stringify(marketRequest));
-	  //var marketresonse = await api.getMarketHistory(marketRequest);
-	   // await api.getMarketHistory( marketRequest) 
-	    // List equity and commodity fund limits.
- 	// await api.getFunds()
-			if(api !==null && api !== undefined){
-					console.log("✅ fyers extra api is initialised" );
-			}	
-			if(fyersAPI !==null && fyersAPI !== undefined){
-					fyersAPI.setAppId(appId)
-				//fyersAPI.setRedirectUrl("https://url.xyz")
-					fyersAPI.setAccessToken(accessToken)
-					const range_to = Math.floor(Date.now() / 1000);
-					const range_from = range_to - (86400 * 1); // 1 day back
-					var inp={
-						"symbol": `NSE:${symbol}-EQ`,
-						"resolution":"60",
-						"date_format":"1",
-						"range_from":   "2025-05-30" , //" "+range_from,
-						"range_to": "2025-06-01" , // " "+range_to,
-						"cont_flag":"1"
-					}
-					
-					console.log("✅ fyers Model api is initialised" );
-				
-					fyersAPI.getHistory(inp).then((response)=>{
-						console.log(response)
+		if(!CommonConstants.isNullOrUndefined(fyersExtra)) {
+
+		 
+				var api = new fyersExtra.Api(appId, accessToken);   // "MGY8LRIY0M", PROD 
+			fyers.generate_access_token({"client_id":client_id,"secret_key": secret_key,
+					"auth_code":authcode})
+				.then(async (response)=>{
+				if(response.s=='ok'){
+						accessToken = response.access_token;
+						console.log("Fyers access_token "+accessToken);
+						console.log("FYERS Grants provided  ") 
+						api = new fyersExtra.Api(appId, accessToken);
+						const x = {
+							fromDate: new Date("2025-05-30T09:15:00"),
+							toDate: new Date("2025-06-01T15:30:00")
+						};
+						var marketRequest =   {
+							symbol: `NSE:${symbol}-EQ`,
+							resolution: resolution,
+							//date_format: "1",
+							//range_from: range_from,
+							//range_to: range_to,
+							//range_from: "2025-05-30 09:15",
+							//range_to: "2025-06-01 15:30",
+							//range_from: new Date("2025-05-30T09:15:00"), // ✅ Date object
+							//range_to: new Date("2025-06-01T15:30:00"),   // ✅ Date object
+							//range_from: '1717200000', // UNIX timestamp (seconds) — FROM
+							//range_to: '1717286400',   // UNIX timestamp (seconds) — TO
+							//range_from: Math.floor(x.fromDate.getTime() / 1000),
+							//range_to: Math.floor(x.toDate.getTime() / 1000),
+							fromDate: Math.floor(x.fromDate.getTime() / 1000),
+							/** Indicating the end date of records. */
+								toDate:  Math.floor(x.toDate.getTime() / 1000),
+							continuous: true
+							//cont_flag: cont_flag
+						}
+						console.log(" FYERS Market Request " +JSON.stringify(marketRequest));
+			//var marketresonse = await api.getMarketHistory(marketRequest);
+			// await api.getMarketHistory( marketRequest) 
+				// List equity and commodity fund limits.
+			// await api.getFunds()
+					if(api !==null && api !== undefined){
+							console.log("✅ fyers extra api is initialised" );
+					}	
+					if(fyersAPI !==null && fyersAPI !== undefined){
+							fyersAPI.setAppId(appId)
+						//fyersAPI.setRedirectUrl("https://url.xyz")
+							fyersAPI.setAccessToken(accessToken)
+							const range_to = Math.floor(Date.now() / 1000);
+							const range_from = range_to - (86400 * 1); // 1 day back
+							var inp={
+								"symbol": `NSE:${symbol}-EQ`,
+								"resolution":"60",
+								"date_format":"1",
+								"range_from":   "2025-05-30" , //" "+range_from,
+								"range_to": "2025-06-01" , // " "+range_to,
+								"cont_flag":"1"
+							}
+							
+							console.log("✅ fyers Model api is initialised" );
+						
+							fyersAPI.getHistory(inp).then((response)=>{
+								console.log(response)
+								let wd = `NSE:${symbol}-EQ`;
+								let ret = {  "symbol": wd , "status" : "Data available" }
+								const output = transformCandlesToTimeSeries(response, symbol);
+								console.log(JSON.stringify(output, null, 2));
+		
+									setCORSHeaders( res );
+
+									res.send( JSON.stringify(output));
+							}).catch((err)=>{
+								console.log(err)
+								let wd1 = `NSE:${symbol}-EQ`;
+								let ret = {  "symbol": wd1 , "status" : " Input error "+JSON.stringify(err) };
+								setCORSHeaders( res );
+								res.send( JSON.stringify( ret));
+							})
+
+						}
+			/*await api.getMarketHistory( marketRequest) 
+				.then(result => {
+					console.log("✅ Got response:", result);
+					// Example usage
+						const input = result;
+						console.log(input );
+						//const timeSeriesData = convertToTimeSeries(input);
+					//	console.log(timeSeriesData);
+					//setCORSHeaders( res )
+						// res.send( input);
 						let wd = `NSE:${symbol}-EQ`;
-						let ret = {  "symbol": wd , "status" : "Data available" }
-						const output = transformCandlesToTimeSeries(response, symbol);
-						 console.log(JSON.stringify(output, null, 2));
-  
-							 setCORSHeaders( res );
-
-							res.send( JSON.stringify(output));
-					}).catch((err)=>{
-						console.log(err)
-						let wd1 = `NSE:${symbol}-EQ`;
-						let ret = {  "symbol": wd1 , "status" : " Input error "+JSON.stringify(err) };
-						 setCORSHeaders( res );
-						res.send( JSON.stringify( ret));
-					})
-
-				}
-	/*await api.getMarketHistory( marketRequest) 
-		.then(result => {
-			console.log("✅ Got response:", result);
-			 // Example usage
-				const input = result;
-				console.log(input );
-				//const timeSeriesData = convertToTimeSeries(input);
-			//	console.log(timeSeriesData);
-			 //setCORSHeaders( res )
-				// res.send( input);
-				let wd = `NSE:${symbol}-EQ`;
-				res.send( JSON.stringify({ wd: "Data available" } ));
-		  })
-		  .catch(err => {
-			console.error("❌ Failed:", err);
-			// setCORSHeaders( res )
-			res.send(JSON.stringify({"FYERS": "FYERS MARKET CALL FAILED "}) );
-		  });
-	   */
-		}  // response.s == OK 
-	   });
-
+						res.send( JSON.stringify({ wd: "Data available" } ));
+				})
+				.catch(err => {
+					console.error("❌ Failed:", err);
+					// setCORSHeaders( res )
+					res.send(JSON.stringify({"FYERS": "FYERS MARKET CALL FAILED "}) );
+				});
+			*/
+				}  // response.s == OK 
+			});
+	   } 
+	   else {
+			  setCORSHeaders( res )
+		res.send("{ 'FYERS': 'FYERS API Unavailable' }" );
+	   }
 	  }
      }
 		// construct market request  
@@ -1773,14 +1781,14 @@ async function extrSebiAccessTokenGenerationDailyCode () {
 		
 
 	}  //const FyersAPI = require("fyers-api-v3").fyersModel
-    if(fyersAPI !==null && fyersAPI !== undefined ){ 
+    if(fyersAPI !==null && fyersAPI !== undefined  && fyers !==undefined && fyers !== null ){ 
 
 			// Set the RedirectURL where the authorization code will be sent after the user grants access
 			fyers.setRedirectUrl("https://trade.fyers.in/api-login/redirect-uri/index.html");
 
 			// Define the authorization code and secret key required for generating access token
-			const authcode = "eyJxxxx"; // Replace with the actual authorization code obtained from the user
-			const secretKey = "xxxxx"; // Replace with your secret key provided by Fyers
+			const authcode = global_auth_code   // "eyJxxxx"; // Replace with the actual authorization code obtained from the user
+			const secretKey =  process.env.FYERS_SECRET_KEY  //"xxxxx"; // Replace with your secret key provided by Fyers
 			fyers.generate_access_token({ "secret_key": secretKey, "auth_code": auth_code }).then((response) => {
 				console.log('EXTRA SEBI ACCESS TOKEN DAILY GENERATED '+ getFormattedTimeKey());
 				global_fyers_sebi_access_token = response.access_token;
@@ -2172,8 +2180,11 @@ router.get('/fyersgetquote', async function (req,res) {
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
 		console.log("FYERS Initiatied Successfully ") 
 		let fyersAccess= false;
+		if(!CommonConstants.isNullOrUndefined(fyers)) {  
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				console.log("FYERS Initiatied Successfully ") 
+
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
                 fyers.get_profile().then((response)=>{
@@ -2212,6 +2223,11 @@ router.get('/fyersgetquote', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+	    } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	   }
 	   else {
 		console.log("FYERS Initialization issues ... ") 
@@ -2280,10 +2296,12 @@ router.get('/fyersgettradebook', async function (req,res) {
 	//if( symbol !==null && symbol !== undefined && symbol !== ''){
 	//	console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+		
 		let fyersAccess= false;
+       if(!CommonConstants.isNullOrUndefined(fyers)) {  
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				 console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
                 fyers.get_tradebook().then((response)=>{
@@ -2308,6 +2326,11 @@ router.get('/fyersgettradebook', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+	   } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	   }
 	   else {
 		console.log("FYERS Initialization issues ... ") 
@@ -2397,10 +2420,12 @@ router.get('/fyersgetpositionbook', async function (req,res) {
 	//if( symbol !==null && symbol !== undefined && symbol !== ''){
 	//	console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+		
 		let fyersAccess= false;
+		 if(!CommonConstants.isNullOrUndefined(fyers)) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
                    fyers.get_positions().then((positionResp)=>{
@@ -2468,6 +2493,11 @@ router.get('/fyersgetpositionbook', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	   }
 	   else {
 		console.log("FYERS Initialization issues ... ") 
@@ -2549,11 +2579,13 @@ router.get('/fyersplacebuyorder', async function (req,res) {
 	//if( symbol !==null && symbol !== undefined && symbol !== ''){
 	//	console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+		
 		if( ltp !==null && ltp !== undefined && ltp !== ''){
 		let fyersAccess= false;
+	  if(!CommonConstants.isNullOrUndefined(fyers)) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
 					symbol = symbol.indexOf("NIFTY")>-1 ? "NSE:"+symbol : (symbol.indexOf("SENSEX") > -1 ? "BSE:"+symbol: "NSE:"+symbol )  
@@ -2607,6 +2639,11 @@ router.get('/fyersplacebuyorder', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	     }
 		 else {
 			console.log("FYERS Place Order issues ... ") 
@@ -2686,15 +2723,17 @@ router.get('/fyersplacesellorder', async function (req,res) {
 	//if( symbol !==null && symbol !== undefined && symbol !== ''){
 	//	console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+		
 		if( ltp !==null && ltp !== undefined && ltp !== ''  && 
 			  price !==null && price !== undefined && price !== '' &&
 			 symbol !==null && symbol !== undefined && symbol !== '' &&
 			 qty !==null && qty !== undefined && qty !== '' 
 		){
 		let fyersAccess= false;
+	   if(!CommonConstants.isNullOrUndefined(fyers)) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") ;
  				symbol = symbol.indexOf("NIFTY")>-1 ? "NSE:"+symbol : (symbol.indexOf("SENSEX") > -1 ? "BSE:"+symbol: "NSE:"+symbol )  
@@ -2748,6 +2787,11 @@ router.get('/fyersplacesellorder', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	     }
 		 else {
 			console.log("FYERS Place Order issues ... ") 
@@ -2916,11 +2960,13 @@ router.get('/fyerscancelorder', async function (req,res) {
 	//if( symbol !==null && symbol !== undefined && symbol !== ''){
 	//	console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+	
 		if( order_id !==null && order_id !== undefined && order_id !== ''){
 		let fyersAccess= false;
+		 if(!CommonConstants.isNullOrUndefined(fyers)) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+					console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
 			    const reqBody = 
@@ -2997,6 +3043,11 @@ router.get('/fyerscancelorder', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	     }
 		 else {
 			console.log("FYERS Cancel Order issues ... ") 
@@ -3096,10 +3147,12 @@ router.get('/fyersgetholdings', async function (req,res) {
 	//if( symbol !==null && symbol !== undefined && symbol !== ''){
 	//	console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+	
 		let fyersAccess= false;
+		 if(!CommonConstants.isNullOrUndefined(fyers)) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+					console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
                 fyers.get_holdings().then((response)=>{
@@ -3124,6 +3177,11 @@ router.get('/fyersgetholdings', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	   }
 	   else {
 		console.log("FYERS Initialization issues ... ") 
@@ -3209,10 +3267,12 @@ router.get('/fyersgetorderbook', async function (req,res) {
 	//if( symbol !==null && symbol !== undefined && symbol !== ''){
 	//	console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+	
 		let fyersAccess= false;
+		 if(!CommonConstants.isNullOrUndefined(fyers)) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+					console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
                  fyers.get_orders().then((response)=>{
@@ -3238,6 +3298,11 @@ router.get('/fyersgetorderbook', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	   }
 	   else {
 		console.log("FYERS Initialization issues ... ") 
@@ -3313,10 +3378,12 @@ router.get('/fyersgetticker', async function (req,res) {
 	//if( symbol !==null && symbol !== undefined && symbol !== ''){
 	//	console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+		
 		let fyersAccess= false;
+	   if(!CommonConstants.isNullOrUndefined(fyers)) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
 
@@ -3391,6 +3458,11 @@ router.get('/fyersgetticker', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+	   } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	   }
 	   else {
 		console.log("FYERS Initialization issues ... ") 
@@ -3599,10 +3671,12 @@ router.get('/fyersauthcodeverify', async function (req,res) {
 async function handledFyersRedirectAuthCode(authcode, req , res ){
 
 	if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+	 
 		let fyersAccess= false;
+	   if(!CommonConstants.isNullOrUndefined(fyers)) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
                 fyers.get_profile().then((response)=>{
@@ -3689,7 +3763,11 @@ async function handledFyersRedirectAuthCode(authcode, req , res ){
 				showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
-		
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	 }else {
 		console.log("FYERS Initialization issues ... ") 
 		showFYERSPROFILEQUOTES(req,res,{"FYERS": " AUTH CODE INVALID "})
