@@ -6,8 +6,9 @@ import { Shield, Zap, Star, ArrowUpRight } from 'lucide-react';
 import { ShieldCheck, Copy, Eye, EyeOff, CheckCircle2 , AlertCircle, Server, Key  } from 'lucide-react';
 import PositionSwipeHint from '@/app/PositionSwipeHint';
   import   useIsMobile   from "@/components/listing/tradeGrid/useIsMobile";
-import MarketStatusSlider from '@/app/MarketStatusSlider';
-import  './GridCards.css'
+  import  './GridCards.css'
+  import MarketStatusSlider from '@/app/MarketStatusSlider';
+  import MarketNiftyStatusSlider from '@/app/MarketNiftyStatusSlider';
 import  RefinedKYCModalImproved  from '@/app/RefinedKYCModalImproved';
 import  RefinedVirtualAccountModalImproved  from '@/app/RefinedVirtualAccountModalImproved';
 import  TrialVirtualGoogleBusinesPayScreenImproved  from '@/app/TrialVirtualGoogleBusinesPayScreenImproved';
@@ -65,6 +66,7 @@ const GridCards = () => {
   const  brokerAccessTokenList     = CommonConstants.brokerAccessTokenKeys;
            // CHECK MOBILE OR DESTOP
            const isMobile = useIsMobile();
+             const mobileCard = isMobile ? 'grid-cols-2 max-w-2xl' :   'grid-cols-1 max-w-7xl' ;
         // CHECK LOGGED IN TOKEN TYPE 
         const [brokersLogged , setBrokersLogged ]  = useState ([]);
         const [loggedInBroker , setLoggedInBroker ] = useState ( (broker) => { 
@@ -550,9 +552,10 @@ useEffect ( () => {
 
       </div>
         
-
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-2 max-w-7xl w-full ml-24  mobile-margin-car">  
-          <MarketStatusSlider />
+            {/*  grid grid-cols-1 md:grid-cols-8  max-w-2xl w-full mt-4 ml-6  z-[30] mobile-margin-car  */}
+        <div className={`grid  md:grid-cols-1 gap-2 ${mobileCard}  w-full ml-24  mobile-margin-car`}>  
+          {/* <MarketStatusSlider /> */}
+                   <MarketNiftyStatusSlider />
          </div>
     </div>
   );
