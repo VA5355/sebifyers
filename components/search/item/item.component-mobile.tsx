@@ -1365,6 +1365,8 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                                let symbol = item['1. symbol'];
                                    symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol; 
                                 fetchYahooQuote(symbol)
+                                // separately call 
+                                 tryFyersPythonGetuote(symbol); 
                                 // re try    
                                  fetchChart(symbol);
                                            }}/>
