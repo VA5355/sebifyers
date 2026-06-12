@@ -476,6 +476,143 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
           }
 
     }
+
+    const tryFyersPythonGetuote =  async (symbol:any ) => {
+         const res1 = StorageUtils._retrieve(CommonConstants.fyersToken);
+           let auth_code ='';
+           // res1.data['auth_code'];
+            const fetchAuthToken = async () => {
+            try {
+                       // IFF Logged in fetch the BUY Book 
+                 console.log("itemcomponent FYERS AuthToken BACKEND CALL STARTED  ")
+            if (res1.isValid && res1.data !== null &&  res1.data !== undefined) {
+                
+                let auth_code = res1.data['auth_code'];
+                if (auth_code&& auth_code !== null && auth_code !== undefined) {
+                    console.log("itemcomponent User is  Authorized ");
+                    console.log("itemcomponent User fetch  profile authoristaion ");
+                    
+                const res = await API.get(FYERSAPITICKERACCESTOKEN , {params: { "auth_code" : auth_code }});
+                const text = await res.data ;
+                StorageUtils._save(CommonConstants.recentBuyledOrderToken, text)
+                console.log("itemcomponent User fyers access_token fetched  ");
+                // GET THe ORDER BOOK 
+              //  const resorderbook = await API.get(FYERSAPIORDERBOOKSURL , {params: { "auth_code" : auth_code }});
+               // const orderData = await resorderbook.data ;
+                // PARSE and SEGREGATE ORDER BOOK fill recentBuyOrderPlaced
+                
+            
+                    // WHILE PLACEING ORDER WE DO NOT NEED THIS  DISABLE the PLACE ORDER BUTTON NOT NEEDED 
+                return text;
+              }// if auth_code 
+            } // if res.isvalid 
+            }
+            catch(erer){
+            console.log(" itemcomponent Auth token fetch Error ")
+                return '';
+            }
+             const fetchSymbolQuote = async (acctoken:any ) => {
+                         console.log("itemcomponent FYERS SYMBOL URL BACKEND PYTHON CALL STARTED  ")
+                  let apik   = CommonConstants.apiKey;
+                    /*    const res = await API.get(FYERSAPIGETCQUOTE , {params: { "auth_code" : auth_code, apikey : apik,
+                     "symbol":symbol ,   "access_token" : acctoken   }});  //   "access_token" : acctoken ,*/
+                          const API = axios.create({
+                                    baseURL:  `${FYERSPYTONAPIBASE}`, //`https://fyers-auto-register-onedinaar.onrender.com`
+                                    timeout: 27000
+                                    });
+                                API.interceptors.request.use((config) => {
+                                    console.log("Python Request:", {
+                                    url: config.url,
+                                    method: config.method,
+                                    data: config.data,
+                                    headers: config.headers,
+                                    });
+                                    return config;
+                                });  
+                          let    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);     
+                          let    res =     await API.get('/fyersgetquote', {params: {  "accessToken" : aces_token ,auth_code :auth_code , symbol:symbol , apikey:CommonConstants.apiKey}})
+                             if (!res.status) {
+                                   console.log(` ${FYERSAPI.getUri} call to FYERS GET QUOTE `)
+                                   console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)
+
+                                   console.log(` FYERS ACCESS_TOKEN GRANTED NO HTTP error: ${res.status}`);
+                                   
+                              } // check {"FYERS": "FYERS ACCESS FAILED "} is the response then also FYERS ACCESS_TOKEN GRANTED NO
+                              else {
+                                  let data =    res.data;
+                                    let quote = (data.d  && Array.isArray(data.d) && (data.d.length > 0) ? data.d[0].v : emptyQuote);
+                                const formatted = {
+                                    companyName: quote.short_name,
+                                    symbol: symbol.toUpperCase(),
+                                    sector: quote.sector || "N/A",
+            
+                                    latestPrice: quote.lp,
+                                    open: quote.open_price,
+                                    high: quote.high_price,
+                                    low: quote.low_price,
+                                    close: quote.prev_close_price,
+            
+                                    week52High: 0,
+                                    week52Low: 0
+                                    };
+                                    setFormattedQuote(formatted)
+                                    let t : QuoteState = {
+                                        loading:false, error:'', symbol:formatted.symbol  , meta: formatted, price:formatted.latestPrice
+                                    }
+                                    // THIS IS not working as of now 
+                                // dispatch(fetchRenderSuccess(    t  ))
+                                dispatch(fetchRenderSuccess( { symbol: t.symbol! , meta: t.meta }      ))
+
+                              }
+                            let data =    res.data;
+                             let quote = (data.d  && Array.isArray(data.d) && (data.d.length > 0) ? data.d[0].v : emptyQuote);
+                         const formatted = {
+                            companyName: quote.short_name,
+                            symbol: symbol.toUpperCase(),
+                            sector: quote.sector || "N/A",
+    
+                            latestPrice: quote.lp,
+                            open: quote.open_price,
+                            high: quote.high_price,
+                            low: quote.low_price,
+                            close: quote.prev_close_price,
+    
+                            week52High: 0,
+                            week52Low: 0
+                            };
+                             setFormattedQuote(formatted)
+                            let t : QuoteState = {
+                                loading:false, error:'', symbol:formatted.symbol  , meta: formatted, price:formatted.latestPrice
+                            }
+                            // THIS IS not working as of now 
+                           // dispatch(fetchRenderSuccess(    t  ))
+                           dispatch(fetchRenderSuccess( { symbol: t.symbol! , meta: t.meta }      ))
+                            // store in local sotrage 
+                            StorageUtils._save(CommonConstants.LASTSTOCKQUOTENSEYAHOO, t);            
+                            setFyersQuoteWorked(true);
+                                              //   StorageUtils._save(CommonConstants.fyersToken,data)                           
+             }
+
+
+                 fetchAuthToken().then(async aces_token   => { 
+                          if (aces_token === undefined || aces_token ===null){
+                                                     aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                                           StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
+                                                   }
+                       await  fetchSymbolQuote(aces_token);
+                            console.log("FYERS SYMBOLE QUOTE WORKED ")
+                     });
+    
+
+        };
+
+
+    }       
+
+
+
+
+
     const tryFyersGetuote =  async (symbol:any ) => {
          const res1 = StorageUtils._retrieve(CommonConstants.fyersToken);
            let auth_code ='';
@@ -609,7 +746,8 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
              price = getRandomPrice(foundSym) ;   
                    //* this will not get the chart data 
               //try Fyers GEOUTE before , YAHOO get quote 
-                tryFyersGetuote(symbol); 
+               // tryFyersGetuote(symbol); 
+                tryFyersPythonGetuote(symbol); 
                if(!fyersQuoteWorked ) {
                 
               const API = axios.create({
