@@ -1364,9 +1364,10 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                    <Chip key={item} isSelected={false} text={'FETCH'} onClick={() => {
                                                let symbol = item['1. symbol'];
                                    symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol; 
-                                fetchYahooQuote(symbol)
-                                // separately call 
+                                   // separately call 
                                  tryFyersPythonGetuote(symbol); 
+                                fetchYahooQuote(symbol)
+                                
                                 // re try    
                                  fetchChart(symbol);
                                            }}/>
