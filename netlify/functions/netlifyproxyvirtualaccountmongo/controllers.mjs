@@ -17,6 +17,7 @@ import  mongoose, { connectMongo } from './mongoose-setup.mjs';
 import { Buffer } from "buffer";
 import {  user as User }   from './user.mjs';
 import { Money } from './models.mjs';
+import { NseAllIndices } from './nseallindices.mjs';
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -116,6 +117,119 @@ const timeoutPromise = new Promise((_, reject) => {
     }, 20000);
 });
 */
+
+async function nseAllIndices(payload , dbConnection ) {
+
+   // read from the nseallindices collection all the nifty indices data 
+      let writeStream = undefined;
+      let liveIndicesData = [] 
+      let liveIndexTableHTML ="";
+          try {
+            // 1. EXECUTE UNIQUE DE-DUPLICATION AGGREGATION PIPELINE
+            // This scans the collection, sorts by recent updates, and isolates unique documents by name
+            const uniqueIndices = await NseAllIndices.aggregate([
+                { 
+                    // Step A: Sort everything descending by updatedAt so the freshest data floats to the top
+                    $sort: { updatedAt: -1 } 
+                },
+                {
+                    // Step B: Group by the unique index name field
+                    $group: {
+                        _id: "$name",
+                        // Grabs the rest of the matching document fields from the freshest record
+                        current: { $first: "$current" },
+                        percentChange: { $first: "$percentChange" },
+                        open: { $first: "$open" },
+                        high: { $first: "$high" },
+                        low: { $first: "$low" },
+                        indicativeClose: { $first: "$indicativeClose" },
+                        prevClose: { $first: "$prevClose" },
+                        prevDay: { $first: "$prevDay" },
+                        oneWeekAgo: { $first: "$oneWeekAgo" },
+                        oneMonthAgo: { $first: "$oneMonthAgo" },
+                        oneYearAgo: { $first: "$oneYearAgo" },
+                        yearHigh: { $first: "$yearHigh" },
+                        yearLow: { $first: "$yearLow" },
+                        isNegative: { $first: "$isNegative" },
+                        updatedAt: { $first: "$updatedAt" }
+                    }
+                },
+                {
+                    // Step C: Project the grouped fields back into a clean object structure
+                    $project: {
+                        _id: 0, // Hides the grouping ID
+                        name: "$_id", // Restores the index name to its original property key
+                        current: 1,
+                        percentChange: 1,
+                        open: 1,
+                        high: 1,
+                        low: 1,
+                        indicativeClose: 1,
+                        prevClose: 1,
+                        prevDay: 1,
+                        oneWeekAgo: 1,
+                        oneMonthAgo: 1,
+                        oneYearAgo: 1,
+                        yearHigh: 1,
+                        yearLow: 1,
+                        isNegative: 1,
+                        updatedAt: 1
+                    }
+                },
+                {
+                    // Step D: Sort alphabetically by index name so the cards preserve layout order
+                    $sort: { name: 1 }
+                }
+            ]).exec();
+    
+            // 2. CHECK FOR EMPTY DATA RECORDS
+            if (!uniqueIndices || uniqueIndices.length === 0) {
+                console.warn("⚠️ Database query executed successfully, but collection 'nseallindices' contains zero records.");
+                if(writeStream !==undefined && writeStream !==null){ 
+                       writeStream.write(`[worker_write]${workerName} ${Date.now()}    mongoDB   worker Database query executed successfully, but collection 'nseallindices' contains zero records. \r\n`);
+                }      
+                 // Serve up the elegant offline placeholder playground state cleanly
+               // const fallbackHtml = transformJsonToResponsiveCards(null);
+             //   return res.status(200).send(fallbackHtml);
+            }
+            else {
+                 let retreivedUniqueIndices  = Object.assign( {} , uniqueIndices);
+                 store.set('indicesData',retreivedUniqueIndices);
+                 liveIndicesData  = retreivedUniqueIndices; 
+
+                 if (liveIndexTableHTML !=="" || liveIndicesData.length > 0){  
+                 //  parentPort.postMessage({ status: 'success', data: { html: liveIndexTableHTML , indices : liveIndicesData } });      
+                 }
+
+            }
+            console.log(`✅ Success! Pulled ${uniqueIndices.length} distinct index records from Atlas.`);
+              if(writeStream !==undefined && writeStream !==null){ 
+                       writeStream.write(`[worker_write]${workerName} ${Date.now()}    mongoDB   worker Success! Pulled ${uniqueIndices.length} distinct index records from Atlas. \r\n`);
+                }      
+            // 3. COMPILE STREAM INTO THE RESPONSIVE TAILWIND MATRIX CAROUSEL
+           // const fullyCompiledHtml = transformJsonToResponsiveCards(uniqueIndices);
+           // return res.status(200).send(fullyCompiledHtml);
+    
+        } catch (mongooseError) {
+            // MONGOOSE & CONNECTION EXCEPTION HANDLING BLOCK
+            console.error("🚨 Mongoose Query Exception Intercepted:", mongooseError.message);
+            if(writeStream !==undefined && writeStream !==null){ 
+                       writeStream.write(`[worker_write]${workerName} ${Date.now()}    mongoDB   worker Mongoose Query Exception Intercepted: ${JSON.stringify( mongooseError.message)} \r\n`);
+             }     
+            // Fallback protection: Generate backup playground markup so user app frames never break
+            // try {
+            //     const recoveryHtml = transformJsonToResponsiveCards(null);
+            //     return res.status(200).send(recoveryHtml);
+            // } catch (compilationError) {
+            //     console.error("Critical HTML generator malfunction:", compilationError.message);
+            //     return res.status(500).send('<p style="font-family:sans-serif; text-align:center; padding:40px; color:#64748b;">Connection Timeout. Please refresh dashboard view.</p>');
+            // }
+        }
+
+           return liveIndicesData;
+
+
+}
 async function registerUser(payload , dbConnection ) {
 
    const {
@@ -328,7 +442,7 @@ async function register(req, res, dbConnection) {
 }
 
 
-export {register , registerUser  };
+export {register , registerUser , nseAllIndices };
 
 export default    register ;
 //export default   {  register } 

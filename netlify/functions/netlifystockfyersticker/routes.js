@@ -419,6 +419,7 @@ router.get('/fyersquicklogin', async function (req,res) {
 	 if( authcode !==null && authcode !== undefined && authcode !== ''){
 			console.log("Authcode : "+authcode);
 		var accessToken = authcode;  // access_token recieved after login
+		 if( fyersExtra !== undefined && fyersExtra !== null  && fyers !== undefined && fyers !== null) { 
 		var api = new fyersExtra.Api(appId, accessToken);   // "MGY8LRIY0M", PROD 
 	  fyers.generate_access_token({"client_id":client_id,"secret_key": secret_key,
 			"auth_code":authcode})
@@ -517,7 +518,11 @@ router.get('/fyersquicklogin', async function (req,res) {
 	   */
 		}  // response.s == OK 
 	   });
-
+	     } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	  }
      }
 		// construct market request  
@@ -630,10 +635,12 @@ router.get('/fyersgetquote', async function (req,res) {
 	if( symbol !==null && symbol !== undefined && symbol !== ''){
 		console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+		
 		let fyersAccess= false;
+	   if(   fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
                 fyers.get_profile().then((response)=>{
@@ -672,6 +679,11 @@ router.get('/fyersgetquote', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	   }
 	   else {
 		console.log("FYERS Initialization issues ... ") 
@@ -985,6 +997,7 @@ router.get('/fyersaccesstoken', async function (req,res) {
 
    if( auth_code !==null && auth_code !== undefined && auth_code !== ''){
 	var accessToken = authcode;
+	  if( fyers !== undefined && fyers !== null) { 
    	fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":auth_code}).then((response)=>{
 			if(response.s=='ok'){
                    console.log("Fyers Access Granted ")
@@ -1001,6 +1014,11 @@ router.get('/fyersaccesstoken', async function (req,res) {
 					//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS PROFILE CALL FAILED "})
 					console.log(err)
 				})
+	   } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	}// AUTH_CODE 
 	 
 	   else {
@@ -1293,10 +1311,12 @@ router.get('/fyerstruedatalive', async function (req,res) {
 async function handledFyersRedirectAuthCode(authcode, req , res ){
 
 	if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+		
 		let fyersAccess= false;
+	   if( fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
+				console.log("FYERS Initiatied Successfully ") 
 				fyers.setAccessToken(response.access_token)
 				console.log("FYERS Grants provided  ") 
                 fyers.get_profile().then((response)=>{
@@ -1383,7 +1403,11 @@ async function handledFyersRedirectAuthCode(authcode, req , res ){
 				showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
-		
+		 } 
+		else {
+			 setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS API no available "}));
+		}
 	 }else {
 		console.log("FYERS Initialization issues ... ") 
 		showFYERSPROFILEQUOTES(req,res,{"FYERS": " AUTH CODE INVALID "})

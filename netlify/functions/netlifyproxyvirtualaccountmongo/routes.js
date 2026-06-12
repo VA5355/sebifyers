@@ -2,7 +2,7 @@ import { Router } from 'express';
 
  
 
-import { register ,registerUser } from './controllers.mjs'; 
+import { register ,registerUser ,nseAllIndices } from './controllers.mjs'; 
 /*const router1 = function (params) {  if(params!==undefined) { let app =  express();
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
@@ -108,6 +108,52 @@ export default function(dbConnection) {
         } catch (err) {
 
             console.error("REGISTER ERROR", err);
+
+            return res.status(500).json({
+            success: false,
+            code: "SERVER_ERROR",
+            message: err.message || "Internal server error"
+            });
+
+        }
+    });
+    router.post('/nseallindices', async (req, res) => {
+       try {
+            if (req.method === "OPTIONS") {
+
+                res.headers.set("Access-Control-Allow-Origin", "*");
+                res.headers.append("Access-Control-Allow-Headers", "*");
+                res.headers.append("Access-Control-Allow-Methods", "*");
+                 res.statusCode = 204; // No Content
+                  res.end();
+            }
+            const result = await withTimeout(
+            nseAllIndices(req.body , dbConnection),
+            25000
+            );
+
+            /**
+             * SAFE TIMEOUT RESPONSE
+             */
+            if (result?.timeout) {
+
+            return res.status(503).json({
+                success: false,
+                code: "SERVER_BUSY",
+                message:
+                "Server queries are at peak. Please retry REFRESH MARKET STATUS after some time."
+            });
+
+            }
+
+            return res.status(200).json({
+            success: true,
+            data: result
+            });
+
+        } catch (err) {
+
+            console.error("NIFTY INDICES FETCH ERROR ", err);
 
             return res.status(500).json({
             success: false,

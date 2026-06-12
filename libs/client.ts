@@ -60,7 +60,7 @@ const FYERSAPIGETCQUOTE = 'https://onedinaar.com/.netlify/functions/netlifystock
 
 const FYERSAPITICKERURL = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetticker'
 //const FYERSAPITHREESECQUOTE = 'https://onedinaar.com/.netlify/functions/netlifystockfyersticker/api/fyersgetbsecequote'
-
+const FYERSPYTONAPIBASE = 'https://fyers-auto-register-onedinaar.onrender.com'
 //const FYERSAPIMARKETFEEDRENDER = 'https://fyersmarketfeed.onrender.com/stream' // ?accessToken=
 const FYERSAPIMARKETFEEDRENDER_SOCKET = 'https://rendersocketio-k4d8.onrender.com'  // 'https://localhost:9584' // ?accessToken=  'http://localhost:5000/stream' 
 
@@ -117,5 +117,5 @@ export { API , FYERSAPI ,UPSTOXAPI, ICICDIRECTAPI , FYERSAPILOGINURL , FYERSAPIN
   FYERSAPIPOSITIONBOOKURL, FYERSAPIMARKETFEEDRENDER_SOCKET,FYERSOPTIONCHAINWSSFEED,FYERSAPICOMPLYCUBEURL, FYERSAPICOMPLYCUBEURLPOST, FYERSAPIKYCORDER,
 
   UPSTOXAPILOGINURL , TRADE_LOGIN_URL , YAHOOCHARTURL , MARKETSPOTEQUITYENPOINT1, MARKETSPOTEQUITYENPOINT, RAZORORDERANDPAYMENTURL,
-  FYERSAUTHORISEURL, FYERSAPIURL, FYERSMODALCALLBAKURL, BASEREF
+  FYERSAUTHORISEURL, FYERSAPIURL, FYERSMODALCALLBAKURL, BASEREF,FYERSPYTONAPIBASE
 };

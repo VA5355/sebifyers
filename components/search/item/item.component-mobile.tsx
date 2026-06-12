@@ -12,7 +12,7 @@ import {useAppDispatch} from "@/providers/ReduxProvider";
 import {saveSelectedCard} from "@/redux/slices/stockSlice";
 import {useSelector} from "react-redux";
 import {GlobalState} from "@/redux/store";
-import { FYERSAPI, FYERSAPIGETCQUOTE } from '@/libs/client';
+import { FYERSAPI, FYERSAPIGETCQUOTE ,FYERSPYTONAPIBASE } from '@/libs/client';
 import { StorageUtils } from '@/libs/cache';
 import { CommonConstants, Quote } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
@@ -141,6 +141,30 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
          const cacheRef = React.useRef<Record<string, any[]>>({}); // 🔥 cache
      const [show, setShow] = useState(false);
+       let emptyQuote :any =   {
+                                    "ch": 0,
+                                    "chp": 0,
+                                    "lp": 0,
+                                    "spread": 0.05,
+                                    "ask": 0,
+                                    "bid": 0,
+                                    "open_price": 0,
+                                    "high_price": 0,
+                                    "low_price": 0,
+                                    "prev_close_price": 0,
+                                    "atp": 0,
+                                    "volume": 14942959,
+                                    "short_name": "NOT-FOUND",
+                                    "exchange": "NSE",
+                                    "description": "NSE:NOT-FOUND",
+                                    "original_name": "NSE:ONOT-FOUND",
+                                    "symbol": "NSE:NOT-FOUND",
+                                    "fyToken": "1XXXXXXXXXX045",
+                                    "tt": "1623369600"
+                               };
+
+
+
    const scraperFetchSymnol  = async (symbol:string ) => {
                const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
       try {
@@ -489,29 +513,11 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
              const fetchSymbolQuote = async (acctoken:any ) => {
                          console.log("itemcomponent FYERS SYMBOL URL BACKEND CALL STARTED  ")
                   let apik   = CommonConstants.apiKey;
-                        const res = await API.get(FYERSAPIGETCQUOTE , {params: { "auth_code" : auth_code, apikey : apik,
-                     "symbol":symbol ,   }});  //   "access_token" : acctoken ,
-                     let emptyQuote :any =   {
-                                    "ch": 0,
-                                    "chp": 0,
-                                    "lp": 0,
-                                    "spread": 0.05,
-                                    "ask": 0,
-                                    "bid": 0,
-                                    "open_price": 0,
-                                    "high_price": 0,
-                                    "low_price": 0,
-                                    "prev_close_price": 0,
-                                    "atp": 0,
-                                    "volume": 14942959,
-                                    "short_name": "NOT-FOUND",
-                                    "exchange": "NSE",
-                                    "description": "NSE:NOT-FOUND",
-                                    "original_name": "NSE:ONOT-FOUND",
-                                    "symbol": "NSE:NOT-FOUND",
-                                    "fyToken": "1XXXXXXXXXX045",
-                                    "tt": "1623369600"
-                               };
+                    /*    const res = await API.get(FYERSAPIGETCQUOTE , {params: { "auth_code" : auth_code, apikey : apik,
+                     "symbol":symbol ,   "access_token" : acctoken   }});  //   "access_token" : acctoken ,*/
+                        const res = await FYERSAPI.get("/fyersgetquote" , {params: { "auth_code" : auth_code, apikey : apik,
+                     "symbol":symbol ,   "access_token" : acctoken   }});  //   "access_token" : acctoken ,  api
+              
                   /*  {
                         "s": "ok",
                         "code": 200,
@@ -955,7 +961,21 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                   if(auth_code  !== null && auth_code !== undefined) {           
                      if (auth_code !== '') {
                       console.log(`CHECK FYERS ACCESS_TOKEN GRANTED for READ ACCES for THE STOCK QUOTE ::::  ${sy}`)     
-                            res =     await FYERSAPI.get('/fyersgetquote', {params: {auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
+                                    const API = axios.create({
+                                    baseURL:  `${FYERSPYTONAPIBASE}`, //`https://fyers-auto-register-onedinaar.onrender.com`
+                                    timeout: 27000
+                                    });
+                                API.interceptors.request.use((config) => {
+                                    console.log("Python Request:", {
+                                    url: config.url,
+                                    method: config.method,
+                                    data: config.data,
+                                    headers: config.headers,
+                                    });
+                                    return config;
+                                });  
+                          let    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);     
+                            res =     await API.get('/fyersgetquote', {params: {  "accessToken" : aces_token ,auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
                              if (!res.status) {
                                    console.log(` ${FYERSAPI.getUri} call to FYERS GET QUOTE `)
                                    console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)
@@ -964,7 +984,29 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                    
                               } // check {"FYERS": "FYERS ACCESS FAILED "} is the response then also FYERS ACCESS_TOKEN GRANTED NO
                               else {
-                                
+                                  let data =    res.data;
+                                    let quote = (data.d  && Array.isArray(data.d) && (data.d.length > 0) ? data.d[0].v : emptyQuote);
+                                const formatted = {
+                                    companyName: quote.short_name,
+                                    symbol: symbol.toUpperCase(),
+                                    sector: quote.sector || "N/A",
+            
+                                    latestPrice: quote.lp,
+                                    open: quote.open_price,
+                                    high: quote.high_price,
+                                    low: quote.low_price,
+                                    close: quote.prev_close_price,
+            
+                                    week52High: 0,
+                                    week52Low: 0
+                                    };
+                                    setFormattedQuote(formatted)
+                                    let t : QuoteState = {
+                                        loading:false, error:'', symbol:formatted.symbol  , meta: formatted, price:formatted.latestPrice
+                                    }
+                                    // THIS IS not working as of now 
+                                // dispatch(fetchRenderSuccess(    t  ))
+                                dispatch(fetchRenderSuccess( { symbol: t.symbol! , meta: t.meta }      ))
 
                               }
                       }

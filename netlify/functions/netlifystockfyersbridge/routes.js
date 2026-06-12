@@ -1329,7 +1329,7 @@ router.get('/fyersquicklogin', async function (req,res) {
 	 if( authcode !==null && authcode !== undefined && authcode !== ''){
 			console.log("Authcode : "+authcode);
 		var accessToken = authcode;  // access_token recieved after login
-		if(!CommonConstants.isNullOrUndefined(fyersExtra)) {
+		if( fyersExtra !== undefined && fyersExtra !== null) {
 
 		 
 				var api = new fyersExtra.Api(appId, accessToken);   // "MGY8LRIY0M", PROD 
@@ -2164,12 +2164,14 @@ router.get('/fyersgetquote', async function (req,res) {
 
     let symbol = ''; let apikey = '';
 	let authcode =  global_auth_code;
+	let access_token =  '';
 	if( req.query !== null && req.query !== undefined ){
 		console.log(" FYERS fyersgetquote QUERY PARAMS " +JSON.stringify(req.query))
 		var queryJSON  = JSON.parse(JSON.stringify(req.query));
 		symbol = queryJSON['symbol'];
 		  apikey =queryJSON['apikey'];
 		  authcode= queryJSON['auth_code'];
+		  access_token= queryJSON['access_token'];
 		// global_auth_code= auth_code;
 		 console.log(`symbol : ${symbol}  code : ${apikey}  auth_code:  ${authcode} `);
 	}
@@ -2178,9 +2180,12 @@ router.get('/fyersgetquote', async function (req,res) {
 	if( symbol !==null && symbol !== undefined && symbol !== ''){
 		console.log("Symbol : "+symbol); 
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
-		console.log("FYERS Initiatied Successfully ") 
+
+
+		
 		let fyersAccess= false;
-		if(!CommonConstants.isNullOrUndefined(fyers)) {  
+		if(fyers !== undefined && fyers !== null) {  
+		  if(access_token){  
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				console.log("FYERS Initiatied Successfully ") 
@@ -2223,6 +2228,10 @@ router.get('/fyersgetquote', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
+		 }  else if ( access_token !==null && access_token !==undefined && access_token !== ""){
+ 				setCORSHeaders( res )
+	    	res.send(JSON.stringify({"FYERS": " FYERS access token  not available "}));
+	     	}
 	    } 
 		else {
 			 setCORSHeaders( res )
@@ -2298,7 +2307,7 @@ router.get('/fyersgettradebook', async function (req,res) {
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
 		
 		let fyersAccess= false;
-       if(!CommonConstants.isNullOrUndefined(fyers)) {  
+       if(fyers !== undefined && fyers !== null) {  
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				 console.log("FYERS Initiatied Successfully ") 
@@ -2422,7 +2431,7 @@ router.get('/fyersgetpositionbook', async function (req,res) {
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
 		
 		let fyersAccess= false;
-		 if(!CommonConstants.isNullOrUndefined(fyers)) { 
+		 if(fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				console.log("FYERS Initiatied Successfully ") 
@@ -2582,7 +2591,7 @@ router.get('/fyersplacebuyorder', async function (req,res) {
 		
 		if( ltp !==null && ltp !== undefined && ltp !== ''){
 		let fyersAccess= false;
-	  if(!CommonConstants.isNullOrUndefined(fyers)) { 
+	  if(fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				console.log("FYERS Initiatied Successfully ") 
@@ -2730,7 +2739,7 @@ router.get('/fyersplacesellorder', async function (req,res) {
 			 qty !==null && qty !== undefined && qty !== '' 
 		){
 		let fyersAccess= false;
-	   if(!CommonConstants.isNullOrUndefined(fyers)) { 
+	   if(fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				console.log("FYERS Initiatied Successfully ") 
@@ -2963,7 +2972,7 @@ router.get('/fyerscancelorder', async function (req,res) {
 	
 		if( order_id !==null && order_id !== undefined && order_id !== ''){
 		let fyersAccess= false;
-		 if(!CommonConstants.isNullOrUndefined(fyers)) { 
+		 if(fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 					console.log("FYERS Initiatied Successfully ") 
@@ -3149,7 +3158,7 @@ router.get('/fyersgetholdings', async function (req,res) {
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
 	
 		let fyersAccess= false;
-		 if(!CommonConstants.isNullOrUndefined(fyers)) { 
+		 if(fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 					console.log("FYERS Initiatied Successfully ") 
@@ -3269,7 +3278,7 @@ router.get('/fyersgetorderbook', async function (req,res) {
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
 	
 		let fyersAccess= false;
-		 if(!CommonConstants.isNullOrUndefined(fyers)) { 
+		 if(fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 					console.log("FYERS Initiatied Successfully ") 
@@ -3380,7 +3389,7 @@ router.get('/fyersgetticker', async function (req,res) {
 	  if( authcode !==null && authcode !== undefined && authcode !== ''){
 		
 		let fyersAccess= false;
-	   if(!CommonConstants.isNullOrUndefined(fyers)) { 
+	   if(fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				console.log("FYERS Initiatied Successfully ") 
@@ -3673,7 +3682,7 @@ async function handledFyersRedirectAuthCode(authcode, req , res ){
 	if( authcode !==null && authcode !== undefined && authcode !== ''){
 	 
 		let fyersAccess= false;
-	   if(!CommonConstants.isNullOrUndefined(fyers)) { 
+	   if(fyers !== undefined && fyers !== null) { 
 		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				console.log("FYERS Initiatied Successfully ") 
