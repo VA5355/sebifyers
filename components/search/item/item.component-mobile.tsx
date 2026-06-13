@@ -478,6 +478,7 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
     }
 
     const tryFyersPythonGetuote =  async (symbol:any ) => {
+         console.log("FYERS tryFyersPythonGetuote  inside   ")
          const res1 = StorageUtils._retrieve(CommonConstants.fyersToken);
            let auth_code ='';
            // res1.data['auth_code'];
@@ -511,7 +512,9 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
             console.log(" itemcomponent Auth token fetch Error ")
                 return '';
             }
-             const fetchSymbolQuote = async (acctoken:any ) => {
+   
+        };
+        const fetchSymbolQuote = async (acctoken:any ) => {
                          console.log("itemcomponent FYERS SYMBOL URL BACKEND PYTHON CALL STARTED  ")
                   let apik   = CommonConstants.apiKey;
                     /*    const res = await API.get(FYERSAPIGETCQUOTE , {params: { "auth_code" : auth_code, apikey : apik,
@@ -529,8 +532,11 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
                                     });
                                     return config;
                                 });  
-                          let    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);     
-                          let    res =     await API.get('/fyersgetquote', {params: {  "accessToken" : aces_token ,auth_code :auth_code , symbol:symbol , apikey:CommonConstants.apiKey}})
+                       //   let    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);     
+
+                      try {          
+
+                          let    res =     await API.get('/fyersgetquote', {params: {  "accessToken" : acctoken ,auth_code :auth_code , symbol:symbol , apikey:CommonConstants.apiKey}})
                              if (!res.status) {
                                    console.log(` ${FYERSAPI.getUri} call to FYERS GET QUOTE `)
                                    console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)
@@ -590,23 +596,35 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
                             // store in local sotrage 
                             StorageUtils._save(CommonConstants.LASTSTOCKQUOTENSEYAHOO, t);            
                             setFyersQuoteWorked(true);
+
+                    }
+                    catch(erer){
+                    console.log(" CAUGHT NETWORK ERROR  tryFyersPythonGetuote fetchSymbolQuote ")
+                        return '';
+                    }    
                                               //   StorageUtils._save(CommonConstants.fyersToken,data)                           
              }
 
-
-                 fetchAuthToken().then(async aces_token   => { 
-                          if (aces_token === undefined || aces_token ===null){
-                                                     aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
-                                                           StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
-                                                   }
-                       await  fetchSymbolQuote(aces_token);
+        fetchAuthToken().then(async aces_token   => { 
+             let acess_token = aces_token;
+             if (acess_token === undefined || acess_token ===null){
+               try { 
+                      acess_token =  StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                   }catch(ers){
+                          console.log("Token not saved usual method :");
+                         acess_token =  localStorage.getItem(CommonConstants.fyersAccessToken);
+                         if(acess_token !==undefined && acess_token !==null && acess_token !==''){
+                              console.log("Token fetched localstorage  method :");
+                         }
+                         else {
+                            acess_token = '';
+                         }
+                 }
+            }
+                     await  fetchSymbolQuote(acess_token);
                             console.log("FYERS SYMBOLE QUOTE WORKED ")
                      });
     
-
-        };
-
-
     }       
 
 
@@ -647,7 +665,12 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
             console.log(" itemcomponent Auth token fetch Error ")
                 return '';
             }
-             const fetchSymbolQuote = async (acctoken:any ) => {
+           
+
+               
+
+        }; 
+         const fetchSymbolQuote = async (acctoken:any ) => {
                          console.log("itemcomponent FYERS SYMBOL URL BACKEND CALL STARTED  ")
                   let apik   = CommonConstants.apiKey;
                     /*    const res = await API.get(FYERSAPIGETCQUOTE , {params: { "auth_code" : auth_code, apikey : apik,
@@ -715,22 +738,34 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
                                               //   StorageUtils._save(CommonConstants.fyersToken,data)                           
              }
 
-
-                 fetchAuthToken().then(async aces_token   => { 
-                          if (aces_token === undefined || aces_token ===null){
-                                                     aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
-                                                           StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
-                                                   }
-                       await  fetchSymbolQuote(aces_token);
+            fetchAuthToken().then(async aces_token   => {   
+                let acess_token = aces_token
+                if (acess_token === undefined || acess_token ===null){
+                 // let  aces_token =  undefined; 
+                   try { 
+                      acess_token =  StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                   }catch(ers){
+                          console.log("Token not saved usual method :");
+                         acess_token =  localStorage.getItem(CommonConstants.fyersAccessToken);
+                         if(acess_token !==undefined && acess_token !==null && acess_token !==''){
+                              console.log("Token fetched localstorage  method :");
+                         }
+                         else {
+                            acess_token = '';
+                         }
+                 }
+                }
+                       await  fetchSymbolQuote(acess_token);
                             console.log("FYERS SYMBOLE QUOTE WORKED ")
                      });
     
 
-        };
 
 
     }       
     const  fetchYahooQuote  = async (symbol:any ) => { 
+
+          console.log("FYERS fetchYahooQuote  inside ")
      try {
             setLoadingChart(true);
 
@@ -743,6 +778,7 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
                    let price = basePrice;
               
             if(foundT){
+                 console.log("FYERS fetchYahooQuote  symbol in nifty 50  ")
              price = getRandomPrice(foundSym) ;   
                    //* this will not get the chart data 
               //try Fyers GEOUTE before , YAHOO get quote 
@@ -763,8 +799,27 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
                     });
                     return config;
                 });  
+                // TRY calling DIRECT PYTHON FYERS API 
+               // tryFyersPythonGetuote()
+                 let  aces_token =  undefined; 
+
+                   try { 
+                      aces_token =  StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+
+                   }catch(ers){
+                          console.log("Token not saved usual method :");
+                         aces_token =  localStorage.getItem(CommonConstants.fyersAccessToken);
+                         if(aces_token !==undefined && aces_token !==null && aces_token !==''){
+
+                              console.log("Token fetched localstorage  method :");
+                         }
+                         else {
+                            aces_token = '';
+                         }
+                   }
+                   
                      const result = await API.get('/fetchQuote', {
-                    params: { symbol: symbol.toUpperCase() }
+                    params: { symbol: symbol.toUpperCase(), access_token :aces_token }
                     });
                     let res = result;
          /*   const res = await fetch(

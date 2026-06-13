@@ -37,6 +37,7 @@ var BASEREF  = "https://onedinaar.com"
 var MARKETSTATUS  ="https://api-nse-india-vbmd.onrender.com";      //"https://scraper-api-eyiz.onrender.com"
 //var MARKETSTATUS_RECALCULATE  ="https://feedsoptionsmain.onrender.com"  feedsoptionsmain.onrender.com
 var MARKETSTATUS_RECALCULATE  ="https://feedsoptionsmain.onrender.com"  
+var PYTHONQUOTEURL = "https://fyers-auto-register-onedinaar.onrender.com"  //"https://192.168.1.4:5000"
 let cachedCSV = null;
 let lastFetchTime = 0;
 
@@ -1890,63 +1891,145 @@ router.get("/fyerscallback", async (req, res) => {
  * @returns {Promise<Object>} The API response object. Usually JSON , in case error resp.error 
  */
 router.get('/fetchQuote', async function (req, res) {
-    try {
-        const { symbol } = req.query;
-
-        if (!symbol) {
-            return res.status(400).json({ error: "symbol is required" });
-        }
-
-        console.log("Fetching quote for:", symbol);
-
-        // ✅ Normalize symbol
-        const ticker = symbol.includes('.') ? symbol : `${symbol}.NS`;
-
-        // ✅ Yahoo Quote API
-        const quoteUrl = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price,summaryProfile,defaultKeyStatistics`;
-
-        const response = await axios.get(quoteUrl, {
-            headers: { 'User-Agent': 'Mozilla/5.0' }
-        });
-
-        const result = response.data?.quoteSummary?.result?.[0];
-
-        if (!result) {
-            return res.status(404).json({ error: "No quote data found" });
-        }
-
-        const price = result.price || {};
-        const profile = result.summaryProfile || {};
-        const stats = result.defaultKeyStatistics || {};
-
-        // ✅ Normalize response (THIS is what your frontend expects)
-        const formatted = {
-            companyName: price.longName || "-",
-            symbol: symbol.toUpperCase(),
-            sector: profile.sector || "-",
-
-            latestPrice: price.regularMarketPrice?.raw || 0,
-            open: price.regularMarketOpen?.raw || 0,
-            high: price.regularMarketDayHigh?.raw || 0,
-            low: price.regularMarketDayLow?.raw || 0,
-            close: price.regularMarketPreviousClose?.raw || 0,
-
-            week52High: stats["52WeekHigh"]?.raw || 0,
-            week52Low: stats["52WeekLow"]?.raw || 0
-        };
-
-        return res.json(formatted);
-
-    } catch (error) {
-       
-  
 
 
 
-        return res.status(500).json({
-            error: "Failed to fetch stock quote"
-        });
-    }
+    let symbol = ''; let apikey = '';
+	let authcode =  global_auth_code;
+	let access_token =  '';
+	if( req.query !== null && req.query !== undefined ){
+		console.log(" FYERS fyersgetquote QUERY PARAMS " +JSON.stringify(req.query))
+		var queryJSON  = JSON.parse(JSON.stringify(req.query));
+		symbol = queryJSON['symbol'];
+		  apikey =queryJSON['apikey'];
+		  
+		  authcode= queryJSON['auth_code'];
+		  access_token= queryJSON['access_token'];
+		// global_auth_code= auth_code;
+		 console.log(`symbol : ${symbol}  code : ${apikey}  auth_code:  ${authcode} `);
+	}
+		try {     	let symbolNotNumber = false; 
+			   try {
+					//parseInt(symbol);
+					const result = parseInt(symbol, 10);
+
+					if (Number.isNaN(result)) {
+						  symbolNotNumber = true; 
+						 console.log(`symbol : ${symbol} is NOT A NUMBER OKAY code : ${apikey}  auth_code:  ${authcode} `);   	
+					}
+					else {
+						 console.log(`symbol : ${symbol} is INVALID CANNOT BE NUMBER  code : ${apikey}  auth_code:  ${authcode} `);
+					}
+
+			   }
+			   catch(ere){
+	  	  			   symbolNotNumber = true; 
+						 console.log(`symbol : ${symbol} is NOT A NUMBER OKAY code : ${apikey}  auth_code:  ${authcode} `);
+			   }
+	if( symbol !==null && symbol !== undefined && symbol !== '' && symbolNotNumber){
+		console.log("Symbol : "+symbol); 
+	//  if( authcode !==null && authcode !== undefined && authcode !== ''){
+
+
+		
+		let fyersAccess= false;
+	//	if(fyers !== undefined && fyers !== null) {  
+		  if(access_token !==undefined && access_token !==null && access_token !==""){  
+
+		try {     
+             const pythonurl = `${PYTHONQUOTEURL}/fyersgetquote?accessToken=${access_token}&symbol=${symbol}`;
+
+			const response = await axios.get(pythonurl, {
+				headers: { 'User-Agent': 'Mozilla/5.0' }
+			});
+			
+             const result = response.data ;
+				console.log("FYERS Sample Quotes..  ") 
+					 	console.log(response)
+
+				  setCORSHeaders( res )
+					      res.send(response);
+		   } catch (error) {
+				/*console.error("Python Fyers https://fyers-auto-register-onedinaar.onrender.com/fyersgetquote?accessToken  Error:", error.message);
+				
+				// Detailed Exception Handling
+				const statusCode = error.response?.status || 500;
+				const errorMessage = statusCode === 404 
+					? "Stock Symbol not found on Fyers Python." 
+					: "Failed to reach Fyers Python Data.";
+
+				res.status(statusCode).json({ error: errorMessage });*/
+					try {
+						// const { symbol } = req.query;
+
+							if (!symbol) {
+								return res.status(400).json({ error: "symbol is required" });
+							}
+
+							console.log("Fetching quote for:", symbol);
+
+							// ✅ Normalize symbol
+							const ticker = symbol.includes('.') ? symbol : `${symbol}.NS`;
+
+							// ✅ Yahoo Quote API
+							const quoteUrl = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price,summaryProfile,defaultKeyStatistics`;
+
+							const response = await axios.get(quoteUrl, {
+								headers: { 'User-Agent': 'Mozilla/5.0' }
+							});
+
+							const result = response.data?.quoteSummary?.result?.[0];
+
+							if (!result) {
+								return res.status(404).json({ error: "No quote data found" });
+							}
+
+							const price = result.price || {};
+							const profile = result.summaryProfile || {};
+							const stats = result.defaultKeyStatistics || {};
+
+							// ✅ Normalize response (THIS is what your frontend expects)
+							const formatted = {
+								companyName: price.longName || "-",
+								symbol: symbol.toUpperCase(),
+								sector: profile.sector || "-",
+
+								latestPrice: price.regularMarketPrice?.raw || 0,
+								open: price.regularMarketOpen?.raw || 0,
+								high: price.regularMarketDayHigh?.raw || 0,
+								low: price.regularMarketDayLow?.raw || 0,
+								close: price.regularMarketPreviousClose?.raw || 0,
+
+								week52High: stats["52WeekHigh"]?.raw || 0,
+								week52Low: stats["52WeekLow"]?.raw || 0
+							};
+
+							return res.json(formatted);
+
+						} catch (error) {
+						
+					
+
+
+
+							return res.status(500).json({
+								error: "Failed to fetch stock quote"
+							});
+						}
+
+
+
+         }
+		}
+	// 	}  not required fyers node api
+	//}
+    } // if symbol 
+  }   catch (error) {
+		return res.status(500).json({
+			error: "Symbol invalid"
+				});
+	}
+
 });
 
 
@@ -2185,8 +2268,44 @@ router.get('/fyersgetquote', async function (req,res) {
 		
 		let fyersAccess= false;
 		if(fyers !== undefined && fyers !== null) {  
-		  if(access_token){  
-		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}).then((response)=>{
+		  if(access_token !==undefined && access_token !==null && access_token !==""){  
+
+		try {     
+             const pythonurl = `${PYTHONQUOTEURL}/fyersgetquote?accessToken=${access_token}&symbol=${symbol}`;
+
+			const response = await axios.get(pythonurl, {
+				headers: { 'User-Agent': 'Mozilla/5.0' }
+			});
+			
+             const result = response.data ;
+				console.log("FYERS Sample Quotes..  ") 
+					 	console.log(response)
+
+				  setCORSHeaders( res )
+					      res.send(response);
+		   } catch (error) {
+				console.error("Python Fyers https://fyers-auto-register-onedinaar.onrender.com/fyersgetquote?accessToken  Error:", error.message);
+				
+				// Detailed Exception Handling
+				const statusCode = error.response?.status || 500;
+				const errorMessage = statusCode === 404 
+					? "Stock Symbol not found on Fyers Python." 
+					: "Failed to reach Fyers Python Data.";
+
+				res.status(statusCode).json({ error: errorMessage });
+         }
+           /* const response = await axios.post(url, clientData, {
+                headers: {
+                    'Authorization': API_KEY,
+                    'Content-Type': 'application/json'
+                },
+                timeout: 10000 // 10 second timeout
+            });
+			*/
+
+        /*
+
+		fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_ 	code":authcode}).then((response)=>{
 			if(response.s=='ok'){
 				console.log("FYERS Initiatied Successfully ") 
 
@@ -2228,7 +2347,9 @@ router.get('/fyersgetquote', async function (req,res) {
 				//showFYERSPROFILEQUOTES(req,res,{"FYERS": "FYERS ACCESS FAILED "})
 			}
 		})
-		 }  else if ( access_token !==null && access_token !==undefined && access_token !== ""){
+
+		 */
+		 }  else if ( access_token ===null ||  access_token ===undefined || access_token === ""){
  				setCORSHeaders( res )
 	    	res.send(JSON.stringify({"FYERS": " FYERS access token  not available "}));
 	     	}
