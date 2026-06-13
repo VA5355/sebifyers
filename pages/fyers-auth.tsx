@@ -65,6 +65,7 @@ const [loading, setLoading] = useState(true);
               if(tokenData !== undefined && tokenData.access_token !== undefined && tokenData.access_token !== null ){
              if( tokenData.access_token !== '' ){
                   localStorage.setItem("fyers_access_token",tokenData.access_token);
+                  localStorage.setItem(CommonConstants.fyersAccessToken,tokenData.access_token);
              }
              if( tokenData.refresh_token !== '' ){
                    localStorage.setItem("fyers_refresh_token",tokenData.refresh_token  );

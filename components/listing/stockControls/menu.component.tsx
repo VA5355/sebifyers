@@ -300,6 +300,7 @@ const Menu = () => {
          // console.log(tokenData);
               if( isValidJwtStructure(tokenData.access_token) && isValidJwtStructure(tokenData.refresh_token)){
                  localStorage.setItem("fyers_access_token",tokenData.access_token);
+                  localStorage.setItem(CommonConstants.fyersAccessToken,tokenData.access_token);
                    localStorage.setItem("fyers_refresh_token",tokenData.refresh_token  );
                      localStorage.setItem("fyers_token_data",JSON.stringify(tokenData));
                      console.log('menu component processAuth :::  processAuth worked Access Token availalbe ');
