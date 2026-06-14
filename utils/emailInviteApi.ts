@@ -24,7 +24,7 @@ export const sendTradingInviteEmail = async (
         let baseUrl =
             window.location.hostname === "localhost" ||
             window.location.hostname.includes("192.168")
-                ? "https://192.168.1.2:8888"
+                ? "https://onedinaar.com"
                 : "";
          let lU = environment.netlifyBackend.urlVerify;
         // REMOTE EMAIL SERVICE PATH

@@ -25,7 +25,7 @@ export const activateVirtualAccount = createAsyncThunk(
     try {
       const baseUrl = window.location.hostname === "localhost" 
         ? "http://localhost:3001" 
-        : "https://192.168.1.4:3001"; // https://onedinaar.com
+        : "https://onedinaarvirtualaccount.onrender.com"; //  https://192.168.1.4:3001
          console.log(`virtualAccountSlice  payload ${JSON.stringify(payload)}`)
       const res = await axios.post(
         //`${baseUrl}/.netlify/functions/netlifyproxyvirtualaccountmongo/api/register`,
