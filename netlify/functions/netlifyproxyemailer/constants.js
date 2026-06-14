@@ -15,7 +15,7 @@ const auth = {
 
 const mailonedinaaroptions = {
   from: "admin-sales@storenotify.in",
-  to: "viraatmailbo321@gmail.com",
+  to: "viraatmailbox@gmail.com",
   // cc: "support@neo.space",
   subject: `Onedinaar Onboard ${nDate}` ,
   dsn: {
