@@ -22,7 +22,7 @@
     "nodemailer": "^6.9.16",
     "nodemailer-smtp-transport": "^2.7.4",
     "store2": "^2.14.4",
-    "@sendgrid/mail":"latest"
+    "@sendgrid/mail":"^8.1.0"
   },
   "devDependencies": {
     "@types/imap": "^0.8.42",
