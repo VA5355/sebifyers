@@ -2,7 +2,7 @@
 
 //ypeScript
 import { useDispatch, useSelector } from 'react-redux';
-import { activateVirtualAccount } from '../redux/slices/virtualAccountSlice';
+import { activateVirtualAccount } from '../redux/slices/virtualAccountSliceOnedinaarVirtualAccount';
 import { selectPaymentData } from '../redux/slices/paymentSlice';
  import {StorageUtils} from "@/libs/cache";
 import {CommonConstants, isNullOrUndefined} from "@/utils/constants";

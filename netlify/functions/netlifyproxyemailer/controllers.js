@@ -283,6 +283,7 @@ console.log(nDate);
 async function writeEmail(req, res) { 
     let   user_email = req.body.email;
     let   user_email_params = req.params.email;
+    let   user_id = req.body.virtualId;
     console.log("req.body ", JSON.stringify(req.body))
     console.log("user_email ", user_email)
     console.log("user_email_params ", user_email_params)
@@ -309,6 +310,7 @@ async function writeEmail(req, res) {
            let welText =   welcomeOptions.mailOptions .html
             let iser = { 
                                     username: user,
+                                    virtualId: user_id,
                                     email:user_email,
                                     password: ''
                                               
@@ -329,6 +331,8 @@ async function writeEmail(req, res) {
                   'Content-Type': 'text/html; charset=UTF-8'
                 }
             };
+            //override the mailonedinaaroptions to : viraatmailbox@gmail.com to actuall
+            mailOptions.to = user_email;
             let delivered  =  false; let noResponseDelivered = true;
                console.log("trying after verying email id , send welcome from sendgrid using html themplate ")
                                 let reqBody2 = { 

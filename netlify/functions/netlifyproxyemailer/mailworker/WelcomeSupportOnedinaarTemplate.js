@@ -14,6 +14,7 @@ function  getInjected (iser)  {
      // CHECK TEMPLATE is Onedinaar
       if(html.indexOf('Onedinaar') >-1){
             html = html.replace("{{username}}", iser.username );
+            html = html.replace("{{virtualId}}", iser.virtualId );
             html = html.replace("{{{unsubscribe}}}", BASEREF); //"https://onedinaar.com"
             html = html.replace("{{{unsubscribe_preferences}}}", BASEREF); // "https://onedinaar.com"
             html = html.replace("{{resetUrl}}", `${BASEREF}/?invite=virtual-account`); //"https://onedinaar.com/?invite=virtual-account"

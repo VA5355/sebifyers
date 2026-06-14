@@ -270,8 +270,18 @@ const Menu = () => {
                 console.log("User is Authorized ");
                 logd = true;
                 // check for access toekn 
-                 let aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
-                if (aces_token !== undefined && aces_token !==null){
+                 let aces_token = undefined;
+                try { 
+                  try { 
+                  aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+               }catch(eree){
+                     aces_token = localStorage.getItem(CommonConstants.fyersAccessToken);
+               }
+               }catch(eree){
+                     aces_token = localStorage.getItem(CommonConstants.fyersAccessToken);
+               }
+               
+               if (aces_token !== undefined && aces_token !==null){
                      //   setShowBrokerModal(false)                      
                     StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
                     }
@@ -421,9 +431,15 @@ const Menu = () => {
                             let auth_code = res.data['auth_code'];
                             if (auth_code&& auth_code !== null && auth_code !== undefined) {
                                 console.log("User is Authorized ");
-                                   let aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                   let aces_token:any = {}
+                                   try { 
+                                    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                    }catch(eree){
+                                            aces_token = localStorage.getItem(CommonConstants.fyersAccessToken);
+                                    }
                                      console.log(`Authorization for app  ${JSON.stringify(aces_token)} `);
-                                if (aces_token.isValid &&  aces_token.data !== null  && aces_token.data !== undefined   ){
+                               // if (aces_token.isValid &&  aces_token.data !== null  && aces_token.data !== undefined   ){
+                                if (  aces_token  !== null  && aces_token !== undefined   ){
                                       setShowBrokerModal(false)      ;setOpenBrokerModal(false);                
                                     StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
                                     }

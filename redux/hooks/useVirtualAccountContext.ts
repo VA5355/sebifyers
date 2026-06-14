@@ -3,7 +3,7 @@ This hook bridges the UI credentials (vId, vPass, salt) to the Redux/API layer.
 
 TypeScript */
 import { useDispatch, useSelector } from 'react-redux';
-import { activateVirtualAccount } from '../slices/virtualAccountSlice';
+import { activateVirtualAccount } from '../slices/virtualAccountSliceOnedinaarVirtualAccount';
 import { selectPaymentData } from '../slices/paymentSlice';
 
 export const useVirtualAccountContext = () => {

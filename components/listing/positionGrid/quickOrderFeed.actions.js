@@ -397,7 +397,11 @@ export const startEventOrderSource = (connectionStatus,orderBook , canceledOrd, 
         } 
       await  fetchAuthToken().then(async aces_token   => { 
           if (aces_token === undefined || aces_token ===null){
-                            aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                            try { 
+                  aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+               }catch(eree){
+                     aces_token = localStorage.getItem(CommonConstants.fyersAccessToken);
+               }
                                   StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
                           }
        await  fetchSocketOrders(aces_token, existingOrderBok);

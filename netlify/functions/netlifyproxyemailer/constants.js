@@ -27,7 +27,7 @@ const mailonedinaaroptions = {
 };
 const mailoptions = {
   from: "admin-sales@storenotify.in",
-  to: "viraatmailbo321@gmail.com",
+  to: "viraatmailbox@gmail.com",
   // cc: "support@neo.space",
   subject: `StoreNotify Welcome ${nDate}` ,
   dsn: {
@@ -40,7 +40,7 @@ const mailoptions = {
 
 const mailinviteoptions = {
   from: "sales-man@storenotify.in",
-  to: "viraatmailbo321@gmail.com",
+  to: "viraatmailbox@gmail.com",
   // cc: "support@neo.space",
   subject: `StoreNotify Invite` ,  //${nDate}
   dsn: {

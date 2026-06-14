@@ -30,6 +30,7 @@ let  stringMap  = null;
  let mt = [];
  let sensexQue = [];
 let bestMacthes1 = { bestMatches: [...mt] }; // 🔁 clone to avoid frozen reference
+  const  brokerAccessTokenList     = CommonConstants.brokerAccessTokenKeys;
  const parseLine = (line )  => {
           let parts   = line; //split(',');
          // console.log(" line "+JSON.stringify(line));
@@ -449,6 +450,59 @@ export const parseNetlifyError = (erroObj) => {
         console.log("Other error at Netlify end , please check server logs ")
     }
     return parsedError;
+}
+export const checkAuthorisation = () => {
+   let authorised = false;
+   try {  
+    const res1 = StorageUtils._retrieve(CommonConstants.fyersToken);
+        if (res1.isValid && res1.data !== null &&  res1.data !== undefined) {
+            
+            let auth_code = res1.data['auth_code'];
+            if (auth_code&& auth_code !== null && auth_code !== undefined) {
+                console.log("User is  Authorized ");
+                console.log("User fetch  profile authoristaion ");
+                  authorised = true;
+            }
+          }
+          
+            brokerAccessTokenList.forEach(listBrkKey => {
+
+          Object.keys(localStorage).forEach(key => {
+              
+            if(listBrkKey.key.toUpperCase() === key.toUpperCase()) { 
+                if(key.indexOf(listBrkKey.key) > -1 ){
+                  let fKey = undefined; 
+                  try { 
+                      console.log("storage key "+key);
+                      fKey =  StorageUtils._retrieve(key);
+                      //  console.log("storage value  "+JSON.stringify(fKey));
+                      if (fKey !==undefined && fKey !==null &&  fKey.isValid) {
+                      //  setBrokersLogged( bks => {  bks.push(listBrkKey.broker);  return bks;} );
+                        authorised = true;
+                      };
+                  }
+                  catch(ere ){
+                      console.log("local storage parsing errors can ignore");
+                        fKey =  localStorage.getItem(key);
+                        if (key.indexOf('access') > -1 && fKey !==undefined && fKey !==null && CommonConstants.isValidJwtStructure(fKey)  ) {
+                      //  setBrokersLogged( bks => {  bks.push(listBrkKey.broker); return bks;} );
+                        authorised = true;
+                      };
+                  }
+              
+                  }
+                }
+              
+              });
+        });          
+             
+
+
+
+        }catch(perr){
+            console.log('authorization check error can ignore ')
+        }
+    return authorised;
 }
 export const placeBuyOrder = (params = {}   ) => {
 
@@ -880,7 +934,11 @@ export const placeBuyOrder = (params = {}   ) => {
                   }
                     fetchAuthToken().then(async aces_token   => { 
                        if (aces_token === undefined || aces_token ===null){
-                                                  aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                                                  try { 
+                  aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+               }catch(eree){
+                     aces_token = localStorage.getItem(CommonConstants.fyersAccessToken);
+               }
                                                         StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
                                                 }
                        await  fetchBUYORDERStatus(aces_token);
@@ -1282,7 +1340,11 @@ export const placeSellOrder = ( params = {}   ) => {
               }// fetchSELLORDERStatus END 
                     fetchAuthToken().then(async aces_token   => { 
                        if (aces_token === undefined || aces_token ===null){
-                            aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+                            try { 
+                  aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);
+               }catch(eree){
+                     aces_token = localStorage.getItem(CommonConstants.fyersAccessToken);
+               }
                                   StorageUtils._retrieve(CommonConstants.fyersRefreshToken);
                           }
                        await  fetchSELLORDERStatus(aces_token);

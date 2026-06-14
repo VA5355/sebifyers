@@ -150,7 +150,7 @@ export const welcomeEmailTemplate = `
 
       <div class="description">
         Thank you for joining Onedinaar.<br /><br />
-
+        Note you user id : {{virtualId}}
         Your account setup is almost complete.
         Please confirm your registration and activate your profile to continue accessing our platform.
       </div>

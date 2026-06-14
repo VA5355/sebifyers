@@ -7,7 +7,7 @@ import {
   AlertCircle, ArrowRight, Server, Key 
 } from 'lucide-react';
 import { selectPaymentData } from '../redux/slices/paymentSlice';
-import { activateVirtualAccount } from '../redux/slices/virtualAccountSlice';
+import { activateVirtualAccount } from '../redux/slices/virtualAccountSliceOnedinaarVirtualAccount';
 import {
   saveVirtualCredentials , loadVirtualCredentials
 } from "@/utils/virtualAccountStorage";
