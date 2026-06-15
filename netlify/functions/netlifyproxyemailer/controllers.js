@@ -281,6 +281,36 @@ console.log(nDate);
   }) 
  }  
 async function writeEmail(req, res) { 
+
+  console.log(" Netlifyproxymailer -> controller ->  writeEmail: -----------------------------------------------" );
+     // Check if req.body has been wrapped into a buffer object by the serverless bridge
+      if (req.body && req.body.type === 'Buffer' && Array.isArray(req.body.data)) {
+        try {
+          // Convert the raw byte array back into a readable string and parse the JSON
+          const rawString = Buffer.from(req.body.data).toString('utf8');
+          req.body = JSON.parse(rawString);
+           console.log(" Clean parse serverless buffer body:" );
+            console.log(" REQUESY  body:" );
+             console.log(` ${JSON.stringify(req.body)} `   );
+
+        } catch (error) {
+          console.log("Failed to cleanly parse serverless buffer body:", error);
+        }
+      } 
+      // If it's a direct raw Node Buffer instance
+      else if (Buffer.isBuffer(req.body)) {
+        try {
+          req.body = JSON.parse(req.body.toString('utf8'));
+            console.log(" Clean parse serverless buffer body:" );
+            console.log(" REQUESY  body:" );
+             console.log(` ${JSON.stringify(req.body)} `   );
+
+
+        } catch (error) {
+          console.log("Failed to cleanly parse direct raw Buffer:", error);
+        }
+      }
+
     let   user_email = req.body.email;
     let   user_email_params = req.params.email;
     let   user_id = req.body.virtualId;
@@ -414,13 +444,14 @@ async function writeEmail(req, res) {
           } catch (error) {
             console.log(error);
              console.log(" error  ", error)
-           
+ console.log(" Netlifyproxymailer -> controller ->  writeEmail: ---------------------------------------------- END " );           
              res.send(error);
           }
         }
         else   {
           let error = " BAD request || SEND --> {'email' :'valid  email'}"
            console.log("BAD request {'email' :'valid  email'}  ", error)
+console.log(" Netlifyproxymailer -> controller ->  writeEmail: ---------------------------------------------- END " ); 
            res.send(error);  
         }
 }

@@ -111,6 +111,7 @@ const handler= async (event,context) => {
       console.log("App is created "+app)
        console.log("App routes " +JSON.stringify(app.routes))
       // Add this middleware BEFORE your main routes
+      // does not ork in Netlify production 
     app.use((req, res, next) => {
       // Check if req.body has been wrapped into a buffer object by the serverless bridge
       if (req.body && req.body.type === 'Buffer' && Array.isArray(req.body.data)) {
