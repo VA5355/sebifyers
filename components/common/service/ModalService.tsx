@@ -291,15 +291,24 @@ export function ModalRoot() {
   const dispatch = useDispatch();
   const modal = useSelector((s:any) => s.modal || {}); 
   const modalpayload = useSelector((s:any) => s.modalpayload || {}); 
+  const modalPayload = useSelector((state: any) => state.modal?.payload || state.modalpayload?.payload);
   const [razorpayorder , setRazorpayorder] = useState(modal.payload ??  modalpayload.payload)
   const [razorReceipt , showRazorReceipt]= useState(true)
-  const dialogRazor = (ise:any ) => {  showRazorReceipt (false)};
+  const dialogRazor = (ise:any ) => {  
+        
+       const isRazorpayType = modalPayload?.modalType === 'razorpayorder';
+        if (isRazorpayType){
+          // forward to PaymentStatusDashboard  or RazorPayReceiptView
+               dispatch(changeTab(PROCESSVIRTUALACCOUNT))
+        }
+    showRazorReceipt (false)};
   if (!modal.visible) return null;
 
   const isError = modal.type === "error";
   const isExitPosition = modal.type=== "exitposition";
   const isQuitOrder = modal.type=== "quitorder";
   const MENUVIRTUALACCOUNT = 'Virtual Account'
+  const PROCESSVIRTUALACCOUNT = 'Process Account'
 
   const close = () => dispatch(hideModal());
     const backdrop = {

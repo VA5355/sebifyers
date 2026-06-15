@@ -110,6 +110,41 @@ const handler= async (event,context) => {
 
       console.log("App is created "+app)
        console.log("App routes " +JSON.stringify(app.routes))
+      // Add this middleware BEFORE your main routes
+    app.use((req, res, next) => {
+      // Check if req.body has been wrapped into a buffer object by the serverless bridge
+      if (req.body && req.body.type === 'Buffer' && Array.isArray(req.body.data)) {
+        try {
+          // Convert the raw byte array back into a readable string and parse the JSON
+          const rawString = Buffer.from(req.body.data).toString('utf8');
+          req.body = JSON.parse(rawString);
+           console.log(" Clean parse serverless buffer body:" );
+            console.log(" REQUESY  body:" );
+             console.log(` ${JSON.stringify(req.body)} `   );
+
+        } catch (error) {
+          console.log("Failed to cleanly parse serverless buffer body:", error);
+        }
+      } 
+      // If it's a direct raw Node Buffer instance
+      else if (Buffer.isBuffer(req.body)) {
+        try {
+          req.body = JSON.parse(req.body.toString('utf8'));
+            console.log(" Clean parse serverless buffer body:" );
+            console.log(" REQUESY  body:" );
+             console.log(` ${JSON.stringify(req.body)} `   );
+
+
+        } catch (error) {
+          console.log("Failed to cleanly parse direct raw Buffer:", error);
+        }
+      }
+      next();
+    });
+
+
+
+
        app.use(express.json());
       app.use(express.urlencoded({ extended: true }));
       //let routes = routes1(app);

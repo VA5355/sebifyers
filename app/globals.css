@@ -32,6 +32,10 @@ html, body {
   left: 475px;
   background-color: #fff;
 }
+.move-line5{
+  left: 505px;
+  background-color:#f8fafc;
+}
 .move-2next{
   left: 235px;
   width: 170px;

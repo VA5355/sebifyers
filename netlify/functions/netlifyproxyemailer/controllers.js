@@ -497,12 +497,15 @@ function sendHtmlEmail( mailTransporter,  recipientEmail, username, resetUrl) {
     mailOptionsGlobal.resetUrl = resetUrl;
      let th = '';
     if(mailOptionsGlobal.html !== ''){  
-       console.log('Email HTML Template being drafted   : '+ JSON.stringify(mailOptionsGlobal.html));
+      // console.log('Email HTML Template being drafted   : '+ JSON.stringify(mailOptionsGlobal.html));
+       console.log('Email HTML Template being drafted  NOT empty : ');
     }
      else {
-       console.log('Email HTML Template not READ .. at initiation : '+ JSON.stringify(mailOptionsGlobal.html));
+    //   console.log('Email HTML Template not READ .. at initiation : '+ JSON.stringify(mailOptionsGlobal.html));
+       console.log('Email HTML Template not READ .. at initiation : EMPTY ' );
       th = JSON.stringify(store.get('welcomeEmailTemplate'));
-        console.log('controller.js store.get(welcomeEmailTemplate) : '+  th);
+       // console.log('controller.js store.get(welcomeEmailTemplate) : '+  th);
+        console.log('controller.js store.get(welcomeEmailTemplate) : ' );
 
     }
     if(th !==null && th !== undefined && th !=='') {   
@@ -510,7 +513,7 @@ function sendHtmlEmail( mailTransporter,  recipientEmail, username, resetUrl) {
      let htmlToSend = String(th);
                   let welText =   welcomeOptions.mailOptions .html
            welText = welText.replace("(StoreUser)",username);
-            console.log("check html template included or not "+welText);
+      //      console.log("check html template included or not "+welText);
           // let   th = JSON.stringify(store.get('welcomeEmailTemplate'));
            //  let  strTH =welText.replace("(StoreUser)",username);
 
@@ -524,8 +527,8 @@ function sendHtmlEmail( mailTransporter,  recipientEmail, username, resetUrl) {
                  from:'sales-man@storenotify.in',
                   to: recipientEmail, 
             };
-        console.log('HTML WELCOME TEXT :htmlToSend  '+  htmlToSend );
-        console.log('HTML WELCOME TEXT :  JSON.stringify(htmlToSend) '+ JSON.stringify(htmlToSend));
+      //  console.log('HTML WELCOME TEXT :htmlToSend  '+  htmlToSend );
+      //  console.log('HTML WELCOME TEXT :  JSON.stringify(htmlToSend) '+ JSON.stringify(htmlToSend));
      htmlToSendGlobal = htmlToSend.replace('{{username}}', username);
      htmlToSendGlobal =  htmlToSendGlobal.replace('{{resetUrl}}', resetUrl);//.replace('{{resetUrl}}', resetUrl);
          const mailOptions = {
@@ -534,10 +537,15 @@ function sendHtmlEmail( mailTransporter,  recipientEmail, username, resetUrl) {
             subject: 'Welcome to our application!',
             html: htmlToSendGlobal// The final HTML content
         };
-    console.log('Sending   : '+ JSON.stringify(mailOptions.html));
+    //console.log('Sending   : '+ JSON.stringify(mailOptions.html));
     if (mailTransporter !== null && mailTransporter !==undefined ) {  
-
-
+        console.log(' COMMENTED  Mail Transporter  sendMail for duplicate StoreNotify Welcome Email ' );
+        console.log(' COMMENTED  Mail Transporter  sendMail for duplicate StoreNotify Welcome Email ' );
+        console.log(' COMMENTED  Mail Transporter  sendMail for duplicate StoreNotify Welcome Email ' );
+        console.log(' COMMENTED  Mail Transporter  sendMail for duplicate StoreNotify Welcome Email ' );
+        console.log(' COMMENTED  Mail Transporter  sendMail for duplicate StoreNotify Welcome Email ' );
+        console.log(' COMMENTED  Mail Transporter  sendMail for duplicate StoreNotify Welcome Email ' );
+    /*
        mailTransporter.verify((err, success) => {
 
             if (err) {
@@ -556,6 +564,7 @@ function sendHtmlEmail( mailTransporter,  recipientEmail, username, resetUrl) {
                 console.log('Email sent: ' + info.response);
             }
         });
+        */
        }
        else { 
         console.log(' Mail Transporter not initialized ' );

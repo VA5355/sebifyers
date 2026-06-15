@@ -32,6 +32,7 @@ import GridCardsFilpYahooChartNoTabsImproved  from '@/app/GridCardsFilpYahooChar
 import {setTimestampChartData , selectIsChartLoading} from "@/redux/slices/timestampChartSlice"
 import RefinedVirtualAccountModalImproved from '@/app/RefinedVirtualAccountModalImproved';
 import AccountDemo from '@/app/account-demo/account-demo';
+import PaymentStatusDashboard from '@/app/PaymentStatusDashboard';
 
 //import './grid.css';
 
@@ -264,6 +265,8 @@ const StockGrid = () => {
                              <RefinedVirtualAccountModalImproved isOpen={true} onClose={undefined} onConfirm={undefined}/>   
                      ) :  tab === "Account Demo"  ? (  
                              <AccountDemo params= {defaultSlug} />   
+                     ) :   tab === "Process Account"  ? (  
+                             <PaymentStatusDashboard/>
                      ) :  
                    
                      <>    </> 

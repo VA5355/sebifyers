@@ -25,6 +25,7 @@ const arr = [
     {key: 4, title: "Position"},
      {key: 5, title: "Subscribe"},
      {key: 6, title: "Account Demo"},
+     {key: 7, title: "Process Account"},
 ]
 const sortMapper = [
     {key: 1, title: "Sort by percentage"},
@@ -697,7 +698,7 @@ const Menu = () => {
                 <div 
                     className={`hidden ml-16 md:flex relative flex-wrap items-center toggle-line ${tab === "Educate"  ? 'move-line  py-1' : tab === "Observe" 
                     ? 'move-line1  py-1' :  tab === "Trade" ? 'move-line2  py-1'  :  tab === 'Position' ? 'move-2next  py-1' :  tab === 'Subscribe' ? 'move-line3  py-1' :  
-                     tab === 'Virtual Account' ? 'move-line4  py-4'    :    tab === 'Account Demo' ? 'move-line4  py-4' :''}`}></div>
+                     tab === 'Virtual Account' ? 'move-line4  py-4'    :    tab === 'Account Demo' ? 'move-line4  py-4'  :    tab === 'Process Account' ? 'move-line5  py-4' :''}`}></div>
                   {/** hidden flex-wrap items-center justify-between */}
                 </div>
            {/* <div className='hidden md:flex flex-wrap items-center justify-between'>
