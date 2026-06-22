@@ -33,6 +33,7 @@ import {setTimestampChartData , selectIsChartLoading} from "@/redux/slices/times
 import RefinedVirtualAccountModalImproved from '@/app/RefinedVirtualAccountModalImproved';
 import AccountDemo from '@/app/account-demo/account-demo';
 import PaymentStatusDashboard from '@/app/PaymentStatusDashboard';
+import AccountOverview from '@/app/AccoutOverview';
 
 //import './grid.css';
 
@@ -267,6 +268,8 @@ const StockGrid = () => {
                              <AccountDemo params= {defaultSlug} />   
                      ) :   tab === "Process Account"  ? (  
                              <PaymentStatusDashboard/>
+                     ) :   tab === "Account Overview"  ? (  
+                             <AccountOverview/>
                      ) :  
                    
                      <>    </> 

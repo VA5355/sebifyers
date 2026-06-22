@@ -2,13 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '../bulma/css/bulma.min.css';
-
-
+/*@import '../public/bulma/css/bulma.min.css';*/
+ 
 html, body {
   overflow-x: hidden;
 }
-
 .toggle-line{
   height: 3px;
   width: 100px;
@@ -19,19 +17,24 @@ html, body {
   transition: .3s ease-in-out;
 }
 .move-line{
-  left: 120px;  background-color: #fff;
+  left: 20px;  background-color: #fff;
+}
+.move-line1{
+  left: 130px;  background-color: #fff;
 }
 .move-line2{
   left: 235px;  background-color: #f4f4f5;
 }
 .move-line3{
-  left: 365px;
+  left: 365px;  background-color: #fff;
 }
 .move-line4{
-  left: 475px;  background-color: #fff;
+  left: 475px;
+  background-color: #fff;
 }
 .move-line5{
-  left: 505px;  background-color:#f8fafc;
+  left: 505px;
+  background-color:#f8fafc;
 }
 .move-line6{
   left: 535px;  background-color:#f8fafc;
@@ -51,7 +54,6 @@ html, body {
   background-color: rgba(0,0,0,.2);
   z-index: 9999;
 }
-
 /** BUY NEW ALERT BULMA  and lucie */
 
 /* Container Layout */
