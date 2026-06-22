@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-import   CopyPlugin from "copy-webpack-plugin";
+const CopyPlugin = require("copy-webpack-plugin");
 const nextConfig = {
     // 🔒 Prevent watching outside project
   experimental: {
@@ -33,5 +33,5 @@ const nextConfig = {
     ]
   },
 }
-export default nextConfig;
-//module.exports = nextConfig
+//export default nextConfig;
+module.exports = nextConfig
