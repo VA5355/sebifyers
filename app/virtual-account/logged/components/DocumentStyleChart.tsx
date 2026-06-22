@@ -34,6 +34,45 @@ const TEXT_DRAWING_TYPES = [
     'table',
   ];
 
+  function istEpoch(date:any){
+
+    return Math.floor(
+      (
+        date.getTime()
+        -
+        date.getTimezoneOffset()*60000
+      )
+      /1000
+    );
+
+}
+
+
+function getSixMonthRangeIST(){
+
+ const today =
+    new Date();
+
+
+ const from =
+    new Date(
+      today.getFullYear(),
+      today.getMonth()-6,
+      today.getDate()
+    );
+
+
+ return {
+
+   range_from:
+      istEpoch(from),
+
+   range_to:
+      istEpoch(today)
+
+ };
+
+}
  /**
   FYERS_CLIENT_ID=TRLV2A6GPL-100
 #FYERS_CLIENT_ID=P67RJAS1M6-100
@@ -86,15 +125,31 @@ FYERS_REDIRECT_URI=https://192.168.1.7:8888/.netlify/functions/netlifystockfyers
             if(acess_token !==undefined && acess_token !==null && acess_token !==''){
                         console.log("Fyers Model from fyers-web-sdk-v3 being triggered  :");
                 fyers.setAccessToken(acess_token)
+                let uppSymbol = (symbol+"").toUpperCase();
+                const range =
+                        getSixMonthRangeIST();
 
-                var inp={
-                    "symbol":"NSE:SBIN-EQ",
-                    "resolution":"D",
-                    "date_format":"0",
-                    "range_from":"1690895316",
-                    "range_to":"1691068173",
-                    "cont_flag":"1"
-                }
+
+                    var inp = {
+
+                        "symbol":
+                        "NSE:"+uppSymbol+"-EQ",
+
+                        "resolution":
+                        "D",
+
+                        "date_format":
+                        "0",
+
+                        "range_from":
+                        range.range_from,
+
+                        "range_to":
+                        range.range_to,
+
+                        "cont_flag":
+                        "1"
+                    };
                 fyers.getHistory(inp).then((response :any )=>{
                     console.log(response)
                     let openHLC = response.candles;

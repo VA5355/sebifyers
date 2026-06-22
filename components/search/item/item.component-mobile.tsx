@@ -16,6 +16,7 @@ import { FYERSAPI, FYERSAPIGETCQUOTE ,FYERSPYTONAPIBASE } from '@/libs/client';
 import { StorageUtils } from '@/libs/cache';
 import { CommonConstants, Quote } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
+import {changeTab} from '@/redux/slices/miscSlice';
 import Chip from '@/components/common/textChip/chip.component'
 import {saveCompanyData} from "@/redux/slices/stockSlice"
 import {setTimestampChartData} from "@/redux/slices/timestampChartSlice"
@@ -131,7 +132,7 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
     const losers = useSelector((state: GlobalState) => state.stock.gainers)
       const router = useRouter();
       const [basePrice, setBasePrice] = useState (500);
-
+        const tab = useSelector((state: GlobalState) => state.misc.tab)
       const [chartData, setChartData] = React.useState<any[]>([]);
       const [formattedQuote, setFormattedQuote] = React.useState<any>({});
     const [showChart, setShowChart] = React.useState(false);
@@ -942,6 +943,27 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
         }
 
     }
+    const revisitCurrentTabWithStock  = ( curTab:any ) => {
+        switch(curTab){
+
+            case  "Educate" :  dispatch(changeTab("Educate"))
+                         break;
+             case  "Observe" :  dispatch(changeTab("Educate"))
+                         break;
+             case  "Subscribe" :  dispatch(changeTab("Educate"))
+                         break;
+             case  "Virtual Account" :  dispatch(changeTab("Educate"))
+                         break;
+              case  "Account Demo" :  dispatch(changeTab("Educate"))
+                         break;
+              case  "Process Account" : dispatch(changeTab("Educate"))
+                         break;
+              case  "Account Overview" :   dispatch(changeTab("Account Overview"))
+                         break;
+                        
+        }
+
+    }
     const handleMouseEnter = () => {
         let symbol = item['1. symbol'];
         symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol;
@@ -1437,8 +1459,11 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                    symbol = symbol.includes('.') ? symbol.split('.')[0] : symbol; 
                                    // separately call 
                                  tryFyersPythonGetuote(symbol); 
-                                fetchYahooQuote(symbol)
-                                
+                                fetchYahooQuote(symbol);
+                                // check which tab u r currently 
+                                // just revisit it again 
+                                 revisitCurrentTabWithStock(tab)   
+                                // dispatch(changeTab(PROCESSVIRTUALACCOUNT))
                                 // re try    
                                  fetchChart(symbol);
                                            }}/>
