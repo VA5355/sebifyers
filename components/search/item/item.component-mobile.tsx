@@ -1167,8 +1167,24 @@ BEL.NS {"chart":{"result":[{"meta":{"currency":"INR","symbol":"BEL.NS","exchange
                                     });
                                     return config;
                                 });  
-                          let    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);     
-                            res =     await API.get('/fyersgetquote', {params: {  "accessToken" : aces_token ,auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
+
+                          let    acess_token:any = '';
+                             try { 
+                                    acess_token  =    StorageUtils._retrieve(CommonConstants.fyersAccessToken);  
+                                    if(acess_token !== undefined && acess_token.isValid && acess_token.data){
+                                         acess_token = acess_token.data;
+                                    }
+                               }catch(ers){
+                                    console.log("Token not saved usual method :");
+                                    acess_token =  localStorage.getItem(CommonConstants.fyersAccessToken);
+                                    if(acess_token !==undefined && acess_token !==null && acess_token !==''){
+                                        console.log("Token fetched localstorage  method :");
+                                    }
+                                    else {
+                                    acess_token = '';
+                                    }
+                            }   
+                            res =     await API.get('/fyersgetquote', {params: {  "accessToken" : acess_token ,auth_code :auth_code , symbol:sy , apikey:CommonConstants.apiKey}})
                              if (!res.status) {
                                    console.log(` ${FYERSAPI.getUri} call to FYERS GET QUOTE `)
                                    console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)

@@ -45,7 +45,8 @@ FYERS_REDIRECT_URI=https://192.168.1.7:8888/.netlify/functions/netlifystockfyers
   loading:false, error:'', symbol:formattedQuote.symbol  , meta: formattedQuote, price:formattedQuote.latestPrice
       }
     StorageUtils._save(CommonConstants.LASTSTOCKQUOTENSEYAHOO, t);
-
+{"value":{"loading":false,"error":"","symbol":"CIPLA","meta":{"companyName":"NOT-FOUND","symbol":"CIPLA","sector":"N/A",
+"latestPrice":0,"open":0,"high":0,"low":0,"close":0,"week52High":0,"week52Low":0},"price":0},"ttl":1782097338298}
   */ 
   
  async function loadFyersWebSdkSearchSymbol() {
