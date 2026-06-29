@@ -944,6 +944,8 @@ const SearchCardMobile = ({ item, onSelect }: any) => {
 
     }
     const revisitCurrentTabWithStock  = ( curTab:any ) => {
+        console.log(`revisitCurrentTabWithStock CURRENT TAB ${curTab} `)
+        
         switch(curTab){
 
             case  "Educate" :  dispatch(changeTab("Educate"))

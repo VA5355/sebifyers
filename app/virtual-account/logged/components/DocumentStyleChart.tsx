@@ -19,6 +19,8 @@ import { useEffect } from 'react';
 import {fyersModel} from "fyers-web-sdk-v3"
 import { StorageUtils } from '@/libs/cache';
 import { CommonConstants } from '@/utils/constants';
+import axios from "axios";
+import { FYERSAPI, FYERSAPIGETCQUOTE ,FYERSPYTONAPIBASE ,FYERSPYTONAPIBASEMONGO } from '@/libs/client';
 
 // Text-based drawing types that support editing
 const TEXT_DRAWING_TYPES = [
@@ -73,6 +75,228 @@ function getSixMonthRangeIST(){
  };
 
 }
+async function loadFyersPythonBackendMongoDB (symbol :any,acctoken:any , auth_code :any) {
+    console.log("DocumentStyleChart FYERS SYMBOL URL BACKEND PYTHON GET HISTORY API  FROM MONGODB  ")
+    const API = axios.create({
+                                    baseURL:  `${FYERSPYTONAPIBASEMONGO}`, //`https://fyers-auto-register-onedinaar.onrender.com`
+                                    timeout: 27000
+                                    });
+                                API.interceptors.request.use((config) => {
+                                    console.log("Python Request:", {
+                                    url: config.url,
+                                    method: config.method,
+                                    data: config.data,
+                                    headers: config.headers,
+                                    });
+                                    return config;
+                                });  
+                       //   let    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);     
+
+                      try {          
+
+                          let    res =     await API.get('/api/history', {params: {  "accessToken" : acctoken ,auth_code :auth_code , symbol:symbol , apikey:CommonConstants.apiKey}})
+                             if (!res.status) {
+                                   console.log(` ${FYERSPYTONAPIBASEMONGO} call to FYERS GET QUOTE `)
+                                   console.log(` loadFyersPythonBackendMongoDB FAILED `)
+
+                                   console.log(` FYERS HTTP error: ${res.status}`);
+                                   
+                              } // check {"FYERS": "FYERS ACCESS FAILED "} is the response then also FYERS ACCESS_TOKEN GRANTED NO
+                              else {
+                                  let data =    res.data;
+                                 console.log(data)
+                                 let jsonDataStr = JSON.stringify(data);
+                                 console.log('JSON get history ')
+                                 console.log(jsonDataStr)
+                                 let jsonData  = JSON.parse(jsonDataStr);
+
+                            let openHLC = data["candles"];
+                                 console.log('openHLC   ')
+                                 console.log( JSON.stringify(openHLC))
+                              let jsonOpenHLC = JSON.parse(JSON.stringify(openHLC))
+                              let actualCandles:any = undefined;
+                                  console.log( " jsonOpenHLC is Array : " + Array.isArray(jsonOpenHLC))
+                                  if(Array.isArray(jsonOpenHLC)){
+                                    console.log( " jsonOpenHLC  length  : " + jsonOpenHLC.length)
+                                    actualCandles = jsonOpenHLC;
+
+                                  }
+                                  else {
+                                     console.log( " jsonOpenHLC  not array ");
+                                  }
+                                  let candleData :CandlestickData<Time>[] = [];
+                            //const data: CandlestickData<Time>[] = [];
+                                for (let i = 0; i < actualCandles.length; i++) {
+                                  //  const [time, open, high, low, close] = actualCandles[i] ;
+                                  let time :any = 83298274;
+                                   let open :any = 94349;
+                                   let high :any = 94349;
+                                   let low :any = 94349;
+                                   let close :any = 94349;
+
+                                  console.log( " actualCandles["+i+"] is Array : " + Array.isArray(actualCandles[i]))
+                                   if(Array.isArray(actualCandles[i])){
+                                      console.log(  'time '+   actualCandles[i][0])
+                                        console.log( "open "+     actualCandles[i][1])
+                                          console.log( "high "+    actualCandles[i][2])
+                                            console.log(  "low "+   actualCandles[i][3])
+                                            console.log(  "close "+   actualCandles[i][4])
+                                    time  = actualCandles[i][0];
+                                    open  = actualCandles[i][1];
+                                    high  = actualCandles[i][2];
+                                    low   = actualCandles[i][3]
+                                     close  = actualCandles[i][4];    
+
+                                   }
+                                   
+                                    const timestamp = parseInt(time, 10);
+                            
+                                    // Convert Unix timestamp to date string (YYYY-MM-DD)
+                                    const date = new Date(timestamp * 1000);
+                                    const dateStr = date.toISOString().split('T')[0];
+                            
+                                    candleData.push({
+                                    time: dateStr as Time,
+                                    open: parseFloat(open),
+                                    high: parseFloat(high),
+                                    low: parseFloat(low),
+                                    close: parseFloat(close),
+                                    });
+                                }
+                    
+                        return candleData;
+                    }
+
+                    }
+                    catch(erer){
+                    console.log(" CAUGHT NETWORK ERROR  loadFyersPythonBackendMongoDB DocumentStyleChart "+JSON.stringify(erer))
+
+
+
+
+
+                        return '';
+                    }    
+}
+async function loadFyersPythonBackend (symbol :any,acctoken:any , auth_code :any) {
+
+         console.log("DocumentStyleChart FYERS SYMBOL URL BACKEND PYTHON GET HISTORY API CALL STARTED  ")
+                  let apik   = CommonConstants.apiKey;
+                    /*    const res = await API.get(FYERSAPIGETCQUOTE , {params: { "auth_code" : auth_code, apikey : apik,
+                     "symbol":symbol ,   "access_token" : acctoken   }});  //   "access_token" : acctoken ,*/
+                          const API = axios.create({
+                                    baseURL:  `${FYERSPYTONAPIBASE}`, //`https://fyers-auto-register-onedinaar.onrender.com`
+                                    timeout: 27000
+                                    });
+                                API.interceptors.request.use((config) => {
+                                    console.log("Python Request:", {
+                                    url: config.url,
+                                    method: config.method,
+                                    data: config.data,
+                                    headers: config.headers,
+                                    });
+                                    return config;
+                                });  
+                       //   let    aces_token =   StorageUtils._retrieve(CommonConstants.fyersAccessToken);     
+
+                      try {          
+
+                          let    res =     await API.get('/fyersgethistory', {params: {  "accessToken" : acctoken ,auth_code :auth_code , symbol:symbol , apikey:CommonConstants.apiKey}})
+                             if (!res.status) {
+                                   console.log(` ${FYERSAPI.getUri} call to FYERS GET QUOTE `)
+                                   console.log(` fyers.generate_access_token({"client_id":client_id,"secret_key":secret_key,"auth_code":authcode}) FAILED `)
+
+                                   console.log(` FYERS ACCESS_TOKEN GRANTED NO HTTP error: ${res.status}`);
+                                   
+                              } // check {"FYERS": "FYERS ACCESS FAILED "} is the response then also FYERS ACCESS_TOKEN GRANTED NO
+                              else {
+                                  let data =    res.data;
+                                 console.log(data)
+                                 let jsonDataStr = JSON.stringify(data);
+                                 console.log('JSON get history ')
+                                 console.log(jsonDataStr)
+                                 let jsonData  = JSON.parse(jsonDataStr);
+
+                            let openHLC = data["candles"];
+                                 console.log('openHLC   ')
+                                 console.log( JSON.stringify(openHLC))
+                              let jsonOpenHLC = JSON.parse(JSON.stringify(openHLC))
+                              let actualCandles:any = undefined;
+                                  console.log( " jsonOpenHLC is Array : " + Array.isArray(jsonOpenHLC))
+                                  if(Array.isArray(jsonOpenHLC)){
+                                    console.log( " jsonOpenHLC  length  : " + jsonOpenHLC.length)
+                                    actualCandles = jsonOpenHLC;
+
+                                  }
+                                  else {
+                                     console.log( " jsonOpenHLC  not array ");
+                                  }
+                                  let candleData :CandlestickData<Time>[] = [];
+                            //const data: CandlestickData<Time>[] = [];
+                                for (let i = 0; i < actualCandles.length; i++) {
+                                  //  const [time, open, high, low, close] = actualCandles[i] ;
+                                  let time :any = 83298274;
+                                   let open :any = 94349;
+                                   let high :any = 94349;
+                                   let low :any = 94349;
+                                   let close :any = 94349;
+
+                                  console.log( " actualCandles["+i+"] is Array : " + Array.isArray(actualCandles[i]))
+                                   if(Array.isArray(actualCandles[i])){
+                                      console.log(  'time '+   actualCandles[i][0])
+                                        console.log( "open "+     actualCandles[i][1])
+                                          console.log( "high "+    actualCandles[i][2])
+                                            console.log(  "low "+   actualCandles[i][3])
+                                            console.log(  "close "+   actualCandles[i][4])
+                                    time  = actualCandles[i][0];
+                                    open  = actualCandles[i][1];
+                                    high  = actualCandles[i][2];
+                                    low   = actualCandles[i][3]
+                                     close  = actualCandles[i][4];    
+
+                                   }
+                                   
+                                    const timestamp = parseInt(time, 10);
+                            
+                                    // Convert Unix timestamp to date string (YYYY-MM-DD)
+                                    const date = new Date(timestamp * 1000);
+                                    const dateStr = date.toISOString().split('T')[0];
+                            
+                                    candleData.push({
+                                    time: dateStr as Time,
+                                    open: parseFloat(open),
+                                    high: parseFloat(high),
+                                    low: parseFloat(low),
+                                    close: parseFloat(close),
+                                    });
+                                }
+                    
+                        return candleData;
+                    }
+
+                    }
+                    catch(erer){
+                    console.log(" CAUGHT NETWORK ERROR  loadFyersPythonBackend DocumentStyleChart "+JSON.stringify(erer))
+                           let dSym = (symbol+"").toUpperCase();
+                      let fyersData = await loadFyersPythonBackendMongoDB (symbol+"" , acctoken,"");
+                         if(fyersData === undefined || !Array.isArray(fyersData)) { 
+                           
+                        console.log('Seems GETHISTORY for symbol to fetch  from Mongodb   '+FYERSPYTONAPIBASEMONGO+ " FAILED " )
+                            return  generateFallbackData();                 }
+                         else {
+                             console.log('  GETHISTORY for '+dSym+'  fyers backend  python  '+FYERSPYTONAPIBASEMONGO+ ' OKAY ' )
+                            console.log(' --- '+JSON.stringify(fyersData)+' ----  ' )  
+                            //console.log(' --- typeof fyersData '+ (  fyersData     ) +' ----  ' )
+                            let dt = fyersData as CandlestickData<Time>[];
+                            return dt;
+                         }
+
+
+
+
+                        return '';
+                    }    
+}
  /**
   FYERS_CLIENT_ID=TRLV2A6GPL-100
 #FYERS_CLIENT_ID=P67RJAS1M6-100
@@ -89,9 +313,9 @@ FYERS_REDIRECT_URI=https://192.168.1.7:8888/.netlify/functions/netlifystockfyers
   */ 
   
  async function loadFyersWebSdkSearchSymbol() {
-  
+   let symbol:any = undefined; let acess_token :any  = '';
     try {  
-        let symbol = undefined;
+       
          try { 
          const cachedQuote = StorageUtils._retrieve(CommonConstants.LASTSTOCKQUOTENSEYAHOO);
               if(cachedQuote !== undefined && cachedQuote.data && cachedQuote.isValid)
@@ -107,7 +331,7 @@ FYERS_REDIRECT_URI=https://192.168.1.7:8888/.netlify/functions/netlifystockfyers
             var fyers = new fyersModel()
             fyers.setAppId(process.env.FYERS_CLIENT_ID)
             fyers.setRedirectUrl(process.env.FYERS_REDIRECT_URI)
-            let acess_token :any  = '';
+           
             try { 
                 acess_token =  StorageUtils._retrieve(CommonConstants.fyersAccessToken);
                 
@@ -126,10 +350,7 @@ FYERS_REDIRECT_URI=https://192.168.1.7:8888/.netlify/functions/netlifystockfyers
                         console.log("Fyers Model from fyers-web-sdk-v3 being triggered  :");
                 fyers.setAccessToken(acess_token)
                 let uppSymbol = (symbol+"").toUpperCase();
-                const range =
-                        getSixMonthRangeIST();
-
-
+                const range =  getSixMonthRangeIST();
                     var inp = {
 
                         "symbol":
@@ -150,7 +371,7 @@ FYERS_REDIRECT_URI=https://192.168.1.7:8888/.netlify/functions/netlifystockfyers
                         "cont_flag":
                         "1"
                     };
-                fyers.getHistory(inp).then((response :any )=>{
+             let cndleData =    fyers.getHistory(inp).then((response :any )=>{
                     console.log(response)
                     let openHLC = response.candles;
                     const data: CandlestickData<Time>[] = [];
@@ -174,10 +395,24 @@ FYERS_REDIRECT_URI=https://192.168.1.7:8888/.netlify/functions/netlifystockfyers
                         return data;
 
 
-                }).catch((err :any)=>{
+                }).catch(async (err :any)=> {
                     console.log(err)
-                })  
-            
+                        let dSym = (symbol+"").toUpperCase();
+                      let fyersData = await loadFyersPythonBackend (symbol+"" , acess_token,"");
+                         if(fyersData === undefined || !Array.isArray(fyersData)) { 
+                           
+                        console.log('Seems GETHISTORY for symbol to fetch  from fyers backend  '+FYERSPYTONAPIBASE+ " FAILED " )
+                            return  generateFallbackData();                 }
+                         else {
+                             console.log('  GETHISTORY for '+dSym+'  fyers backend  python  '+FYERSPYTONAPIBASE+ ' OKAY ' )
+                            console.log(' --- '+JSON.stringify(fyersData)+' ----  ' )  
+                            //console.log(' --- typeof fyersData '+ (  fyersData     ) +' ----  ' )
+                            let dt = fyersData as CandlestickData<Time>[];
+                            return dt;
+                         }
+                }) ; 
+
+                 return cndleData;
             }
         }
         else {

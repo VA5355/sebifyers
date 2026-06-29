@@ -21,7 +21,7 @@ export default function AccountOverview() {
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6">
        {/** max-w-md w-[1400px]*/}
-      <div className="max-w-6xl ml-24 mx-2">
+      <div className="max-w-7xl ml-24 mx-2">
       
            {/* Your normal application UI layout goes here  */}
           <div className="text-center text-sm text-gray-400">
